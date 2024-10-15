@@ -1,8 +1,8 @@
 import "~/styles/globals.css";
 
-import { GeistSans } from "geist/font/sans";
-import { type Metadata } from "next";
+import type { Metadata } from "next";
 
+import { lato } from "~/assets/fonts/lato";
 import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata: Metadata = {
@@ -15,7 +15,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${GeistSans.variable}`}>
+    <html lang="en" className={`${lato.className}`}>
       <body>
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
