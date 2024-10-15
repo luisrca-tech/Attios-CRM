@@ -13,6 +13,8 @@
 	},
 	"javascript": {
 		"formatter": {
+			"indentWidth": 2,
+			"indentStyle": "tab",
 			"quoteStyle": "single",
 			"trailingCommas": "none"
 		}
@@ -32,7 +34,7 @@
 				"useSortedClasses": {
 					"level": "error",
 					"options": {
-						"attributes": ["classList"],
+						"attributes": ["classList", "className"],
 						"functions": ["clsx", "cva", "tw", "cn"]
 					}
 				}
