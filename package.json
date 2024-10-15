@@ -12,11 +12,10 @@
 		"dev": "next dev",
 		"start": "next start",
 		"lint": "biome lint",
-		"lint:fix": "biome lint --write",
+		"lint:fix": "biome lint --fix",
 		"lint:force": "biome lint --write --unsafe",
 		"format": "biome format",
-		"format:fix": "biome format --write",
-		"format:force": "biome format --write --unsafe"
+		"format:fix": "biome format --fix"
 	},
 	"dependencies": {
 		"@t3-oss/env-nextjs": "^0.10.1",
