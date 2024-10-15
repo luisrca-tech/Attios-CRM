@@ -1,3 +1,24 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer {
+  :root {
+    --black: 28 29 33;
+
+    --white-100: 255 255 255;
+    --white-200: 246 246 246;
+    --white-300: 245 245 250;
+
+    --primary-100: 94 129 244;
+    --primary-200: 129 129 165;
+
+    --secondary-100: 244 190 94;
+    --secondary-200: 124 231 172;
+    --secondary-300: 255 128 139;
+    --secondary-400: 150 152 214;
+    --secondary-500: 64 225 250;
+
+    --outline-100: 236 236 242;
+  }
+}
