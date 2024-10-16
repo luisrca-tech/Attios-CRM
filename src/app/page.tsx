@@ -4,9 +4,9 @@ export default async function Home() {
 	return (
 		<HydrateClient>
 			<main>
-				<h1 className="font-extrabold text-3xl">Attios CRM</h1>
-				<h2 className="font-normal text-xs">Attios CRM</h2>
-				<h3 className="font-light text-base">Attios CRM</h3>
+				<h1 className="font-extrabold text-3xl text-primary-100">Attios CRM</h1>
+				<h2 className="font-normal text-black text-xs">Attios CRM</h2>
+				<h3 className="font-light text-base text-primary-200">Attios CRM</h3>
 			</main>
 		</HydrateClient>
 	);
