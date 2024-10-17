@@ -9,8 +9,8 @@ export default async function Home() {
     <HydrateClient>
       <main className="flex max-w-48 flex-col gap-1">
         <h1 className="font-extrabold text-3xl text-primary-100">Attios CRM</h1>
-        <Button>
-          Click me
+        <Button disabled>
+          Disabled
           <Image src={TestIcon} alt="Test Icon" />
         </Button>
         <Button>
@@ -28,7 +28,9 @@ export default async function Home() {
           Click me
           <Image src={TestIcon} alt="Test Icon" />
         </Button>
-        <Button color="septenary">Click me</Button>
+        <Button disabled variant="outlined" color="primary">
+          disabled
+        </Button>
         <Button variant="outlined" color="primary">
           Click me
         </Button>

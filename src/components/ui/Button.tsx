@@ -4,27 +4,25 @@ import { cn } from "~/lib/utils";
 
 type CommonProps = {
   variant?: "filled" | "outlined";
-  color?: "primary" | "secondary" | "tertiary" | "quaternary" | "quinternary" | "senary" |  "septenary";
+  color?: "primary" | "secondary" | "tertiary" | "quaternary" | "quinternary" | "senary";
 };
 
 const variants = ({ variant = "filled", color = "primary" }: CommonProps) =>
   cn(
-    "flex items-center justify-center gap-[0.625rem] rounded-lg px-[1.875rem] py-[0.9375rem] font-bold text-sm leading-1",
+    "flex items-center justify-center gap-[0.625rem] rounded-lg px-[1.875rem] py-[0.9375rem] font-bold text-sm leading-1 disabled:bg-white-200 disabled:text-primary-200 disabled:hover:cursor-not-allowed disabled:hover:line-through",
     {
       "bg-primary-100/80 text-white-100 hover:bg-primary-100":
         variant === "filled" && color === "primary",
       "bg-primary-100/10 text-primary-100 hover:bg-primary-100 hover:text-white-100":
         variant === "filled" && color === "secondary",
-      "bg-white-200 text-primary-200 hover:cursor-not-allowed":
-        variant === "filled" && color === "tertiary",
       "bg-secondary-200 text-white-100 hover:bg-secondary-200/70":
-        variant === "filled" && color === "quaternary",
+        variant === "filled" && color === "tertiary",
       "bg-secondary-300 text-white-100 hover:bg-secondary-300/70":
-        variant === "filled" && color === "quinternary",
+        variant === "filled" && color === "quaternary",
       "bg-secondary-100 text-white-100 hover:bg-secondary-100/70":
-        variant === "filled" && color === "senary",
+        variant === "filled" && color === "quinternary",
       "bg-secondary-400 text-white-100 hover:bg-secondary-400/70":
-        variant === "filled" && color === "septenary",
+        variant === "filled" && color === "senary",
     },
     {
       "border bg-transparent": variant === "outlined",
