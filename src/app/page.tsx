@@ -1,54 +1,46 @@
-import { Button } from "~/components/ui/Button";
 import { HydrateClient } from "~/trpc/server";
 
-import Image from "next/image";
-import TestIcon from "/public/icons/ico.png";
+import { InputIcon } from "~/components/Icons/Input";
+import { Icon } from "~/components/Icons/User";
+import { Input } from "~/components/ui/Input";
 
 export default async function Home() {
   return (
     <HydrateClient>
-      <main className="flex max-w-48 flex-col gap-1">
-        <h1 className="font-extrabold text-3xl text-primary-100">Attios CRM</h1>
-        <Button disabled>
-          Disabled
-          <Image src={TestIcon} alt="Test Icon" />
-        </Button>
-        <Button>
-          <Image src={TestIcon} alt="Test Icon" />
-        </Button>
-        <Button color="secondary">Click me</Button>
-        <Button color="tertiary">Click me</Button>
-        <Button color="quaternary">
-          <Image src={TestIcon} alt="Test Icon" />
-          Click me
-        </Button>
-        <Button color="quinternary">Click me</Button>
-        <Button color="senary">
-          <Image src={TestIcon} alt="Test Icon" />
-          Click me
-          <Image src={TestIcon} alt="Test Icon" />
-        </Button>
-        <Button disabled variant="outlined" color="primary">
-          disabled
-        </Button>
-        <Button variant="outlined" color="primary">
-          Click me
-        </Button>
-        <Button variant="outlined" color="secondary">
-          Click me
-        </Button>
-        <Button variant="outlined" color="tertiary">
-          Click me
-        </Button>
-        <Button variant="outlined" color="quaternary">
-          Click me
-        </Button>
-        <Button variant="outlined" color="quinternary">
-          Click me
-        </Button>
-        <Button variant="outlined" color="senary">
-          Click me
-        </Button>
+      <main className="flex flex-col gap-1">
+        <Input.Root className="relative max-w-[23.5rem]" fieldText="Name">
+          <Input.Text
+            id="name"
+            iconLeft={<Icon.User />}
+            className="pl-4"
+            placeholder="Type..."
+          />
+        </Input.Root>
+        <Input.Root error className="relative max-w-[23.5rem]" fieldText="Name">
+          <Input.Text iconRight={<InputIcon.Error />} placeholder="Type..." />
+        </Input.Root>
+        <Input.Root fieldText="Choose an option" className="max-w-[23.5rem]">
+          <Input.SelectInput
+            options={[
+              "Select item 1",
+              "Select item 2",
+              "Select item 3",
+              "Select item 4",
+            ]}
+          />
+        </Input.Root>
+        <Input.Root className="max-w-[23.5rem]">
+          <Input.SelectInput
+            text="Select an option"
+            iconLeft={<Icon.User />}
+            options={[
+              "Select item 1",
+              "Select item 2",
+              "Select item 3",
+              "Select item 4",
+            ]}
+          />
+        </Input.Root>
       </main>
     </HydrateClient>
   );
