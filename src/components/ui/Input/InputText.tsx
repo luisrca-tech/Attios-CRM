@@ -1,12 +1,10 @@
-import Image, { type StaticImageData } from "next/image";
-import React from "react";
-
+import React, { type ReactNode } from "react";
 import { cn } from "~/lib/utils";
 
 interface InputText {
   className?: string;
-  iconLeft?: StaticImageData;
-  iconRight?: StaticImageData;
+  iconLeft?: ReactNode;
+  iconRight?: ReactNode;
 }
 
 const InputText = React.forwardRef<
@@ -15,7 +13,7 @@ const InputText = React.forwardRef<
 >(({ iconLeft, iconRight, className, ...rest }, ref) => {
   return (
     <div className="relative">
-      {iconLeft && <Image className="absolute top-2" src={iconLeft} alt="" />}
+      {iconLeft && <div className="absolute top-2">{iconLeft}</div>}
       <input
         className={cn(
           "h-full w-full border-none font-bold text-black text-sm leading-5 outline-none placeholder:text-primary-200",
@@ -24,7 +22,7 @@ const InputText = React.forwardRef<
         ref={ref}
         {...rest}
       />
-      {iconRight && <Image className="absolute top-2 right-0" src={iconRight} alt="" />}
+      {iconRight && <div className="absolute top-2 right-0">{iconRight}</div>}
     </div>
   );
 });
