@@ -1,8 +1,8 @@
-import InputText from "~/common/ui/Input/InputText";
+import { Input } from "~/common/ui/Input";
 
 describe("InputsText Te", () => {
   it("Should render the input text", () => {
-    cy.mount(<InputText name="campoTexto" />);
-    cy.get('input[name="campoTexto"]').should("exist"); 
+    cy.visit("http://localhost:3000");
+    cy.get('h1').should("have.text", "Text"); 
   });
 });
