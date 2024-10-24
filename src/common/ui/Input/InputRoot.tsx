@@ -25,7 +25,7 @@ export function InputRoot({
       {children}
       <div
         className={cn(
-          "mt-2 h-[1px] w-full bg-white-400",
+          "h-[1px] w-full bg-white-400",
           error && "bg-secondary-300"
         )}
       />

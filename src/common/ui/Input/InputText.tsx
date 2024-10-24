@@ -13,16 +13,16 @@ const InputText = React.forwardRef<
 >(({ renderIconLeft, renderIconRight, className, ...rest }, ref) => {
   return (
     <div className="relative">
-      {renderIconLeft && <div className="absolute top-2">{renderIconLeft()}</div>}
+      {renderIconLeft && <div className="absolute top-3">{renderIconLeft()}</div>}
       <input
         className={cn(
-          "h-full w-full border-none font-bold text-black text-sm leading-5 outline-none placeholder:text-primary-200",
+          "h-full w-full p-2 focus:border-white-400 focus:outline-white-400 font-bold text-black text-sm leading-5 placeholder:text-primary-200",
           className
         )}
         ref={ref}
         {...rest}
       />
-      {renderIconRight && <div className="absolute top-2 right-0">{renderIconRight()}</div>}
+      {renderIconRight && <div className="absolute top-3 right-1">{renderIconRight()}</div>}
     </div>
   );
 });
