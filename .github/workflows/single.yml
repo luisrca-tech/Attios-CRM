@@ -46,7 +46,7 @@ jobs:
         CI: 1
       # print Cypress and OS info
       run: |
-        npm install  # Gera o package-lock.json se não existir
+        npm install --legacy-peer-deps  # Ignora conflitos de dependência
         npm ci
         npx cypress verify
         npx cypress info
