@@ -40,15 +40,12 @@ jobs:
         path: ~/.cache/Cypress
         key: cypress-${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
 
-    - name: install dependencies and verify Cypress
+    - name: Install dependencies and verify Cypress
       env:
-        # make sure every Cypress install prints minimal information
         CI: 1
-      # print Cypress and OS info
       run: |
-        npm install --legacy-peer-deps  # Ignora conflitos de dependência
-        npm ci
-        npx cypress verify
+        bun install  # Instala as dependências usando Bun
+        npx cypress verify  # Verifica a instalação do Cypress
         npx cypress info
         npx cypress version
         npx cypress version --component package
