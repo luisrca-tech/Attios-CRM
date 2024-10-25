@@ -23,7 +23,6 @@
     "@babel/core": "^7.25.9",
     "@babel/preset-env": "^7.25.9",
     "@babel/preset-react": "^7.25.9",
-    "@cypress/react": "^8.0.2",
     "@cypress/webpack-dev-server": "^3.11.0",
     "@radix-ui/react-icons": "^1.3.0",
     "@t3-oss/env-nextjs": "^0.10.1",
