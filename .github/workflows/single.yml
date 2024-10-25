@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  cypress-run:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install Bun
+        run: npm install -g bun # Substitui actions/setup-node
+
+      - name: Cache Bun
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.bun
+            # Adiciona o cache para o arquivo de bloqueio do Bun
+            bun.lockb
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+
+      - name: Install dependencies
+        run: bun install # Instala as dependências usando Bun
+
+      - name: Install Cypress
+        run: bun cypress install # Executa a instalação do Cypress manualmente
+
+      - name: Run Cypress tests
+        run: bun run cypress run # Substitui npx por bun
