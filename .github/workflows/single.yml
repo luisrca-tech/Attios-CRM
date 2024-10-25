@@ -1,34 +1,76 @@
-name: CI
+# GitHub Actions
+# https://docs.github.com/en/actions/using-workflows
+name: Cypress single tests
 
-on:
-  push:
-    branches:
-      - main
+on: [push, workflow_dispatch]
 
 jobs:
-  cypress-run:
-    runs-on: ubuntu-22.04
+  test1:
+    name: Cypress test
+    runs-on: ubuntu-24.04
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+    - uses: actions/checkout@v4
 
-      - name: Install Bun
-        run: npm install -g bun # Substitui actions/setup-node
+    # install a specific version of Node using
+    # https://github.com/actions/setup-node
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version-file: .node-version
 
-      - name: Cache Bun
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.bun
-            # Adiciona o cache para o arquivo de bloqueio do Bun
-            bun.lockb
-          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+    # just so we learn about available environment variables GitHub provides
+    - name: Print env variables
+      run: |
+        npm i -g @bahmutov/print-env
+        print-env GITHUB
 
-      - name: Install dependencies
-        run: bun install # Instala as dependências usando Bun
+    # Restore the previous npm modules and Cypress binary archives.
+    # In case there's no previous cache the packages will be downloaded
+    # and saved automatically after the entire workflow successfully finishes.
+    # See https://github.com/actions/cache
+    - name: Cache node modules
+      uses: actions/cache@v4
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Install Cypress
-        run: bun cypress install # Executa a instalação do Cypress manualmente
+    - name: Cache Cypress binary
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/Cypress
+        key: cypress-${{ runner.os }}-cypress-${{ hashFiles('**/package-lock.json') }}
 
-      - name: Run Cypress tests
-        run: bun run cypress run # Substitui npx por bun
+    - name: install dependencies and verify Cypress
+      env:
+        # make sure every Cypress install prints minimal information
+        CI: 1
+      # print Cypress and OS info
+      run: |
+        npm ci
+        npx cypress verify
+        npx cypress info
+        npx cypress version
+        npx cypress version --component package
+        npx cypress version --component binary
+        npx cypress version --component electron
+        npx cypress version --component node
+
+    # Starts local server, then runs Cypress tests and records results on Cypress Cloud
+    - name: Cypress tests
+      run: npm run test:ci:record
+      env:
+        # place your secret record key at
+        # https://github.com/cypress-io/cypress-example-kitchensink/settings/secrets
+        CYPRESS_RECORD_KEY: ${{ secrets.dashboardRecordKey }}
+        TERM: xterm
+
+    # Save screenshots as test artifacts
+    # https://github.com/actions/upload-artifact
+    - uses: actions/upload-artifact@v4
+        # there might be no screenshots created when:
+        # - there are no test failures
+        # so only upload screenshots if previous step has failed
+      if: failure()
+      with:
+        name: screenshots
+        path: cypress/screenshots
