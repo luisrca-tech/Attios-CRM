@@ -6,12 +6,14 @@ interface InputRootProps {
   fieldText?: string;
   className?: string;
   error?: boolean;
+  isValid?: boolean;
 }
 
 export function InputRoot({
   fieldText,
   className,
   error,
+  isValid,
   children,
 }: InputRootProps) {
   return (
@@ -26,7 +28,8 @@ export function InputRoot({
       <div
         className={cn(
           "h-[1px] w-full bg-white-400",
-          error && "bg-secondary-300"
+          error && "bg-secondary-300",
+          isValid && "bg-secondary-200",
         )}
       />
     </label>
