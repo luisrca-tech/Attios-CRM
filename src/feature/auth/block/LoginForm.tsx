@@ -15,7 +15,7 @@ export function LoginForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitSuccessful },
+    formState: { errors, isSubmitSuccessful, isSubmitted },
   } = useForm<LoginForm>({
     resolver: zodResolver(loginFormSchema),
     mode: "onChange",
@@ -47,9 +47,8 @@ export function LoginForm() {
             {...register("fullName")}
           />
         </Input.Root>
-        {errors.fullName?.message && (
-          <ErrorMessage message={errors.fullName.message} />
-        )}
+        {errors.fullName?.message &&
+          isSubmitted && (<ErrorMessage message={errors.fullName.message} />)}
         <Input.Root
           error={!!errors.email?.message}
           isValid={isSubmitSuccessful}
@@ -62,7 +61,7 @@ export function LoginForm() {
             {...register("email")}
           />
         </Input.Root>
-        {errors.email?.message && (
+        {errors.email?.message && isSubmitted && (
           <ErrorMessage message={errors.email.message} />
         )}
         <Input.Root
@@ -72,7 +71,7 @@ export function LoginForm() {
         >
           <Input.Password placeholder="********" {...register("password")} />
         </Input.Root>
-        {errors.password?.message && (
+        {errors.password?.message && isSubmitted && (
           <ErrorMessage message={errors.password.message} />
         )}
         <div className="flex gap-2 mt-3">
