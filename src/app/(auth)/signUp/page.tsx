@@ -6,7 +6,7 @@ import signUpImage from "/public/images/signUpImage.png";
 
 export default function SignUp() {
   return (
-    <main className="flex max-h-screen items-center">
+    <main className="flex max-h-screen overflow-hidden items-center">
       <div className="flex-1">
         <LoginForm />
       </div>

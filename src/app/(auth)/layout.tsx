@@ -17,7 +17,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${lato.className}`}>
-      <body>
+      <body className="min-h-screen overflow-hidden">
         <TRPCReactProvider>{children}</TRPCReactProvider>
       </body>
     </html>
