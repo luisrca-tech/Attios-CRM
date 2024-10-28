@@ -8,10 +8,10 @@ import { Icon } from "~/common/ui/Icons";
 import { Input } from "~/common/ui/Input";
 import { ExternalAccounts } from "../components/ExternalAccounts";
 import { Welcome } from "../components/Welcome";
-import { loginFormSchema } from "../schemas/loginForm.schema";
-import { type LoginForm } from "../types/loginForm.type";
+import { loginFormSchema } from "../schemas/signUpForm.schema";
+import { type LoginForm } from "../types/signUpForm.type";
 
-export function LoginForm() {
+export function SignUpForm() {
   const {
     register,
     handleSubmit,
@@ -47,15 +47,15 @@ export function LoginForm() {
             {...register("fullName")}
           />
         </Input.Root>
-        {errors.fullName?.message &&
-          isSubmitted && (<ErrorMessage message={errors.fullName.message} />)}
+        {errors.fullName?.message && isSubmitted && (
+          <ErrorMessage message={errors.fullName.message} />
+        )}
         <Input.Root
           error={!!errors.email?.message}
           isValid={isSubmitSuccessful}
           fieldText="Email"
         >
           <Input.Text
-            type="email"
             placeholder="Johndoe@example.com"
             renderIconRight={() => <Icon.Email />}
             {...register("email")}
