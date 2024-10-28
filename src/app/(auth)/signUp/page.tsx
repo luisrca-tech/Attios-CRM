@@ -1,14 +1,14 @@
 import Image from "next/image";
 
-import { LoginForm } from "~/feature/auth/block/SignUpForm";
 import { AuthBackground } from "~/feature/auth/components/AuthBackground";
 import signUpImage from "/public/images/signUpImage.png";
+import { SignUpForm } from "~/feature/auth/block/SignUpForm";
 
 export default function SignUp() {
   return (
     <main className="flex max-h-screen overflow-hidden items-center">
       <div className="flex-1">
-        <LoginForm />
+        <SignUpForm />
       </div>
       <AuthBackground>
         <Image src={signUpImage} alt="Closing contract" />

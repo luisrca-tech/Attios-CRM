@@ -8,20 +8,20 @@ import { Icon } from "~/common/ui/Icons";
 import { Input } from "~/common/ui/Input";
 import { ExternalAccounts } from "../components/ExternalAccounts";
 import { Welcome } from "../components/Welcome";
-import { loginFormSchema } from "../schemas/signUpForm.schema";
-import { type LoginForm } from "../types/signUpForm.type";
+import { signUpFormSchema } from "../schemas/signUpForm.schema";
+import { type SignUpForm } from "../types/signUpForm.type";
 
 export function SignUpForm() {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitSuccessful, isSubmitted },
-  } = useForm<LoginForm>({
-    resolver: zodResolver(loginFormSchema),
+  } = useForm<SignUpForm>({
+    resolver: zodResolver(signUpFormSchema),
     mode: "onChange",
   });
 
-  const onSubmit = (data: LoginForm) => {
+  const onSubmit = (data: SignUpForm) => {
     console.log(data);
   };
 
