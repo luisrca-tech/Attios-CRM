@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const loginFormSchema = z.object({
+export const signUpFormSchema = z.object({
   fullName: z
     .string()
     .min(1, { message: "Full name is required" })
