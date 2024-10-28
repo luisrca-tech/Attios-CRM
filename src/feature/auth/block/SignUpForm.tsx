@@ -10,6 +10,9 @@ import { ExternalAccounts } from "../components/ExternalAccounts";
 import { Welcome } from "../components/Welcome";
 import { signUpFormSchema } from "../schemas/signUpForm.schema";
 import { type SignUpForm } from "../types/signUpForm.type";
+import { useAuth } from "../hook/useAuth";
+import { SignUpEmailVerify } from "../components/SignUpEmailVerify";
+import { useSignUp } from "@clerk/nextjs";
 
 export function SignUpForm() {
   const {
@@ -20,10 +23,13 @@ export function SignUpForm() {
     resolver: zodResolver(signUpFormSchema),
     mode: "onChange",
   });
+  const { signUpUser, emailVerify, isLoaded } = useAuth();
 
-  const onSubmit = (data: SignUpForm) => {
-    console.log(data);
-  };
+  if (!isLoaded) return null;
+
+  async function onSubmit({ email, password, fullName }: SignUpForm) {
+    await signUpUser({ email, password, fullName });
+  }
 
   return (
     <div className="flex flex-col items-center justify-center">
@@ -31,7 +37,8 @@ export function SignUpForm() {
         title="Welcome to our CRM. Sign Up to getting started."
         subtitle="Enter your details to proceed further"
       />
-      <form
+      {!emailVerify ? (
+        <form
         onSubmit={handleSubmit(onSubmit)}
         className="w-[22.8125rem] flex flex-col gap-4"
       >
@@ -81,6 +88,9 @@ export function SignUpForm() {
           </Button>
         </div>
       </form>
+      ) : (
+        <SignUpEmailVerify />
+      ) }
       <ExternalAccounts />
     </div>
   );
