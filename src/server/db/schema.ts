@@ -18,11 +18,12 @@ import {
  */
 export const createTable = pgTableCreator((name) => `attios-crm_${name}`);
 
-export const posts = createTable(
-	'post',
+export const users = createTable(
+	'user',
 	{
-		id: serial('id').primaryKey(),
-		name: varchar('name', { length: 256 }),
+		id: varchar('id', { length: 50 }).primaryKey(),
+		email: varchar('email', { length: 256 }).notNull().unique(),
+		fullName: varchar('full_name', { length: 256 }).notNull(),
 		createdAt: timestamp('created_at', { withTimezone: true })
 			.default(sql`CURRENT_TIMESTAMP`)
 			.notNull(),
@@ -31,6 +32,6 @@ export const posts = createTable(
 		)
 	},
 	(example) => ({
-		nameIndex: index('name_idx').on(example.name)
+		emailIndex: index('email_idx').on(example.email)
 	})
 );
