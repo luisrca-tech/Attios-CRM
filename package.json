@@ -10,7 +10,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "dev": "next dev",
-    "dev:test": "playwright test",
+    "dev:test": "playwright test --ui",
     "ci:test": "playwright test",
     "start": "next start",
     "lint": "biome lint",
