@@ -6,6 +6,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { lato } from "~/assets/fonts/lato";
 import { TRPCReactProvider } from "~/trpc/react";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Attios",
@@ -17,10 +18,11 @@ export const metadata: Metadata = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  auth.protect({
-    unauthenticatedUrl: "/signUp",
-    unauthorizedUrl: "/",
-  });
+  const { userId } = await auth();
+
+  if (!userId) {
+    redirect("/signUp");
+  }
 
   return (
     <ClerkProvider>
