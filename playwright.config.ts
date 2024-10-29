@@ -20,7 +20,7 @@ export default defineConfig({
   webServer: {
     command: "bun ci:test",
     url: "http://localhost:3000",
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: true,
   },
 
   projects: [
