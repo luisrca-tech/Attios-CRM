@@ -16,7 +16,7 @@ jobs:
     - name: Install dependencies
       run: bun install
     - name: Build the project
-      run: bun build
+      run: bun run build
     - name: Start Server
       run: bun start &
     - name: Install Playwright Browsers
