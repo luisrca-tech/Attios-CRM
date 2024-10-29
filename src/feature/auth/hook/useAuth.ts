@@ -2,6 +2,7 @@ import { useSignUp } from "@clerk/nextjs";
 import { isClerkAPIResponseError } from "@clerk/nextjs/errors";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useToast } from "~/common/hooks/use-toast";
 import { api } from "~/trpc/react";
 import { SignUpEmailVerify } from "../types/signUpEmailVerify.type";
 import { SignUpForm } from "../types/signUpForm.type";
@@ -10,6 +11,7 @@ export function useAuth() {
   const router = useRouter();
   const [emailVerify, setEmailVerify] = useState<boolean>(false);
   const { signUp, isLoaded, setActive } = useSignUp();
+  const { toast } = useToast();
 
   const userMutation = api.user.create.useMutation();
 
@@ -25,9 +27,17 @@ export function useAuth() {
       setEmailVerify(true);
     } catch (error) {
       if (isClerkAPIResponseError(error)) {
-        throw new Error(error?.errors[0]?.longMessage);
+        return toast({
+          title: "Error",
+          description: error?.errors[0]?.longMessage,
+          variant: "destructive",
+        });
       }
-      throw error;
+      return toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
     }
   }
 
@@ -47,10 +57,12 @@ export function useAuth() {
         const email = completeSignUp.emailAddress;
 
         if (!email) {
-          throw new Error("Email or name was not provided");
+          return toast({
+            title: "Error",
+            description: "Email or name was not provided",
+            variant: "destructive",
+          });
         }
-
-        console.log(completeSignUp.createdUserId);
 
         await userMutation.mutateAsync({
           userId: completeSignUp.createdUserId,
@@ -62,9 +74,17 @@ export function useAuth() {
       }
     } catch (error) {
       if (isClerkAPIResponseError(error)) {
-        throw new Error(error?.errors[0]?.longMessage);
+        return toast({
+          title: "Error",
+          description: error?.errors[0]?.longMessage,
+          variant: "destructive",
+        });
       }
-      throw error;
+      return toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
     }
   }
 
@@ -74,9 +94,17 @@ export function useAuth() {
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
     } catch (error) {
       if (isClerkAPIResponseError(error)) {
-        throw new Error(error?.errors[0]?.longMessage);
+        return toast({
+          title: "Error",
+          description: error?.errors[0]?.longMessage,
+          variant: "destructive",
+        });
       }
-      throw error;
+      return toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
     }
   }
 

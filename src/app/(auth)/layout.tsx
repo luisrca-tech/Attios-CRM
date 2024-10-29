@@ -7,6 +7,7 @@ import { lato } from "~/assets/fonts/lato";
 import { TRPCReactProvider } from "~/trpc/react";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
+import { Toaster } from "~/common/ui/toaster";
 
 export const metadata: Metadata = {
   title: "Attios",
@@ -26,6 +27,7 @@ export default async function RootLayout({
     <ClerkProvider>
       <html lang="en" className={`${lato.className}`}>
         <body className="min-h-screen overflow-hidden">
+          <Toaster />
           <TRPCReactProvider>{children}</TRPCReactProvider>
         </body>
       </html>
