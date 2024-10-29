@@ -2,6 +2,8 @@ import "~/styles/globals.css";
 
 import type { Metadata } from "next";
 
+import { ClerkProvider } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { lato } from "~/assets/fonts/lato";
 import { TRPCReactProvider } from "~/trpc/react";
 
@@ -12,14 +14,21 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.svg" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  auth.protect({
+    unauthenticatedUrl: "/signUp",
+    unauthorizedUrl: "/",
+  });
+
   return (
-    <html lang="en" className={`${lato.className}`}>
-      <body>
-        <TRPCReactProvider>{children}</TRPCReactProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className={`${lato.className}`}>
+        <body>
+          <TRPCReactProvider>{children}</TRPCReactProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

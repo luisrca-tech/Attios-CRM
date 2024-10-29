@@ -2,8 +2,11 @@ import "~/styles/globals.css";
 
 import type { Metadata } from "next";
 
+import { ClerkProvider } from "@clerk/nextjs";
 import { lato } from "~/assets/fonts/lato";
 import { TRPCReactProvider } from "~/trpc/react";
+import { auth } from "@clerk/nextjs/server";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Attios",
@@ -12,14 +15,20 @@ export const metadata: Metadata = {
   icons: [{ rel: "icon", url: "/favicon.svg" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const { userId } = await auth();
+
+  if (userId) redirect("/");
+
   return (
-    <html lang="en" className={`${lato.className}`}>
-      <body className="min-h-screen overflow-hidden">
-        <TRPCReactProvider>{children}</TRPCReactProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className={`${lato.className}`}>
+        <body className="min-h-screen overflow-hidden">
+          <TRPCReactProvider>{children}</TRPCReactProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
