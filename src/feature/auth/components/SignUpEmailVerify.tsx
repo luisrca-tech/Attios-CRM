@@ -28,7 +28,7 @@ export function SignUpEmailVerify() {
         <Input.Password placeholder="********" {...register("code")} />
       </Input.Root>
       <div className="flex gap-2 mt-3">
-        <Button type="submit" className="w-full" isLoading={isLoading} disabled={isLoading}>
+        <Button type="submit" className="w-full" isLoading={isLoading}>
           Confirm
         </Button>
         <Button className="w-full" color="secondary" onClick={resendCode}>
