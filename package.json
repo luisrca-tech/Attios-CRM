@@ -10,6 +10,7 @@
     "db:push": "drizzle-kit push",
     "db:studio": "drizzle-kit studio",
     "dev": "next dev",
+    "dev:test": "playwright test --ui",
     "start": "next start",
     "lint": "biome lint",
     "lint:fix": "biome lint --fix",
@@ -45,6 +46,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.3",
+    "@playwright/test": "^1.48.2",
     "@types/eslint": "^8.56.10",
     "@types/node": "^20.14.10",
     "@types/react": "^18.3.12",
