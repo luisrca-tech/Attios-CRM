@@ -15,6 +15,10 @@ jobs:
         bun-version: latest
     - name: Install dependencies
       run: bun install
+    - name: Build the project
+      run: bun build
+    - name: Start Server
+      run: bun start &
     - name: Install Playwright Browsers
       run: bun run playwright install --with-deps
     - name: Run Playwright tests
