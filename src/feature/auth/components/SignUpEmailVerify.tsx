@@ -13,7 +13,7 @@ export function SignUpEmailVerify() {
     resolver: zodResolver(signUpEmailVerifySchema),
     mode: "onChange",
   });
-  const { verifyEmail, resendCode } = useAuth();
+  const { verifyEmail, resendCode, isLoading } = useAuth();
 
   async function handleConfirmCode({ code }: SignUpEmailVerify) {
     await verifyEmail({ code });
@@ -28,7 +28,7 @@ export function SignUpEmailVerify() {
         <Input.Password placeholder="********" {...register("code")} />
       </Input.Root>
       <div className="flex gap-2 mt-3">
-        <Button type="submit" className="w-full">
+        <Button type="submit" className="w-full" isLoading={isLoading} disabled={isLoading}>
           Confirm
         </Button>
         <Button className="w-full" color="secondary" onClick={resendCode}>

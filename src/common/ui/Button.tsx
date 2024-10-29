@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { type ComponentProps, forwardRef } from "react";
 import { cn } from "~/lib/utils";
+import { Spinner } from "./Spinner";
 
 type CommonProps = {
   variant?: "filled" | "outlined";
@@ -62,13 +63,15 @@ const LinkButton = forwardRef<HTMLAnchorElement, LinkProps>(
 
 LinkButton.displayName = "LinkButton";
 
-type ButtonProps = CommonProps & ComponentProps<"button">;
+type ButtonProps = CommonProps & ComponentProps<"button"> & {
+  isLoading?: boolean;
+};
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ children, className, ...rest }, ref) => {
+  ({ children, className, isLoading, ...rest }, ref) => {
     return (
       <button {...rest} ref={ref} className={cn(variants(rest), className)}>
-        {children}
+        {isLoading ? <Spinner /> : children}
       </button>
     );
   }
