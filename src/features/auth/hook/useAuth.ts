@@ -24,6 +24,10 @@ export function useAuth() {
       });
       await signUp?.prepareEmailAddressVerification({ strategy: "email_code" });
       setEmailVerify(true);
+      return toast.success("Success", {
+        position: "top-center",
+        description: "We sent you a verification code to your email.",
+      });
     } catch (error) {
       if (isClerkAPIResponseError(error)) {
         return toast.error("Error", {
@@ -86,6 +90,10 @@ export function useAuth() {
     if (!isSignUpLoaded) return null;
     try {
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+      return toast.success("Success", {
+        position: "top-center",
+        description: "We resent you a verification code to your email.",
+      });
     } catch (error) {
       if (isClerkAPIResponseError(error)) {
         return toast.error("Error", {
