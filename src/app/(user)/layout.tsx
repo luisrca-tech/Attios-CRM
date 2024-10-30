@@ -4,9 +4,10 @@ import type { Metadata } from "next";
 
 import { ClerkProvider } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
-import { lato } from "~/assets/fonts/lato";
-import { TRPCReactProvider } from "~/trpc/react";
 import { redirect } from "next/navigation";
+import { lato } from "~/assets/fonts/lato";
+import { Toaster } from "~/common/components/ui/sonner";
+import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata: Metadata = {
   title: "Attios",
@@ -28,6 +29,7 @@ export default async function RootLayout({
     <ClerkProvider>
       <html lang="en" className={`${lato.className}`}>
         <body>
+          <Toaster richColors />
           <TRPCReactProvider>{children}</TRPCReactProvider>
         </body>
       </html>
