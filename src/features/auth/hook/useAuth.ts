@@ -10,10 +10,10 @@ import { SignUpForm } from "../types/signUpForm.type";
 export function useAuth() {
   const router = useRouter();
   const [emailVerify, setEmailVerify] = useState<boolean>(false);
-  const { signUp, isLoaded, setActive } = useSignUp();
+  const { signUp, isLoaded: isSignUpLoaded, setActive: setActiveSignUp } = useSignUp();
   const { toast } = useToast();
 
-  const userMutation = api.user.create.useMutation();
+  const createUserMutation = api.user.create.useMutation();
 
   async function signUpUser({ email, password, fullName }: SignUpForm) {
     try {
@@ -42,10 +42,10 @@ export function useAuth() {
   }
 
   async function verifyEmail({ code }: SignUpEmailVerify) {
-    if (!isLoaded) return null;
+    if (!isSignUpLoaded) return null;
 
     try {
-      const completeSignUp = await signUp.attemptEmailAddressVerification({
+      const completeSignUp = await signUp?.attemptEmailAddressVerification({
         code,
       });
 
@@ -64,12 +64,12 @@ export function useAuth() {
           });
         }
 
-        await userMutation.mutateAsync({
+        await createUserMutation.mutateAsync({
           userId: completeSignUp.createdUserId,
           email: email,
           fullName: `${completeSignUp.firstName} ${completeSignUp.lastName}`,
         });
-        await setActive({ session: completeSignUp.createdSessionId });
+        await setActiveSignUp({ session: completeSignUp.createdSessionId });
         return router.push("/");
       }
     } catch (error) {
@@ -89,7 +89,7 @@ export function useAuth() {
   }
 
   async function resendCode() {
-    if (!isLoaded) return null;
+    if (!isSignUpLoaded) return null;
     try {
       await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
     } catch (error) {
@@ -111,9 +111,9 @@ export function useAuth() {
   return {
     signUpUser,
     emailVerify,
-    isLoaded,
+    isSignUpLoaded,
     verifyEmail,
     resendCode,
-    isLoading: userMutation.isPending,
+    isLoading: createUserMutation.isPending,
   };
 }

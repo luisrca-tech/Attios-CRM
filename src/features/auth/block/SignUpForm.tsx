@@ -2,10 +2,10 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "~/common/ui/Button";
-import { ErrorMessage } from "~/common/ui/ErrorMessage";
-import { Icon } from "~/common/ui/Icons";
-import { Input } from "~/common/ui/Input";
+import { Button } from "~/common/components/ui/Button";
+import { ErrorMessage } from "~/common/components/ui/ErrorMessage";
+import { Icon } from "~/common/components/ui/Icons";
+import { Input } from "~/common/components/ui/Input";
 import { ExternalAccounts } from "../components/ExternalAccounts";
 import { SignUpEmailVerify } from "../components/SignUpEmailVerify";
 import { WelcomeHeading } from "../components/WelcomeHeading";
@@ -22,9 +22,9 @@ export function SignUpForm() {
     resolver: zodResolver(signUpFormSchema),
     mode: "onChange",
   });
-  const { signUpUser, emailVerify, isLoaded } = useAuth();
+  const { signUpUser, emailVerify, isSignUpLoaded } = useAuth();
 
-  if (!isLoaded) return null;
+  if (!isSignUpLoaded) return null;
 
   async function onSubmit({ email, password, fullName }: SignUpForm) {
     await signUpUser({ email, password, fullName });
