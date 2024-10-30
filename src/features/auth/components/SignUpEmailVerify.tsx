@@ -25,10 +25,11 @@ export function SignUpEmailVerify() {
       className="w-[22.8125rem] flex flex-col gap-4"
     >
       <div className="flex flex-col gap-2 justify-center items-center pb-2">
-        <label className="text-sm font-medium text-primary-200">
-          Enter the code we sent to your email
-        </label>
-        <InputOTP maxLength={6} onChange={(value) => setValue("code", value)}>
+        <InputOTP 
+          maxLength={6} 
+          onChange={(value) => setValue("code", value)}
+          aria-label="Enter the code we sent to your email"
+        >
           <InputOTPGroup>
             <InputOTPSlot index={0} />
             <InputOTPSlot index={1} />
@@ -41,6 +42,9 @@ export function SignUpEmailVerify() {
             <InputOTPSlot index={5} />
           </InputOTPGroup>
         </InputOTP>
+        <span className="text-sm font-medium text-primary-200">
+          Enter the code we sent to your email
+        </span>
       </div>
       <div className="flex gap-2 mt-3">
         <Button type="submit" className="w-full" isLoading={isLoading}>
