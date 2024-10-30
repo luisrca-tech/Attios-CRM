@@ -5,7 +5,7 @@ test("navigate to sign up page", async ({ page }) => {
 
   await page.getByLabel("Full Name").fill("John Doe");
   await page.getByLabel("Email").fill("john.doe@example.com");
-  await page.getByLabel("Password").fill("Lf16012003@");
+  await page.getByLabel("Password").fill("Test1234@");
 
   await page.getByRole("button", { name: "Sign Up" }).click();
   
