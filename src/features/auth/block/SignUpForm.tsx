@@ -8,7 +8,7 @@ import { Icon } from "~/common/ui/Icons";
 import { Input } from "~/common/ui/Input";
 import { ExternalAccounts } from "../components/ExternalAccounts";
 import { SignUpEmailVerify } from "../components/SignUpEmailVerify";
-import { Welcome } from "../components/Welcome";
+import { WelcomeHeading } from "../components/WelcomeHeading";
 import { useAuth } from "../hook/useAuth";
 import { signUpFormSchema } from "../schemas/signUpForm.schema";
 import { type SignUpForm } from "../types/signUpForm.type";
@@ -32,7 +32,7 @@ export function SignUpForm() {
 
   return (
     <div className="flex flex-col items-center justify-center">
-      <Welcome
+      <WelcomeHeading
         title="Welcome to our CRM. Sign Up to getting started."
         subtitle="Enter your details to proceed further"
       />

@@ -1,8 +1,8 @@
 import Image from "next/image";
 
-import { AuthBackground } from "~/feature/auth/components/AuthBackground";
+import { AuthBackground } from "~/features/auth/components/AuthBackground";
 import signUpImage from "/public/images/signUpImage.png";
-import { SignUpForm } from "~/feature/auth/block/SignUpForm";
+import { SignUpForm } from "~/features/auth/block/SignUpForm";
 
 export default function SignUp() {
   return (
