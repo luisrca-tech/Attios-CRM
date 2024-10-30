@@ -1,5 +1,5 @@
-import { Button } from "~/common/ui/Button";
-import { Icon } from "~/common/ui/Icons";
+import { Button } from "~/common/components/ui/Button";
+import { Icon } from "~/common/components/ui/Icons";
 
 export function ExternalAccounts() {
   return (

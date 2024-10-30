@@ -2,8 +2,8 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Button } from "~/common/ui/Button";
-import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "~/common/ui/input-otp";
+import { Button } from "~/common/components/ui/Button";
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from "~/common/components/ui/input-otp";
 import { useAuth } from "../hook/useAuth";
 import { signUpEmailVerifySchema } from "../schemas/signUpEmailVerify.schema";
 import { type SignUpEmailVerify } from "../types/signUpEmailVerify.type";
@@ -24,7 +24,10 @@ export function SignUpEmailVerify() {
       onSubmit={handleSubmit(handleConfirmCode)}
       className="w-[22.8125rem] flex flex-col gap-4"
     >
-      <div className="flex justify-center items-center pb-4">
+      <div className="flex flex-col gap-2 justify-center items-center pb-2">
+        <label className="text-sm font-medium text-primary-200">
+          Enter the code we sent to your email
+        </label>
         <InputOTP maxLength={6} onChange={(value) => setValue("code", value)}>
           <InputOTPGroup>
             <InputOTPSlot index={0} />

@@ -3,11 +3,11 @@ import "~/styles/globals.css";
 import type { Metadata } from "next";
 
 import { ClerkProvider } from "@clerk/nextjs";
-import { lato } from "~/assets/fonts/lato";
-import { TRPCReactProvider } from "~/trpc/react";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { Toaster } from "~/common/ui/toaster";
+import { lato } from "~/assets/fonts/lato";
+import { Toaster } from "~/common/components/ui/toaster";
+import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata: Metadata = {
   title: "Attios",
