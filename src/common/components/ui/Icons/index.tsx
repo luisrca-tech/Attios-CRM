@@ -10,10 +10,12 @@ import { UserIcon } from "./UserIcon";
 
 export const Icon = {
   Email: EmailIcon,
-  OpenPadlock: OpenPadlockIcon,
-  ClosePadlock: ClosePadlockIcon,
   User: UserIcon,
   Error: ErrorIcon,
+  Padlock: {
+    Open: OpenPadlockIcon,
+    Close: ClosePadlockIcon,
+  },
   Arrow: {
     Down: ArrowDown,
   },

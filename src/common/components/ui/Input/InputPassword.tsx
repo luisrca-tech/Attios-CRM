@@ -30,9 +30,9 @@ const InputPassword = forwardRef<HTMLInputElement, InputPasswordProps>(
             className="absolute top-3 right-1 cursor-pointer"
           >
             {showPassword ? (
-              <Icon.OpenPadlock className="w-[1.125rem] h-[1.125rem]" />
+              <Icon.Padlock.Open className="w-[1.125rem] h-[1.125rem]" />
             ) : (
-              <Icon.ClosePadlock className="w-[1.125rem] h-[1.125rem]" />
+              <Icon.Padlock.Close className="w-[1.125rem] h-[1.125rem]" />
             )}
           </div>
         </div>
