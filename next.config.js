@@ -7,7 +7,7 @@ await import('./src/env.js');
 /** @type {import("next").NextConfig} */
 const config = {
     env: {
-        DATABASE_URL: process.env.DATABASE_URL,
+        DATABASE_DOCKER_URL: process.env.DATABASE_DOCKER_URL,
     },
 };
 

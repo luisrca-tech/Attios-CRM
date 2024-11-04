@@ -6,7 +6,7 @@ export default {
 	schema: './src/server/db/schema.ts',
 	dialect: 'postgresql',
 	dbCredentials: {
-		url: env.DATABASE_URL
+		url: env.DATABASE_DOCKER_URL
 	},
 	tablesFilter: ['attios-crm_*']
 } satisfies Config;

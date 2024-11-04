@@ -1,6 +1,6 @@
 import { defineConfig, devices } from "@playwright/test";
-import path from 'path';
-import { fileURLToPath } from 'url';
+import * as path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -20,7 +20,7 @@ export default defineConfig({
   },
 
   webServer: {
-    command: process.env.DATABASE_URL
+    command: process.env.DATABASE_DOCKER_URL
       ? "bun start"
       : "bun run build && bun start",
     url: "http://localhost:3000",
