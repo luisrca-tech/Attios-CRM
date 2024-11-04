@@ -10,9 +10,7 @@ export default function SignUp() {
       <div className="flex-1">
         <SignUpForm />
       </div>
-      <AuthBackground>
-        <Image src={signUpImage} alt="Closing contract" />
-      </AuthBackground>
+      <AuthBackground image={signUpImage.src} />
     </main>
   );
 }
