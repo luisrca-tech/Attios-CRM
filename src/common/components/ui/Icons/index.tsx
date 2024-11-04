@@ -12,12 +12,14 @@ export const Icon = {
   Email: EmailIcon,
   OpenPadlock: OpenPadlockIcon,
   ClosePadlock: ClosePadlockIcon,
-  Google: GoogleIcon,
-  Facebook: FacebookIcon,
-  Twitter: TwitterIcon,
   User: UserIcon,
   Error: ErrorIcon,
   Arrow: {
     Down: ArrowDown,
+  },
+  Social: {
+    Google: GoogleIcon,
+    Facebook: FacebookIcon,
+    Twitter: TwitterIcon,
   },
 };

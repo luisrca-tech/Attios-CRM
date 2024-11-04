@@ -6,8 +6,8 @@ import { Button } from "~/common/components/ui/Button";
 import { ErrorMessage } from "~/common/components/ui/ErrorMessage";
 import { Icon } from "~/common/components/ui/Icons";
 import { Input } from "~/common/components/ui/Input";
-import { ExternalAccounts } from "../components/ExternalAccounts";
 import { SignUpEmailVerify } from "../components/SignUpEmailVerify";
+import { SocialAuth } from "../components/SocialAuth";
 import { WelcomeHeading } from "../components/WelcomeHeading";
 import { useAuth } from "../hook/useAuth";
 import { signUpFormSchema } from "../schemas/signUpForm.schema";
@@ -36,7 +36,7 @@ export function SignUpForm() {
         title="Welcome to our CRM. Sign Up to getting started."
         subtitle="Enter your details to proceed further"
       />
-      {!emailVerify ? (
+      {!emailVerify && (
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="w-[22.8125rem] flex flex-col gap-4"
@@ -93,10 +93,9 @@ export function SignUpForm() {
             </Button>
           </div>
         </form>
-      ) : (
-        <SignUpEmailVerify />
       )}
-      <ExternalAccounts />
+      {emailVerify && <SignUpEmailVerify />}
+      <SocialAuth />
     </div>
   );
 }
