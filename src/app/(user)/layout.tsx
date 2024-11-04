@@ -2,12 +2,8 @@ import "~/styles/globals.css";
 
 import type { Metadata } from "next";
 
-import { ClerkProvider } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
-import { lato } from "~/assets/fonts/lato";
-import { Toaster } from "~/common/components/ui/sonner";
-import { TRPCReactProvider } from "~/trpc/react";
 
 export const metadata: Metadata = {
   title: "Attios",
@@ -25,14 +21,5 @@ export default async function RootLayout({
     redirect("/signUp");
   }
 
-  return (
-    <ClerkProvider>
-      <html lang="en" className={`${lato.className}`}>
-        <body>
-          <Toaster richColors />
-          <TRPCReactProvider>{children}</TRPCReactProvider>
-        </body>
-      </html>
-    </ClerkProvider>
-  );
+  return <>{children}</>;
 }
