@@ -3,7 +3,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Button } from "~/common/components/ui/Button";
-import { ErrorMessage } from "~/common/components/ui/ErrorMessage";
 import { Icon } from "~/common/components/ui/Icons";
 import { Input } from "~/common/components/ui/Input";
 import { SignUpEmailVerify } from "../components/SignUpEmailVerify";
@@ -12,6 +11,7 @@ import { WelcomeHeading } from "../components/WelcomeHeading";
 import { useAuth } from "../hook/useAuth";
 import { signUpFormSchema } from "../schemas/signUpForm.schema";
 import { type SignUpForm } from "../types/signUpForm.type";
+import ErrorMessage from "~/common/components/ui/ErrorMessage";
 
 export function SignUpForm() {
   const {
@@ -54,7 +54,7 @@ export function SignUpForm() {
             />
           </Input.Root>
           {errors.fullName?.message && isSubmitted && (
-            <ErrorMessage message={errors.fullName.message} />
+            <ErrorMessage>{errors.fullName.message}</ErrorMessage>
           )}
           <Input.Root
             error={!!errors.email?.message}
@@ -68,7 +68,7 @@ export function SignUpForm() {
             />
           </Input.Root>
           {errors.email?.message && isSubmitted && (
-            <ErrorMessage message={errors.email.message} />
+            <ErrorMessage>{errors.email.message}</ErrorMessage>
           )}
           <Input.Root
             error={!!errors.password?.message}
@@ -82,7 +82,7 @@ export function SignUpForm() {
             />
           </Input.Root>
           {errors.password?.message && isSubmitted && (
-            <ErrorMessage message={errors.password.message} />
+            <ErrorMessage><p>{errors.password.message}</p></ErrorMessage>
           )}
           <div className="flex gap-2 mt-3">
             <Button className="w-full" type="submit">
