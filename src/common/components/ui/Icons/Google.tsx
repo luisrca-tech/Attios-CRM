@@ -8,7 +8,7 @@ export function GoogleIcon({ className }: IconProps) {
     <Image
       className={cn(className)}
       src={GoogleIconImage}
-      alt="Error filled input"
+      alt="Google icon"
     />
   );
 }

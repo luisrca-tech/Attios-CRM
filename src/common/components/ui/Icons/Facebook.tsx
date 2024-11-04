@@ -8,7 +8,7 @@ export function FacebookIcon({ className }: IconProps) {
     <Image
       className={cn(className)}
       src={FacebookIconImage}
-      alt="Error filled input"
+      alt="Facebook icon"
     />
   );
 }

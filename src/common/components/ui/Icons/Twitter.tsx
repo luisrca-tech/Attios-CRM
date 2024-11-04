@@ -8,7 +8,7 @@ export function TwitterIcon({ className }: IconProps) {
     <Image
       className={cn(className)}
       src={TwitterIconImage}
-      alt="Error filled input"
+      alt="Twitter icon"
     />
   );
 }
