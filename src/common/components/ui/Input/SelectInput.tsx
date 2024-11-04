@@ -2,8 +2,8 @@
 
 import type React from "react";
 import { useRef, useState } from "react";
-import { cn } from "../../../lib/utils";
-import useClickOutside from "../../hooks/useClickOutside";
+import { cn } from "../../../../lib/utils";
+import useClickOutside from "../../../hooks/useClickOutside";
 
 interface SelectInputProps {
   options: string[];

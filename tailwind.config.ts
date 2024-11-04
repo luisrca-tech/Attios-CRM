@@ -3,6 +3,12 @@ import type { Config } from "tailwindcss";
 export default {
   content: ["./src/**/*.tsx"],
   theme: {
+    extend: {
+      screens: {
+        "2xl": "87.5rem",
+        "3xl": "100rem",
+      },
+    },
     fontSize: {
       xs: "0.75rem",
       sm: "0.875rem",
@@ -49,6 +55,7 @@ export default {
     animation: {
       "accordion-down": "accordion-down 0.2s ease-out",
       "accordion-up": "accordion-up 0.2s ease-out",
+      "spin": "spin 1s linear infinite",
     },
   },
   plugins: [require("tailwindcss-animate")],
