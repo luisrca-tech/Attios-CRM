@@ -27,11 +27,12 @@ export const users = createTable(
 		createdAt: timestamp('created_at', { withTimezone: true })
 			.default(sql`CURRENT_TIMESTAMP`)
 			.notNull(),
-		updatedAt: timestamp('updated_at', { withTimezone: true }).$onUpdate(
-			() => new Date()
-		)
+		updatedAt: timestamp('updated_at', { withTimezone: true })
+			.default(sql`CURRENT_TIMESTAMP`)
+			.notNull()
+			.$onUpdate(() => new Date())
 	},
-	(example) => ({
-		emailIndex: index('email_idx').on(example.email)
+	(table) => ({
+		emailIndex: index('email_idx').on(table.email)
 	})
 );
