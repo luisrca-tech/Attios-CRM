@@ -5,6 +5,7 @@ import { sql } from 'drizzle-orm';
 import {
 	index,
 	pgTableCreator,
+	// biome-ignore lint/correctness/noUnusedImports: <explanation>
 	serial,
 	timestamp,
 	varchar
