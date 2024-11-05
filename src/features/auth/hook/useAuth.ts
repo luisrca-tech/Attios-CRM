@@ -4,9 +4,9 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { api } from '~/trpc/react';
+import type { SignInFormType } from '../types/signInForm.type';
 import type { SignUpEmailVerifyType } from '../types/signUpEmailVerify.type';
 import type { SignUpFormType } from '../types/signUpForm.type';
-import type { SignInFormType } from '../types/signInForm.type';
 
 export function useAuth() {
 	const router = useRouter();
@@ -16,7 +16,11 @@ export function useAuth() {
 		isLoaded: isSignUpLoaded,
 		setActive: setActiveSignUp
 	} = useSignUp();
-	const { signIn, setActive: setActiveSignIn, isLoaded: isSignInLoaded, } = useSignIn()
+	const {
+		signIn,
+		setActive: setActiveSignIn,
+		isLoaded: isSignInLoaded
+	} = useSignIn();
 
 	const createUserMutation = api.user.create.useMutation();
 
@@ -138,6 +142,21 @@ export function useAuth() {
 		}
 	}
 
+	const signInWithGoogle = () =>
+		signIn?.authenticateWithRedirect({
+			strategy: 'oauth_google',
+			redirectUrl: '/sso-callback',
+			redirectUrlComplete: '/'
+		});
+
+	const signInWithFacebook = () =>
+		signIn?.authenticateWithRedirect({
+			strategy: 'oauth_facebook',
+			redirectUrl: '/sso-callback',
+			redirectUrlComplete: '/'
+		});
+	
+
 	return {
 		signUpUser,
 		signInUser,
@@ -146,6 +165,8 @@ export function useAuth() {
 		isSignInLoaded,
 		verifyEmail,
 		resendCode,
-		isLoading: createUserMutation.isPending
+		isLoading: createUserMutation.isPending,
+		signInWithGoogle,
+		signInWithFacebook,
 	};
 }
