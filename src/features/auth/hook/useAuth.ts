@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { api } from '~/trpc/react';
-import type { SignUpEmailVerify } from '../types/signUpEmailVerify.type';
+import type { SignUpEmailVerifyType } from '../types/signUpEmailVerify.type';
 import type { SignUpFormType } from '../types/signUpForm.type';
 
 export function useAuth() {
@@ -46,7 +46,7 @@ export function useAuth() {
 		}
 	}
 
-	async function verifyEmail({ code }: SignUpEmailVerify) {
+	async function verifyEmail({ code }: SignUpEmailVerifyType) {
 		if (!isSignUpLoaded) return null;
 
 		try {
