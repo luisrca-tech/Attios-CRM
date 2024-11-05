@@ -21,7 +21,7 @@ export function SignInForm() {
 		resolver: zodResolver(signInFormSchema),
 		mode: 'onChange'
 	});
-	const { signInUser, isSignInLoaded} = useAuth();
+	const { signInUser, isSignInLoaded } = useAuth();
 
 	if (!isSignInLoaded) return null;
 
@@ -71,7 +71,7 @@ export function SignInForm() {
 				)}
 				<LinkButton
 					href="/recoverPassword"
-					className='justify-end bg-transparent px-0 font-bold text-primary-100 text-sm leading-4 hover:bg-transparent hover:opacity-70'
+					className="justify-end bg-transparent px-0 font-bold text-primary-100 text-sm leading-4 hover:bg-transparent hover:opacity-70"
 					type="button"
 				>
 					Recover password

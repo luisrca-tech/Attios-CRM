@@ -155,7 +155,6 @@ export function useAuth() {
 			redirectUrl: '/sso-callback',
 			redirectUrlComplete: '/'
 		});
-	
 
 	return {
 		signUpUser,
@@ -167,6 +166,6 @@ export function useAuth() {
 		resendCode,
 		isLoading: createUserMutation.isPending,
 		signInWithGoogle,
-		signInWithFacebook,
+		signInWithFacebook
 	};
 }

@@ -3,7 +3,7 @@ import { Icon } from '~/common/components/ui/Icons';
 import { useAuth } from '../hook/useAuth';
 
 export function SocialAuth() {
-	const { signInWithFacebook, signInWithGoogle } = useAuth()
+	const { signInWithFacebook, signInWithGoogle } = useAuth();
 
 	return (
 		<div className="mt-[4.8125rem] flex items-center gap-[0.375rem]">
