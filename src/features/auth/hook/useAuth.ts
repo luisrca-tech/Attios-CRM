@@ -1,4 +1,4 @@
-import { useSignUp } from '@clerk/nextjs';
+import { useSignIn, useSignUp } from '@clerk/nextjs';
 import { isClerkAPIResponseError } from '@clerk/nextjs/errors';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
@@ -6,6 +6,7 @@ import { toast } from 'sonner';
 import { api } from '~/trpc/react';
 import type { SignUpEmailVerifyType } from '../types/signUpEmailVerify.type';
 import type { SignUpFormType } from '../types/signUpForm.type';
+import type { SignInFormType } from '../types/signInForm.type';
 
 export function useAuth() {
 	const router = useRouter();
@@ -15,8 +16,33 @@ export function useAuth() {
 		isLoaded: isSignUpLoaded,
 		setActive: setActiveSignUp
 	} = useSignUp();
+	const { signIn, setActive: setActiveSignIn, isLoaded: isSignInLoaded, } = useSignIn()
 
 	const createUserMutation = api.user.create.useMutation();
+
+	async function signInUser({ email, password }: SignInFormType) {
+		try {
+			const result = await signIn?.create({
+				identifier: email,
+				password: password
+			});
+
+			if (result?.status === 'complete') {
+				if (!setActiveSignIn) {
+					return null;
+				}
+
+				await setActiveSignIn({ session: result.createdSessionId });
+			}
+		} catch (error) {
+			if (isClerkAPIResponseError(error)) {
+				return toast.error('Error', {
+					position: 'top-center',
+					description: error?.errors[0]?.longMessage
+				});
+			}
+		}
+	}
 
 	async function signUpUser({ email, password, fullName }: SignUpFormType) {
 		try {
@@ -114,8 +140,10 @@ export function useAuth() {
 
 	return {
 		signUpUser,
+		signInUser,
 		emailVerify,
 		isSignUpLoaded,
+		isSignInLoaded,
 		verifyEmail,
 		resendCode,
 		isLoading: createUserMutation.isPending

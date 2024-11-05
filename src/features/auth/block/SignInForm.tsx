@@ -16,17 +16,17 @@ export function SignInForm() {
 	const {
 		register,
 		handleSubmit,
-		formState: { errors, isSubmitSuccessful, isSubmitted }
+		formState: { errors, isSubmitSuccessful, isSubmitted, isSubmitting }
 	} = useForm<SignInFormType>({
 		resolver: zodResolver(signInFormSchema),
 		mode: 'onChange'
 	});
-	const { isSignUpLoaded } = useAuth();
+	const { signInUser, isSignInLoaded} = useAuth();
 
-	if (!isSignUpLoaded) return null;
+	if (!isSignInLoaded) return null;
 
 	async function onSubmit({ email, password }: SignInFormType) {
-		console.log(email, password);
+		await signInUser({ email, password });
 	}
 
 	return (
@@ -37,7 +37,7 @@ export function SignInForm() {
 			/>
 			<form
 				onSubmit={handleSubmit(onSubmit)}
-				className="flex w-[22.8125rem] flex-col gap-4"
+				className="flex w-[22.8125rem] flex-col gap-2"
 			>
 				<Input.Root
 					error={!!errors.email?.message}
@@ -69,14 +69,15 @@ export function SignInForm() {
 						<p>{errors.password.message}</p>
 					</ErrorMessage>
 				)}
-				<button
-					className='text-right font-bold text-primary-100 text-sm leading-4 hover:opacity-70'
+				<LinkButton
+					href="/recoverPassword"
+					className='justify-end bg-transparent px-0 font-bold text-primary-100 text-sm leading-4 hover:bg-transparent hover:opacity-70'
 					type="button"
 				>
 					Recover password
-				</button>
+				</LinkButton>
 				<div className="mt-3 flex gap-2">
-					<Button type="submit" className="w-full">
+					<Button isLoading={isSubmitting} type="submit" className="w-full">
 						Sign In
 					</Button>
 					<LinkButton href="/signUp" color="secondary" className="w-full">
