@@ -10,7 +10,7 @@ export default function ErrorMessage({ children }: Props) {
 
 	useEffect(() => {
 		parent.current && autoAnimate(parent.current);
-	}, [parent]);
+	}, []);
 
 	return (
 		<div ref={parent}>
