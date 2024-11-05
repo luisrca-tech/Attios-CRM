@@ -1,6 +1,19 @@
 import { setupClerkTestingToken } from '@clerk/testing/playwright';
 import { expect, test } from '@playwright/test';
 
+test('sign in successfully', async ({ page }) => {
+	await page.goto('/signIn', { waitUntil: 'networkidle' });
+
+	await page.getByLabel('Email').fill('john+clerk_test@example.com');
+	await page.getByLabel('Password').fill('Jd16012003@');
+
+	await page.getByRole('button', { name: 'Sign In' }).click();
+
+	await page.waitForURL('/', { waitUntil: 'networkidle' });
+	const userButton = page.getByRole('button', { name: /user/ });
+	await expect(userButton).toBeVisible();
+});
+
 test('sign up successfully', async ({ page }) => {
 	await page.goto('/signUp', { waitUntil: 'networkidle' });
 
