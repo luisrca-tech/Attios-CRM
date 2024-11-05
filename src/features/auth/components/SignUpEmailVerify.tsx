@@ -11,16 +11,16 @@ import {
 } from '~/common/components/ui/input-otp';
 import { useAuth } from '../hook/useAuth';
 import { signUpEmailVerifySchema } from '../schemas/signUpEmailVerify.schema';
-import type { SignUpEmailVerify } from '../types/signUpEmailVerify.type';
+import type { SignUpEmailVerifyType } from '../types/signUpEmailVerify.type';
 
 export function SignUpEmailVerify() {
-	const { setValue, handleSubmit } = useForm<SignUpEmailVerify>({
+	const { setValue, handleSubmit } = useForm<SignUpEmailVerifyType>({
 		resolver: zodResolver(signUpEmailVerifySchema),
 		mode: 'onChange'
 	});
 	const { verifyEmail, resendCode, isLoading } = useAuth();
 
-	async function handleConfirmCode({ code }: SignUpEmailVerify) {
+	async function handleConfirmCode({ code }: SignUpEmailVerifyType) {
 		await verifyEmail({ code });
 	}
 

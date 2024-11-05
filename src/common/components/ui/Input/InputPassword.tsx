@@ -25,16 +25,17 @@ const InputPassword = forwardRef<HTMLInputElement, InputPasswordProps>(
 						className={className}
 						{...rest}
 					/>
-					<div
+					<button
+						type="button"
 						onClick={togglePasswordVisibility}
-						className="absolute top-3 right-1 cursor-pointer"
+						className="absolute top-0 right-0 bg-transparent"
 					>
 						{showPassword ? (
 							<Icon.Padlock.Open className="h-[1.125rem] w-[1.125rem]" />
 						) : (
 							<Icon.Padlock.Close className="h-[1.125rem] w-[1.125rem]" />
 						)}
-					</div>
+					</button>
 				</div>
 			</div>
 		);
