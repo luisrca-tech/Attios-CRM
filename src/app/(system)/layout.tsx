@@ -18,8 +18,9 @@ export default async function RootLayout({
 	const { userId } = await auth();
 
 	if (!userId) {
-		redirect('/signUp');
+		redirect('/signIn');
 	}
 
 	return <>{children}</>;
 }
+
