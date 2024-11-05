@@ -6,9 +6,9 @@ await import('./src/env.js');
 
 /** @type {import("next").NextConfig} */
 const config = {
-    env: {
-        DATABASE_URL: process.env.DATABASE_URL,
-    },
+	env: {
+		DATABASE_URL: process.env.DATABASE_URL
+	}
 };
 
 export default config;

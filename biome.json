@@ -6,7 +6,7 @@
 		"useIgnoreFile": false
 	},
 	"files": {
-		"ignore": [".next/", "node_modules/", "public/*"]
+		"ignore": [".next/", "node_modules/", "public/*", "playwright-report/"]
 	},
 	"organizeImports": {
 		"enabled": true

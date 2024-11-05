@@ -1,4 +1,4 @@
-import { z } from "zod";
-import { signUpFormSchema } from "../schemas/signUpForm.schema";
+import type { z } from 'zod';
+import type { signUpFormSchema } from '../schemas/signUpForm.schema';
 
-export type SignUpForm = z.infer<typeof signUpFormSchema>;
+export type SignUpFormType = z.infer<typeof signUpFormSchema>;
