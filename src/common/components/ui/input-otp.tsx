@@ -64,8 +64,8 @@ const InputOTPSeparator = React.forwardRef<
 	React.ComponentPropsWithoutRef<'div'>
 >(({ ...props }, ref) => (
 	// biome-ignore lint/a11y/useFocusableInteractive: <explanation>
-// biome-ignore lint/a11y/useSemanticElements: <explanation>
-<div ref={ref} role="separator" {...props}>
+	// biome-ignore lint/a11y/useSemanticElements: <explanation>
+	<div ref={ref} role="separator" {...props}>
 		<DashIcon />
 	</div>
 ));

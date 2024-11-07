@@ -6,7 +6,12 @@
 		"useIgnoreFile": false
 	},
 	"files": {
-		"ignore": [".next/", "node_modules/", "public/*"]
+		"ignore": [
+			".next/",
+			"node_modules/",
+			"public/*",
+			"playwright-report/trace"
+		]
 	},
 	"organizeImports": {
 		"enabled": true
@@ -34,8 +39,16 @@
 				"useSortedClasses": {
 					"level": "error",
 					"options": {
-						"attributes": ["classList", "className"],
-						"functions": ["clsx", "cva", "tw", "cn"]
+						"attributes": [
+							"classList",
+							"className"
+						],
+						"functions": [
+							"clsx",
+							"cva",
+							"tw",
+							"cn"
+						]
 					}
 				}
 			}
