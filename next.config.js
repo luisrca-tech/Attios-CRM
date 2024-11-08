@@ -4,11 +4,19 @@
  */
 await import('./src/env.js');
 
-/** @type {import("next").NextConfig} */
-const config = {
+/** @type {import('next').NextConfig} */
+const nextConfig = {
 	env: {
 		DATABASE_URL: process.env.DATABASE_URL
+	},
+	images: {
+		remotePatterns: [
+			{
+				protocol: 'https',
+				hostname: 'img.clerk.com'
+			}
+		]
 	}
 };
 
-export default config;
+export default nextConfig;
