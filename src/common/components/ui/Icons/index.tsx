@@ -1,4 +1,3 @@
-import { CalendarIcon, DashboardIcon } from '@radix-ui/react-icons';
 import { ArrowDown } from './ArrowDown';
 import { ClosePadlockIcon } from './ClosePadlock';
 import { ContactsIcon } from './Contacts';
@@ -19,11 +18,19 @@ import { ReportsIcon } from './Reports';
 import { TasksIcon } from './Tasks';
 import { TwitterIcon } from './Twitter';
 import { UserIcon } from './UserIcon';
+import { MenuIcon } from './Menu';
+import { DashboardIcon } from './Dashboard';
+import { CalendarIcon } from './Calendar';
+import { SearchIcon } from './Search';
+import { AddButtonIcon } from './AddButton';
 
 export const Icon = {
 	Email: EmailIcon,
 	User: UserIcon,
 	Error: ErrorIcon,
+	Menu: MenuIcon,
+	Search: SearchIcon,
+	AddButton: AddButtonIcon,
 	Padlock: {
 		Open: OpenPadlockIcon,
 		Close: ClosePadlockIcon
