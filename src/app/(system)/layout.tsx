@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
+import { BottomMenu } from '~/common/components/ui/BottomMenuNavigation';
 
 export const metadata: Metadata = {
 	title: 'Attios',
@@ -21,5 +22,10 @@ export default async function RootLayout({
 		redirect('/signIn');
 	}
 
-	return <>{children}</>;
+	return (
+		<div>
+			{children}
+			<BottomMenu />
+		</div>
+	);
 }
