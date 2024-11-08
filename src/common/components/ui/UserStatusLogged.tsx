@@ -1,6 +1,6 @@
 'use client';
 
-import { cn } from "~/lib/utils";
+import { cn } from '~/lib/utils';
 
 interface UserStatusLoggedProps {
 	className?: string;
@@ -11,7 +11,7 @@ interface UserStatusLoggedProps {
 export function UserStatusLogged({
 	className,
 	isOnline,
-	isOffline,
+	isOffline
 }: UserStatusLoggedProps) {
 	return (
 		<div
