@@ -1,7 +1,6 @@
 import '~/styles/globals.css';
 
 import { ClerkProvider } from '@clerk/nextjs';
-import { GeistSans } from 'geist/font/sans';
 import { Toaster } from 'sonner';
 import { TRPCReactProvider } from '~/trpc/react';
 import { lato } from '~/assets/fonts/lato';
