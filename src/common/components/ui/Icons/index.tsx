@@ -23,6 +23,7 @@ import { DashboardIcon } from './Dashboard';
 import { CalendarIcon } from './Calendar';
 import { SearchIcon } from './Search';
 import { AddButtonIcon } from './AddButton';
+import { ExpandIcon } from './Expand';
 
 export const Icon = {
 	Email: EmailIcon,
@@ -30,6 +31,7 @@ export const Icon = {
 	Error: ErrorIcon,
 	Menu: MenuIcon,
 	Search: SearchIcon,
+	Expand: ExpandIcon,
 	AddButton: AddButtonIcon,
 	Padlock: {
 		Open: OpenPadlockIcon,
