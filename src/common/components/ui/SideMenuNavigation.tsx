@@ -29,7 +29,7 @@ export function SideMenu() {
 		<div
 			ref={menuRef}
 			className={cn(
-				'hidden border-white-200 border-r bg-white-100 py-6 transition-all duration-300 ease-in-out lg:flex',
+				'hidden border-white-200 border-r bg-white-100 py-5 transition-all duration-300 ease-in-out lg:flex',
 				isExpanded ? 'w-44' : 'w-[5.25rem]'
 			)}
 		>
@@ -52,7 +52,7 @@ export function SideMenu() {
 								alt="logo"
 								width={30}
 								height={30}
-								className="mb-5 transition-transform duration-300"
+								className="mb-4 transition-transform duration-300"
 								style={{
 									transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'
 								}}
@@ -110,11 +110,11 @@ export function SideMenu() {
 						</div>
 					))}
 
-					<div className="relative">
+					<div className="relative mt-4">
 						<UserButton
 							appearance={{
 								elements: {
-									avatarBox: `${isExpanded ? 'h-10 w-10 ' : 'h-[1,375rem] w-[1,375rem]'} rounded-xl mt-5`
+									avatarBox: `${isExpanded ? 'h-10 w-10 ' : 'h-[1,375rem] w-[1,375rem]'} rounded-xl`,
 								}
 							}}
 						/>
