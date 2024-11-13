@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { BottomMenu } from '~/common/components/ui/BottomMenuNavigation';
+import { SideMenu } from '~/common/components/ui/SideMenuNavigation';
 
 export const metadata: Metadata = {
 	title: 'Attios',
@@ -24,7 +25,10 @@ export default async function RootLayout({
 
 	return (
 		<div>
-			{children}
+			<div className="flex min-h-screen">
+				<SideMenu />
+				{children}
+			</div>
 			<BottomMenu />
 		</div>
 	);
