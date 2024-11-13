@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth, useUser } from '@clerk/nextjs';
+import { UserButton, useUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -20,14 +20,12 @@ import { Icon } from './Icons';
 import { UserStatusLogged } from './UserStatusLogged';
 
 export function BottomMenu() {
-	const { user } = useUser();
-	const { isLoaded } = useAuth();
+	const { user, isLoaded } = useUser();
 	const userImage = user?.imageUrl;
 	const userName = user?.fullName;
 
-	const ItemsMenu = menuItems;
-	const mainItemsMenu = ItemsMenu.slice(0, 5);
-	const remainingItemsMenu = ItemsMenu.slice(5);
+	const mainItemsMenu = menuItems.slice(0, 4);
+	const remainingItemsMenu = menuItems.slice(6);
 
 	const [selectedIcon, setSelectedIcon] = useState<React.ReactNode>(
 		<Icon.Menu className="text-primary-200" />
@@ -37,6 +35,13 @@ export function BottomMenu() {
 		<div className="fixed right-0 bottom-0 left-0 z-10 flex h-[11.5lvh] w-full items-center justify-between border-white-200 border-t bg-white-100 px-2 py-[0.875rem] lg:hidden">
 			<nav className="flex w-full">
 				<ul className="flex w-full items-center justify-around">
+					<UserButton
+						appearance={{
+							elements: {
+								avatarBox: 'h-[1,375rem] w-[1,375rem]'
+							}
+						}}
+					/>
 					{mainItemsMenu.map((item) => (
 						<li
 							className="relative flex h-12 w-12 items-center justify-center"
