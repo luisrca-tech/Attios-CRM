@@ -33,35 +33,37 @@ export function SideMenu() {
 				isExpanded ? 'w-44' : 'w-[5.25rem]'
 			)}
 		>
-			<nav>
-				<div className="flex min-h-full flex-col items-center justify-around">
-					<button
-						type="button"
-						onClick={handleExpand}
-						className={cn(
-							'flex w-full items-center px-4 transition-all duration-300',
-							isExpanded ? 'justify-start' : 'justify-center'
-						)}
-					>
-						<div className="relative items-center gap-1">
-							{!isExpanded && (
-								<Icon.Expand className="-top-6 -left-4 absolute h-3 w-3" />
+			<nav className="w-full">
+				<ul className="flex min-h-full flex-col items-center justify-around">
+					<li className="w-full">
+						<button
+							type="button"
+							onClick={handleExpand}
+							className={cn(
+								'flex w-full items-center px-4 transition-all duration-300',
+								isExpanded ? 'justify-start' : 'justify-center'
 							)}
-							<Image
-								src={Logo}
-								alt="logo"
-								width={30}
-								height={30}
-								className="mb-4 transition-transform duration-300"
-								style={{
-									transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'
-								}}
-							/>
-						</div>
-					</button>
+						>
+							<div className="relative items-center gap-1">
+								{!isExpanded && (
+									<Icon.Expand className="-top-6 -left-4 absolute h-3 w-3" />
+								)}
+								<Image
+									src={Logo}
+									alt="logo"
+									width={30}
+									height={30}
+									className="mb-4 transition-transform duration-300"
+									style={{
+										transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'
+									}}
+								/>
+							</div>
+						</button>
+					</li>
 
 					{menuItems.map((item) => (
-						<div
+						<li
 							className={cn(
 								'relative flex w-full items-center px-4',
 								isExpanded ? 'justify-start' : 'justify-center'
@@ -79,10 +81,7 @@ export function SideMenu() {
 							>
 								<div
 									className={cn(
-										'absolute h-full scale-y-0 bg-primary-100 transition-transform group-hover:scale-y-100',
-										isExpanded
-											? '-right-[0.75rem] w-[0.1875rem]'
-											: '-right-[0.375rem] w-[0.125rem]'
+										'-right-[0.2rem] absolute h-full w-[0.1875rem] scale-y-0 bg-primary-100 transition-transform group-hover:scale-y-100'
 									)}
 								/>
 								<div className="flex items-center gap-2">
@@ -107,14 +106,14 @@ export function SideMenu() {
 									)}
 								</div>
 							</Link>
-						</div>
+						</li>
 					))}
 
-					<div className="relative mt-4">
+					<li className="relative mt-4">
 						<UserButton
 							appearance={{
 								elements: {
-									avatarBox: `${isExpanded ? 'h-10 w-10 ' : 'h-[1,375rem] w-[1,375rem]'} rounded-xl`,
+									avatarBox: `${isExpanded ? 'h-10 w-10 ' : 'h-[1,375rem] w-[1,375rem]'} rounded-xl`
 								}
 							}}
 						/>
@@ -122,8 +121,8 @@ export function SideMenu() {
 							className="-right-1 bottom-1"
 							isOnline={isLoaded}
 						/>
-					</div>
-				</div>
+					</li>
+				</ul>
 			</nav>
 		</div>
 	);
