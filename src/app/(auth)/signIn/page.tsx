@@ -1,6 +1,6 @@
-import { AuthBackground } from '~/features/auth/components/AuthBackground';
-import signUpImage from '/public/images/signUpImage.png';
 import { SignInForm } from '~/features/auth/block/SignInForm';
+import { AuthBackground } from '~/features/auth/components/ui/AuthBackground';
+import signUpImage from '/public/images/signUpImage.png';
 
 export default function SignIn() {
 	return (

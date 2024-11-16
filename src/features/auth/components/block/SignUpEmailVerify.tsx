@@ -9,9 +9,9 @@ import {
 	InputOTPSeparator,
 	InputOTPSlot
 } from '~/common/components/ui/input-otp';
-import { useAuth } from '../hook/useAuth';
-import { signUpEmailVerifySchema } from '../schemas/signUpEmailVerify.schema';
-import type { SignUpEmailVerifyType } from '../types/signUpEmailVerify.type';
+import { useAuth } from '../../hook/useAuth';
+import { signUpEmailVerifySchema } from '../../schemas/signUpEmailVerify.schema';
+import type { SignUpEmailVerifyType } from '../../types/signUpEmailVerify.type';
 
 export function SignUpEmailVerify() {
 	const { setValue, handleSubmit } = useForm<SignUpEmailVerifyType>({
