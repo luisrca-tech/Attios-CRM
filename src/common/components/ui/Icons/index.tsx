@@ -4,8 +4,9 @@ import { EmailIcon } from './Email';
 import { ErrorIcon } from './ErrorIcon';
 import { FacebookIcon } from './Facebook';
 import { GoogleIcon } from './Google';
-import { GraphIcon } from './Graph';
 import { OpenPadlockIcon } from './OpenPadlock';
+import { PizzaGraphIcon } from './PizzaGraph';
+import { StatisticsGraphIcon } from './StatisticsGraph';
 import { TwitterIcon } from './Twitter';
 import { UserIcon } from './UserIcon';
 
@@ -13,7 +14,6 @@ export const Icon = {
 	Email: EmailIcon,
 	User: UserIcon,
 	Error: ErrorIcon,
-	Graph: GraphIcon,
 	Padlock: {
 		Open: OpenPadlockIcon,
 		Close: ClosePadlockIcon
@@ -25,5 +25,9 @@ export const Icon = {
 		Google: GoogleIcon,
 		Facebook: FacebookIcon,
 		Twitter: TwitterIcon
+	},
+	Graph: {
+		Statistics: StatisticsGraphIcon,
+		Pizza: PizzaGraphIcon
 	}
 };

@@ -57,7 +57,7 @@ export function ProjectsWithSidebar() {
 						className="h-[2.625rem] w-[2.625rem] bg-primary-200/10 p-0 hover:bg-primary-200/50"
 						color="secondary"
 					>
-						<Icon.Graph className="h-[1.125rem] w-[1.125rem]" />
+						<Icon.Graph.Statistics className="h-[1.125rem] w-[1.125rem]" />
 					</Button>
 				</div>
 				<div className="mt-6 flex items-end justify-between gap-2">

@@ -1,24 +1,31 @@
 import Image from 'next/image';
+import { cn } from '~/lib/utils';
 import { Button } from '../../../../../common/components/ui/Button';
 import { Icon } from '../../../../../common/components/ui/Icons';
 import Logo from '/public/favicon.svg';
-import { cn } from '~/lib/utils';
 
 interface ContentSidebarHeaderProps {
 	isOpen: boolean;
-	setIsOpen: (isOpen: boolean) => void;
+	onToggleSidebar: (isOpen: boolean) => void;
+	className?: string;
 }
 
 export function ContentSidebarHeader({
 	isOpen,
-	setIsOpen
+	onToggleSidebar,
+	className
 }: ContentSidebarHeaderProps) {
 	const handleToggleSidebar = () => {
-		setIsOpen(!isOpen);
+		onToggleSidebar(!isOpen);
 	};
 
 	return (
-		<div className="flex min-w-[20.625rem] items-center justify-between pb-8">
+		<div
+			className={cn(
+				'flex min-w-[20.625rem] items-center justify-between pb-8',
+				className
+			)}
+		>
 			<div className="flex gap-3">
 				<Image src={Logo} alt="logo" width={30} height={30} />
 				<div className="flex flex-col">
