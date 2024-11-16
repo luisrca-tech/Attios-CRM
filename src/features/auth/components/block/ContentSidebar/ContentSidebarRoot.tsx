@@ -3,19 +3,39 @@
 import { type ReactNode, useState } from 'react';
 import { cn } from '~/lib/utils';
 import { ContentSidebarHeader } from './ContentSidebarHeader';
+import { usePathname } from 'next/navigation';
 
-export function ContentSidebarRoot({ children }: { children: ReactNode }) {
+type ContentSidebarRootProps = {
+	children: ReactNode;
+	className?: string;
+};
+
+export function ContentSidebarRoot({
+	children,
+	className
+}: ContentSidebarRootProps) {
+	const pathname = usePathname();
 	const [isOpen, setIsOpen] = useState(true);
 
 	return (
 		<div
 			className={cn(
-				'relative flex max-h-screen min-h-screen flex-col overflow-hidden border-white-200 px-7 py-6 transition-[border] duration-300',
+				'relative hidden max-h-screen min-h-screen flex-col border-white-200 px-7 py-6 transition-[border] duration-300 lg:flex',
+				className,
 				isOpen ? 'border-r' : 'border-none'
 			)}
 		>
-			<ContentSidebarHeader isOpen={isOpen} setIsOpen={setIsOpen} />
-			<div className="absolute top-20 right-0 left-0 h-[1px] w-full bg-white-200 transition-opacity duration-300" />
+			<ContentSidebarHeader
+				className={cn('', pathname === '/' && 'hidden')}
+				isOpen={isOpen}
+				onToggleSidebar={setIsOpen}
+			/>
+			<div
+				className={cn(
+					'absolute top-20 right-0 left-0 h-[1px] w-full bg-white-200 transition-opacity duration-300',
+					pathname === '/' && 'hidden'
+				)}
+			/>
 			<div
 				className={cn(
 					'flex flex-1 flex-col justify-between transition-[transform,opacity] duration-300',
