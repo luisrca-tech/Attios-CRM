@@ -13,7 +13,7 @@ import { UserStatusLogged } from './UserStatusLogged';
 import Logo from '/public/favicon.svg';
 
 export function SideMenu() {
-	const { isLoaded } = useUser();
+	const { isLoaded, user } = useUser();
 	const [isExpanded, setIsExpanded] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
 
@@ -109,18 +109,30 @@ export function SideMenu() {
 						</li>
 					))}
 
-					<li className="relative mt-4">
-						<UserButton
-							appearance={{
-								elements: {
-									avatarBox: `${isExpanded ? 'h-10 w-10 ' : 'h-[1,375rem] w-[1,375rem]'} rounded-xl`
-								}
-							}}
-						/>
-						<UserStatusLogged
-							className="-right-1 bottom-1"
-							isOnline={isLoaded}
-						/>
+					<li className="mt-4">
+						<div className={cn('flex items-center', isExpanded && 'gap-2')}>
+							<div className='relative'>
+								<UserButton
+									appearance={{
+										elements: {
+											avatarBox: cn(
+												'h-[1.875rem] w-[1.875rem] rounded-xl',
+												isExpanded && 'h-10 w-10'
+											)
+										}
+									}}
+								/>
+							<UserStatusLogged
+									className='-right-1 bottom-[1px]'
+								isOnline={isLoaded}
+							/>
+							</div>
+							{isExpanded && user && (
+								<strong className="text-sm leading-5">
+									{user.fullName || user.username}
+								</strong>
+							)}
+						</div>
 					</li>
 				</ul>
 			</nav>
