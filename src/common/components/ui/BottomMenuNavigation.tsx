@@ -17,6 +17,7 @@ import { CommingSoon } from './CommingSoon';
 import { Icon } from './Icons';
 import { UserStatusLogged } from './UserStatusLogged';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export function BottomMenu() {
 	const { user, isLoaded } = useUser();
@@ -101,7 +102,7 @@ export function BottomMenu() {
 								<div className="mt-[3.625rem] flex flex-col items-center justify-center">
 									<div className="mb-[2.3125rem] flex flex-col items-center justify-center">
 										<div className="relative">
-											<img
+											<Image
 												src={userImage || '/default-avatar.png'}
 												alt="user"
 												width={94}
