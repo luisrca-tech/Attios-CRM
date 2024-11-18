@@ -28,6 +28,7 @@
 		"@clerk/types": "^4.28.0",
 		"@formkit/auto-animate": "^0.8.2",
 		"@hookform/resolvers": "^3.9.0",
+		"@radix-ui/react-dialog": "^1.1.2",
 		"@radix-ui/react-icons": "^1.3.0",
 		"@t3-oss/env-nextjs": "^0.10.1",
 		"@tanstack/react-query": "^5.50.0",
