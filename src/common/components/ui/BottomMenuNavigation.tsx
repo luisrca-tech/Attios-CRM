@@ -35,6 +35,7 @@ export function BottomMenu() {
 		<div className="fixed right-0 bottom-0 left-0 z-10 flex h-[11.5lvh] w-full items-center justify-between border-white-200 border-t bg-white-100 px-2 py-[0.875rem] lg:hidden">
 			<nav className="flex w-full">
 				<ul className="flex w-full items-center justify-around">
+					<li>
 					<UserButton
 						appearance={{
 							elements: {
@@ -42,6 +43,7 @@ export function BottomMenu() {
 							}
 						}}
 					/>
+					</li>
 					{mainItemsMenu.map((item) => (
 						<li
 							className="relative flex h-12 w-12 items-center justify-center"
