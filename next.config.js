@@ -8,14 +8,6 @@ await import('./src/env.js');
 const nextConfig = {
 	env: {
 		DATABASE_URL: process.env.DATABASE_URL
-	},
-	images: {
-		remotePatterns: [
-			{
-				protocol: 'https',
-				hostname: 'img.clerk.com'
-			}
-		]
 	}
 };
 

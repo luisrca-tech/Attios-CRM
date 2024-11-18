@@ -1,8 +1,6 @@
 'use client';
 
 import { UserButton, useUser } from '@clerk/nextjs';
-import Image from 'next/image';
-import Link from 'next/link';
 import { useState } from 'react';
 import {
 	Sheet,
@@ -18,6 +16,7 @@ import { Button } from './Button';
 import { CommingSoon } from './CommingSoon';
 import { Icon } from './Icons';
 import { UserStatusLogged } from './UserStatusLogged';
+import Link from 'next/link';
 
 export function BottomMenu() {
 	const { user, isLoaded } = useUser();
@@ -36,13 +35,13 @@ export function BottomMenu() {
 			<nav className="flex w-full">
 				<ul className="flex w-full items-center justify-around">
 					<li>
-					<UserButton
-						appearance={{
-							elements: {
-								avatarBox: 'h-[1,375rem] w-[1,375rem]'
-							}
-						}}
-					/>
+						<UserButton
+							appearance={{
+								elements: {
+									avatarBox: 'h-[1,375rem] w-[1,375rem]'
+								}
+							}}
+						/>
 					</li>
 					{mainItemsMenu.map((item) => (
 						<li
@@ -102,7 +101,7 @@ export function BottomMenu() {
 								<div className="mt-[3.625rem] flex flex-col items-center justify-center">
 									<div className="mb-[2.3125rem] flex flex-col items-center justify-center">
 										<div className="relative">
-											<Image
+											<img
 												src={userImage || '/default-avatar.png'}
 												alt="user"
 												width={94}
