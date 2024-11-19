@@ -19,7 +19,7 @@ export const ChatPreviewItems: ChatPreviewItem[] = [
 	{
 		id: crypto.randomUUID(),
 		userImage: '/images/mocks/users/2.png',
-		userStatus: 'online',
+		userStatus: 'offline',
 		userName: 'Douglas Payne',
 		userDescription: 'In the history of modern astronomy, there is small',
 		messageTimestamp: '1hr'
