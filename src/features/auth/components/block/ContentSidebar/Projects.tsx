@@ -11,11 +11,11 @@ export function ProjectsWithSidebar() {
 		<ContentSidebar.Root>
 			<div className="flex flex-col gap-2">
 				<div className="flex items-center justify-between">
-					<div className='flex items-center gap-1'>
-					<strong className="text-black text-sm leading-4">
-						Messages
-					</strong>
-					<Badge variant="rounded" color="green">{ChatPreviewItems.length}</Badge>
+					<div className="flex items-center gap-1">
+						<strong className="text-black text-sm leading-4">Messages</strong>
+						<Badge variant="rounded" color="green">
+							{ChatPreviewItems.length}
+						</Badge>
 					</div>
 					<Button
 						className="border-none p-0 hover:bg-transparent hover:text-primary-100/60"
