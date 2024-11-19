@@ -3,6 +3,7 @@ import { Button } from '~/common/components/ui/Button';
 import { Icon } from '~/common/components/ui/Icons';
 import { ChatPreviewItems } from '~/features/mocks/ChatPreviewItems';
 import { ContentSidebar } from '.';
+import { UserStatusLogged } from '~/common/components/ui/UserStatusLogged';
 
 export function ProjectsWithSidebar() {
 	return (
@@ -21,13 +22,19 @@ export function ProjectsWithSidebar() {
 				{ChatPreviewItems.map((chat) => (
 					<ContentSidebar.Card key={chat.id}>
 						<div className="flex items-center justify-between gap-4">
-							<Image
-								src={chat.userImage}
-								alt={chat.userName}
-								width={38}
-								height={38}
-								className="h-[2.375rem] w-[2.375rem] self-start"
-							/>
+							<div className="relative">
+								<Image
+									src={chat.userImage}
+									alt={chat.userName}
+									width={38}
+									height={38}
+									className="h-[2.375rem] w-[2.375rem] self-start"
+								/>
+								<UserStatusLogged
+									className='-right-1 bottom-0] absolute'
+									userStatus={`${chat.userStatus}`}
+								/>
+							</div>
 							<div className="flex flex-col">
 								<strong className="text-black text-sm leading-5">
 									{chat.userName}
