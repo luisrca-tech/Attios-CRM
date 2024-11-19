@@ -38,7 +38,7 @@ export function ContentSidebarRoot({
 			/>
 			<div
 				className={cn(
-					'flex flex-1 flex-col justify-between transition-[transform,opacity] duration-300',
+					'flex flex-1 flex-col justify-between overflow-y-auto transition-[transform,opacity] duration-300 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden',
 					isOpen ? 'translate-x-0 opacity-100' : 'translate-x-[-10px] opacity-0'
 				)}
 			>
