@@ -4,13 +4,19 @@ import { Icon } from '~/common/components/ui/Icons';
 import { ChatPreviewItems } from '~/features/mocks/ChatPreviewItems';
 import { ContentSidebar } from '.';
 import { UserStatusLogged } from '~/common/components/ui/UserStatusLogged';
+import { Badge } from '~/common/components/ui/Badge';
 
 export function ProjectsWithSidebar() {
 	return (
 		<ContentSidebar.Root>
 			<div className="flex flex-col gap-2">
 				<div className="flex items-center justify-between">
-					<strong className="text-black text-sm leading-4">Messages 5</strong>
+					<div className='flex items-center gap-1'>
+					<strong className="text-black text-sm leading-4">
+						Messages
+					</strong>
+					<Badge variant="rounded" color="green">{ChatPreviewItems.length}</Badge>
+					</div>
 					<Button
 						className="border-none p-0 hover:bg-transparent hover:text-primary-100/60"
 						variant="outlined"
