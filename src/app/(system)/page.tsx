@@ -1,12 +1,10 @@
-import { ContentSidebar } from '~/features/auth/components/block/ContentSidebar';
 import { HydrateClient } from '~/trpc/server';
+import Dashboard from './dashboard/page';
 
 export default async function Home() {
 	return (
 		<HydrateClient>
-			<div className="flex gap-1">
-				<ContentSidebar.Page.Dashboard />
-			</div>
+			<Dashboard />
 		</HydrateClient>
 	);
 }
