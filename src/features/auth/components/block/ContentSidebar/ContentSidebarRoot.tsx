@@ -26,14 +26,14 @@ export function ContentSidebarRoot({
 			)}
 		>
 			<ContentSidebarHeader
-				className={cn('', pathname === '/' && 'hidden')}
+				className={cn('', pathname === '/dashboard' && 'hidden')}
 				isOpen={isOpen}
 				onToggleSidebar={setIsOpen}
 			/>
 			<div
 				className={cn(
 					'absolute top-20 right-0 left-0 h-[1px] w-full bg-white-200 transition-opacity duration-300',
-					pathname === '/' && 'hidden'
+					pathname === '/dashboard' && 'hidden'
 				)}
 			/>
 			<div
