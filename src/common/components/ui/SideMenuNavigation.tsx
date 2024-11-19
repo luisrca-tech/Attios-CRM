@@ -93,7 +93,7 @@ export function SideMenu() {
 										{item.icon}
 									</div>
 									{isExpanded && (
-										<span className="flex-1 font-bold text-black text-sm">
+										<span className="flex-1 font-bold text-black text-sm capitalize">
 											{item.isComingSoon ? (
 												<CommingSoon
 													className="min-w-max rounded-xl"
