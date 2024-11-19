@@ -123,7 +123,7 @@ export function SideMenu() {
 									}}
 								/>
 								<UserStatusLogged
-									className='-right-1 absolute bottom-[1px]'
+									className="-right-1 absolute bottom-[1px]"
 									userStatus={`${isLoaded ? 'online' : 'offline'}`}
 								/>
 							</div>

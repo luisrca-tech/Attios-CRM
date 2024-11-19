@@ -31,7 +31,7 @@ export function ProjectsWithSidebar() {
 									className="h-[2.375rem] w-[2.375rem] self-start"
 								/>
 								<UserStatusLogged
-									className='-right-1 bottom-0] absolute'
+									className="-right-1 bottom-0] absolute"
 									userStatus={`${chat.userStatus}`}
 								/>
 							</div>
