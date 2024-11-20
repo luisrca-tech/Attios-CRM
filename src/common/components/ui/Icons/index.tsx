@@ -12,6 +12,8 @@ import { KanbanIcon } from './Kanban';
 import { MessagesIcon } from './Messages';
 import { NotificationsIcon } from './Notifications';
 import { OpenPadlockIcon } from './OpenPadlock';
+import { PizzaGraphIcon } from './PizzaGraph';
+import { StatisticsGraphIcon } from './StatisticsGraph';
 import { ProductsIcon } from './Products';
 import { ProjectsIcon } from './Projects';
 import { ReportsIcon } from './Reports';
@@ -44,6 +46,10 @@ export const Icon = {
 		Google: GoogleIcon,
 		Facebook: FacebookIcon,
 		Twitter: TwitterIcon
+	},
+	Graph: {
+		Statistics: StatisticsGraphIcon,
+		Pizza: PizzaGraphIcon
 	},
 	Sidebar: {
 		Dashboard: DashboardIcon,

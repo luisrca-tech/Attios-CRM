@@ -1,6 +1,6 @@
-import { AuthBackground } from '~/features/auth/components/AuthBackground';
-import signUpImage from '/public/images/signUpImage.png';
 import { SignUpForm } from '~/features/auth/block/SignUpForm';
+import { AuthBackground } from '~/features/auth/components/ui/AuthBackground';
+import signUpImage from '/public/images/signUpImage.png';
 
 export default function SignUp() {
 	return (

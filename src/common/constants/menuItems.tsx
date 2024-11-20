@@ -8,67 +8,67 @@ type Props = {
 
 export const menuItems: Props[] = [
 	{
-		label: 'Dashboard',
+		label: 'dashboard',
 		icon: <Icon.Sidebar.Dashboard className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: false
 	},
 	{
-		label: 'Projects',
+		label: 'projects',
 		icon: <Icon.Sidebar.Projects className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: false
 	},
 	{
-		label: 'Tasks',
+		label: 'tasks',
 		icon: <Icon.Sidebar.Tasks className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: true
 	},
 	{
-		label: 'Kanban',
+		label: 'kanban',
 		icon: <Icon.Sidebar.Kanban className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: true
 	},
 	{
-		label: 'Calendar',
+		label: 'calendar',
 		icon: <Icon.Sidebar.Calendar className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: true
 	},
 	{
-		label: 'Contacts',
+		label: 'contacts',
 		icon: <Icon.Sidebar.Contacts className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: true
 	},
 	{
-		label: 'Messages',
+		label: 'messages',
 		icon: <Icon.Sidebar.Messages className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: true
 	},
 	{
-		label: 'Products',
+		label: 'products',
 		icon: <Icon.Sidebar.Products className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: true
 	},
 	{
-		label: 'Invoices',
+		label: 'invoices',
 		icon: <Icon.Sidebar.Invoices className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: true
 	},
 	{
-		label: 'File Browser',
+		label: 'file-browser',
 		icon: <Icon.Sidebar.FileBrowser className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: true
 	},
 	{
-		label: 'Notifications',
+		label: 'notifications',
 		icon: <Icon.Sidebar.Notifications className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: true
 	},
 	{
-		label: 'Reports',
+		label: 'reports',
 		icon: <Icon.Sidebar.Reports className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: true
 	},
 	{
-		label: 'Help Center',
+		label: 'help-center',
 		icon: <Icon.Sidebar.HelpCenter className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: true
 	}
