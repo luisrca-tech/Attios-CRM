@@ -109,7 +109,9 @@ export function BottomMenu() {
 												height={94}
 												className="rounded-xl"
 											/>
-											<UserStatusLogged isOnline={isLoaded} />
+											<UserStatusLogged
+												userStatus={`${isLoaded ? 'online' : 'offline'}`}
+											/>
 										</div>
 										<span className="font-bold text-2xl text-black leading-[2.375rem]">
 											{userName}

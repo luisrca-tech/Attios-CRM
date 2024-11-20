@@ -1,6 +1,6 @@
 import { Button } from '~/common/components/ui/Button';
 import { Icon } from '~/common/components/ui/Icons';
-import { useAuth } from '../hook/useAuth';
+import { useAuth } from '../../hook/useAuth';
 
 export function SocialAuth() {
 	const { signInWithFacebook, signInWithGoogle } = useAuth();
