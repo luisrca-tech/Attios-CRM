@@ -35,3 +35,12 @@ jobs:
         run: bun run deploy-storybook -- --ci --existing-output-dir=storybook-static
         env:
           GH_TOKEN: ${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}
+
+      - name: Debug Environment Variables
+        run: |
+          echo "Checking if env variables exist..."
+          [[ -n "$DATABASE_URL" ]] && echo "DATABASE_URL exists" || echo "DATABASE_URL is missing"
+          [[ -n "$CLERK_SECRET_KEY" ]] && echo "CLERK_SECRET_KEY exists" || echo "CLERK_SECRET_KEY is missing"
+          [[ -n "$CLERK_FRONTEND_API" ]] && echo "CLERK_FRONTEND_API exists" || echo "CLERK_FRONTEND_API is missing"
+          [[ -n "$WEBHOOK_SECRET" ]] && echo "WEBHOOK_SECRET exists" || echo "WEBHOOK_SECRET is missing"
+          [[ -n "$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" ]] && echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY exists" || echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is missing"
