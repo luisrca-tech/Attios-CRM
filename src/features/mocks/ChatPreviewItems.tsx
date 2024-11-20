@@ -1,6 +1,11 @@
+import { User1 } from '~/common/components/ui/images/mocks/User1';
+import { User2 } from '~/common/components/ui/images/mocks/User2';
+import { User3 } from '~/common/components/ui/images/mocks/User3';
+import { User4 } from '~/common/components/ui/images/mocks/User4';
+
 type ChatPreviewItem = {
 	id: string;
-	userImage: string;
+	UserImage: React.ComponentType<{ className?: string }>;
 	userStatus: 'online' | 'offline' | 'away' | 'busy';
 	userName: string;
 	userDescription: string;
@@ -10,7 +15,7 @@ type ChatPreviewItem = {
 export const ChatPreviewItems: ChatPreviewItem[] = [
 	{
 		id: crypto.randomUUID(),
-		userImage: '/images/mocks/users/1.png',
+		UserImage: User1,
 		userStatus: 'online',
 		userName: 'Nicholas Gordon',
 		userDescription: 'Moreover the striking, brilliant and vivid colors',
@@ -18,7 +23,7 @@ export const ChatPreviewItems: ChatPreviewItem[] = [
 	},
 	{
 		id: crypto.randomUUID(),
-		userImage: '/images/mocks/users/2.png',
+		UserImage: User2,
 		userStatus: 'offline',
 		userName: 'Douglas Payne',
 		userDescription: 'In the history of modern astronomy, there is small',
@@ -26,7 +31,7 @@ export const ChatPreviewItems: ChatPreviewItem[] = [
 	},
 	{
 		id: crypto.randomUUID(),
-		userImage: '/images/mocks/users/3.png',
+		UserImage: User3,
 		userStatus: 'busy',
 		userName: 'Harriett Robbins',
 		userDescription: 'Advertising on a budget with a monthly frequency ',
@@ -34,7 +39,7 @@ export const ChatPreviewItems: ChatPreviewItem[] = [
 	},
 	{
 		id: crypto.randomUUID(),
-		userImage: '/images/mocks/users/4.png',
+		UserImage: User4,
 		userStatus: 'away',
 		userName: 'Polly Robbins',
 		userDescription: 'Search Engine Optimization And Advertising',

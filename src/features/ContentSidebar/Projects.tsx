@@ -29,11 +29,7 @@ export function ProjectsWithSidebar() {
 					<ContentSidebar.Card key={chat.id}>
 						<div className="flex items-center justify-between gap-4">
 							<div className="relative">
-								<Image
-									src={chat.userImage}
-									alt={chat.userName}
-									width={38}
-									height={38}
+								<chat.UserImage 
 									className="h-[2.375rem] w-[2.375rem] self-start"
 								/>
 								<UserStatusLogged

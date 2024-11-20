@@ -10,7 +10,7 @@ import { ContentSidebar } from '.';
 
 export function DashboardWithSidebar() {
 	return (
-		<ContentSidebar.Root>
+		<ContentSidebar.Root hasHeader={false}>
 			<div className="flex flex-col gap-11">
 				<div className="flex flex-col gap-3 pt-[5.25rem]">
 					<Image src={Logo} alt="Attios logo" width={98} height={98} />
@@ -28,11 +28,7 @@ export function DashboardWithSidebar() {
 					{ChatPreviewItems.map((chat) => (
 						<ContentSidebar.Card key={chat.id}>
 							<div className="flex items-center justify-between gap-4">
-								<Image
-									src={chat.userImage}
-									alt={chat.userName}
-									width={38}
-									height={38}
+								<chat.UserImage 
 									className="h-[2.375rem] w-[2.375rem] self-start"
 								/>
 								<div className="flex flex-col">
