@@ -11,11 +11,11 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
-      CLERK_FRONTEND_API: ${{ secrets.CLERK_FRONTEND_API }}
-      WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
-      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+      DATABASE_URL: "dummy_url"
+      CLERK_SECRET_KEY: "dummy_key"
+      CLERK_FRONTEND_API: "dummy_api"
+      WEBHOOK_SECRET: "dummy_secret"
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: "dummy_publishable_key"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
