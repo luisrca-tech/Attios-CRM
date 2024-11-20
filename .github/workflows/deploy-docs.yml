@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - develop
+      - feature/CW-126-storybook-setup
 
 jobs:
   build-and-deploy:
