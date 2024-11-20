@@ -109,8 +109,9 @@ export function SideMenu() {
 						</li>
 					))}
 
-					<li className="mt-4">
-						<div className={cn('flex items-center', isExpanded && 'gap-2')}>
+					<li className="mt-4 w-full px-4">
+						<div className={cn('flex items-center justify-start', isExpanded && 'gap-2')}>
+							{/* TODO: Create a component for the user button */}
 							<div className="relative">
 								<UserButton
 									appearance={{
@@ -128,8 +129,8 @@ export function SideMenu() {
 								/>
 							</div>
 							{isExpanded && user && (
-								<strong className="text-sm leading-5">
-									{user.fullName || user.username}
+								<strong className="text-sm leading-5 transition-all duration-300 delay-500">
+									{user.firstName}
 								</strong>
 							)}
 						</div>
