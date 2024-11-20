@@ -28,7 +28,12 @@ jobs:
       - name: Install Dependencies
         run: bun install
 
+      - name: Build Storybook
+        run: bun run build-storybook
+
       - name: Deploy storybook
-        run: bun run deploy-storybook -- --ci --existing-output-dir=storybook-static
+        run: |
+          git remote set-url origin https://git:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git
+          bun run deploy-storybook -- --ci
         env:
-          GH_TOKEN: ${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
