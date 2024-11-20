@@ -11,7 +11,7 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: "dummy_url"
+      DATABASE_URL: "postgresql://dummy:dummy@localhost:5432/dummy"
       CLERK_SECRET_KEY: "dummy_key"
       CLERK_FRONTEND_API: "dummy_api"
       WEBHOOK_SECRET: "dummy_secret"
