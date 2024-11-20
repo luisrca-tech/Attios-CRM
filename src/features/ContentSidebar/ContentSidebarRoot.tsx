@@ -8,13 +8,14 @@ import { ContentSidebarHeader } from './ContentSidebarHeader';
 type ContentSidebarRootProps = {
 	children: ReactNode;
 	className?: string;
+	hasHeader?: boolean;
 };
 
 export function ContentSidebarRoot({
 	children,
-	className
+	className,
+	hasHeader = true
 }: ContentSidebarRootProps) {
-	const pathname = usePathname();
 	const [isOpen, setIsOpen] = useState(true);
 
 	return (
@@ -25,15 +26,16 @@ export function ContentSidebarRoot({
 				isOpen ? 'border-r' : 'border-none'
 			)}
 		>
-			<ContentSidebarHeader
-				className={cn('', pathname === '/dashboard' && 'hidden')}
-				isOpen={isOpen}
-				onToggleSidebar={setIsOpen}
-			/>
+			{hasHeader && (
+				<ContentSidebarHeader
+					isOpen={isOpen}
+					onToggleSidebar={setIsOpen}
+				/>
+			)}
 			<div
 				className={cn(
 					'absolute top-20 right-0 left-0 h-[1px] w-full bg-white-200 transition-opacity duration-300',
-					pathname === '/dashboard' && 'hidden'
+					!hasHeader && 'hidden'
 				)}
 			/>
 			<div
