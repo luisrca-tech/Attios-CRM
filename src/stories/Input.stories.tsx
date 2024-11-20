@@ -6,7 +6,7 @@ import InputPassword from '../common/components/ui/Input/InputPassword';
 import SelectInput from '../common/components/ui/Input/SelectInput';
 
 const meta = {
-  title: 'Components/Input',
+  title: 'UI/Input',
   parameters: {
     layout: 'centered',
   },
