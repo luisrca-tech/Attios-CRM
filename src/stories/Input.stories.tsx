@@ -14,7 +14,6 @@ const meta = {
 
 export default meta;
 
-// InputRoot Stories
 export const DefaultInputRoot: StoryObj = {
   render: () => (
     <InputRoot fieldText="Label Text">
