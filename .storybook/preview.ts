@@ -10,18 +10,6 @@ const preview: Preview = {
 				date: /Date$/i
 			}
 		},
-		viewport: {
-			viewports: {
-				mobile2: {
-					name: 'Mobile',
-					styles: {
-						width: '24.375rem',
-						height: '37.5rem'
-					}
-				}
-			},
-			defaultViewport: 'mobile2'
-		}
 	}
 };
 
