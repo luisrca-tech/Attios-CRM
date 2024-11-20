@@ -2,7 +2,11 @@ import type { WebhookEvent } from '@clerk/nextjs/server';
 import { headers } from 'next/headers';
 import { env } from 'src/env';
 import { Webhook } from 'svix';
-import { handleUserCreated, handleUserDeleted, handleUserUpdated } from '~/server/api/routers/user/actions';
+import {
+	handleUserCreated,
+	handleUserDeleted,
+	handleUserUpdated
+} from '~/server/api/routers/user/actions';
 
 export async function POST(req: Request) {
 	const WEBHOOK_SECRET = env.WEBHOOK_SECRET;
