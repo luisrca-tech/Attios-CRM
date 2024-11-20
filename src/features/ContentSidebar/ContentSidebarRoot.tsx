@@ -1,9 +1,9 @@
 'use client';
 
+import { usePathname } from 'next/navigation';
 import { type ReactNode, useState } from 'react';
 import { cn } from '~/lib/utils';
 import { ContentSidebarHeader } from './ContentSidebarHeader';
-import { usePathname } from 'next/navigation';
 
 type ContentSidebarRootProps = {
 	children: ReactNode;
