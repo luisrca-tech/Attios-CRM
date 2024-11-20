@@ -11,11 +11,11 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     env:
-      DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
-      CLERK_FRONTEND_API: ${{ secrets.CLERK_FRONTEND_API }}
-      WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
-      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+      DATABASE_URL: ${{ process.env.DATABASE_URL }}
+      CLERK_SECRET_KEY: ${{ process.env.CLERK_SECRET_KEY }}
+      CLERK_FRONTEND_API: ${{ process.env.CLERK_FRONTEND_API }}
+      WEBHOOK_SECRET: ${{ process.env.WEBHOOK_SECRET }}
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -28,19 +28,7 @@ jobs:
       - name: Install Dependencies
         run: bun install
 
-      - name: Build
-        run: bun run build
-
       - name: Deploy storybook
         run: bun run deploy-storybook -- --ci --existing-output-dir=storybook-static
         env:
           GH_TOKEN: ${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}
-
-      - name: Debug Environment Variables
-        run: |
-          echo "Checking if env variables exist..."
-          [[ -n "$DATABASE_URL" ]] && echo "DATABASE_URL exists" || echo "DATABASE_URL is missing"
-          [[ -n "$CLERK_SECRET_KEY" ]] && echo "CLERK_SECRET_KEY exists" || echo "CLERK_SECRET_KEY is missing"
-          [[ -n "$CLERK_FRONTEND_API" ]] && echo "CLERK_FRONTEND_API exists" || echo "CLERK_FRONTEND_API is missing"
-          [[ -n "$WEBHOOK_SECRET" ]] && echo "WEBHOOK_SECRET exists" || echo "WEBHOOK_SECRET is missing"
-          [[ -n "$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" ]] && echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY exists" || echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is missing"
