@@ -28,6 +28,9 @@ jobs:
       - name: Install Dependencies
         run: bun install
 
+      - name: Build
+        run: npm run build
+
       - name: Deploy storybook
         run: bun run deploy-storybook -- --ci --existing-output-dir=storybook-static
         env:
