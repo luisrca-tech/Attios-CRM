@@ -110,7 +110,12 @@ export function SideMenu() {
 					))}
 
 					<li className="mt-4 w-full px-4">
-						<div className={cn('flex items-center justify-start', isExpanded && 'gap-2')}>
+						<div
+							className={cn(
+								'flex items-center justify-center',
+								isExpanded && 'gap-2 justify-start'
+							)}
+						>
 							{/* TODO: Create a component for the user button */}
 							<div className="relative">
 								<UserButton
