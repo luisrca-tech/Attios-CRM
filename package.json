@@ -18,7 +18,8 @@
 		"lint:force": "biome lint --write --unsafe",
 		"format": "biome format",
 		"format:fix": "biome format --fix",
-		"ngrok": "ngrok http http://localhost:3000"
+		"ngrok": "ngrok http http://localhost:3000",
+		"db:seed": "bun src/server/db/seed.ts"
 	},
 	"dependencies": {
 		"@babel/core": "^7.25.9",
@@ -81,3 +82,4 @@
 		"initVersion": "7.37.0"
 	}
 }
+
