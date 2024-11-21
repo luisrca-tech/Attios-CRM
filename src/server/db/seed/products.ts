@@ -3,19 +3,16 @@ import { db } from '../index';
 import { brands, categories, products } from '../schema/products';
 
 export async function seedProducts() {
-  // Limpar tabelas existentes (opcional)
   await db.delete(products);
   await db.delete(categories);
   await db.delete(brands);
 
-  // Criar brands
   const brandsData = Array.from({ length: 10 }, () => ({
     name: faker.company.name(),
   }));
 
   const insertedBrands = await db.insert(brands).values(brandsData).returning();
 
-  // Criar categories
   const categoriesData = [
     { name: 'Smartphones' },
     { name: 'Laptops' },
@@ -29,7 +26,6 @@ export async function seedProducts() {
 
   const insertedCategories = await db.insert(categories).values(categoriesData).returning();
 
-  // Criar products
   const productsData = Array.from({ length: 50 }, () => {
     const randomBrand = faker.helpers.arrayElement(insertedBrands);
     const randomCategory = faker.helpers.arrayElement(insertedCategories);
