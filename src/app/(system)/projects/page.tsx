@@ -1,4 +1,4 @@
-import { ContentSidebar } from '~/features/auth/components/block/ContentSidebar';
+import { ContentSidebar } from '~/features/ContentSidebar';
 
 export default function Projects() {
 	return (
