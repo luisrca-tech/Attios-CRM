@@ -18,6 +18,11 @@ export const menuItems: Props[] = [
 		isComingSoon: false
 	},
 	{
+		label: 'products',
+		icon: <Icon.Sidebar.Products className="h-[1.375rem] w-[1.375rem]" />,
+		isComingSoon: false
+	},
+	{
 		label: 'tasks',
 		icon: <Icon.Sidebar.Tasks className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: true
@@ -40,11 +45,6 @@ export const menuItems: Props[] = [
 	{
 		label: 'messages',
 		icon: <Icon.Sidebar.Messages className="h-[1.375rem] w-[1.375rem]" />,
-		isComingSoon: true
-	},
-	{
-		label: 'products',
-		icon: <Icon.Sidebar.Products className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: true
 	},
 	{
