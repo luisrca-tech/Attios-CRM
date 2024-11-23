@@ -1,3 +1,5 @@
+import crypto from 'node:crypto';
+
 type ChatPreviewItem = {
 	id: string;
 	userImage: string;
