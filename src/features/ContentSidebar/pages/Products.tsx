@@ -61,8 +61,18 @@ export default function ProductsWithSidebar() {
 						/>
 					</div>
 					<ContentSidebar.Graph.MetricContainer
-						leftMetric={<ContentSidebar.Graph.Metric value="$342.000" metric="Total sales" />}
-						rightMetric={<ContentSidebar.Graph.Metric value="$200.000" metric="Spendings" />}
+						leftMetric={
+							<ContentSidebar.Graph.Metric
+								value="$342.000"
+								metric="Total sales"
+							/>
+						}
+						rightMetric={
+							<ContentSidebar.Graph.Metric
+								value="$200.000"
+								metric="Spendings"
+							/>
+						}
 					/>
 				</ContentSidebar.Graph.Dinamyc>
 			</div>
