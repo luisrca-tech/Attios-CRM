@@ -1,4 +1,4 @@
-import { LaptopIcon, KeyboardIcon } from '@radix-ui/react-icons';
+import { GridIcon, KeyboardIcon, LaptopIcon } from '@radix-ui/react-icons';
 import { AddButtonIcon } from './AddButton';
 import { ArrowDown } from './ArrowDown';
 import { CalendarIcon } from './Calendar';
@@ -17,6 +17,7 @@ import { InvoicesIcon } from './Invoices';
 import { KanbanIcon } from './Kanban';
 import { MenuIcon } from './Menu';
 import { MessagesIcon } from './Messages';
+import { MoreActionsIcon } from './MoreActions';
 import { NotificationsIcon } from './Notifications';
 import { OpenPadlockIcon } from './OpenPadlock';
 import { PizzaGraphIcon } from './PizzaGraph';
@@ -24,10 +25,14 @@ import { ProductsIcon } from './Products';
 import { ProjectsIcon } from './Projects';
 import { ReportsIcon } from './Reports';
 import { SearchIcon } from './Search';
+import { StarRatingIcon } from './StarRating';
 import { StatisticsGraphIcon } from './StatisticsGraph';
 import { TasksIcon } from './Tasks';
+import { TrowelIcon } from './Trowel';
 import { TwitterIcon } from './Twitter';
 import { UserIcon } from './UserIcon';
+import { ListIconBlue, ListIconWhite } from './ListIcon';
+import { OrdenationIcon } from './OrdenationIcon';
 
 export const Icon = {
 	Email: EmailIcon,
@@ -40,6 +45,15 @@ export const Icon = {
 	Laptop: LaptopIcon,
 	Keyboard: KeyboardIcon,
 	Diamond: DiamondIcon,
+	Trowel: TrowelIcon,
+	MoreActions: MoreActionsIcon,
+	StarRating: StarRatingIcon,
+	Grid: GridIcon,
+	Ordenation: OrdenationIcon,
+	List: {
+		White: ListIconWhite,
+		Blue: ListIconBlue
+	},
 	Padlock: {
 		Open: OpenPadlockIcon,
 		Close: ClosePadlockIcon
