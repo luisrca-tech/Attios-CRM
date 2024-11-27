@@ -24,10 +24,10 @@ export default async function RootLayout({
 	}
 
 	return (
-		<div className="min-h-screen">
+		<div className="h-screen ">
 			<div className="lg:flex">
 				<SideMenu />
-				{children}
+				<div className="flex-1 overflow-y-auto">{children}</div>
 			</div>
 			<BottomMenu />
 		</div>

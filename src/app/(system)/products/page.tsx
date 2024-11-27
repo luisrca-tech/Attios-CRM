@@ -1,10 +1,15 @@
+import { PagesHeader } from '~/common/components/ui/PagesHeader';
 import { ContentSidebar } from '~/features/ContentSidebar';
+import { ProductsList } from '~/features/Products/ProductsList';
 
 export default function Products() {
 	return (
 		<div className="flex">
 			<ContentSidebar.Page.Products />
-			<h2>You are in Products page</h2>
+			<div className="flex flex-1 flex-col">
+				<PagesHeader pageTitle="Products" />
+				<ProductsList />
+			</div>
 		</div>
 	);
 }
