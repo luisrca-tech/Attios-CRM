@@ -24,8 +24,8 @@ export default async function RootLayout({
 	}
 
 	return (
-		<div>
-			<div className="flex min-h-screen">
+		<div className="min-h-screen">
+			<div className="lg:flex">
 				<SideMenu />
 				{children}
 			</div>
