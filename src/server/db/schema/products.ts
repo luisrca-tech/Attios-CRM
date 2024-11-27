@@ -1,3 +1,4 @@
+import { relations } from 'drizzle-orm';
 import { decimal, index, integer, serial, varchar } from 'drizzle-orm/pg-core';
 import { createTable } from './config';
 
@@ -14,7 +15,7 @@ export const categories = createTable('category', {
 export const products = createTable(
 	'product',
 	{
-		id: serial('id').primaryKey(),
+		id: varchar('id', { length: 10 }).primaryKey(),
 		name: varchar('name', { length: 255 }).notNull(),
 		brandId: integer('brand_id')
 			.references(() => brands.id)
@@ -23,6 +24,7 @@ export const products = createTable(
 			.references(() => categories.id)
 			.notNull(),
 		modelYear: integer('model_year').notNull(),
+		quantity: integer('quantity').notNull(),
 		listPrice: decimal('list_price', { precision: 10, scale: 2 }).notNull(),
 		productImage: varchar('product_image', { length: 255 })
 	},
@@ -31,3 +33,22 @@ export const products = createTable(
 		categoryIdIdx: index('category_id_idx').on(table.categoryId)
 	})
 );
+
+export const productsRelations = relations(products, ({ one }) => ({
+	category: one(categories, {
+		fields: [products.categoryId],
+		references: [categories.id]
+	}),
+	brand: one(brands, {
+		fields: [products.brandId],
+		references: [brands.id]
+	})
+}));
+
+export const categoriesRelations = relations(categories, ({ many }) => ({
+	products: many(products)
+}));
+
+export const brandsRelations = relations(brands, ({ many }) => ({
+	products: many(products)
+}));
