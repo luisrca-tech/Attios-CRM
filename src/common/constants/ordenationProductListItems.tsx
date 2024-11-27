@@ -1,7 +1,7 @@
 import { Icon } from '../components/ui/Icons/_index';
-import type { ProductListItem } from '../types/ordenationItems.type';
+import type { OrdenationListItem } from '../types/ordenationItems.type';
 
-export const ProductListItems: ProductListItem[] = [
+export const OrdenationProductListItems: OrdenationListItem[] = [
 	{
 		label: 'Name',
 		icon: <Icon.Ordenation />
