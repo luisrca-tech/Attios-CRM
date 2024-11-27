@@ -1,6 +1,6 @@
 'use client';
 
-import { Icon } from './components/ui/Icons';
+import { Icon } from './components/ui/Icons/_index';
 import { Input } from './components/ui/Input';
 
 export function InputsText() {

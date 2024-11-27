@@ -1,5 +1,5 @@
 import crypto from 'node:crypto';
-import { Icon } from '~/common/components/ui/Icons';
+import { Icon } from '~/common/components/ui/Icons/_index';
 
 type PopularProductCategory = {
 	id: string;

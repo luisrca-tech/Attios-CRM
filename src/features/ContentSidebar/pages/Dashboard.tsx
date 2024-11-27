@@ -4,7 +4,7 @@ import BlueWaveGraphForeground from '/public/images/mocks/graphs/blueWaveGraph.p
 import WhiteWaveGraphBackground from '/public/images/mocks/graphs/whiteWaveGraph.png';
 
 import { Button } from '~/common/components/ui/Button';
-import { Icon } from '~/common/components/ui/Icons';
+import { Icon } from '~/common/components/ui/Icons/_index';
 import { ChatPreviewItems } from '~/features/mocks/ChatPreviewItems';
 import { ContentSidebar } from '..';
 

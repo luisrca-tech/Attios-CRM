@@ -8,7 +8,7 @@ import { menuItems } from '~/common/constants/menuItems';
 import useClickOutside from '~/common/hooks/useClickOutside';
 import { cn } from '~/lib/utils';
 import { CommingSoon } from './CommingSoon';
-import { Icon } from './Icons';
+import { Icon } from './Icons/_index';
 import { UserStatusLogged } from './UserStatusLogged';
 import Logo from '/public/favicon.svg';
 
@@ -29,7 +29,7 @@ export function SideMenu() {
 		<div
 			ref={menuRef}
 			className={cn(
-				'hidden border-white-200 border-r bg-white-100 py-5 transition-all duration-300 ease-in-out lg:flex',
+				'hidden max-h-screen border-white-200 border-r bg-white-100 py-5 transition-all duration-300 ease-in-out lg:flex',
 				isExpanded ? 'w-44' : 'w-[5.25rem]'
 			)}
 		>

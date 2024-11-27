@@ -1,5 +1,5 @@
 import { forwardRef, useState } from 'react';
-import { Icon } from '~/common/components/ui/Icons';
+import { Icon } from '~/common/components/ui/Icons/_index';
 import InputText from './InputText';
 
 interface InputPasswordProps {

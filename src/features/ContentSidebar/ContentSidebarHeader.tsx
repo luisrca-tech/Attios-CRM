@@ -1,8 +1,8 @@
 import Image from 'next/image';
+import { Button } from '~/common/components/ui/Button';
+import { Icon } from '~/common/components/ui/Icons/_index';
 import { cn } from '~/lib/utils';
 import Logo from '/public/favicon.svg';
-import { Button } from '~/common/components/ui/Button';
-import { Icon } from '~/common/components/ui/Icons';
 
 interface ContentSidebarHeaderProps {
 	isOpen: boolean;

@@ -1,9 +1,9 @@
 import Image from 'next/image';
-import { Button } from '~/common/components/ui/Button';
-import { Icon } from '~/common/components/ui/Icons';
-import { ChatPreviewItems } from '~/features/mocks/ChatPreviewItems';
-import { UserStatusLogged } from '~/common/components/ui/UserStatusLogged';
 import { Badge } from '~/common/components/ui/Badge';
+import { Button } from '~/common/components/ui/Button';
+import { Icon } from '~/common/components/ui/Icons/_index';
+import { UserStatusLogged } from '~/common/components/ui/UserStatusLogged';
+import { ChatPreviewItems } from '~/features/mocks/ChatPreviewItems';
 import { ContentSidebar } from '..';
 
 export function ProjectsWithSidebar() {

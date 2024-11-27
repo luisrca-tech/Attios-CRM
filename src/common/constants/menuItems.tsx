@@ -1,4 +1,4 @@
-import { Icon } from '../components/ui/Icons';
+import { Icon } from '../components/ui/Icons/_index';
 
 type Props = {
 	label: string;
