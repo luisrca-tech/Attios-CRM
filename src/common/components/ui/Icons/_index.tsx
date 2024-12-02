@@ -15,11 +15,13 @@ import { GoogleIcon } from './Google';
 import { HelpCenterIcon } from './HelpCenter';
 import { InvoicesIcon } from './Invoices';
 import { KanbanIcon } from './Kanban';
+import { ListIconBlue, ListIconWhite } from './ListIcon';
 import { MenuIcon } from './Menu';
 import { MessagesIcon } from './Messages';
 import { MoreActionsIcon } from './MoreActions';
 import { NotificationsIcon } from './Notifications';
 import { OpenPadlockIcon } from './OpenPadlock';
+import { OrdenationIcon } from './OrdenationIcon';
 import { PizzaGraphIcon } from './PizzaGraph';
 import { ProductsIcon } from './Products';
 import { ProjectsIcon } from './Projects';
@@ -31,8 +33,8 @@ import { TasksIcon } from './Tasks';
 import { TrowelIcon } from './Trowel';
 import { TwitterIcon } from './Twitter';
 import { UserIcon } from './UserIcon';
-import { ListIconBlue, ListIconWhite } from './ListIcon';
-import { OrdenationIcon } from './OrdenationIcon';
+import { ArrowLeft } from './ArrowLeft';
+import { ArrowRight } from './ArrowRight';
 
 export const Icon = {
 	Email: EmailIcon,
@@ -59,7 +61,9 @@ export const Icon = {
 		Close: ClosePadlockIcon
 	},
 	Arrow: {
-		Down: ArrowDown
+		Down: ArrowDown,
+		Left: ArrowLeft,
+		Right: ArrowRight
 	},
 	Social: {
 		Google: GoogleIcon,
