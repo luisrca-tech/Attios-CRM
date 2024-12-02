@@ -43,7 +43,7 @@ export function DataListTable<TData, TValue>({
 		getSortedRowModel: getSortedRowModel(),
 		pageCount: Math.ceil(data.length / pageSize),
 		state: {
-			sorting,
+			sorting
 		},
 		onSortingChange: setSorting,
 		initialState: {
@@ -62,8 +62,8 @@ export function DataListTable<TData, TValue>({
 	});
 
 	// Get sorted data first
-	const sortedData = table.getSortedRowModel().rows.map(row => row.original);
-	
+	const sortedData = table.getSortedRowModel().rows.map((row) => row.original);
+
 	// Then paginate the sorted data
 	const start = (page - 1) * pageSize;
 	const end = start + pageSize;
@@ -71,7 +71,7 @@ export function DataListTable<TData, TValue>({
 
 	return (
 		<div className="flex flex-col gap-4">
-			<div className="hidden h-[calc(100vh-19rem)] w-full overflow-y-auto bg-white md:block lg:block [&::-webkit-scrollbar]:hidden">
+			<div className="hidden h-[calc(100vh-23rem)] w-full overflow-y-auto bg-white md:block lg:block lg:h-[calc(100vh-19rem)] [&::-webkit-scrollbar]:hidden">
 				<Table>
 					<TableHeader className="sticky top-0 z-10">
 						{table.getHeaderGroups().map((headerGroup) => (

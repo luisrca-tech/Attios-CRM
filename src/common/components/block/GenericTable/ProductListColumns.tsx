@@ -41,9 +41,9 @@ export const columnsList: ColumnType<Product> = [
 		header: ({ column }) => (
 			<div className="flex items-center justify-between">
 				<span>Name</span>
-				<button 
+				<button
 					type="button"
-					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
 					<Icon.Ordenation className="h-3 w-3" />
 				</button>
@@ -91,7 +91,7 @@ export const columnsList: ColumnType<Product> = [
 				Sales
 				<button
 					type="button"
-					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
 					<Icon.Ordenation className="h-3 w-3" />
 				</button>
@@ -106,7 +106,7 @@ export const columnsList: ColumnType<Product> = [
 				Qty.
 				<button
 					type="button"
-					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
 					<Icon.Ordenation className="h-3 w-3" />
 				</button>
@@ -116,12 +116,12 @@ export const columnsList: ColumnType<Product> = [
 	},
 	{
 		accessorKey: 'listPrice',
-		 header: ({ column }) => (
+		header: ({ column }) => (
 			<div className="flex w-full items-center justify-between">
 				Price
 				<button
 					type="button"
-					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
 					<Icon.Ordenation className="h-3 w-3" />
 				</button>
@@ -138,7 +138,7 @@ export const columnsList: ColumnType<Product> = [
 				Category
 				<button
 					type="button"
-					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
 					<Icon.Ordenation className="h-3 w-3" />
 				</button>

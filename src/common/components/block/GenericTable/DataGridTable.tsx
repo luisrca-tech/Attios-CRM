@@ -20,7 +20,9 @@ interface DataGridTableProps<TData extends { id: string | number }> {
 	data: TData[];
 	columns: ColumnDef<TData, unknown>[];
 	pageSize?: number;
-	CardComponent: ComponentType<TData & { isSelected?: boolean; onSelect?: (value: boolean) => void }>;
+	CardComponent: ComponentType<
+		TData & { isSelected?: boolean; onSelect?: (value: boolean) => void }
+	>;
 }
 
 export function DataGridTable<TData extends { id: string | number }>({
@@ -40,7 +42,7 @@ export function DataGridTable<TData extends { id: string | number }>({
 		getSortedRowModel: getSortedRowModel(),
 		pageCount: Math.ceil(data.length / pageSize),
 		state: {
-			sorting,
+			sorting
 		},
 		onSortingChange: setSorting,
 		initialState: {
@@ -59,8 +61,8 @@ export function DataGridTable<TData extends { id: string | number }>({
 		manualPagination: true
 	});
 
-	const sortedData = table.getSortedRowModel().rows.map(row => row.original);
-	
+	const sortedData = table.getSortedRowModel().rows.map((row) => row.original);
+
 	const start = (page - 1) * pageSize;
 	const end = start + pageSize;
 	const paginatedData = sortedData.slice(start, end);
@@ -91,9 +93,9 @@ export function DataGridTable<TData extends { id: string | number }>({
 					const row = table.getRowModel().rows.find((r) => r.original === item);
 					return (
 						<div key={item.id}>
-							<CardComponent 
-								{...item} 
-								isSelected={row?.getIsSelected()} 
+							<CardComponent
+								{...item}
+								isSelected={row?.getIsSelected()}
 								onSelect={(value) => row?.toggleSelected(!!value)}
 							/>
 						</div>

@@ -33,9 +33,9 @@ export const columnsGrid: ColumnDef<Product, unknown>[] = [
 		header: ({ column }) => (
 			<div className="flex items-center justify-between">
 				<span>Name</span>
-				<button 
+				<button
 					type="button"
-					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
 					<Icon.Ordenation className="h-3 w-3" />
 				</button>
@@ -47,9 +47,9 @@ export const columnsGrid: ColumnDef<Product, unknown>[] = [
 		header: ({ column }) => (
 			<div className="flex items-center justify-between">
 				<span>Sales</span>
-				<button 
+				<button
 					type="button"
-					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
 					<Icon.Ordenation className="h-3 w-3" />
 				</button>
@@ -61,9 +61,9 @@ export const columnsGrid: ColumnDef<Product, unknown>[] = [
 		header: ({ column }) => (
 			<div className="flex items-center justify-between">
 				<span>Price</span>
-				<button 
+				<button
 					type="button"
-					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
 				>
 					<Icon.Ordenation className="h-3 w-3" />
 				</button>

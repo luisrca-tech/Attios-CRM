@@ -7,10 +7,11 @@ import { Icon } from './ui/Icons/_index';
 
 type Product = InferSelectModel<typeof products>;
 
-interface ProductGridCardProps extends Pick<
-	Product,
-	'productImage' | 'id' | 'name' | 'modelYear' | `quantity` | `listPrice`
-> {
+interface ProductGridCardProps
+	extends Pick<
+		Product,
+		'productImage' | 'id' | 'name' | 'modelYear' | `quantity` | `listPrice`
+	> {
 	isSelected?: boolean;
 	onSelect?: (value: boolean) => void;
 }
@@ -30,8 +31,8 @@ export function ProductGridCard({
 	return (
 		<div className="flex max-h-[18rem] min-h-[18rem] flex-col justify-between rounded-xl bg-white-100 lg:border lg:border-white-400">
 			<div className="flex justify-between p-4">
-				<Checkbox 
-					className="hidden h-5 w-5 lg:flex" 
+				<Checkbox
+					className="hidden h-5 w-5 lg:flex"
 					checked={isSelected}
 					onCheckedChange={onSelect}
 				/>
