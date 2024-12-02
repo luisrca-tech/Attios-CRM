@@ -15,5 +15,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: npm install
-      - run: npm run test
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
+      - run: bun run test
