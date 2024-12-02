@@ -5,7 +5,7 @@ import WhiteWaveGraphBackground from '/public/images/mocks/graphs/whiteWaveGraph
 
 import { Button } from '~/common/components/ui/Button';
 import { Icon } from '~/common/components/ui/Icons/_index';
-import { ChatPreviewItems } from '~/features/mocks/ChatPreviewItems';
+import { ChatPreviewItems } from '~/features/ContentSidebar/mocks/ChatPreviewItems';
 import { ContentSidebar } from '..';
 
 export function DashboardWithSidebar() {

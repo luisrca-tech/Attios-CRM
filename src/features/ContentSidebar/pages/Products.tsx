@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { cn } from '~/lib/utils';
 import { ContentSidebar } from '..';
-import { PopularProductCategories } from '../../mocks/PopularProductCategories';
+import { PopularProductCategories } from '../mocks/PopularProductCategories';
 import ProductsGraph from '/public/images/mocks/graphs/productsMetricGraph.png';
 
 export default function ProductsWithSidebar() {

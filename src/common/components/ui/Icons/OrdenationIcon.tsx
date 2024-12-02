@@ -6,7 +6,7 @@ import OrdenationIconImage from '/public/icons/ordenation.png';
 export function OrdenationIcon({ className }: IconProps) {
 	return (
 		<Image
-			className={cn('text-primary-100 ', className)}
+			className={cn('h-4 w-4 text-primary-100', className)}
 			src={OrdenationIconImage}
 			alt="Ordenation"
 		/>

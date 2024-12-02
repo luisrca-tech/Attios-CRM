@@ -7,7 +7,7 @@ type PagesHeaderProps = {
 
 export function PagesHeader({ pageTitle }: PagesHeaderProps) {
 	return (
-		<div className="border-white-200 border-b bg-white-100 p-[0.9375rem] lg:bg-white-300 lg:px-7 lg:py-6">
+		<div className="border-white-200 border-b bg-white-100 p-[0.9375rem] lg:bg-white-300 lg:py-6">
 			<div className="flex w-full items-center justify-between lg:hidden">
 				<Button className="p-3 hover:bg-white-200/60" color="secondary">
 					<Icon.Search className="h-4 w-4" />
