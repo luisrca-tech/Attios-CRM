@@ -6,6 +6,7 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { BottomMenu } from '~/common/components/ui/BottomMenuNavigation';
 import { SideMenu } from '~/common/components/ui/SideMenuNavigation';
+import { NuqsAdapter } from 'nuqs/adapters/next/app';
 
 export const metadata: Metadata = {
 	title: 'Attios',
@@ -24,10 +25,12 @@ export default async function RootLayout({
 	}
 
 	return (
-		<div className="h-screen ">
-			<div className="lg:flex">
-				<SideMenu />
-				<div className="flex-1 overflow-y-auto">{children}</div>
+		<div className="h-screen">
+			<div className="flex w-full">
+				<NuqsAdapter>
+					<SideMenu />
+					{children}
+				</NuqsAdapter>
 			</div>
 			<BottomMenu />
 		</div>

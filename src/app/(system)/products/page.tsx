@@ -1,14 +1,14 @@
+import { ProductsTable } from '~/common/components/block/ProductsTable';
 import { PagesHeader } from '~/common/components/ui/PagesHeader';
 import { ContentSidebar } from '~/features/ContentSidebar';
-import { ProductsList } from '~/features/Products/ProductsList';
 
 export default function Products() {
 	return (
-		<div className="flex">
+		<div className="flex w-full">
 			<ContentSidebar.Page.Products />
-			<div className="flex flex-1 flex-col">
+			<div className="flex w-full flex-col bg-white-300 lg:px-7">
 				<PagesHeader pageTitle="Products" />
-				<ProductsList />
+				<ProductsTable />
 			</div>
 		</div>
 	);
