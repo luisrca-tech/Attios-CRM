@@ -38,10 +38,15 @@ export const columnsList: ColumnType<Product> = [
 	},
 	{
 		accessorKey: 'name',
-		header: () => (
+		header: ({ column }) => (
 			<div className="flex items-center justify-between">
 				<span>Name</span>
-				<Icon.Ordenation className="h-3 w-3" />
+				<button 
+					type="button"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					<Icon.Ordenation className="h-3 w-3" />
+				</button>
 			</div>
 		),
 		cell: ({ row }) => {
@@ -81,30 +86,45 @@ export const columnsList: ColumnType<Product> = [
 	},
 	{
 		accessorKey: 'sales',
-		header: () => (
+		header: ({ column }) => (
 			<div className="flex items-center justify-around gap-4">
 				Sales
-				<Icon.Ordenation className="h-3 w-3" />
+				<button
+					type="button"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					<Icon.Ordenation className="h-3 w-3" />
+				</button>
 			</div>
 		),
 		cell: () => <div className="font-bold">{Number(randomSales())}</div>
 	},
 	{
 		accessorKey: 'quantity',
-		header: () => (
+		header: ({ column }) => (
 			<div className="flex w-full items-center justify-between gap-4">
 				Qty.
-				<Icon.Ordenation className="h-3 w-3" />
+				<button
+					type="button"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					<Icon.Ordenation className="h-3 w-3" />
+				</button>
 			</div>
 		),
 		cell: ({ row }) => <div className="font-bold">{row.original.quantity}</div>
 	},
 	{
 		accessorKey: 'listPrice',
-		header: () => (
+		 header: ({ column }) => (
 			<div className="flex w-full items-center justify-between">
 				Price
-				<Icon.Ordenation className="h-3 w-3" />
+				<button
+					type="button"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					<Icon.Ordenation className="h-3 w-3" />
+				</button>
 			</div>
 		),
 		cell: ({ row }) => (
@@ -113,10 +133,15 @@ export const columnsList: ColumnType<Product> = [
 	},
 	{
 		accessorKey: 'category',
-		header: () => (
+		header: ({ column }) => (
 			<div className="flex w-full items-center justify-between lg:hidden 2xl:flex">
 				Category
-				<Icon.Ordenation className="h-3 w-3" />
+				<button
+					type="button"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					<Icon.Ordenation className="h-3 w-3" />
+				</button>
 			</div>
 		),
 		cell: ({ row }) => (

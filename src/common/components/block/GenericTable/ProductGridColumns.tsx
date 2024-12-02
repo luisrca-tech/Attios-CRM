@@ -30,28 +30,43 @@ export const columnsGrid: ColumnDef<Product, unknown>[] = [
 	},
 	{
 		accessorKey: 'name',
-		header: () => (
+		header: ({ column }) => (
 			<div className="flex items-center justify-between">
 				<span>Name</span>
-				<Icon.Ordenation className="h-3 w-3" />
+				<button 
+					type="button"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					<Icon.Ordenation className="h-3 w-3" />
+				</button>
 			</div>
 		)
 	},
 	{
 		accessorKey: 'modelYear',
-		header: () => (
+		header: ({ column }) => (
 			<div className="flex items-center justify-between">
 				<span>Sales</span>
-				<Icon.Ordenation className="h-3 w-3" />
+				<button 
+					type="button"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					<Icon.Ordenation className="h-3 w-3" />
+				</button>
 			</div>
 		)
 	},
 	{
 		accessorKey: 'listPrice',
-		header: () => (
+		header: ({ column }) => (
 			<div className="flex items-center justify-between">
 				<span>Price</span>
-				<Icon.Ordenation className="h-3 w-3" />
+				<button 
+					type="button"
+					onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+				>
+					<Icon.Ordenation className="h-3 w-3" />
+				</button>
 			</div>
 		)
 	}

@@ -5,7 +5,9 @@ import {
 	flexRender,
 	getCoreRowModel,
 	getPaginationRowModel,
-	useReactTable
+	getSortedRowModel,
+	useReactTable,
+	type SortingState
 } from '@tanstack/react-table';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import {
@@ -17,6 +19,7 @@ import {
 	TableRow
 } from '../../ui/table';
 import { Pagination } from './Pagination';
+import { useState } from 'react';
 
 interface DataListTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
@@ -30,13 +33,19 @@ export function DataListTable<TData, TValue>({
 	pageSize = 8
 }: DataListTableProps<TData, TValue>) {
 	const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
+	const [sorting, setSorting] = useState<SortingState>([]);
 
 	const table = useReactTable({
 		data,
 		columns,
 		getCoreRowModel: getCoreRowModel(),
 		getPaginationRowModel: getPaginationRowModel(),
+		getSortedRowModel: getSortedRowModel(),
 		pageCount: Math.ceil(data.length / pageSize),
+		state: {
+			sorting,
+		},
+		onSortingChange: setSorting,
 		initialState: {
 			pagination: {
 				pageSize,
@@ -52,9 +61,13 @@ export function DataListTable<TData, TValue>({
 		manualPagination: true
 	});
 
+	// Get sorted data first
+	const sortedData = table.getSortedRowModel().rows.map(row => row.original);
+	
+	// Then paginate the sorted data
 	const start = (page - 1) * pageSize;
 	const end = start + pageSize;
-	const paginatedData = data.slice(start, end);
+	const paginatedData = sortedData.slice(start, end);
 
 	return (
 		<div className="flex flex-col gap-4">
