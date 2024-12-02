@@ -1,6 +1,6 @@
-import { ProductsTable } from '~/common/components/block/ProductsTable';
 import { PagesHeader } from '~/common/components/ui/PagesHeader';
 import { ContentSidebar } from '~/features/ContentSidebar';
+import { ProductsTable } from '~/features/Products/ProductsTable';
 
 export default function Products() {
 	return (

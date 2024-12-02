@@ -2,19 +2,19 @@
 
 import {
 	type ColumnDef,
+	type SortingState,
 	flexRender,
 	getCoreRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
-	useReactTable,
-	type SortingState
+	useReactTable
 } from '@tanstack/react-table';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import type { ComponentType } from 'react';
+import { useState } from 'react';
 import { cn } from '~/lib/utils';
 import { Table, TableHead, TableHeader, TableRow } from '../../ui/table';
 import { Pagination } from './Pagination';
-import { useState } from 'react';
 
 interface DataGridTableProps<TData extends { id: string | number }> {
 	data: TData[];

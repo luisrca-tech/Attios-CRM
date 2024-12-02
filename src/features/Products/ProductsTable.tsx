@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import { api } from '~/trpc/react';
-import { ProductGridCard } from '../ProductGridCard';
-import { ProductListCard } from '../ProductListCard';
-import { Icon } from '../ui/Icons/_index';
-import { ViewTypeSelector } from '../ui/ViewTypeSelector';
-import { DataGridTable } from './GenericTable/DataGridTable';
-import { DataListTable } from './GenericTable/DataListTable';
-import { columnsGrid } from './GenericTable/ProductGridColumns';
-import { columnsList } from './GenericTable/ProductListColumns';
+import { DataGridTable } from '../../common/components/block/GenericTable/DataGridTable';
+import { DataListTable } from '../../common/components/block/GenericTable/DataListTable';
+import { Icon } from '../../common/components/ui/Icons/_index';
+import { ProductGridCard } from '../../common/components/ui/ProductGridCard';
+import { ViewTypeSelector } from '../../common/components/ui/ViewTypeSelector';
+import { columnsGrid } from './ProductGridColumns';
+import { columnsList } from './ProductListColumns';
+import { ProductListCard } from '~/common/components/ui/ProductListCard';
 export function ProductsTable() {
 	const [viewType, setViewType] = useState<'list' | 'grid'>('list');
 	const ProductQuery = api.product.getAll.useQuery();

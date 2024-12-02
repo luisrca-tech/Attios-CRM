@@ -1,8 +1,8 @@
 import type { InferSelectModel } from 'drizzle-orm';
 import Image from 'next/image';
 import type { products } from '~/server/db/schema';
-import { Button } from './ui/Button';
-import { Icon } from './ui/Icons/_index';
+import { Icon } from './Icons/_index';
+import { Button } from './Button';
 
 type Product = InferSelectModel<typeof products> & {
 	category?: { name: string };

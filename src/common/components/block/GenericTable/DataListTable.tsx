@@ -2,14 +2,15 @@
 
 import {
 	type ColumnDef,
+	type SortingState,
 	flexRender,
 	getCoreRowModel,
 	getPaginationRowModel,
 	getSortedRowModel,
-	useReactTable,
-	type SortingState
+	useReactTable
 } from '@tanstack/react-table';
 import { parseAsInteger, useQueryState } from 'nuqs';
+import { useState } from 'react';
 import {
 	Table,
 	TableBody,
@@ -19,7 +20,6 @@ import {
 	TableRow
 } from '../../ui/table';
 import { Pagination } from './Pagination';
-import { useState } from 'react';
 
 interface DataListTableProps<TData, TValue> {
 	columns: ColumnDef<TData, TValue>[];
