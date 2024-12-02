@@ -1,0 +1,61 @@
+'use client';
+
+import { useState } from 'react';
+import { api } from '~/trpc/react';
+import { ProductGridCard } from '../ProductGridCard';
+import { ProductListCard } from '../ProductListCard';
+import { Icon } from '../ui/Icons/_index';
+import { ViewTypeSelector } from '../ui/ViewTypeSelector';
+import { DataGridTable } from './GenericTable/DataGridTable';
+import { DataListTable } from './GenericTable/DataListTable';
+import { columnsGrid } from './GenericTable/ProductGridColumns';
+import { columnsList } from './GenericTable/ProductListColumns';
+export function ProductsTable() {
+	const [viewType, setViewType] = useState<'list' | 'grid'>('list');
+	const ProductQuery = api.product.getAll.useQuery();
+	const ProductData = ProductQuery.data ?? [];
+
+	return (
+		<div className="flex w-full flex-col gap-1 bg-white-300 md:block md:bg-white-100 lg:block lg:gap-[0.875rem] lg:rounded-xl lg:bg-white-100">
+			<ViewTypeSelector viewType={viewType} onViewChange={setViewType}>
+				<button
+					type="button"
+					className="flex items-center gap-1 rounded-lg bg-white-100"
+				>
+					<Icon.MoreActions />
+					<span className="font-extrabold text-black text-xs leading-[0.875rem] hover:font-semibold">
+						ALL ACTIONS
+					</span>
+				</button>
+			</ViewTypeSelector>
+			{viewType === 'list' ? (
+				<>
+					<DataListTable
+						columns={columnsList}
+						data={ProductData}
+						pageSize={8}
+					/>
+					{ProductData.map((product) => (
+						<div className="flex flex-col gap-1 px-3" key={product.id}>
+							<ProductListCard {...product} />
+						</div>
+					))}
+				</>
+			) : (
+				<>
+					<DataGridTable
+						data={ProductData}
+						columns={columnsGrid}
+						pageSize={8}
+						CardComponent={ProductGridCard}
+					/>
+					{ProductData.map((product) => (
+						<div className="grid grid-cols-1 gap-1 md:hidden" key={product.id}>
+							<ProductGridCard {...product} />
+						</div>
+					))}
+				</>
+			)}
+		</div>
+	);
+}
