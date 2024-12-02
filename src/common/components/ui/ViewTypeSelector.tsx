@@ -20,11 +20,11 @@ export function ViewTypeSelector({
 	return (
 		<div
 			className={cn(
-				'flex items-center justify-between p-[1.625rem]',
+				'flex items-center justify-between px-[1.625rem] py-5',
 				className
 			)}
 		>
-			<div className="flex w-full items-center justify-between gap-4 lg:hidden">
+			<div className="flex w-full items-center justify-between gap-4 md:hidden lg:hidden">
 				<Button
 					variant="outlined"
 					color="septenary"
@@ -45,7 +45,7 @@ export function ViewTypeSelector({
 					<Icon.Trowel />
 				</Button>
 			</div>
-			<div className="hidden lg:flex lg:gap-1">
+			<div className="hidden gap-1 md:flex lg:flex">
 				<Button
 					className={cn(
 						'px-5 py-3',
@@ -69,7 +69,7 @@ export function ViewTypeSelector({
 					Grid
 				</Button>
 			</div>
-			<div className="hidden lg:flex">{children}</div>
+			<div className="hidden md:flex lg:flex">{children}</div>
 		</div>
 	);
 }
