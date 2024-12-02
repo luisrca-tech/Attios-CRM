@@ -1,17 +1,14 @@
+import { DotsHorizontalIcon } from '@radix-ui/react-icons';
 import * as React from 'react';
 import { cn } from '~/lib/utils';
-import {
-	ChevronLeftIcon,
-	ChevronRightIcon,
-	DotsHorizontalIcon
-} from '@radix-ui/react-icons';
-import { LinkButton } from './Button';
 import type { LinkProps } from './Button';
+import { LinkButton } from './Button';
+import { Icon } from './Icons/_index';
 
 const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
 	<nav
 		aria-label="pagination"
-		className={cn('mx-auto flex w-full justify-center', className)}
+		className={cn('flex w-full items-center justify-between', className)}
 		{...props}
 	/>
 );
@@ -50,7 +47,10 @@ const PaginationLink = ({
 	<LinkButton
 		variant={isActive ? 'outlined' : 'filled'}
 		color="secondary"
-		className={cn('h-9 w-9 p-0', className)}
+		className={cn(
+			'bg-transparent text-black hover:border hover:border-primary-200 hover:bg-transparent',
+			className
+		)}
 		{...props}
 	>
 		{children}
@@ -59,16 +59,19 @@ const PaginationLink = ({
 PaginationLink.displayName = 'PaginationLink';
 
 const PaginationPrevious = ({
+	isActive,
 	className,
 	...props
 }: React.ComponentProps<typeof PaginationLink>) => (
 	<PaginationLink
 		aria-label="Go to previous page"
-		className={cn('gap-1 pl-2.5', className)}
+		className={cn(
+			'flex h-8 w-8 items-center justify-center rounded-md bg-white-200 p-0',
+			className
+		)}
 		{...props}
 	>
-		<ChevronLeftIcon className="h-4 w-4" />
-		<span>Previous</span>
+		<Icon.Arrow.Left />
 	</PaginationLink>
 );
 PaginationPrevious.displayName = 'PaginationPrevious';
@@ -79,11 +82,13 @@ const PaginationNext = ({
 }: React.ComponentProps<typeof PaginationLink>) => (
 	<PaginationLink
 		aria-label="Go to next page"
-		className={cn('gap-1 pr-2.5', className)}
+		className={cn(
+			'flex h-8 w-8 items-center justify-center rounded-md bg-white-200 p-0',
+			className
+		)}
 		{...props}
 	>
-		<span>Next</span>
-		<ChevronRightIcon className="h-4 w-4" />
+		<Icon.Arrow.Right />
 	</PaginationLink>
 );
 PaginationNext.displayName = 'PaginationNext';
@@ -106,9 +111,9 @@ PaginationEllipsis.displayName = 'PaginationEllipsis';
 export {
 	Pagination,
 	PaginationContent,
-	PaginationLink,
+	PaginationEllipsis,
 	PaginationItem,
-	PaginationPrevious,
+	PaginationLink,
 	PaginationNext,
-	PaginationEllipsis
+	PaginationPrevious
 };
