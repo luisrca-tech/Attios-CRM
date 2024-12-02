@@ -1,0 +1,58 @@
+import type { InferSelectModel } from 'drizzle-orm';
+import Image from 'next/image';
+import { Checkbox } from '~/common/components/ui/checkbox';
+import type { products } from '~/server/db/schema';
+import { Button } from './ui/Button';
+import { Icon } from './ui/Icons/_index';
+
+type Product = InferSelectModel<typeof products>;
+
+export function ProductGridCard({
+	productImage,
+	id,
+	name,
+	modelYear,
+	quantity,
+	listPrice
+}: Pick<
+	Product,
+	'productImage' | 'id' | 'name' | 'modelYear' | `quantity` | `listPrice`
+>) {
+	const pickName = name.length > 8 ? `${name.slice(0, 8)}...` : name;
+
+	return (
+		<div className="flex max-h-[18rem] min-h-[18rem] flex-col justify-between rounded-xl bg-white-100 lg:border lg:border-white-400">
+			<div className="flex justify-between p-4">
+				<Checkbox className="hidden h-5 w-5 lg:flex" />
+				<Icon.Sidebar.Products className="h-4 w-4 lg:hidden" />
+				<div className="mt-7 flex flex-col items-center gap-4">
+					<Image
+						src={productImage ?? ''}
+						alt={name}
+						width={80}
+						height={80}
+						className="h-20 w-20 rounded-lg"
+					/>
+					<div className="flex flex-col items-center">
+						<div className="flex items-center gap-1">
+							<strong className="text-base leading-6">{pickName}</strong>
+							<span className="font-bold text-sm leading-5">{modelYear}</span>
+						</div>
+						<span className="text-primary-200 text-sm leading-5">{id}</span>
+					</div>
+				</div>
+				<Button color="septenary" className="h-9 w-9 border border-white-200">
+					<Icon.MoreActions />
+				</Button>
+			</div>
+			<div className="mt-4 flex w-full border-white-400 border-t">
+				<div className="flex flex-1 items-center justify-center border-white-400 border-r py-4">
+					<span className="font-bold text-base leading-6">{quantity}</span>
+				</div>
+				<div className="flex flex-1 items-center justify-center py-4">
+					<span className="font-bold text-base leading-6">${listPrice}</span>
+				</div>
+			</div>
+		</div>
+	);
+}
