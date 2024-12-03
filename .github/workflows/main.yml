@@ -16,9 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
-      - name: Decrypt large secret
-        run: ./decrypt_secret.sh
         env:
-          TEST_SECRET: ${{ secrets.TEST }}
+          CLERK_FRONTEND_API: ${{ secrets.CLERK_FRONTEND_API }}
+          WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+          UPLOADTHING_TOKEN: ${{ secrets.UPLOADTHING_TOKEN }}
       - run: bun install
       - run: bun run test
