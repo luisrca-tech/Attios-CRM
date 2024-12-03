@@ -28,9 +28,7 @@ export function DashboardWithSidebar() {
 					{ChatPreviewItems.map((chat) => (
 						<ContentSidebar.Card key={chat.id}>
 							<div className="flex items-center justify-between gap-4">
-								<chat.UserImage 
-									className="h-[2.375rem] w-[2.375rem] self-start"
-								/>
+								{chat.UserImage}
 								<div className="flex flex-col">
 									<strong className="text-black text-sm leading-5">
 										{chat.userName}
