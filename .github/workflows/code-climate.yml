@@ -26,7 +26,7 @@ jobs:
       - run: bun run format:fix
       
       - name: Run tests with coverage
-        run: bun run test --coverage-format=lcov --coverage
+        run: bun test --coverage-format=lcov --coverage
       
       - uses: paambaati/codeclimate-action@v5.0.0
         env:
