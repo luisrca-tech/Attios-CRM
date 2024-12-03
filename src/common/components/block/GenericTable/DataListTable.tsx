@@ -61,10 +61,8 @@ export function DataListTable<TData, TValue>({
 		manualPagination: true
 	});
 
-	// Get sorted data first
 	const sortedData = table.getSortedRowModel().rows.map((row) => row.original);
 
-	// Then paginate the sorted data
 	const start = (page - 1) * pageSize;
 	const end = start + pageSize;
 	const paginatedData = sortedData.slice(start, end);
@@ -119,7 +117,7 @@ export function DataListTable<TData, TValue>({
 									colSpan={columns.length}
 									className="h-24 text-center"
 								>
-									No results.
+									No results
 								</TableCell>
 							</TableRow>
 						)}

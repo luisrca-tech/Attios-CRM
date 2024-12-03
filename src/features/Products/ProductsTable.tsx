@@ -1,6 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { NotFound } from '~/common/components/ui/NotFound';
+import { ProductListCard } from '~/common/components/ui/ProductListCard';
+import { Image } from '~/common/components/ui/images';
 import { api } from '~/trpc/react';
 import { DataGridTable } from '../../common/components/block/GenericTable/DataGridTable';
 import { DataListTable } from '../../common/components/block/GenericTable/DataListTable';
@@ -9,11 +12,24 @@ import { ProductGridCard } from '../../common/components/ui/ProductGridCard';
 import { ViewTypeSelector } from '../../common/components/ui/ViewTypeSelector';
 import { columnsGrid } from './ProductGridColumns';
 import { columnsList } from './ProductListColumns';
-import { ProductListCard } from '~/common/components/ui/ProductListCard';
 export function ProductsTable() {
 	const [viewType, setViewType] = useState<'list' | 'grid'>('list');
 	const ProductQuery = api.product.getAll.useQuery();
 	const ProductData = ProductQuery.data ?? [];
+
+	if (!ProductQuery.data) {
+		return (
+			<NotFound
+				renderImage={() => (
+					<Image.NotFound className="h-[14.125rem] w-[20.625rem] md:h-[20rem] md:w-[22.625rem] lg:h-[24.0625rem] lg:w-[35rem]" />
+				)}
+				title="No products found?"
+				description="Try to create more new products or drag xls files
+to upload items list"
+				textButton="Create Product"
+			/>
+		);
+	}
 
 	return (
 		<div className="flex w-full flex-col gap-1 bg-white-300 md:block md:bg-white-100 lg:block lg:gap-[0.875rem] lg:rounded-xl lg:bg-white-100">

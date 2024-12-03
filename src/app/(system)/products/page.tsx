@@ -6,7 +6,7 @@ export default function Products() {
 	return (
 		<div className="flex w-full">
 			<ContentSidebar.Page.Products />
-			<div className="flex w-full flex-col bg-white-300 lg:px-7">
+			<div className="flex h-screen w-full flex-col bg-white-300 lg:px-7">
 				<PagesHeader pageTitle="Products" />
 				<ProductsTable />
 			</div>
