@@ -24,5 +24,22 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
+      - name: Debug - Check if env vars are set
+        run: |
+          if [ -n "$DATABASE_URL" ]; then echo "DATABASE_URL is set"; else echo "DATABASE_URL is NOT set"; fi
+          if [ -n "$CLERK_SECRET_KEY" ]; then echo "CLERK_SECRET_KEY is set"; else echo "CLERK_SECRET_KEY is NOT set"; fi
+          if [ -n "$CLERK_FRONTEND_API" ]; then echo "CLERK_FRONTEND_API is set"; else echo "CLERK_FRONTEND_API is NOT set"; fi
+          if [ -n "$WEBHOOK_SECRET" ]; then echo "WEBHOOK_SECRET is set"; else echo "WEBHOOK_SECRET is NOT set"; fi
+          if [ -n "$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" ]; then echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is set"; else echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is NOT set"; fi
+      - name: Create .env.test file
+        run: |
+          cat << EOF > .env.test
+          DATABASE_URL="${{ secrets.DATABASE_URL }}"
+          CLERK_SECRET_KEY="${{ secrets.CLERK_SECRET_KEY }}"
+          CLERK_FRONTEND_API="${{ secrets.CLERK_FRONTEND_API }}"
+          WEBHOOK_SECRET="${{ secrets.WEBHOOK_SECRET }}"
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY="${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}"
+          UPLOADTHING_TOKEN="${{ secrets.UPLOADTHING_TOKEN }}"
+          EOF
       - run: bun install
       - run: bun run test
