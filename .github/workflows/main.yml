@@ -2,20 +2,20 @@ name: JEST TESTS
 
 on:
   push:
-    branches:
-      - develop
-      - main
-
+    branches: [develop, main]
   pull_request:
-    branches:
-      - develop
-      - main
+    branches: [develop, main]
 
 jobs:
   test:
     runs-on: ubuntu-latest
     env:
-      TEST_SECRET: ${{ secrets.TEST }}
+      DATABASE_URL: ${{ secrets.GITHUB_TOKEN.DATABASE_URL }}
+      CLERK_SECRET_KEY: ${{ secrets.GITHUB_TOKEN.CLERK_SECRET_KEY }}
+      CLERK_FRONTEND_API: ${{ secrets.GITHUB_TOKEN.CLERK_FRONTEND_API }}
+      WEBHOOK_SECRET: ${{ secrets.GITHUB_TOKEN.WEBHOOK_SECRET }}
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.GITHUB_TOKEN.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+      UPLOADTHING_TOKEN: ${{ secrets.GITHUB_TOKEN.UPLOADTHING_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
