@@ -25,9 +25,14 @@ jobs:
       - run: bun run lint:force
       - run: bun run format:fix
       
+      - name: Run tests with coverage
+        run: bun run test --coverage-format=lcov --coverage
+      
       - uses: paambaati/codeclimate-action@v5.0.0
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
-          coverageCommand: bun test --coverage
+          coverageCommand: echo "Coverage already generated"
+          coverageLocations: |
+            ${{github.workspace}}/coverage/lcov.info:lcov
           debug: true
