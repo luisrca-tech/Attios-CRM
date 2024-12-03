@@ -8,20 +8,21 @@ on:
 
 jobs:
   test:
+    name: JEST TESTS
     runs-on: ubuntu-latest
-    env:
-      GITHUB_PUSH_BEFORE_SHA: ${{ github.event.before }}
-      GITHUB_PUSH_BASE_SHA: ${{ github.event.base_ref }}
-      GITHUB_PULL_BASE_SHA: ${{ github.event.pull_request.base.sha }}
-      GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
-      DATABASE_URL: ${{ secrets.GITHUB_TOKEN.DATABASE_URL }}
-      CLERK_SECRET_KEY: ${{ secrets.GITHUB_TOKEN.CLERK_SECRET_KEY }}
-      CLERK_FRONTEND_API: ${{ secrets.GITHUB_TOKEN.CLERK_FRONTEND_API }}
-      WEBHOOK_SECRET: ${{ secrets.GITHUB_TOKEN.WEBHOOK_SECRET }}
-      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.GITHUB_TOKEN.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
-      UPLOADTHING_TOKEN: ${{ secrets.GITHUB_TOKEN.UPLOADTHING_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install
       - run: bun run test
+        env:
+          GITHUB_PUSH_BEFORE_SHA: ${{ github.event.before }}
+          GITHUB_PUSH_BASE_SHA: ${{ github.event.base_ref }}
+          GITHUB_PULL_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          GITHUB_DEFAULT_BRANCH: ${{ github.event.repository.default_branch }}
+          DATABASE_URL: ${{ secrets.GITHUB_TOKEN.DATABASE_URL }}
+          CLERK_SECRET_KEY: ${{ secrets.GITHUB_TOKEN.CLERK_SECRET_KEY }}
+          CLERK_FRONTEND_API: ${{ secrets.GITHUB_TOKEN.CLERK_FRONTEND_API }}
+          WEBHOOK_SECRET: ${{ secrets.GITHUB_TOKEN.WEBHOOK_SECRET }}
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.GITHUB_TOKEN.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          UPLOADTHING_TOKEN: ${{ secrets.GITHUB_TOKEN.UPLOADTHING_TOKEN }}
