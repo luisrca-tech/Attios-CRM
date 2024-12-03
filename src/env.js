@@ -13,7 +13,8 @@ export const env = createEnv({
 		NODE_ENV: z
 			.enum(['development', 'test', 'production'])
 			.default('development'),
-		WEBHOOK_SECRET: z.string()
+		WEBHOOK_SECRET: z.string(),
+		CC_TEST_REPORTER_ID: z.string()
 	},
 
 	/**
@@ -36,7 +37,8 @@ export const env = createEnv({
 		CLERK_FRONTEND_API: process.env.CLERK_FRONTEND_API,
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
 			process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
-		WEBHOOK_SECRET: process.env.WEBHOOK_SECRET
+		WEBHOOK_SECRET: process.env.WEBHOOK_SECRET,
+		CC_TEST_REPORTER_ID: process.env.CC_TEST_REPORTER_ID
 	},
 	/**
 	 * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

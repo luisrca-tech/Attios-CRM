@@ -1,0 +1,33 @@
+name: CODE CLIMATE
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop, main]
+
+jobs:
+  test:
+    name: code climate
+    runs-on: ubuntu-latest
+    environment: TEST
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+      CLERK_FRONTEND_API: ${{ secrets.CLERK_FRONTEND_API }}
+      WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+      UPLOADTHING_TOKEN: ${{ secrets.UPLOADTHING_TOKEN }}
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - name: Setup Code Climate test-reporter
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+
+      - name: Report to Code Climate
+        run: |
+          ./cc-test-reporter after-build -t lcov
