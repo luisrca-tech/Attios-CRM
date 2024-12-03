@@ -16,5 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
+      - name: Decrypt large secret
+        run: ./decrypt_secret.sh
+        env:
+          TEST_SECRET: ${{ secrets.TEST }}
       - run: bun install
       - run: bun run test
