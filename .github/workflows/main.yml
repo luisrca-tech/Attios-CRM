@@ -16,9 +16,15 @@ jobs:
       CLERK_FRONTEND_API: ${{ secrets.CLERK_FRONTEND_API }}
       WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
       NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
-      UPLOADTHING_TOKEN: ${{ secrets.UPLOADTHING_TOKEN }}
     steps:
       - uses: actions/checkout@v4
+      - name: Check if secrets exist
+        run: |
+          [ -n "$DATABASE_URL" ] && echo "DATABASE_URL is set" || echo "DATABASE_URL is missing"
+          [ -n "$CLERK_SECRET_KEY" ] && echo "CLERK_SECRET_KEY is set" || echo "CLERK_SECRET_KEY is missing"
+          [ -n "$CLERK_FRONTEND_API" ] && echo "CLERK_FRONTEND_API is set" || echo "CLERK_FRONTEND_API is missing"
+          [ -n "$WEBHOOK_SECRET" ] && echo "WEBHOOK_SECRET is set" || echo "WEBHOOK_SECRET is missing"
+          [ -n "$NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY" ] && echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is set" || echo "NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY is missing"
       - uses: oven-sh/setup-bun@v2
       - run: bun install
       - run: bun run test
