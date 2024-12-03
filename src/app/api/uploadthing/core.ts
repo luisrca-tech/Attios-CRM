@@ -1,5 +1,5 @@
 import { useAuth } from '@clerk/nextjs';
-import { type FileRouter, createUploadthing } from 'uploadthing/next';
+import { createUploadthing, type FileRouter } from 'uploadthing/next';
 import { UploadThingError } from 'uploadthing/server';
 
 const f = createUploadthing();
@@ -23,20 +23,28 @@ export const ourFileRouter = {
 			const user = await useAuth();
 
 			// If you throw, the user will not be able to upload
-			if (!user) throw new UploadThingError('Unauthorized');
+			if (!user.userId) throw new UploadThingError('Unauthorized');
 
 			// Whatever is returned here is accessible in onUploadComplete as `metadata`
 			return { userId: user.userId };
 		})
-		.onUploadComplete(async ({ metadata, file }) => {
-			// This code RUNS ON YOUR SERVER after upload
-			console.log('Upload complete for userId:', metadata.userId);
+		.onUploadComplete(
+			async ({
+				metadata,
+				file
+			}: {
+				metadata: { userId: string | null | undefined };
+				file: { url: string };
+			}) => {
+				// This code RUNS ON YOUR SERVER after upload
+				console.log('Upload complete for userId:', metadata.userId);
 
-			console.log('file url', file.url);
+				console.log('file url', file.url);
 
-			// !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
-			return { uploadedBy: metadata.userId };
-		})
+				// !!! Whatever is returned here is sent to the clientside `onClientUploadComplete` callback
+				return { uploadedBy: metadata.userId };
+			}
+		)
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
