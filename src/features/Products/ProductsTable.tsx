@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { NotFoundItem } from '~/common/components/ui/NotFoundItem';
 import { ProductListCard } from '~/common/components/ui/ProductListCard';
 import { Image } from '~/common/components/ui/images';
+import { calculateItemPerPage } from '~/common/utils/calculateItemPerPage';
 import { api } from '~/trpc/react';
 import { DataGridTable } from '../../common/components/block/GenericTable/DataGridTable';
 import { DataListTable } from '../../common/components/block/GenericTable/DataListTable';
@@ -17,6 +18,10 @@ export function ProductsTable() {
 	const [viewType, setViewType] = useState<'list' | 'grid'>('list');
 	const ProductQuery = api.product.getAll.useQuery();
 	const ProductData = ProductQuery.data ?? [];
+
+	const extraItemHeight = 65;
+	const itemPerPage = calculateItemPerPage(extraItemHeight);
+	const maxItemPerPage = 25;
 
 	if (!ProductQuery.data && !ProductQuery.isLoading) {
 		return (
@@ -32,21 +37,6 @@ to upload items list"
 		);
 	}
 
-	const calculateItemPerPage = (extraItemHeight: number) => {
-		const minimalHeight = 1020;
-
-		const pageHeight = window.innerHeight;
-		const actualExtraHeight = pageHeight - minimalHeight;
-		const minimalItemPerPage = 8;
-		return Math.max(
-			minimalItemPerPage,
-			minimalItemPerPage + Math.floor(actualExtraHeight / extraItemHeight)
-		);
-	};
-
-	const extraItemHeight = 65;
-	const itemPerPage = calculateItemPerPage(extraItemHeight);
-	const maxItemPerPage = 25;
 
 	return (
 		<div className="flex w-full flex-col gap-1 bg-white-300 md:block md:bg-white-100 lg:block lg:gap-[0.875rem] lg:rounded-xl lg:bg--100">
