@@ -7,7 +7,6 @@ import { redirect } from 'next/navigation';
 import { BottomMenu } from '~/common/components/ui/BottomMenuNavigation';
 import { SideMenu } from '~/common/components/ui/SideMenuNavigation';
 
-
 export const metadata: Metadata = {
 	title: 'Attios',
 	description:
@@ -27,8 +26,8 @@ export default async function RootLayout({
 	return (
 		<div className="h-screen">
 			<div className="flex w-full">
-					<SideMenu />
-					{children}
+				<SideMenu />
+				{children}
 			</div>
 			<BottomMenu />
 		</div>

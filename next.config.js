@@ -5,7 +5,11 @@
 await import('./src/env.js');
 
 // TODO: Remove this once we have a real image source
-const mockImagesHosts = ['loremflickr.com', 'picsum.photos', 'faker.cloudflare.com'];
+const mockImagesHosts = [
+	'loremflickr.com',
+	'picsum.photos',
+	'faker.cloudflare.com'
+];
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -18,14 +22,17 @@ const nextConfig = {
 				protocol: 'https',
 				hostname: 'img.clerk.com'
 			},
-			...mockImagesHosts.map((host) => (/** @type {const} */ ({
-				protocol: 'https',
-				hostname: host,
-				port: '',
-				pathname: '/**'
-			})))
+			...mockImagesHosts.map(
+				(host) =>
+					/** @type {const} */ ({
+						protocol: 'https',
+						hostname: host,
+						port: '',
+						pathname: '/**'
+					})
+			)
 		]
 	}
-}
+};
 
 export default nextConfig;
