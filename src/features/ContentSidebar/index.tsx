@@ -11,7 +11,7 @@ export const ContentSidebar = {
 	Card: ContentSidebarCard,
 	Graph: DinamycGraph,
 	Page: {
-		Project: ProjectsWithSidebar,
+		Projects: ProjectsWithSidebar,
 		Dashboard: DashboardWithSidebar
 	}
 };
