@@ -11,6 +11,7 @@ import {
 	PaginationPrevious,
 	Pagination as PaginationRoot
 } from '~/common/components/ui/pagination';
+import { Icon } from '../../ui/Icons/_index';
 
 interface PaginationProps<TData> {
 	table: Table<TData>;
@@ -59,6 +60,8 @@ export function Pagination<TData>({ table }: PaginationProps<TData>) {
 	}
 
 	const paginationRange = generatePaginationNumbers(page, totalPages);
+	const isFirstPage = page === 1;
+	const isLastPage = page === totalPages;
 
 	const handlePageChange = async (pageNumber: number) => {
 		await setPage(pageNumber);
@@ -74,14 +77,20 @@ export function Pagination<TData>({ table }: PaginationProps<TData>) {
 			<PaginationContent className="flex w-full items-center justify-between">
 				<PaginationItem>
 					<div className="flex items-center gap-2">
-						<PaginationPrevious
-							href={getPageHref(page - 1)}
-							aria-disabled={!table.getCanPreviousPage()}
-							onClick={(e) => {
-								e.preventDefault();
-								handlePageChange(page - 1);
-							}}
-						/>
+						{isFirstPage ? (
+							<PaginationLink className="h-8 w-8 bg-opacity-50 px-0" href="#">
+								<Icon.Arrow.Left />
+							</PaginationLink>
+						) : (
+							<PaginationPrevious
+								href={getPageHref(page - 1)}
+								aria-disabled={!table.getCanPreviousPage()}
+								onClick={(e) => {
+									e.preventDefault();
+									handlePageChange(page - 1);
+								}}
+							/>
+						)}
 						<span className="font-normal text-primary-200 text-sm leading-5">
 							Prev
 						</span>
@@ -121,13 +130,19 @@ export function Pagination<TData>({ table }: PaginationProps<TData>) {
 						<span className="font-normal text-primary-200 text-sm leading-5">
 							Next
 						</span>
-						<PaginationNext
-							href={getPageHref(page + 1)}
-							onClick={(e) => {
-								e.preventDefault();
-								handlePageChange(page + 1);
-							}}
-						/>
+						{isLastPage ? (
+							<PaginationLink className="h-8 w-8 bg-opacity-50 px-0" href="#">
+								<Icon.Arrow.Right />
+							</PaginationLink>
+						) : (
+							<PaginationNext
+								href={getPageHref(page + 1)}
+								onClick={(e) => {
+									e.preventDefault();
+									handlePageChange(page + 1);
+								}}
+							/>
+						)}
 					</div>
 				</PaginationItem>
 			</PaginationContent>
