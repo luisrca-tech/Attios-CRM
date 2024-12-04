@@ -133,15 +133,9 @@ export const columnsList: ColumnType<Product> = [
 	},
 	{
 		accessorKey: 'category',
-		header: ({ column }) => (
+		header: () => (
 			<div className="flex w-full items-center justify-between lg:hidden 2xl:flex">
 				Category
-				<button
-					type="button"
-					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-				>
-					<Icon.Ordenation className="h-3 w-3" />
-				</button>
 			</div>
 		),
 		cell: ({ row }) => (
