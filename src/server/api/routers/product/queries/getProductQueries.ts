@@ -4,7 +4,11 @@ export const getProductQueries = {
 	getAll: publicProcedure.query(({ ctx }) => {
 		return ctx.db.query.products.findMany({
 			with: {
-				category: true
+				category: {
+					columns: {
+						name: true
+					}
+				}
 			}
 		});
 	})

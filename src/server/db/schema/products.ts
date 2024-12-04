@@ -16,7 +16,7 @@ export const products = createTable(
 	'product',
 	{
 		id: varchar('id', { length: 10 }).primaryKey(),
-		name: varchar('name', { length: 255 }).notNull(),
+		name: varchar('name', { length: 255 }).notNull().unique(),
 		brandId: integer('brand_id')
 			.references(() => brands.id)
 			.notNull(),
@@ -42,7 +42,8 @@ export const productsRelations = relations(products, ({ one }) => ({
 	brand: one(brands, {
 		fields: [products.brandId],
 		references: [brands.id]
-	})
+	}),
+	
 }));
 
 export const categoriesRelations = relations(categories, ({ many }) => ({
