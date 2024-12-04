@@ -26,7 +26,6 @@ export function ProductGridCard({
 	isSelected,
 	onSelect
 }: ProductGridCardProps) {
-	const pickName = name.length > 8 ? `${name.slice(0, 8)}...` : name;
 
 	return (
 		<div className="flex max-h-[18rem] min-h-[18rem] flex-col justify-between rounded-xl bg-white-100 lg:border lg:border-white-400">
@@ -47,7 +46,7 @@ export function ProductGridCard({
 					/>
 					<div className="flex flex-col items-center">
 						<div className="flex items-center gap-1">
-							<strong className="text-base leading-6">{pickName}</strong>
+							<strong className="text-base leading-6">{name}</strong>
 							<span className="font-bold text-sm leading-5">{modelYear}</span>
 						</div>
 						<span className="text-primary-200 text-sm leading-5">{id}</span>
