@@ -18,7 +18,7 @@ export const ContentSidebar = {
 		Metric: Metric
 	},
 	Page: {
-		Project: ProjectsWithSidebar,
+		Projects: ProjectsWithSidebar,
 		Dashboard: DashboardWithSidebar,
 		Products: ProductsWithSidebar
 	}
