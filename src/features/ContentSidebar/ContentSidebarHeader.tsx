@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { cn } from '~/lib/utils';
-import { Button } from '../../../../../common/components/ui/Button';
-import { Icon } from '../../../../../common/components/ui/Icons';
+import { Button } from '../../common/components/ui/Button';
+import { Icon } from '../../common/components/ui/Icons';
 import Logo from '/public/favicon.svg';
 
 interface ContentSidebarHeaderProps {

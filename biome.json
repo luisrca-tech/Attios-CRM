@@ -6,7 +6,14 @@
 		"useIgnoreFile": false
 	},
 	"files": {
-		"ignore": [".next/", "node_modules/", "public/*", "playwright-report/trace"]
+		"ignore": [
+			".next/",
+			"node_modules/",
+			"public/*",
+			"playwright-report/trace",
+			"storybook-static"
+		],
+		"include": ["src/**/*.{ts,tsx,js,jsx}", ".storybook/**/*.{ts,tsx,js,jsx}"]
 	},
 	"organizeImports": {
 		"enabled": true
@@ -17,6 +24,9 @@
 			"indentStyle": "tab",
 			"quoteStyle": "single",
 			"trailingCommas": "none"
+		},
+		"parser": {
+			"unsafeParameterDecoratorsEnabled": true
 		}
 	},
 	"linter": {
@@ -39,6 +49,11 @@
 					}
 				}
 			}
+		}
+	},
+	"json": {
+		"parser": {
+			"allowComments": true
 		}
 	}
 }
