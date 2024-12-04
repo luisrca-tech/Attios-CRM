@@ -1,18 +1,18 @@
 import { Button } from './Button';
 
-type NotFoundProps = {
+type NotFoundItemProps = {
 	renderImage: () => React.ReactNode;
 	title: string;
 	description: string;
 	textButton: string;
 };
 
-export function NotFound({
+export function NotFoundItem({
 	renderImage,
 	title,
 	description,
 	textButton
-}: NotFoundProps) {
+}: NotFoundItemProps) {
 	return (
 		<div className="flex flex-col items-center justify-center gap-7 text-center">
 			{renderImage()}

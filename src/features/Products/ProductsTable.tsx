@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { NotFound } from '~/common/components/ui/NotFound';
 import { ProductListCard } from '~/common/components/ui/ProductListCard';
 import { Image } from '~/common/components/ui/images';
 import { api } from '~/trpc/react';
@@ -12,6 +11,7 @@ import { ProductGridCard } from '../../common/components/ui/ProductGridCard';
 import { ViewTypeSelector } from '../../common/components/ui/ViewTypeSelector';
 import { columnsGrid } from './ProductGridColumns';
 import { columnsList } from './ProductListColumns';
+import { NotFoundItem } from '~/common/components/ui/NotFoundItem';
 export function ProductsTable() {
 	const [viewType, setViewType] = useState<'list' | 'grid'>('list');
 	const ProductQuery = api.product.getAll.useQuery();
@@ -19,7 +19,7 @@ export function ProductsTable() {
 
 	if (!ProductQuery.data) {
 		return (
-			<NotFound
+			<NotFoundItem
 				renderImage={() => (
 					<Image.NotFound className="h-[14.125rem] w-[20.625rem] md:h-[20rem] md:w-[22.625rem] lg:h-[24.0625rem] lg:w-[35rem]" />
 				)}
