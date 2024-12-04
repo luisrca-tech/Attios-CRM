@@ -1,6 +1,8 @@
+import { User } from "~/common/components/ui/images/mocks/User";
+
 type ChatPreviewItem = {
 	id: string;
-	userImage: string;
+	UserImage: React.ReactNode;
 	userStatus: 'online' | 'offline' | 'away' | 'busy';
 	userName: string;
 	userDescription: string;
@@ -10,7 +12,7 @@ type ChatPreviewItem = {
 export const ChatPreviewItems: ChatPreviewItem[] = [
 	{
 		id: crypto.randomUUID(),
-		userImage: '/images/mocks/users/1.png',
+		UserImage: <User userNumber={1} />,
 		userStatus: 'online',
 		userName: 'Nicholas Gordon',
 		userDescription: 'Moreover the striking, brilliant and vivid colors',
@@ -18,7 +20,7 @@ export const ChatPreviewItems: ChatPreviewItem[] = [
 	},
 	{
 		id: crypto.randomUUID(),
-		userImage: '/images/mocks/users/2.png',
+		UserImage: <User userNumber={2} />,
 		userStatus: 'offline',
 		userName: 'Douglas Payne',
 		userDescription: 'In the history of modern astronomy, there is small',
@@ -26,7 +28,7 @@ export const ChatPreviewItems: ChatPreviewItem[] = [
 	},
 	{
 		id: crypto.randomUUID(),
-		userImage: '/images/mocks/users/3.png',
+		UserImage: <User userNumber={3} />,
 		userStatus: 'busy',
 		userName: 'Harriett Robbins',
 		userDescription: 'Advertising on a budget with a monthly frequency ',
@@ -34,7 +36,7 @@ export const ChatPreviewItems: ChatPreviewItem[] = [
 	},
 	{
 		id: crypto.randomUUID(),
-		userImage: '/images/mocks/users/4.png',
+		UserImage: <User userNumber={4} />,
 		userStatus: 'away',
 		userName: 'Polly Robbins',
 		userDescription: 'Search Engine Optimization And Advertising',
