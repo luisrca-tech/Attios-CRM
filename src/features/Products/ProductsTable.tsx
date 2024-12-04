@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { NotFoundItem } from '~/common/components/ui/NotFoundItem';
 import { ProductListCard } from '~/common/components/ui/ProductListCard';
 import { Image } from '~/common/components/ui/images';
 import { api } from '~/trpc/react';
@@ -11,13 +12,13 @@ import { ProductGridCard } from '../../common/components/ui/ProductGridCard';
 import { ViewTypeSelector } from '../../common/components/ui/ViewTypeSelector';
 import { columnsGrid } from './ProductGridColumns';
 import { columnsList } from './ProductListColumns';
-import { NotFoundItem } from '~/common/components/ui/NotFoundItem';
+
 export function ProductsTable() {
 	const [viewType, setViewType] = useState<'list' | 'grid'>('list');
 	const ProductQuery = api.product.getAll.useQuery();
 	const ProductData = ProductQuery.data ?? [];
 
-	if (!ProductQuery.data) {
+	if (!ProductQuery.data && !ProductQuery.isLoading) {
 		return (
 			<NotFoundItem
 				renderImage={() => (
@@ -31,8 +32,24 @@ to upload items list"
 		);
 	}
 
+	const calculateItemPerPage = (extraItemHeight: number) => {
+		const minimalHeight = 1020;
+
+		const pageHeight = window.innerHeight;
+		const actualExtraHeight = pageHeight - minimalHeight;
+		const minimalItemPerPage = 8;
+		return Math.max(
+			minimalItemPerPage,
+			minimalItemPerPage + Math.floor(actualExtraHeight / extraItemHeight)
+		);
+	};
+
+	const extraItemHeight = 65;
+	const itemPerPage = calculateItemPerPage(extraItemHeight);
+	const maxItemPerPage = 25;
+
 	return (
-		<div className="flex w-full flex-col gap-1 bg-white-300 md:block md:bg-white-100 lg:block lg:gap-[0.875rem] lg:rounded-xl lg:bg-white-100">
+		<div className="flex w-full flex-col gap-1 bg-white-300 md:block md:bg-white-100 lg:block lg:gap-[0.875rem] lg:rounded-xl lg:bg--100">
 			<ViewTypeSelector viewType={viewType} onViewChange={setViewType}>
 				<button
 					type="button"
@@ -49,7 +66,7 @@ to upload items list"
 					<DataListTable
 						columns={columnsList}
 						data={ProductData}
-						pageSize={8}
+						pageSize={Math.min(itemPerPage, maxItemPerPage)}
 					/>
 					{ProductData.map((product) => (
 						<div className="flex flex-col gap-1 px-3" key={product.id}>
