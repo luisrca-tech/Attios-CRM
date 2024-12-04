@@ -66,7 +66,10 @@ to upload items list"
 						CardComponent={ProductGridCard}
 					/>
 					{ProductData.map((product) => (
-						<div className="grid grid-cols-1 gap-1 md:hidden" key={product.id}>
+						<div
+							className="grid grid-cols-1 gap-1 px-3 md:hidden"
+							key={product.id}
+						>
 							<ProductGridCard {...product} />
 						</div>
 					))}

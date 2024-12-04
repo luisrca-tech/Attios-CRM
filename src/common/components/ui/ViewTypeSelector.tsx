@@ -20,7 +20,7 @@ export function ViewTypeSelector({
 	return (
 		<div
 			className={cn(
-				'flex items-center justify-between px-[1.625rem] py-5',
+				'flex items-center justify-between px-3 py-5 lg:px-[1.625rem]',
 				className
 			)}
 		>
