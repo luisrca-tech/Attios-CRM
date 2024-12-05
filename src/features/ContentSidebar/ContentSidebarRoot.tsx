@@ -1,9 +1,10 @@
 'use client';
 
-import { usePathname } from 'next/navigation';
-import { type ReactNode, useState } from 'react';
+import { type ReactNode } from 'react';
 import { cn } from '~/lib/utils';
 import { ContentSidebarHeader } from './ContentSidebarHeader';
+import { useAtom } from 'jotai';
+import { isOpenContentSidebar } from '~/common/atoms/content-sidebar.atom';
 
 type ContentSidebarRootProps = {
 	children: ReactNode;
@@ -16,14 +17,15 @@ export function ContentSidebarRoot({
 	className,
 	hasHeader = true
 }: ContentSidebarRootProps) {
-	const [isOpen, setIsOpen] = useState(true);
+	const [isOpen, setIsOpen] = useAtom(isOpenContentSidebar);
 
 	return (
 		<div
 			className={cn(
-				'relative hidden max-h-screen min-h-screen flex-col border-white-200 px-7 py-6 transition-[border] duration-300 lg:flex',
+				'relative hidden transition-[transform,opacity] duration-300 max-h-screen min-h-screen flex-col border-white-200 px-7 py-6 lg:flex',
 				className,
-				isOpen ? 'border-r' : 'border-none'
+				isOpen ? 'border-r' : 'border-none',
+				!isOpen && 'lg:hidden'
 			)}
 		>
 			{hasHeader && (
