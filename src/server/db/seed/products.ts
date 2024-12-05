@@ -1,6 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { db } from '../index';
 import { brands, categories, products } from '../schema/products';
+import { randomUUID } from 'node:crypto';
 
 export async function seedProducts() {
 	await db.delete(products);
@@ -34,12 +35,14 @@ export async function seedProducts() {
 		const randomCategory = faker.helpers.arrayElement(insertedCategories);
 
 		return {
+			id: randomUUID().slice(0, 10),
 			name: faker.commerce.productName(),
 			brandId: randomBrand.id,
 			categoryId: randomCategory.id,
 			modelYear: faker.number.int({ min: 2020, max: 2024 }),
 			listPrice: faker.commerce.price({ min: 100, max: 2000, dec: 2 }),
-			productImage: faker.image.url({ width: 640, height: 480 })
+			productImage: faker.image.url({ width: 640, height: 480 }),
+			quantity: faker.number.int({ min: 0, max: 3000 })
 		};
 	});
 

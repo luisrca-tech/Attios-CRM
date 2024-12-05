@@ -11,7 +11,8 @@ type CommonProps = {
 		| 'tertiary'
 		| 'quaternary'
 		| 'quinternary'
-		| 'senary';
+		| 'senary'
+		| 'septenary';
 };
 
 const variants = ({ variant = 'filled', color = 'primary' }: CommonProps) =>
@@ -29,7 +30,9 @@ const variants = ({ variant = 'filled', color = 'primary' }: CommonProps) =>
 			'bg-secondary-100 text-white-100 hover:bg-secondary-100/70':
 				variant === 'filled' && color === 'quinternary',
 			'bg-secondary-400 text-white-100 hover:bg-secondary-400/70':
-				variant === 'filled' && color === 'senary'
+				variant === 'filled' && color === 'senary',
+			'bg-white-100 p-0 hover:bg-transparent':
+				variant === 'filled' && color === 'septenary'
 		},
 		{
 			'border bg-transparent': variant === 'outlined',
@@ -44,7 +47,9 @@ const variants = ({ variant = 'filled', color = 'primary' }: CommonProps) =>
 			'border-secondary-100 text-secondary-100 hover:bg-secondary-100/70 hover:text-white-100':
 				variant === 'outlined' && color === 'quinternary',
 			'border-secondary-400 text-secondary-400 hover:bg-secondary-400/70 hover:text-white-100':
-				variant === 'outlined' && color === 'senary'
+				variant === 'outlined' && color === 'senary',
+			'w-full border-none px-[3.75rem] py-[0.625rem] hover:border hover:border-white-200 hover:bg-white-100 hover:font-bold hover:text-black':
+				variant === 'outlined' && color === 'septenary'
 		}
 	);
 
@@ -87,3 +92,4 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
 Button.displayName = 'Button';
 
 export { Button, LinkButton };
+export type { LinkProps };
