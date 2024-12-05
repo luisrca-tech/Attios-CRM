@@ -10,7 +10,7 @@ type Product = InferSelectModel<typeof products>;
 interface ProductGridCardProps
 	extends Pick<
 		Product,
-		'productImage' | 'id' | 'name' | 'modelYear' | `quantity` | `listPrice`
+		'productImage' | 'id' | 'name' | 'modelYear' | 'quantity' | 'listPrice'
 	> {
 	isSelected?: boolean;
 	onSelect?: (value: boolean) => void;
