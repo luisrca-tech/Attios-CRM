@@ -41,6 +41,7 @@
 		"@trpc/client": "^11.0.0-rc.446",
 		"@trpc/react-query": "^11.0.0-rc.446",
 		"@trpc/server": "^11.0.0-rc.446",
+		"@uploadthing/react": "^7.1.1",
 		"babel-loader": "^9.2.1",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.1",
@@ -62,6 +63,7 @@
 		"svix": "^1.37.0",
 		"tailwind-merge": "^2.5.4",
 		"tailwindcss-animate": "^1.0.7",
+		"uploadthing": "^7.3.0",
 		"zod": "^3.23.8"
 	},
 	"devDependencies": {
