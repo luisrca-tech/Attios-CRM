@@ -17,6 +17,7 @@ jobs:
       CLERK_FRONTEND_API: ${{ secrets.CLERK_FRONTEND_API }}
       WEBHOOK_SECRET: ${{ secrets.WEBHOOK_SECRET }}
       NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
       UPLOADTHING_TOKEN: ${{ secrets.UPLOADTHING_TOKEN }}
     steps:
       - uses: actions/checkout@v4
