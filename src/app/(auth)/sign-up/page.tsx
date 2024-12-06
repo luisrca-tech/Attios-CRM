@@ -1,4 +1,4 @@
-import { SignUpForm } from '~/features/auth/block/SignUpForm';
+import { SignUpForm } from '~/features/auth/components/block/SignUpForm';
 import { AuthBackground } from '~/features/auth/components/ui/AuthBackground';
 import signUpImage from '/public/images/signUpImage.png';
 
