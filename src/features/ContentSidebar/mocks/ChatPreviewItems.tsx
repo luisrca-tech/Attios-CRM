@@ -1,3 +1,4 @@
+import crypto from 'node:crypto';
 import { User } from "~/common/components/ui/images/mocks/User";
 
 type ChatPreviewItem = {

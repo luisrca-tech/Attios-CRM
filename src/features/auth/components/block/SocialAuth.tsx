@@ -1,5 +1,5 @@
 import { Button } from '~/common/components/ui/Button';
-import { Icon } from '~/common/components/ui/Icons';
+import { Icon } from '~/common/components/ui/Icons/_index';
 import { useAuth } from '../../hook/useAuth';
 
 export function SocialAuth() {

@@ -1,31 +1,40 @@
+import { GridIcon, KeyboardIcon, LaptopIcon } from '@radix-ui/react-icons';
+import { AddButtonIcon } from './AddButton';
 import { ArrowDown } from './ArrowDown';
+import { CalendarIcon } from './Calendar';
 import { ClosePadlockIcon } from './ClosePadlock';
 import { ContactsIcon } from './Contacts';
+import { DashboardIcon } from './Dashboard';
+import { DiamondIcon } from './Diamond';
 import { EmailIcon } from './Email';
 import { ErrorIcon } from './ErrorIcon';
+import { ExpandIcon } from './Expand';
 import { FacebookIcon } from './Facebook';
 import { FileBrowserIcon } from './FileBrowser';
 import { GoogleIcon } from './Google';
 import { HelpCenterIcon } from './HelpCenter';
 import { InvoicesIcon } from './Invoices';
 import { KanbanIcon } from './Kanban';
+import { ListIconBlue, ListIconWhite } from './ListIcon';
+import { MenuIcon } from './Menu';
 import { MessagesIcon } from './Messages';
+import { MoreActionsIcon } from './MoreActions';
 import { NotificationsIcon } from './Notifications';
 import { OpenPadlockIcon } from './OpenPadlock';
+import { OrdenationIcon } from './OrdenationIcon';
 import { PizzaGraphIcon } from './PizzaGraph';
-import { StatisticsGraphIcon } from './StatisticsGraph';
 import { ProductsIcon } from './Products';
 import { ProjectsIcon } from './Projects';
 import { ReportsIcon } from './Reports';
+import { SearchIcon } from './Search';
+import { StarRatingIcon } from './StarRating';
+import { StatisticsGraphIcon } from './StatisticsGraph';
 import { TasksIcon } from './Tasks';
+import { TrowelIcon } from './Trowel';
 import { TwitterIcon } from './Twitter';
 import { UserIcon } from './UserIcon';
-import { MenuIcon } from './Menu';
-import { DashboardIcon } from './Dashboard';
-import { CalendarIcon } from './Calendar';
-import { SearchIcon } from './Search';
-import { AddButtonIcon } from './AddButton';
-import { ExpandIcon } from './Expand';
+import { ArrowLeft } from './ArrowLeft';
+import { ArrowRight } from './ArrowRight';
 
 export const Icon = {
 	Email: EmailIcon,
@@ -35,12 +44,26 @@ export const Icon = {
 	Search: SearchIcon,
 	Expand: ExpandIcon,
 	AddButton: AddButtonIcon,
+	Laptop: LaptopIcon,
+	Keyboard: KeyboardIcon,
+	Diamond: DiamondIcon,
+	Trowel: TrowelIcon,
+	MoreActions: MoreActionsIcon,
+	StarRating: StarRatingIcon,
+	Grid: GridIcon,
+	Ordenation: OrdenationIcon,
+	List: {
+		White: ListIconWhite,
+		Blue: ListIconBlue
+	},
 	Padlock: {
 		Open: OpenPadlockIcon,
 		Close: ClosePadlockIcon
 	},
 	Arrow: {
-		Down: ArrowDown
+		Down: ArrowDown,
+		Left: ArrowLeft,
+		Right: ArrowRight
 	},
 	Social: {
 		Google: GoogleIcon,

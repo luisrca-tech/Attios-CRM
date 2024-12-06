@@ -1,17 +1,25 @@
 import { ContentSidebarCard } from './ContentSidebarCard';
 import { ContentSidebarHeader } from './ContentSidebarHeader';
 import { ContentSidebarRoot } from './ContentSidebarRoot';
-import { DashboardWithSidebar } from './Dashboard';
-import { DinamycGraph } from './DinamycGraph';
-import { ProjectsWithSidebar } from './Projects';
+import { DinamycGraph } from './Graph/DinamycGraph';
+import { MetricContainer } from './Graph/MetricContainer';
+import { Metric } from './Graph/Metrics';
+import { DashboardWithSidebar } from './pages/Dashboard';
+import ProductsWithSidebar from './pages/Products';
+import { ProjectsWithSidebar } from './pages/Projects';
 
 export const ContentSidebar = {
 	Root: ContentSidebarRoot,
 	Header: ContentSidebarHeader,
 	Card: ContentSidebarCard,
-	Graph: DinamycGraph,
+	Graph: {
+		Dinamyc: DinamycGraph,
+		MetricContainer: MetricContainer,
+		Metric: Metric
+	},
 	Page: {
 		Projects: ProjectsWithSidebar,
-		Dashboard: DashboardWithSidebar
+		Dashboard: DashboardWithSidebar,
+		Products: ProductsWithSidebar
 	}
 };

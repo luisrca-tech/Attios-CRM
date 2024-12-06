@@ -4,7 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Button, LinkButton } from '~/common/components/ui/Button';
 import ErrorMessage from '~/common/components/ui/ErrorMessage';
-import { Icon } from '~/common/components/ui/Icons';
+import { Icon } from '~/common/components/ui/Icons/_index';
 import { Input } from '~/common/components/ui/Input';
 import { SocialAuth } from '../components/block/SocialAuth';
 import { WelcomeHeading } from '../components/ui/WelcomeHeading';

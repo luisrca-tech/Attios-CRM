@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react';
-import { Icon } from '../common/components/ui/Icons';
 import { InputRoot } from '../common/components/ui/Input/InputRoot';
 import InputText from '../common/components/ui/Input/InputText';
 import InputPassword from '../common/components/ui/Input/InputPassword';
 import SelectInput from '../common/components/ui/Input/SelectInput';
+import { Icon } from '~/common/components/ui/Icons/_index';
 
 const meta = {
   title: 'UI/Input',

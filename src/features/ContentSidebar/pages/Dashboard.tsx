@@ -4,9 +4,9 @@ import BlueWaveGraphForeground from '/public/images/mocks/graphs/blueWaveGraph.p
 import WhiteWaveGraphBackground from '/public/images/mocks/graphs/whiteWaveGraph.png';
 
 import { Button } from '~/common/components/ui/Button';
-import { Icon } from '~/common/components/ui/Icons';
-import { ChatPreviewItems } from '~/features/mocks/ChatPreviewItems';
-import { ContentSidebar } from '.';
+import { Icon } from '~/common/components/ui/Icons/_index';
+import { ChatPreviewItems } from '~/features/ContentSidebar/mocks/ChatPreviewItems';
+import { ContentSidebar } from '..';
 
 export function DashboardWithSidebar() {
 	return (
@@ -45,7 +45,7 @@ export function DashboardWithSidebar() {
 					))}
 				</div>
 			</div>
-			<ContentSidebar.Graph className="relative mt-10 mb-6 min-h-[12rem] py-0 pt-[1.375rem]">
+			<ContentSidebar.Graph.Dinamyc className="relative mt-10 mb-6 min-h-[12rem] py-0 pt-[1.375rem]">
 				<div className="flex items-center justify-between pb-7">
 					<div className="flex flex-col">
 						<strong className="text-base text-black leading-6">
@@ -73,7 +73,7 @@ export function DashboardWithSidebar() {
 						alt="Blue foreground wave graph"
 					/>
 				</div>
-			</ContentSidebar.Graph>
+			</ContentSidebar.Graph.Dinamyc>
 		</ContentSidebar.Root>
 	);
 }

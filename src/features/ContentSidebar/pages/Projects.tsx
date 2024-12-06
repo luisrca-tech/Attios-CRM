@@ -1,10 +1,10 @@
 import Image from 'next/image';
-import { Button } from '~/common/components/ui/Button';
-import { Icon } from '~/common/components/ui/Icons';
-import { ChatPreviewItems } from '~/features/mocks/ChatPreviewItems';
-import { ContentSidebar } from '.';
-import { UserStatusLogged } from '~/common/components/ui/UserStatusLogged';
 import { Badge } from '~/common/components/ui/Badge';
+import { Button } from '~/common/components/ui/Button';
+import { Icon } from '~/common/components/ui/Icons/_index';
+import { UserStatusLogged } from '~/common/components/ui/UserStatusLogged';
+import { ChatPreviewItems } from '~/features/ContentSidebar/mocks/ChatPreviewItems';
+import { ContentSidebar } from '..';
 
 export function ProjectsWithSidebar() {
 	return (
@@ -50,7 +50,7 @@ export function ProjectsWithSidebar() {
 					</ContentSidebar.Card>
 				))}
 			</div>
-			<ContentSidebar.Graph>
+			<ContentSidebar.Graph.Dinamyc>
 				<div className="flex items-center justify-between">
 					<div className="flex flex-col gap-2">
 						<strong className="text-base text-black leading-6">
@@ -85,7 +85,7 @@ export function ProjectsWithSidebar() {
 						</div>
 					))}
 				</div>
-			</ContentSidebar.Graph>
+			</ContentSidebar.Graph.Dinamyc>
 		</ContentSidebar.Root>
 	);
 }
