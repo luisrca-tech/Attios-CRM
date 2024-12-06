@@ -14,6 +14,7 @@ export const env = createEnv({
 			.enum(['development', 'test', 'production'])
 			.default('development'),
 		WEBHOOK_SECRET: z.string(),
+		CC_TEST_REPORTER_ID: z.string(),
 		UPLOADTHING_TOKEN: z.string()
 	},
 
@@ -38,6 +39,7 @@ export const env = createEnv({
 		NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY:
 			process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
 		WEBHOOK_SECRET: process.env.WEBHOOK_SECRET,
+		CC_TEST_REPORTER_ID: process.env.CC_TEST_REPORTER_ID,
 		UPLOADTHING_TOKEN: process.env.UPLOADTHING_TOKEN
 	},
 	/**
