@@ -19,6 +19,9 @@ jobs:
       NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
       UPLOADTHING_TOKEN: ${{ secrets.UPLOADTHING_TOKEN }}
     steps:
+      - uses: actions/checkout@v4
+      - uses: oven-sh/setup-bun@v2
+      - run: bun install
       - name: Test & publish code coverage
         uses: paambaati/codeclimate-action@v9.0.0
         env:
