@@ -1,5 +1,5 @@
 import { forwardRef, useState } from 'react';
-import { Icon } from '~/common/components/ui/Icons';
+import { Icon } from '~/common/components/ui/Icons/_index';
 import InputText from './InputText';
 
 interface InputPasswordProps {
@@ -31,9 +31,9 @@ const InputPassword = forwardRef<HTMLInputElement, InputPasswordProps>(
 						className="absolute top-0 right-0 bg-transparent"
 					>
 						{showPassword ? (
-							<Icon.Padlock.Open className="h-[1.125rem] w-[1.125rem]" />
+							<Icon.Padlock.Open className="h-[1.125rem] w-[1.125rem] mt-2" />
 						) : (
-							<Icon.Padlock.Close className="h-[1.125rem] w-[1.125rem]" />
+							<Icon.Padlock.Close className="h-[1.125rem] w-[1.125rem] mt-2" />
 						)}
 					</button>
 				</div>

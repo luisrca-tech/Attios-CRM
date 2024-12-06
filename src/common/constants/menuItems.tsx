@@ -1,4 +1,4 @@
-import { Icon } from '../components/ui/Icons';
+import { Icon } from '../components/ui/Icons/_index';
 
 type Props = {
 	label: string;
@@ -15,6 +15,11 @@ export const menuItems: Props[] = [
 	{
 		label: 'projects',
 		icon: <Icon.Sidebar.Projects className="h-[1.375rem] w-[1.375rem]" />,
+		isComingSoon: false
+	},
+	{
+		label: 'products',
+		icon: <Icon.Sidebar.Products className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: false
 	},
 	{
@@ -40,11 +45,6 @@ export const menuItems: Props[] = [
 	{
 		label: 'messages',
 		icon: <Icon.Sidebar.Messages className="h-[1.375rem] w-[1.375rem]" />,
-		isComingSoon: true
-	},
-	{
-		label: 'products',
-		icon: <Icon.Sidebar.Products className="h-[1.375rem] w-[1.375rem]" />,
 		isComingSoon: true
 	},
 	{

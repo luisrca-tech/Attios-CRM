@@ -1,10 +1,13 @@
-import { ContentSidebar } from '~/features/auth/components/block/ContentSidebar';
+import { PagesHeader } from '~/common/components/ui/PagesHeader';
+import { ContentSidebar } from '~/features/ContentSidebar';
 
 export default function Dashboard() {
 	return (
-		<div className="flex gap-1">
+		<div className="flex w-full">
 			<ContentSidebar.Page.Dashboard />
-			<h2>You are in dashboard page</h2>
+			<div className="flex w-full flex-col">
+				<PagesHeader pageTitle="Dashboard" />
+			</div>
 		</div>
 	);
 }

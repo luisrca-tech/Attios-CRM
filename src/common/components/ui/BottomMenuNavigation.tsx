@@ -1,6 +1,8 @@
 'use client';
 
 import { UserButton, useUser } from '@clerk/nextjs';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useState } from 'react';
 import {
 	Sheet,
@@ -14,10 +16,8 @@ import { menuItems } from '~/common/constants/menuItems';
 import { cn } from '~/lib/utils';
 import { Button } from './Button';
 import { CommingSoon } from './CommingSoon';
-import { Icon } from './Icons';
+import { Icon } from './Icons/_index';
 import { UserStatusLogged } from './UserStatusLogged';
-import Link from 'next/link';
-import Image from 'next/image';
 
 export function BottomMenu() {
 	const { user, isLoaded } = useUser();

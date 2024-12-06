@@ -8,7 +8,7 @@ import { menuItems } from '~/common/constants/menuItems';
 import useClickOutside from '~/common/hooks/useClickOutside';
 import { cn } from '~/lib/utils';
 import { CommingSoon } from './CommingSoon';
-import { Icon } from './Icons';
+import { Icon } from './Icons/_index';
 import { UserStatusLogged } from './UserStatusLogged';
 import Logo from '/public/favicon.svg';
 
@@ -29,8 +29,8 @@ export function SideMenu() {
 		<div
 			ref={menuRef}
 			className={cn(
-				'hidden border-white-200 border-r bg-white-100 py-5 transition-all duration-300 ease-in-out lg:flex',
-				isExpanded ? 'w-44' : 'w-[5.25rem]'
+				'hidden max-h-screen min-h-screen border-white-200 border-r bg-white-100 py-5 transition-all duration-300 ease-in-out lg:flex',
+				isExpanded ? 'w-60' : 'w-[5.25rem]'
 			)}
 		>
 			<nav className="w-full">
@@ -48,16 +48,15 @@ export function SideMenu() {
 								{!isExpanded && (
 									<Icon.Expand className="-top-6 -left-4 absolute h-3 w-3" />
 								)}
+								<div className='flex gap-2'>
 								<Image
 									src={Logo}
 									alt="logo"
 									width={30}
 									height={30}
-									className="mb-4 transition-transform duration-300"
-									style={{
-										transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)'
-									}}
 								/>
+								{isExpanded && <strong className='text-xl text-primary-100'>Attios CRM</strong>}
+								</div>
 							</div>
 						</button>
 					</li>
@@ -84,7 +83,9 @@ export function SideMenu() {
 										'-right-[0.2rem] absolute h-full w-[0.1875rem] scale-y-0 bg-primary-100 transition-transform group-hover:scale-y-100'
 									)}
 								/>
-								<div className="flex items-center gap-2">
+								<div className={cn('flex items-center justify-center', 
+									isExpanded && 'flex items-center w-full hover:bg-primary-100 hover:rounded p-3'
+								)}>
 									<div
 										className={cn(
 											'flex h-[1,375rem] w-[1,375rem] items-center'
@@ -93,7 +94,7 @@ export function SideMenu() {
 										{item.icon}
 									</div>
 									{isExpanded && (
-										<span className="flex-1 font-bold text-black text-sm capitalize">
+										<span className="flex-1 font-bold leading-5 text-black text-sm capitalize text-center">
 											{item.isComingSoon ? (
 												<CommingSoon
 													className="min-w-max rounded-xl"
@@ -109,8 +110,14 @@ export function SideMenu() {
 						</li>
 					))}
 
-					<li className="mt-4">
-						<div className={cn('flex items-center', isExpanded && 'gap-2')}>
+					<li className="mt-4 w-full px-4">
+						<div
+							className={cn(
+								'flex items-center justify-center',
+								isExpanded && 'gap-2 justify-start'
+							)}
+						>
+							{/* TODO: Create a component for the user button */}
 							<div className="relative">
 								<UserButton
 									appearance={{
@@ -123,13 +130,13 @@ export function SideMenu() {
 									}}
 								/>
 								<UserStatusLogged
-									className="-right-1 absolute bottom-[1px]"
+									className="-right-1 bottom-[1px]"
 									userStatus={`${isLoaded ? 'online' : 'offline'}`}
 								/>
 							</div>
 							{isExpanded && user && (
-								<strong className="text-sm leading-5">
-									{user.fullName || user.username}
+								<strong className="text-sm leading-5 transition-all duration-300 delay-500">
+									{user.fullName}
 								</strong>
 							)}
 						</div>
