@@ -10,17 +10,17 @@ import {
 	InputOTPSlot
 } from '~/common/components/ui/input-otp';
 import { useAuth } from '../../hook/useAuth';
-import { signUpEmailVerifySchema } from '../../schemas/signUpEmailVerify.schema';
-import type { SignUpEmailVerifyType } from '../../types/signUpEmailVerify.type';
+import type { VerifyCode } from '../../types/signUpCodeVerify.type';
+import { verifyCodeSchema } from '../../schemas/verifyCode.schema';
 
 export function SignUpEmailVerify() {
-	const { setValue, handleSubmit } = useForm<SignUpEmailVerifyType>({
-		resolver: zodResolver(signUpEmailVerifySchema),
+	const { setValue, handleSubmit } = useForm<VerifyCode>({
+		resolver: zodResolver(verifyCodeSchema),
 		mode: 'onChange'
 	});
 	const { verifyEmail, resendCode, isLoading } = useAuth();
 
-	async function handleConfirmCode({ code }: SignUpEmailVerifyType) {
+	async function handleConfirmCode({ code }: VerifyCode) {
 		await verifyEmail({ code });
 	}
 

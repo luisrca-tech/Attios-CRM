@@ -6,11 +6,11 @@ import { Button, LinkButton } from '~/common/components/ui/Button';
 import ErrorMessage from '~/common/components/ui/ErrorMessage';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import { Input } from '~/common/components/ui/Input';
-import { SocialAuth } from '../components/block/SocialAuth';
-import { WelcomeHeading } from '../components/ui/WelcomeHeading';
-import { useAuth } from '../hook/useAuth';
-import { signInFormSchema } from '../schemas/signInForm.schema';
-import type { SignInFormType } from '../types/signInForm.type';
+import { useAuth } from '../../hook/useAuth';
+import { signInFormSchema } from '../../schemas/signInForm.schema';
+import type { SignInFormType } from '../../types/signInForm.type';
+import { WelcomeHeading } from '../ui/WelcomeHeading';
+import { SocialAuth } from './SocialAuth';
 
 export function SignInForm() {
 	const {
@@ -70,7 +70,7 @@ export function SignInForm() {
 					</ErrorMessage>
 				)}
 				<LinkButton
-					href="/recoverPassword"
+					href="/recover-password"
 					className="justify-end bg-transparent px-0 font-bold text-primary-100 text-sm leading-4 hover:bg-transparent hover:opacity-70"
 					type="button"
 				>
@@ -80,7 +80,7 @@ export function SignInForm() {
 					<Button isLoading={isSubmitting} type="submit" className="w-full">
 						Sign In
 					</Button>
-					<LinkButton href="/signUp" color="secondary" className="w-full">
+					<LinkButton href="/sign-up" color="secondary" className="w-full">
 						Sign Up
 					</LinkButton>
 				</div>

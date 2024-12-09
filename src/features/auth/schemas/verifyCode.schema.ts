@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const signUpEmailVerifySchema = z.object({
+export const verifyCodeSchema = z.object({
 	code: z
 		.string()
 		.length(6, { message: 'O código deve ter 6 dígitos' })

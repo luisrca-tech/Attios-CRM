@@ -4,13 +4,17 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { api } from '~/trpc/react';
+import type { ConfirmEmail } from '../types/confirmEmail.type';
+import type { RecoverPassword } from '../types/recoverPasssword.type';
 import type { SignInFormType } from '../types/signInForm.type';
-import type { SignUpEmailVerifyType } from '../types/signUpEmailVerify.type';
+import type { VerifyCode } from '../types/signUpCodeVerify.type';
 import type { SignUpFormType } from '../types/signUpForm.type';
 
 export function useAuth() {
 	const router = useRouter();
 	const [emailVerify, setEmailVerify] = useState<boolean>(false);
+	const [verifyCode, setVerifyCode] = useState<boolean>(false);
+
 	const {
 		signUp,
 		isLoaded: isSignUpLoaded,
@@ -76,7 +80,7 @@ export function useAuth() {
 		}
 	}
 
-	async function verifyEmail({ code }: SignUpEmailVerifyType) {
+	async function verifyEmail({ code }: VerifyCode) {
 		if (!isSignUpLoaded) return null;
 
 		try {
@@ -120,6 +124,7 @@ export function useAuth() {
 		}
 	}
 
+
 	async function resendCode() {
 		if (!isSignUpLoaded) return null;
 		try {
@@ -128,6 +133,56 @@ export function useAuth() {
 				position: 'top-center',
 				description: 'We resent you a verification code to your email.'
 			});
+		} catch (error) {
+			if (isClerkAPIResponseError(error)) {
+				return toast.error('Error', {
+					position: 'top-center',
+					description: error?.errors[0]?.longMessage
+				});
+			}
+			return toast.error('Error', {
+				position: 'top-center',
+				description: 'Something went wrong. Please try again.'
+			});
+		}
+	}
+
+	const confirmEmailBeforeResetPassword = async ({ email }: ConfirmEmail) => {
+		try {
+			await signIn?.create({
+				identifier: email,
+				strategy: 'reset_password_email_code'
+			})
+
+			setVerifyCode(true);
+		} catch (error) {
+			if (isClerkAPIResponseError(error)) {
+				return toast.error('Error', {
+					position: 'top-center',
+					description: error?.errors[0]?.longMessage
+				});
+			}
+			return toast.error('Error', {
+				position: 'top-center',
+				description: 'Something went wrong. Please try again.'
+			});
+		}
+	};
+
+	const handleRecoverPassword = async ({ password, code }: RecoverPassword) => {
+		try {
+			const completeRecoverPassword = await signIn?.attemptFirstFactor({
+				strategy: 'reset_password_email_code',
+				code,
+				password
+			})
+
+			if (completeRecoverPassword?.status === 'complete') {
+				if (!setActiveSignIn) {
+					return null;
+				}
+				await setActiveSignIn({ session: completeRecoverPassword.createdSessionId });
+			}
 		} catch (error) {
 			if (isClerkAPIResponseError(error)) {
 				return toast.error('Error', {
@@ -164,6 +219,9 @@ export function useAuth() {
 		isSignInLoaded,
 		verifyEmail,
 		resendCode,
+		confirmEmailBeforeResetPassword,
+		handleRecoverPassword,
+		verifyCode,
 		isLoading: createUserMutation.isPending,
 		signInWithGoogle,
 		signInWithFacebook

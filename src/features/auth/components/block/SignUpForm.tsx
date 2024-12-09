@@ -6,12 +6,12 @@ import { Button, LinkButton } from '~/common/components/ui/Button';
 import ErrorMessage from '~/common/components/ui/ErrorMessage';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import { Input } from '~/common/components/ui/Input';
-import { SignUpEmailVerify } from '../components/block/SignUpEmailVerify';
-import { SocialAuth } from '../components/block/SocialAuth';
-import { WelcomeHeading } from '../components/ui/WelcomeHeading';
-import { useAuth } from '../hook/useAuth';
-import { signUpFormSchema } from '../schemas/signUpForm.schema';
-import type { SignUpFormType } from '../types/signUpForm.type';
+import { useAuth } from '../../hook/useAuth';
+import { signUpFormSchema } from '../../schemas/signUpForm.schema';
+import type { SignUpFormType } from '../../types/signUpForm.type';
+import { WelcomeHeading } from '../ui/WelcomeHeading';
+import { SignUpEmailVerify } from './SignUpEmailVerifyForm';
+import { SocialAuth } from './SocialAuth';
 
 export function SignUpForm() {
 	const {
@@ -90,7 +90,7 @@ export function SignUpForm() {
 						<Button className="w-full" type="submit">
 							Sign Up
 						</Button>
-						<LinkButton href="/signIn" color="secondary" className="w-full">
+						<LinkButton href="/sign-in" color="secondary" className="w-full">
 							Sign In
 						</LinkButton>
 					</div>
