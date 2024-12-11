@@ -34,7 +34,7 @@ export function SideMenu() {
 								isHovered ? 'justify-start' : 'justify-center'
 							)}
 						>
-							<div className="relative items-center gap-1">
+							<div className="relative items-center gap-1 mb-5">
 								<div className='flex gap-2'>
 									<Image
 										src={Logo}
@@ -100,7 +100,7 @@ export function SideMenu() {
 					<li className="mt-4 w-full px-4">
 						<div
 							className={cn(
-								'flex items-center justify-center',
+								'flex items-center justify-center mt-5',
 								isHovered && 'gap-2 justify-start'
 							)}
 						>
