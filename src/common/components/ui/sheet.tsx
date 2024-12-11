@@ -1,10 +1,10 @@
 'use client';
 
-import * as React from 'react';
 import * as SheetPrimitive from '@radix-ui/react-dialog';
-import { cva, type VariantProps } from 'class-variance-authority';
-import { cn } from '~/lib/utils';
 import { Cross2Icon } from '@radix-ui/react-icons';
+import { cva, type VariantProps } from 'class-variance-authority';
+import * as React from 'react';
+import { cn } from '~/lib/utils';
 
 const Sheet = SheetPrimitive.Root;
 
@@ -63,8 +63,10 @@ const SheetContent = React.forwardRef<
 			className={cn(sheetVariants({ side }), className)}
 			{...props}
 		>
-			<Cross2Icon className="h-4 w-4" />
-			<span className="sr-only">Close</span>
+			<SheetClose className="absolute left-1 top-1 rounded-sm  bg-white-400 opacity-70 hover:opacity-100">
+				<Cross2Icon className="h-3 w-3" />
+				<span className="sr-only">Close</span>
+			</SheetClose>
 			{children}
 		</SheetPrimitive.Content>
 	</SheetPortal>
@@ -124,14 +126,7 @@ const SheetDescription = React.forwardRef<
 SheetDescription.displayName = SheetPrimitive.Description.displayName;
 
 export {
-	Sheet,
-	SheetPortal,
-	SheetOverlay,
-	SheetTrigger,
-	SheetClose,
-	SheetContent,
-	SheetHeader,
-	SheetFooter,
-	SheetTitle,
-	SheetDescription
+	Sheet, SheetClose,
+	SheetContent, SheetDescription, SheetFooter, SheetHeader, SheetOverlay, SheetPortal, SheetTitle, SheetTrigger
 };
+
