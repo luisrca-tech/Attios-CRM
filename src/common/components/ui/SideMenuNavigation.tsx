@@ -5,67 +5,54 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRef, useState } from 'react';
 import { menuItems } from '~/common/constants/menuItems';
-import useClickOutside from '~/common/hooks/useClickOutside';
 import { cn } from '~/lib/utils';
 import { CommingSoon } from './CommingSoon';
-import { Icon } from './Icons/_index';
 import { UserStatusLogged } from './UserStatusLogged';
 import Logo from '/public/favicon.svg';
 
 export function SideMenu() {
 	const { isLoaded, user } = useUser();
-	const [isExpanded, setIsExpanded] = useState(false);
+	const [isHovered, setIsHovered] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
-
-	useClickOutside(menuRef, () => {
-		setIsExpanded(false);
-	});
-
-	const handleExpand = () => {
-		setIsExpanded((prev) => !prev);
-	};
 
 	return (
 		<div
 			ref={menuRef}
+			onMouseEnter={() => setIsHovered(true)}
+			onMouseLeave={() => setIsHovered(false)}
 			className={cn(
 				'hidden max-h-screen min-h-screen border-white-200 border-r bg-white-100 py-5 transition-all duration-300 ease-in-out lg:flex',
-				isExpanded ? 'w-60' : 'w-[5.25rem]'
+				isHovered ? 'w-60' : 'w-[5.25rem]'
 			)}
 		>
-			<nav className="w-full">
+			<nav className="w-full overflow-hidden">
 				<ul className="flex min-h-full flex-col items-center justify-around">
 					<li className="w-full">
-						<button
-							type="button"
-							onClick={handleExpand}
+						<div
 							className={cn(
 								'flex w-full items-center px-4 transition-all duration-300',
-								isExpanded ? 'justify-start' : 'justify-center'
+								isHovered ? 'justify-start' : 'justify-center'
 							)}
 						>
 							<div className="relative items-center gap-1">
-								{!isExpanded && (
-									<Icon.Expand className="-top-6 -left-4 absolute h-3 w-3" />
-								)}
 								<div className='flex gap-2'>
-								<Image
-									src={Logo}
-									alt="logo"
-									width={30}
-									height={30}
-								/>
-								{isExpanded && <strong className='text-xl text-primary-100'>Attios CRM</strong>}
+									<Image
+										src={Logo}
+										alt="logo"
+										width={30}
+										height={30}
+									/>
+									{isHovered && <strong className='text-xl text-primary-100'>Attios CRM</strong>}
 								</div>
 							</div>
-						</button>
+						</div>
 					</li>
 
 					{menuItems.map((item) => (
 						<li
 							className={cn(
 								'relative flex w-full items-center px-4',
-								isExpanded ? 'justify-start' : 'justify-center'
+								isHovered ? 'justify-start' : 'justify-center'
 							)}
 							key={item.label}
 						>
@@ -75,7 +62,7 @@ export function SideMenu() {
 								className={cn(
 									'group flex items-center',
 									item.isComingSoon && 'pointer-events-none opacity-30',
-									isExpanded ? 'w-full' : 'w-12 justify-center'
+									isHovered ? 'w-full' : 'w-12 justify-center'
 								)}
 							>
 								<div
@@ -84,7 +71,7 @@ export function SideMenu() {
 									)}
 								/>
 								<div className={cn('flex items-center justify-center', 
-									isExpanded && 'flex items-center w-full hover:bg-primary-100 hover:rounded p-3'
+									isHovered && 'flex items-center w-full hover:bg-primary-100 hover:rounded p-3'
 								)}>
 									<div
 										className={cn(
@@ -93,7 +80,7 @@ export function SideMenu() {
 									>
 										{item.icon}
 									</div>
-									{isExpanded && (
+									{isHovered && (
 										<span className="flex-1 font-bold leading-5 text-black text-sm capitalize text-center">
 											{item.isComingSoon ? (
 												<CommingSoon
@@ -114,17 +101,16 @@ export function SideMenu() {
 						<div
 							className={cn(
 								'flex items-center justify-center',
-								isExpanded && 'gap-2 justify-start'
+								isHovered && 'gap-2 justify-start'
 							)}
 						>
-							{/* TODO: Create a component for the user button */}
 							<div className="relative">
 								<UserButton
 									appearance={{
 										elements: {
 											avatarBox: cn(
 												'h-[1.875rem] w-[1.875rem] rounded-xl',
-												isExpanded && 'h-10 w-10'
+												isHovered && 'h-10 w-10'
 											)
 										}
 									}}
@@ -134,7 +120,7 @@ export function SideMenu() {
 									userStatus={`${isLoaded ? 'online' : 'offline'}`}
 								/>
 							</div>
-							{isExpanded && user && (
+							{isHovered && user && (
 								<strong className="text-sm leading-5 transition-all duration-300 delay-500">
 									{user.fullName}
 								</strong>
