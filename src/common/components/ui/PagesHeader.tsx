@@ -4,6 +4,7 @@ import { useAtom } from 'jotai';
 import { Button } from './Button';
 import { Icon } from './Icons/_index';
 import { isOpenContentSidebar } from '~/common/atoms/content-sidebar.atom';
+import { AddActionMenu } from './AddActionMenu';
 
 type PagesHeaderProps = {
 	pageTitle: string;
@@ -23,9 +24,7 @@ export function PagesHeader({ pageTitle }: PagesHeaderProps) {
 					<Icon.Search className="h-4 w-4" />
 				</Button>
 				<strong>{pageTitle}</strong>
-				<Button className="p-3 hover:bg-white-200/60" color="secondary">
-					<Icon.AddButton className="h-4 w-4" />
-				</Button>
+				<AddActionMenu />
 			</div>
 			<div className="hidden lg:flex lg:w-full lg:items-center lg:justify-between">
 				<div className="flex items-center gap-5">
@@ -45,12 +44,7 @@ export function PagesHeader({ pageTitle }: PagesHeaderProps) {
 					>
 						<Icon.Search className="h-4 w-4" />
 					</Button>
-					<Button
-						className="bg-white-500 p-3 hover:bg-white-300"
-						color="secondary"
-					>
-						<Icon.AddButton className="h-4 w-4" />
-					</Button>
+					<AddActionMenu />
 				</div>
 			</div>
 		</div>
