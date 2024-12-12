@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import type { IconProps } from '~/common/types/Icons.type';
 import { cn } from '~/lib/utils';
-import ReportsIconImage from '/public/icons/sidebar/reports.png';
+import ReportsIconImage from '/public/icons/sidebar/reports.svg';
 
 export function ReportsIcon({ className }: IconProps) {
 	return (
