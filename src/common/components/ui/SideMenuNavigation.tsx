@@ -3,6 +3,7 @@
 import { UserButton, useUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { menuItems } from '~/common/constants/menuItems';
 import useClickOutside from '~/common/hooks/useClickOutside';
@@ -11,7 +12,6 @@ import { CommingSoon } from './CommingSoon';
 import { Icon } from './Icons/_index';
 import { UserStatusLogged } from './UserStatusLogged';
 import Logo from '/public/favicon.svg';
-import { usePathname } from 'next/navigation';
 
 export function SideMenu() {
 	const { isLoaded, user } = useUser();
@@ -78,7 +78,8 @@ export function SideMenu() {
 									'group flex items-center',
 									item.isComingSoon && 'pointer-events-none opacity-30',
 									isExpanded ? 'w-full' : 'p-2 justify-center',
-									pathname === `/${item.label}` ? 'bg-primary-200/10 rounded-lg' : 'hover:bg-primary-200/10 rounded-lg'
+									pathname === `/${item.label}` && 'bg-primary-200/10 rounded',
+									pathname === `/${item.label}` && isExpanded && 'bg-primary-100 rounded'
 								)}
 							>
 								<div
@@ -88,12 +89,12 @@ export function SideMenu() {
 									)}
 								/>
 								<div className={cn('flex items-center justify-center', 
-									isExpanded && 'flex items-center w-full hover:bg-primary-100 hover:rounded p-3'
+									isExpanded && 'flex items-center w-full hover:rounded p-3',
+									pathname === `/${item.label}` && 'bg-primary-200/10 rounded-lg'
 								)}>
 									<div
-										className={cn(
+										className=
 											'flex h-[1,375rem] w-[1,375rem] items-center'
-										)}
 									>
 										{item.icon}
 									</div>
