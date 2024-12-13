@@ -3,6 +3,7 @@
 import { UserButton, useUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { menuItems } from '~/common/constants/menuItems';
 import useClickOutside from '~/common/hooks/useClickOutside';
@@ -16,6 +17,7 @@ export function SideMenu() {
 	const { isLoaded, user } = useUser();
 	const [isExpanded, setIsExpanded] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
+	const pathname = usePathname();
 
 	useClickOutside(menuRef, () => {
 		setIsExpanded(false);
@@ -75,21 +77,24 @@ export function SideMenu() {
 								className={cn(
 									'group flex items-center',
 									item.isComingSoon && 'pointer-events-none opacity-30',
-									isExpanded ? 'w-full' : 'w-12 justify-center'
+									isExpanded ? 'w-full' : 'p-2 justify-center',
+									pathname === `/${item.label}` && 'bg-primary-200/10 rounded',
+									pathname === `/${item.label}` && isExpanded && 'bg-primary-100 rounded'
 								)}
 							>
 								<div
 									className={cn(
-										'-right-[0.2rem] absolute h-full w-[0.1875rem] scale-y-0 bg-primary-100 transition-transform group-hover:scale-y-100'
+										'-right-[0.2rem] absolute h-full w-[0.1875rem] scale-y-0 bg-primary-100 transition-transform group-hover:scale-y-100',
+										pathname === `/${item.label}` ? 'scale-y-100' : 'scale-y-0'
 									)}
 								/>
 								<div className={cn('flex items-center justify-center', 
-									isExpanded && 'flex items-center w-full hover:bg-primary-100 hover:rounded p-3'
+									isExpanded && 'flex items-center w-full hover:rounded p-3',
+									pathname === `/${item.label}` && 'bg-primary-200/10 rounded-lg'
 								)}>
 									<div
-										className={cn(
+										className=
 											'flex h-[1,375rem] w-[1,375rem] items-center'
-										)}
 									>
 										{item.icon}
 									</div>

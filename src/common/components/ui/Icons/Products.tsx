@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import type { IconProps } from '~/common/types/Icons.type';
 import { cn } from '~/lib/utils';
-import ProductsIconImage from '/public/icons/sidebar/products.png';
+import ProductsIconImage from '/public/icons/sidebar/products.svg';
 
 export function ProductsIcon({ className }: IconProps) {
 	return (
