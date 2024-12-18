@@ -18,11 +18,14 @@ import { Button } from './Button';
 import { CommingSoon } from './CommingSoon';
 import { Icon } from './Icons/_index';
 import { UserStatusLogged } from './UserStatusLogged';
+import { usePathname } from 'next/navigation';
 
 export function BottomMenu() {
 	const { user, isLoaded } = useUser();
 	const userImage = user?.imageUrl;
 	const userName = user?.fullName;
+	const [isOpen, setIsOpen] = useState(false);
+	const pathname = usePathname();
 
 	const mainItemsMenu = menuItems.slice(0, 4);
 	const remainingItemsMenu = menuItems.slice(6);
@@ -33,7 +36,7 @@ export function BottomMenu() {
 
 	return (
 		<div className="fixed right-0 bottom-0 left-0 z-10 flex h-[11.5lvh] w-full items-center justify-between border-white-200 border-t bg-white-100 px-2 py-[0.875rem] lg:hidden">
-			<nav className="flex w-full">
+			<nav className={cn('flex w-full', isOpen && 'hidden')}>
 				<ul className="flex w-full items-center justify-around">
 					<li>
 						<UserButton
@@ -57,8 +60,18 @@ export function BottomMenu() {
 									item.isComingSoon && 'pointer-events-none opacity-50'
 								)}
 							>
-								<div className="-top-[1.125rem] absolute h-[2px] w-full scale-x-0 bg-primary-100 transition-transform group-hover:scale-x-100" />
-								<div className="relative flex h-full w-full items-center justify-center rounded hover:bg-primary-200/10">
+								<div 
+									className={cn(
+										'-top-[1.125rem] absolute h-[2px] w-full bg-primary-100 transition-transform',
+										pathname === `/${item.label}` ? 'scale-x-100' : 'scale-x-0 group-hover:scale-x-100'
+									)} 
+								/>
+								<div 
+									className={cn(
+										'relative flex h-full w-full items-center justify-center rounded',
+										pathname === `/${item.label}` ? 'bg-primary-200/10' : 'hover:bg-primary-200/10'
+									)}
+								>
 									{item.isComingSoon && (
 										<CommingSoon
 											message="Soon"
@@ -70,18 +83,20 @@ export function BottomMenu() {
 							</Link>
 						</li>
 					))}
-					<li>
-						<Sheet>
-							<SheetTrigger className="group relative flex h-12 w-12 items-center justify-center focus:bg-primary-200/10 focus:outline-none">
-								<div className="-top-[1.125rem] absolute h-[2px] w-full scale-x-0 bg-primary-100 transition-transform group-focus:scale-x-100" />
-								<div className="flex h-full w-full items-center justify-center rounded focus:bg-primary-200/10">
+					</ul>
+				</nav>
+						<Sheet open={isOpen} onOpenChange={setIsOpen}>
+							<SheetTrigger className="group relative flex h-12 w-12 items-center justify-center hover:bg-primary-200/10 hover:outline-none">
+								<div className="-top-[1.125rem] absolute h-[2px] w-full scale-x-0 bg-primary-100 transition-transform group-hover:scale-x-100" />
+								<div className="flex h-full w-full items-center justify-center rounded hover:bg-primary-200/10">
 									{selectedIcon}
 								</div>
 							</SheetTrigger>
 							<SheetContent
 								side="bottom"
-								className="top-0 flex h-[88.5lvh] max-h-full flex-col overflow-y-scroll bg-white-300"
+								className="flex h-full flex-col overflow-y-scroll bg-white-300 pb-3"
 							>
+								<SheetClose />
 								<SheetHeader className="bg-white-100">
 									<Button
 										variant="outlined"
@@ -153,9 +168,6 @@ export function BottomMenu() {
 								</div>
 							</SheetContent>
 						</Sheet>
-					</li>
-				</ul>
-			</nav>
 		</div>
 	);
 }
