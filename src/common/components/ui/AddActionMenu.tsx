@@ -8,11 +8,24 @@ import { CommingSoon } from "./CommingSoon";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./dropdown-menu";
 import { Icon } from "./Icons/_index";
 
-export function AddActionMenu() {
-  const [selectedItem, setSelectedItem] = useAtom(selectedAddAction);
+export function AddActionMenu() { 
+  const [selectedModal, setSelectedModal] = useAtom(selectedAddAction);
 
+  const toggleItemModal = (item: typeof addActionItems[number]) => {
+    if (item.renderModal) {
+      setSelectedModal(item.renderModal());
+    } else {
+      setSelectedModal(null);
+    }
+  };
+
+  console.log(selectedModal);
+
+  if (selectedModal) {
+    return selectedModal;
+  }
+  
   return (
-    <>
       <DropdownMenu>
         <DropdownMenuTrigger asChild className="bg-white-400 data-[state=open]:bg-primary-100">
           <Button className="p-3 hover:bg-white-200/60" color="secondary">
@@ -22,7 +35,7 @@ export function AddActionMenu() {
         <DropdownMenuContent className="bg-white-100 mr-7 mt-2 lg:min-w-[17.8125rem]">
           {addActionItems.map((item) => (
             <DropdownMenuItem 
-              onClick={() => setSelectedItem(item)} 
+              onClick={() => toggleItemModal(item)} 
               className={`hover:bg-white-200 ${item.isComingSoon ? "pointer-events-none" : "cursor-pointer"}`}	
               key={item.label}
             >
@@ -38,7 +51,5 @@ export function AddActionMenu() {
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
-      {selectedItem?.modal && <selectedItem.modal />}
-    </>
   )
 }

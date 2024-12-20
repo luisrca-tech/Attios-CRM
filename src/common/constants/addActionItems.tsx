@@ -1,11 +1,11 @@
+import { NewProductModal } from "~/features/Products/NewProductModal";
 import { Icon } from "../components/ui/Icons/_index";
-import { NewProductModal } from "../components/modals/NewProductModal";
 
 interface AddActionItem {
   label: string;
   icon: React.ReactNode;
   isComingSoon?: boolean;
-  modal?: React.ComponentType;
+  renderModal?: () => React.ReactNode;
 }
 
 export const addActionItems: AddActionItem[] = [
@@ -13,7 +13,7 @@ export const addActionItems: AddActionItem[] = [
     label: 'New Product',
     icon: <Icon.Sidebar.Products className="h-[1.125rem] w-[1.125rem] invert" />,
     isComingSoon: false,
-    modal: NewProductModal
+    renderModal: () => <NewProductModal />
   },
   {
     label: 'New Project',
