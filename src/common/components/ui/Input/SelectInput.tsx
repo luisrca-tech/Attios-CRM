@@ -1,77 +1,99 @@
 'use client';
 
-import type React from 'react';
-import { useRef, useState } from 'react';
-import { cn } from '../../../../lib/utils';
-import useClickOutside from '../../../hooks/useClickOutside';
+import * as React from 'react';
+import {
+	Command,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList,
+} from '../command';
+import { Icon } from '../Icons/_index';
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from '../popover';
 
 interface SelectInputProps {
 	options: string[];
 	text?: string;
-	renderIcon?: (isOpen: boolean) => React.ReactNode;
-	renderOptionIcon?: (option: string) => React.ReactNode;
+	onSearch?: (value: string) => void;
+	onChange?: (value: string) => void;
+	name?: string;
+	onBlur?: (event: React.FocusEvent<HTMLButtonElement>) => void;
 }
 
-const SelectInput: React.FC<SelectInputProps> = ({
-	options,
-	text,
-	renderIcon,
-	renderOptionIcon
-}) => {
-	const [isOpenDropdown, setIsOpenDropdown] = useState(false);
-	const [selectedOption, setSelectedOption] = useState<string | null>(null);
-	const ref = useRef<HTMLDivElement>(null);
+const SelectInput = React.forwardRef<HTMLButtonElement, SelectInputProps>(
+	({ text, options, onSearch, onChange, name, onBlur }, ref) => {
+		const [open, setOpen] = React.useState(false);
+		const [value, setValue] = React.useState("");
 
-	const toggleDropdown = () => setIsOpenDropdown((prev) => !prev);
+		const handleSelect = React.useCallback(
+			(currentValue: string) => {
+				setValue(currentValue);
+				setOpen(false);
+				onChange?.(currentValue);
+			},
+			[onChange]
+		);
 
-	useClickOutside(ref, () => setIsOpenDropdown(false));
-	
-	const handleOptionClick = (option: string) => {
-		setSelectedOption(option);
-		toggleDropdown()
-	};
+		return (
+			<Popover open={open} onOpenChange={setOpen}>
+				<PopoverTrigger className='flex justify-between items-center w-full' asChild>
+					<button
+						ref={ref}
+						role="combobox"
+						aria-expanded={open}
+						className="w-[16.8125rem] justify-between font-normal py-1"
+						type="button"
+						name={name}
+						onBlur={onBlur}
+					>
+						{value ? options.find((option) => option === value) : text}
+						<Icon.Arrow.Down className="ml-2 h-3 w-3 shrink-0" />
+					</button>
+				</PopoverTrigger>
+				<PopoverContent 
+					className="w-[16.8125rem] p-0" 
+					align="start"
+					side="top"
+					sideOffset={4}
+				>
+					<Command className='bg-white-100 text-black'>
+						<CommandInput 
+							placeholder="Search..." 
+							onValueChange={onSearch}
+							className="h-9 px-3"
+						/>
+						<CommandList>
+							<CommandEmpty className='flex flex-col items-center justify-center gap-2'>No option found! 
+								<span className='text-sm text-gray-500 text-center'>
+									Please, confirm the submit to create a new one.
+								</span>
+							</CommandEmpty>
+							
+							<CommandGroup className='bg-white-100 text-black font-bold'>
+								{options.map((option) => (
+									<CommandItem
+										key={option}
+										value={option}
+										onSelect={handleSelect}
+										className="cursor-pointer hover:text-white-100 hover:bg-primary-100"
+									>
+										{option}
+									</CommandItem>
+								))}
+							</CommandGroup>
+						</CommandList>
+					</Command>
+				</PopoverContent>
+			</Popover>
+		);
+	}
+);
 
-	return (
-		<div
-			ref={ref}
-			className="relative inline-block w-full cursor-pointer text-left"
-		>
-			<button
-			onClick={toggleDropdown}
-				className={cn(
-					'flex w-full items-center justify-between rounded border-none font-bold text-sm leading-5 outline-none',
-					'placeholder:text-primary-200 hover:text-primary-100'
-				)}
-				type="button"
-			>
-				<span className="py-[0.375rem] text-primary-200 font-bold text-sm leading-5">{selectedOption || text}</span>
-				<div className={cn('transition-all duration-300', isOpenDropdown ? 'rotate-180' : '')}>
-				{renderIcon?.(isOpenDropdown)}
-				</div>
-			</button>
-			{isOpenDropdown && (
-				<div className="absolute mt-2 w-full rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 bg-white-100">
-					<div className="py-1">
-						{options.map((option) => (
-							<button
-								key={option}
-								value={option}
-								className={cn(
-									'flex w-full items-center px-4 py-5 text-left text-sm hover:bg-primary-100/10',
-									'hover:text-primary-100'
-								)}
-								onClick={() => handleOptionClick(option)}
-								type="button"
-							>
-								{renderOptionIcon?.(option)}
-								<span className="ml-2">{option}</span>
-							</button>
-						))}
-					</div>
-				</div>
-			)}
-		</div>
-	);
-};
+SelectInput.displayName = "SelectInput";
 
 export default SelectInput;

@@ -1,6 +1,6 @@
 import { publicProcedure } from '~/server/api/trpc';
 
-export const getProductQueries = {
+export const productQueries = {
 	getAll: publicProcedure.query(({ ctx }) => {
 		return ctx.db.query.products.findMany({
 			with: {
