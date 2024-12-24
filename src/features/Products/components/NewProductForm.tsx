@@ -1,11 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { Button } from "~/common/components/ui/Button";
 import ErrorMessage from "~/common/components/ui/ErrorMessage";
 import { Icon } from "~/common/components/ui/Icons/_index";
 import { Input } from "~/common/components/ui/Input";
 import { api } from "~/trpc/react";
+import { useProduct } from "../hooks/useProduct";
 import { newProductSchema } from "../schemas/newProduct.schema";
 import type { NewProduct } from "../types/newProduct.type";
 
@@ -15,10 +17,17 @@ export function NewProductForm() {
     defaultValues: {
       price: 0,
       availableQuantity: 0,
+      category: '',
     }
   });
   const [categorySearch, setCategorySearch] = useState('');
   const getAllCategories = api.category.getAll.useQuery();
+  const { createCategory } = useProduct();
+
+  const handleAddCategory = (value: string) => {
+    createCategory.mutate({ name: value });
+    return toast.success('Category added');
+  }
   
   const categories = getAllCategories.data?.map(cat => cat.name) ?? [];
   
@@ -89,7 +98,7 @@ export function NewProductForm() {
                     onSearch={setCategorySearch} 
                     {...register('category')}
                     onChange={(value) => setValue('category', value)}
-                    onBlur={() => setValue('category', '')}
+                    onAdd={handleAddCategory}
                   />
                 </div>
             </Input.Root>

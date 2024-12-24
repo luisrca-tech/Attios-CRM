@@ -1,6 +1,7 @@
 'use client';
 
 import * as React from 'react';
+import { Button } from '../Button';
 import {
 	Command,
 	CommandEmpty,
@@ -19,25 +20,31 @@ import {
 interface SelectInputProps {
 	options: string[];
 	text?: string;
-	onSearch?: (value: string) => void;
-	onChange?: (value: string) => void;
-	name?: string;
-	onBlur?: (event: React.FocusEvent<HTMLButtonElement>) => void;
+	onSearch: (value: string) => void;
+	onChange: (value: string) => void;
+	onAdd: (value: string) => void;
 }
 
 const SelectInput = React.forwardRef<HTMLButtonElement, SelectInputProps>(
-	({ text, options, onSearch, onChange, name, onBlur }, ref) => {
+	({ text, options, onSearch, onChange, onAdd }, ref) => {
 		const [open, setOpen] = React.useState(false);
 		const [value, setValue] = React.useState("");
+		const [searchValue, setSearchValue] = React.useState("");
 
 		const handleSelect = React.useCallback(
 			(currentValue: string) => {
 				setValue(currentValue);
+				setSearchValue(currentValue);
 				setOpen(false);
 				onChange?.(currentValue);
 			},
 			[onChange]
 		);
+
+		const handleSearch = (search: string) => {
+			setSearchValue(search);
+			onSearch?.(search);
+		};
 
 		return (
 			<Popover open={open} onOpenChange={setOpen}>
@@ -48,8 +55,6 @@ const SelectInput = React.forwardRef<HTMLButtonElement, SelectInputProps>(
 						aria-expanded={open}
 						className="w-[16.8125rem] justify-between font-normal py-1"
 						type="button"
-						name={name}
-						onBlur={onBlur}
 					>
 						{value ? options.find((option) => option === value) : text}
 						<Icon.Arrow.Down className="ml-2 h-3 w-3 shrink-0" />
@@ -64,14 +69,13 @@ const SelectInput = React.forwardRef<HTMLButtonElement, SelectInputProps>(
 					<Command className='bg-white-100 text-black'>
 						<CommandInput 
 							placeholder="Search..." 
-							onValueChange={onSearch}
+							value={searchValue}
+							onValueChange={handleSearch}
 							className="h-9 px-3"
 						/>
 						<CommandList>
 							<CommandEmpty className='flex flex-col items-center justify-center gap-2'>No option found! 
-								<span className='text-sm text-gray-500 text-center'>
-									Please, confirm the submit to create a new one.
-								</span>
+								<Button onClick={() => onAdd?.(searchValue)}>Add  "{searchValue}"</Button>
 							</CommandEmpty>
 							
 							<CommandGroup className='bg-white-100 text-black font-bold'>
