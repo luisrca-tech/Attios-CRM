@@ -3,6 +3,7 @@
 import { UserButton, useUser } from '@clerk/nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { useRef, useState } from 'react';
 import { menuItems } from '~/common/constants/menuItems';
 import { cn } from '~/lib/utils';
@@ -14,38 +15,46 @@ export function SideMenu() {
 	const { isLoaded, user } = useUser();
 	const [isHovered, setIsHovered] = useState(false);
 	const menuRef = useRef<HTMLDivElement>(null);
+	const pathname = usePathname();
+
+	const handleMouseEnter = () => {
+		setIsHovered(true);
+	};
+
+	const handleMouseLeave = () => {
+		setIsHovered(false);
+	};
 
 	return (
 		<div
 			ref={menuRef}
-			onMouseEnter={() => setIsHovered(true)}
-			onMouseLeave={() => setIsHovered(false)}
 			className={cn(
-				'hidden max-h-screen min-h-screen border-white-200 border-r bg-white-100 py-5 transition-all duration-300 ease-in-out lg:flex',
+				'hidden max-h-screen min-h-screen border-white-200 border-r bg-white-100 py-5 transition-all duration-300 ease-in-out lg:flex hover:w-60',
 				isHovered ? 'w-60' : 'w-[5.25rem]'
 			)}
+			onMouseEnter={handleMouseEnter}
+			onMouseLeave={handleMouseLeave}
 		>
-			<nav className="w-full overflow-hidden">
+			<nav className="w-full">
 				<ul className="flex min-h-full flex-col items-center justify-around">
 					<li className="w-full">
-						<div
+						<button
+							type="button"
 							className={cn(
-								'flex w-full items-center px-4 transition-all duration-300',
+								'flex w-full items-center px-4 transition-all duration-300 pb-5',
 								isHovered ? 'justify-start' : 'justify-center'
 							)}
 						>
-							<div className="relative items-center gap-1 mb-5">
-								<div className='flex gap-2'>
-									<Image
-										src={Logo}
-										alt="logo"
-										width={30}
-										height={30}
-									/>
-									{isHovered && <strong className='text-xl text-primary-100'>Attios CRM</strong>}
+								<div className='flex gap-3'>
+								<Image
+									src={Logo}
+									alt="logo"
+									width={30}
+									height={30}
+								/>
+								{isHovered && <strong className='text-xl text-primary-100'>Attios CRM</strong>}
 								</div>
-							</div>
-						</div>
+						</button>
 					</li>
 
 					{menuItems.map((item) => (
@@ -62,20 +71,25 @@ export function SideMenu() {
 								className={cn(
 									'group flex items-center',
 									item.isComingSoon && 'pointer-events-none opacity-30',
-									isHovered ? 'w-full' : 'w-12 justify-center'
+									isHovered ? 'w-full' : 'p-2 justify-center',
+									pathname === `/${item.label}` && 'bg-primary-200/10 rounded',
+									pathname === `/${item.label}` && isHovered && 'bg-primary-100/10 rounded'
 								)}
 							>
 								<div
 									className={cn(
-										'-right-[0.2rem] absolute h-full w-[0.1875rem] scale-y-0 bg-primary-100 transition-transform group-hover:scale-y-100'
+										'-right-[0.2rem] absolute h-full w-[0.1875rem] scale-y-0 bg-primary-100 transition-transform group-hover:scale-y-100',
+										pathname === `/${item.label}` ? 'scale-y-100' : 'scale-y-0'
 									)}
 								/>
 								<div className={cn('flex items-center justify-center', 
-									isHovered && 'flex items-center w-full hover:bg-primary-100 hover:rounded p-3'
+									isHovered && 'flex items-center w-full hover:rounded p-3',
+									pathname === `/${item.label}` && 'bg-primary-200/10 rounded-lg'
 								)}>
 									<div
 										className={cn(
-											'flex h-[1,375rem] w-[1,375rem] items-center'
+											'flex h-[1,375rem] w-[1,375rem] items-center',
+											isHovered && 'fill-primary-100'
 										)}
 									>
 										{item.icon}
@@ -100,10 +114,11 @@ export function SideMenu() {
 					<li className="mt-4 w-full px-4">
 						<div
 							className={cn(
-								'flex items-center justify-center mt-5',
+								'flex items-center justify-center',
 								isHovered && 'gap-2 justify-start'
 							)}
 						>
+							{/* TODO: Create a component for the user button */}
 							<div className="relative">
 								<UserButton
 									appearance={{
