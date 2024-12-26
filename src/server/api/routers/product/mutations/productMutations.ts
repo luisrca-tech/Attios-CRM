@@ -14,15 +14,23 @@ export const productMutations = {
       throw new Error("Category not found");
     }
 
+    const brand = await ctx.db.query.brands.findFirst({
+      where: (brands, { eq }) => eq(brands.name, input.brand)
+    });
+
+    if (!brand) {
+      throw new Error("Brand not found");
+    }
+
     return ctx.db.insert(products).values({
       id: randomUUID().slice(0, 10),
+      brandId: brand.id,
       name: input.name,
       sku: input.sku,
       productImage: input.productImage,
       listPrice: sql`${input.price}::decimal`,
       quantity: input.availableQuantity,
       categoryId: category.id,
-      brandId: 1,
       modelYear: new Date().getFullYear()
     });
   })
