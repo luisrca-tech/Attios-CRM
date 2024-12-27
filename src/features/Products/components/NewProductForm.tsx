@@ -126,8 +126,8 @@ export function NewProductForm() {
             </div>
           </div>
           <div className="flex flex-col gap-2 w-full">
-            <Input.Root className="w-full" fieldText="Brand">
-              <div className="flex-1">
+            <Input.Root className="w-[16.8125rem]" fieldText="Brand">
+              <div className="flex-1 w-full">
                 <Input.SelectInput
                   text="Select brand" 
                   options={filteredBrands}
