@@ -96,7 +96,7 @@ export function SideMenu() {
 										className=
 											'flex h-[1,375rem] w-[1,375rem] items-center'
 									>
-										{item.icon}
+										{item.icon(pathname === `/${item.label}` ? '#5E81F4' : '#8181A5')}
 									</div>
 									{isExpanded && (
 										<span className="flex-1 font-bold leading-5 text-black text-sm capitalize text-center">
