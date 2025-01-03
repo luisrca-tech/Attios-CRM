@@ -39,6 +39,7 @@ import { UserIcon } from './UserIcon';
 import { SkuIcon } from './Sku';
 import { GarageIcon } from './Garage';
 import { WalletIcon } from './Wallet';
+import { CloseButton } from './CloseButton';
 
 export const Icon = {
 	Email: EmailIcon,
@@ -60,6 +61,7 @@ export const Icon = {
 	Sku: SkuIcon,
 	Garage: GarageIcon,
 	Wallet: WalletIcon,
+	CloseButton: CloseButton,
 	List: {
 		White: ListIconWhite,
 		Blue: ListIconBlue
