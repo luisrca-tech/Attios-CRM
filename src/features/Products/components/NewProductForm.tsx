@@ -1,19 +1,18 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "~/common/components/ui/Button";
 import ErrorMessage from "~/common/components/ui/ErrorMessage";
 import { Icon } from "~/common/components/ui/Icons/_index";
 import { Input } from "~/common/components/ui/Input";
-import { api } from "~/trpc/react";
-import { UploadButton } from "~/utils/uploadthing";
+import { UploadButton, useUploadThing } from "~/utils/uploadthing";
 import { useProduct } from "../hooks/useProduct";
 import { newProductSchema } from "../schemas/newProduct.schema";
 import type { NewProduct } from "../types/newProduct.type";
 
 export function NewProductForm() {
-  const { register, handleSubmit, reset, setValue, formState: { errors, isLoading } } = useForm<NewProduct>({
+  const { register, handleSubmit, reset, setValue, watch, formState: { errors, isLoading } } = useForm<NewProduct>({
     resolver: zodResolver(newProductSchema),
     defaultValues: {
       price: 0,
@@ -22,7 +21,11 @@ export function NewProductForm() {
       brand: '',
     }
   });
+  
+  const file = watch('file');
   const { createCategory, createProduct, createBrand, filteredCategories, filteredBrands, setCategorySearch: onSearchCategory, setBrandSearch: onSearchBrand } = useProduct();
+
+  const { startUpload } = useUploadThing("imageUploader");
 
   const handleAddCategory = (value: string) => {
     createCategory.mutate({ name: value });
@@ -34,13 +37,38 @@ export function NewProductForm() {
     return toast.success('Brand added');
   }
 
-  const onSubmit = ({ name, sku, price, availableQuantity, category, brand, productImage }: NewProduct) => {
-    createProduct.mutate({ name, sku, price, availableQuantity, category, brand, productImage }, {
-      onSuccess: () => {
-        toast.success('Product created successfully');
-        reset();
-      },
-    });
+  const handleFileSelect = (file: File) => {
+    setValue('file', file);
+  }
+
+  const onSubmit = async (values: NewProduct) => {
+    try {
+      if (!values.file) {
+        toast.error('Please select an image');
+        return;
+      }
+
+      const uploadResponse = await startUpload([values.file]);
+      if (!uploadResponse?.[0]) {
+        toast.error('Failed to upload image');
+        return;
+      }
+
+      await createProduct.mutateAsync({
+        name: values.name,
+        sku: values.sku,
+        price: values.price,
+        availableQuantity: values.availableQuantity,
+        category: values.category,
+        brand: values.brand,
+        productImage: uploadResponse[0].url
+      });
+
+      toast.success('Product created successfully');
+      reset();
+    } catch (error) {
+      toast.error('Failed to create product');
+    }
   }
 
   return (
@@ -48,25 +76,43 @@ export function NewProductForm() {
       <div className="flex flex-col gap-[0.875rem] mt-[2.625rem]">
         <div className="flex items-center justify-center mb-[1.6875rem]">
           <div className="flex flex-col gap-2">
-          <UploadButton
-            endpoint="imageUploader"
-            onClientUploadComplete={(res) => {
-              if (res && res[0]) {
-                setValue('productImage', res[0].url);
-                toast.success("Upload completed");
-              }
-            }}
-            onUploadError={(error: Error) => {
-              toast.error(`ERROR! ${error.message}`);
-            }}
-            appearance={{
-              button: "p-9 h-[9rem] flex items-center justify-center rounded-xl bg-primary-100/10"
-            }}
-            content={{
-              button: <Icon.Upload />
-            }}
-          />
-          {errors.productImage && <ErrorMessage children={errors.productImage.message} />}
+            {file ? (
+              <div className="relative">
+                <Image 
+                  src={URL.createObjectURL(file)} 
+                  alt="Product preview" 
+                  width={144} 
+                  height={144} 
+                  className="rounded-xl object-cover"
+                />
+                <button
+                  type="button"
+                  onClick={() => setValue('file', undefined)}
+                  className="absolute -top-2 -right-2 p-1 bg-white-100 rounded-full shadow-md hover:bg-gray-50"
+                >
+                  <Icon.CloseButton className="w-4 h-4" />
+                </button>
+              </div>
+            ) : (
+              <UploadButton
+                endpoint="imageUploader"
+                onChange={(files) => {
+                  if (files?.[0]) {
+                    handleFileSelect(files[0]);
+                  }
+                }}
+                onUploadError={(error: Error) => {
+                  toast.error(`ERROR! ${error.message}`);
+                }}
+                appearance={{
+                  button: "p-9 h-[9rem] flex items-center justify-center rounded-xl bg-primary-100/10"
+                }}
+                content={{
+                  button: <Icon.Upload />
+                }}
+              />
+            )}
+            {errors.file && <ErrorMessage children={errors.file.message} />}
           </div>
         </div>
         <div className="flex flex-col gap-[0.875rem]">

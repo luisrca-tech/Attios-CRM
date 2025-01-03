@@ -10,5 +10,6 @@ export const newProductSchema = z.object({
   availableQuantity: z.number().min(0, { message: 'Available quantity must be greater than 0' }),
   category: z.string().nonempty({ message: 'Category is required' }),
   brand: z.string().nonempty({ message: 'Brand is required' }),
-  productImage: z.string().url({ message: 'Invalid image URL' }).nonempty({ message: 'Image is required' }),
+  file: z.instanceof(File, { message: 'Image is required' }).optional(),
+  productImage: z.string().url({ message: 'Invalid image URL' }).optional(),
 }) 

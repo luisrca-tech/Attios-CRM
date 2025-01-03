@@ -27,7 +27,8 @@ export const products = createTable(
 		quantity: integer('quantity').notNull(),
 		listPrice: decimal('list_price', { precision: 10, scale: 2 }).notNull(),
 		sku: varchar('sku', { length: 100 }),
-		productImage: varchar('product_image', { length: 255 })
+		productImage: varchar('product_image', { length: 255 }),
+		file: varchar('file', { length: 255 }),
 	},
 	(table) => ({
 		brandIdIdx: index('brand_id_idx').on(table.brandId),
