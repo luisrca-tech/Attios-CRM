@@ -7,8 +7,10 @@ import { Button } from "./Button";
 import { CommingSoon } from "./CommingSoon";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./dropdown-menu";
 import { Icon } from "./Icons/_index";
+import { useState } from "react";
 
 export function AddActionMenu() { 
+  const [isOpen, setIsOpen] = useState(false);
   const [selectedModal, setSelectedModal] = useAtom(selectedAddAction);
 
   const toggleItemModal = (item: typeof addActionItems[number]) => {
@@ -19,17 +21,15 @@ export function AddActionMenu() {
     }
   };
 
-  console.log(selectedModal);
-
   if (selectedModal) {
     return selectedModal;
   }
   
   return (
-      <DropdownMenu>
+      <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
         <DropdownMenuTrigger asChild className="bg-white-400 data-[state=open]:bg-primary-100/90">
           <Button className="p-3 hover:bg-white-200/60" color="secondary">
-            <Icon.AddButton className="h-4 w-4" />
+            <Icon.AddButton className="h-4 w-4" fill={isOpen ? "#FAFBFF" : "#8181A5"} />
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="bg-white-100 mr-7 mt-2 lg:min-w-[17.8125rem]">
@@ -45,7 +45,7 @@ export function AddActionMenu() {
               {item.isComingSoon ? (
                 <CommingSoon className="ml-0" message="Coming Soon" />
               ) : (
-                <span className="text-black font-bold text-sm leading-5">{item.label}</span>
+                <strong className="font-bold text-sm leading-5">{item.label}</strong>
               )}
             </DropdownMenuItem>
           ))}

@@ -72,7 +72,7 @@ export function NewProductForm() {
         <div className="flex flex-col gap-[0.875rem]">
           <div className="flex flex-col gap-2 w-full">
             <Input.Root fieldText="Product's name">
-              <Input.Text {...register('name')} className="px-0" placeholder="Start typing..." renderIconRight={() => <Icon.Sidebar.Products />} />
+              <Input.Text {...register('name')} className="px-0" placeholder="Start typing..." renderIconRight={() => <Icon.Sidebar.Products className="h-[1.125rem] w-[1.125rem]" fill="#8181A5" />} />
             </Input.Root>
             {errors.name && <ErrorMessage children={errors.name.message} />}
           </div>

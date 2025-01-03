@@ -79,7 +79,7 @@ export function SideMenu() {
 									item.isComingSoon && 'pointer-events-none opacity-30',
 									isExpanded ? 'w-full' : 'p-2 justify-center',
 									pathname === `/${item.label}` && 'bg-primary-200/10 rounded',
-									pathname === `/${item.label}` && isExpanded && 'bg-primary-100 rounded'
+									pathname === `/${item.label}` && isExpanded && 'bg-primary-100/10 rounded'
 								)}
 							>
 								<div

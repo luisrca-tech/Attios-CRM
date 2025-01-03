@@ -11,33 +11,33 @@ interface AddActionItem {
 export const addActionItems: AddActionItem[] = [
   {
     label: 'New Product',
-    icon: <Icon.Sidebar.Products className="h-[1.125rem] w-[1.125rem] invert" />,
+    icon: <Icon.Sidebar.Products className="h-[1.125rem] w-[1.125rem]" fill="#5E81F4" />,
     isComingSoon: false,
     renderModal: () => <NewProductModal />
   },
   {
     label: 'New Project',
-    icon: <Icon.Sidebar.Projects className="h-[1.125rem] w-[1.125rem]" />,
+    icon: <Icon.Sidebar.Projects className="h-[1.125rem] w-[1.125rem]" fill="#5E81F4" />,
     isComingSoon: true
   },
   {
     label: 'New Task',
-    icon: <Icon.Sidebar.Tasks className="h-[1.125rem] w-[1.125rem]" />,
+    icon: <Icon.Sidebar.Tasks className="h-[1.125rem] w-[1.125rem]" fill="#5E81F4" />,
     isComingSoon: true
   },
   {
     label: 'New Contact',
-    icon: <Icon.Sidebar.Contacts className="h-[1.125rem] w-[1.125rem]" />,
+    icon: <Icon.Sidebar.Contacts className="h-[1.125rem] w-[1.125rem]" fill="#5E81F4" />,
     isComingSoon: true
   },
   {
     label: 'New Event',
-    icon: <Icon.Sidebar.Calendar className="h-[1.125rem] w-[1.125rem]" />,
+    icon: <Icon.Sidebar.Calendar className="h-[1.125rem] w-[1.125rem]" fill="#5E81F4" />,
     isComingSoon: true
   },
   {
     label: 'New Invoice',
-    icon: <Icon.Sidebar.Invoices className="h-[1.125rem] w-[1.125rem]" />,
+    icon: <Icon.Sidebar.Invoices className="h-[1.125rem] w-[1.125rem]" fill="#5E81F4" />,
     isComingSoon: true
   }
 ]
