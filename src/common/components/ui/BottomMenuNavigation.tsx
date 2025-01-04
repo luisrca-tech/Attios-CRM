@@ -19,6 +19,7 @@ import { CommingSoon } from './CommingSoon';
 import { Icon } from './Icons/_index';
 import { UserStatusLogged } from './UserStatusLogged';
 import { usePathname } from 'next/navigation';
+import { AddActionMenu } from './AddActionMenu';
 
 export function BottomMenu() {
 	const { user, isLoaded } = useUser();
@@ -78,7 +79,7 @@ export function BottomMenu() {
 											className="absolute rotate-45 bg-primary-200/10 px-1.5 py-0 text-[0.625rem] text-black"
 										/>
 									)}
-									{item.icon}
+									{item.icon(pathname === `/${item.label}` ? '#5E81F4' : '#8181A5')}
 								</div>
 							</Link>
 						</li>
@@ -106,13 +107,7 @@ export function BottomMenu() {
 										<Icon.Search />
 									</Button>
 									<SheetTitle>Navigation</SheetTitle>
-									<Button
-										variant="outlined"
-										color="secondary"
-										className="h-10 w-10 border-0 bg-primary-200/10 px-0 hover:bg-primary-200/70"
-									>
-										<Icon.AddButton />
-									</Button>
+									<AddActionMenu />
 								</SheetHeader>
 								<div className="mt-[3.625rem] flex flex-col items-center justify-center">
 									<div className="mb-[2.3125rem] flex flex-col items-center justify-center">
@@ -146,10 +141,10 @@ export function BottomMenu() {
 																	'pointer-events-none opacity-50'
 															)}
 															onClick={() =>
-																!item.isComingSoon && setSelectedIcon(item.icon)
+																!item.isComingSoon && setSelectedIcon(item.icon('#8181A5'))
 															}
 														>
-															{item.icon}
+															{item.icon('#8181A5')}
 															<span className="font-bold text-primary-200/80 text-sm leading-5">
 																{item.label}
 															</span>
