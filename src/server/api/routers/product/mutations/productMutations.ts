@@ -22,7 +22,7 @@ export const productMutations = {
       throw new Error("Brand not found");
     }
 
-    return ctx.db.insert(products).values({
+    const product = await ctx.db.insert(products).values({
       id: randomUUID().slice(0, 10),
       brandId: brand.id,
       name: input.name,
@@ -32,6 +32,10 @@ export const productMutations = {
       quantity: input.availableQuantity,
       categoryId: category.id,
       modelYear: new Date().getFullYear()
+    }).returning({
+      id: products.id
     });
+
+    return product;
   })
 }

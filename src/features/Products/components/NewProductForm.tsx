@@ -57,7 +57,7 @@ export function NewProductForm() {
         return;
       }
 
-      await createProduct.mutateAsync({
+      const product = await createProduct.mutateAsync({
         name: values.name,
         sku: values.sku,
         price: values.price,
@@ -69,6 +69,7 @@ export function NewProductForm() {
 
       toast.success('Product created successfully');
       reset();
+      router.push(`/product/${product[0]?.id}`);
     } catch (error) {
       toast.error('Failed to create product');
     }

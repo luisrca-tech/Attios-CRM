@@ -11,5 +11,12 @@ export const productQueries = {
 				}
 			}
 		});
+	}),
+	getAllIds: publicProcedure.query(({ ctx }) => {
+		return ctx.db.query.products.findMany({
+			columns: {
+				id: true
+			}
+		});
 	})
 };
