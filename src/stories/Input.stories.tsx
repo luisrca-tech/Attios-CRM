@@ -4,6 +4,7 @@ import InputText from '../common/components/ui/Input/InputText';
 import InputPassword from '../common/components/ui/Input/InputPassword';
 import SelectInput from '../common/components/ui/Input/SelectInput';
 import { Icon } from '~/common/components/ui/Icons/_index';
+import { Input } from '~/common/components/ui/Input';
 
 const meta = {
   title: 'UI/Input',
@@ -60,16 +61,12 @@ export const InputPasswordInRoot: StoryObj = {
 export const SelectInputInRoot: StoryObj = {
   render: () => (
     <InputRoot className='w-48' fieldText="Select Option">
-      <SelectInput
+      <Input.SelectInput
         options={['Option 1', 'Option 2', 'Option 3']}
         text="Select an option"
-        renderIcon={(isOpen) => (
-          <Icon.Arrow.Down
-            className={`h-3 w-3 transform transition-transform ${
-              isOpen ? 'rotate-180' : ''
-            }`}
-          />
-        )}
+        onSearch={() => {}}
+        onChange={() => {}}
+        onAdd={() => {}}
       />
     </InputRoot>
   ),
@@ -78,17 +75,12 @@ export const SelectInputInRoot: StoryObj = {
 export const SelectInputWithOptionIcons: StoryObj = {
   render: () => (
     <InputRoot className='w-48' fieldText="Select Option">
-      <SelectInput
+      <Input.SelectInput
       options={['Option 1', 'Option 2', 'Option 3']}
       text="Select with icons"
-      renderIcon={(isOpen) => (
-        <Icon.Arrow.Down
-          className={`h-3 w-3 transform transition-transform ${
-            isOpen ? 'rotate-180' : ''
-          }`}
-        />
-      )}
-      renderOptionIcon={() => <Icon.AddButton className="h-4 w-4" />}
+      onSearch={() => {}}
+      onChange={() => {}}
+      onAdd={() => {}}
     />
     </InputRoot>
   ),
