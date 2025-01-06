@@ -24,11 +24,11 @@ export function PagesHeader({ title, iconLeft, onClickIconLeft, children }: Page
 	return (
 		<div className="border-white-200 border-b bg-white-100 p-[0.9375rem] lg:bg-white-300 lg:py-6">
 			<div className="flex w-full items-center justify-between lg:hidden">
-				<Button className="p-3 hover:bg-white-200/60" color="secondary">
-					<Icon.Search className="h-4 w-4" />
+				<Button onClick={onClickIconLeft} className="w-10 h-10 p-0 hover:bg-white-200/60" color="secondary">
+					{iconLeft}
 				</Button>
 				<strong>{title}</strong>
-				<AddActionMenu />
+				{children}
 			</div>
 			<div className="hidden lg:flex lg:w-full lg:items-center lg:justify-between">
 				<div className="flex items-center gap-5">
@@ -43,13 +43,12 @@ export function PagesHeader({ title, iconLeft, onClickIconLeft, children }: Page
 				</div>
 				<div className="flex gap-[0.375rem]">
 					<Button
-						onClick={onClickIconLeft}
 						className="bg-white-500 p-3 hover:bg-white-200"
 						color="secondary"
 					>
-						{iconLeft}
+						<Icon.Search className="h-4 w-4" />
 					</Button>
-					{children}
+					<AddActionMenu />
 				</div>
 			</div>
 		</div>
