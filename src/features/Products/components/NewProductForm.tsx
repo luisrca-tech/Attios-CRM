@@ -1,11 +1,13 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "~/common/components/ui/Button";
 import ErrorMessage from "~/common/components/ui/ErrorMessage";
 import { Icon } from "~/common/components/ui/Icons/_index";
 import { Input } from "~/common/components/ui/Input";
+import { useMediaQuery } from "~/common/hooks/useMediaQuery";
 import { UploadButton, useUploadThing } from "~/utils/uploadthing";
 import { useProduct } from "../hooks/useProduct";
 import { newProductSchema } from "../schemas/newProduct.schema";
@@ -21,6 +23,7 @@ export function NewProductForm() {
       brand: '',
     }
   });
+  const router = useRouter();
   
   const file = watch('file');
   const { createCategory, createProduct, createBrand, filteredCategories, filteredBrands, setCategorySearch: onSearchCategory, setBrandSearch: onSearchBrand } = useProduct();
@@ -71,10 +74,14 @@ export function NewProductForm() {
     }
   }
 
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
+  
+
+
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="flex flex-col gap-[0.875rem] mt-[2.625rem]">
-        <div className="flex items-center justify-center mb-[1.6875rem]">
+      <div className="flex flex-col gap-[0.875rem] mt-6 lg:mt-[2.625rem] max-h-[calc(100vh-12rem)] overflow-y-auto lg:max-h-none lg:overflow-visible">
+        <div className="flex items-center justify-center mb-6 lg:mb-[1.6875rem]">
           <div className="flex flex-col gap-2">
             {file ? (
               <div className="relative">
@@ -105,24 +112,28 @@ export function NewProductForm() {
                   toast.error(`ERROR! ${error.message}`);
                 }}
                 appearance={{
-                  button: "p-9 h-[9rem] flex items-center justify-center rounded-xl bg-primary-100/10"
+                  button: "p-9 h-[5.25rem] w-[5.25rem] lg:h-[6.5rem] lg:w-[6.5rem] flex items-center justify-center rounded-xl bg-white-100 lg:bg-primary-100/10"
                 }}
                 content={{
-                  button: <Icon.Upload />
+                  button: <Icon.Upload className="h-[1.125rem] w-[1.125rem] lg:w-8 lg:h-8 text-primary-200 lg:text-primary-100" fill={isDesktop ? '#1B51E5' : '#8181A5'} />
                 }}
               />
             )}
             {errors.file && <ErrorMessage children={errors.file.message} />}
+            <div className="flex flex-col items-center justify-center lg:hidden">
+              <strong className="leading-8 text-xl">Type new products name</strong>
+              <p className="text-xs leading-5 font-normal text-primary-200">Created on 07 jun 2019</p>
+            </div>
           </div>
         </div>
-        <div className="flex flex-col gap-[0.875rem]">
+        <div className="bg-white-100 rounded-md px-3 py-[1.375rem] flex flex-col gap-[0.875rem] lg:px-0 lg:bg-transparent lg:rounded-none">
           <div className="flex flex-col gap-2 w-full">
             <Input.Root fieldText="Product's name">
               <Input.Text {...register('name')} className="px-0" placeholder="Start typing..." renderIconRight={() => <Icon.Sidebar.Products className="h-[1.125rem] w-[1.125rem]" fill="#8181A5" />} />
             </Input.Root>
             {errors.name && <ErrorMessage children={errors.name.message} />}
           </div>
-          <div className="flex gap-[1.875rem] w-full">
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-[1.875rem] w-full">
             <div className="flex flex-col gap-2 w-full">
               <Input.Root className="w-full" fieldText="Sku">
                 <Input.Text className="px-0" placeholder="Start typing..." renderIconRight={() => <Icon.Sku />} {...register('sku')} />
@@ -142,7 +153,7 @@ export function NewProductForm() {
               {errors.availableQuantity && <ErrorMessage children={errors.availableQuantity.message} />}
             </div>
           </div>
-          <div className="flex gap-[1.875rem] w-full">
+          <div className="flex flex-col lg:flex-row gap-4 lg:gap-[1.875rem] w-full">
             <div className="flex flex-col gap-2 w-full">
               <Input.Root className="w-full" fieldText="Price">
                 <Input.Text 
@@ -172,7 +183,7 @@ export function NewProductForm() {
             </div>
           </div>
           <div className="flex flex-col gap-2 w-full">
-            <Input.Root className="w-[16.8125rem]" fieldText="Brand">
+            <Input.Root className="w-full lg:w-[16.8125rem]" fieldText="Brand">
               <div className="flex-1 w-full">
                 <Input.SelectInput
                   text="Select brand" 
@@ -187,12 +198,15 @@ export function NewProductForm() {
             {errors.brand && <ErrorMessage children={errors.brand.message} />}
           </div>
         </div>
-        <div className="flex justify-between mt-[1.6875rem]">
-          <Button type="button" className="bg-white-200 text-primary-200 hover:bg-secondary-300">Cancel</Button>
+        <div className="hidden lg:flex justify-between mt-6 lg:mt-[1.6875rem]">
+          <Button type="button" onClick={() => router.back()} className="bg-white-200 text-primary-200 hover:bg-secondary-300">Cancel</Button>
           <Button type="submit" disabled={isLoading}>
             {isLoading ? 'Creating...' : 'Add & Proceed'}
           </Button>
         </div>
+        <Button type="submit" disabled={isLoading} className="w-full lg:hidden">
+          {isLoading ? 'Creating...' : 'Create Product'}
+        </Button>
       </div>
     </form>
   )
