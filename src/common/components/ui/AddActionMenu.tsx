@@ -1,24 +1,30 @@
 "use client"
 
 import { useAtom } from "jotai";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { selectedAddAction } from "~/common/atoms/selected-add-action";
 import { addActionItems } from "~/common/constants/addActionItems";
+import { useMediaQuery } from "~/common/hooks/useMediaQuery";
 import { Button } from "./Button";
 import { CommingSoon } from "./CommingSoon";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./dropdown-menu";
 import { Icon } from "./Icons/_index";
-import { useState } from "react";
 
 export function AddActionMenu() { 
+  const router = useRouter();
+  const isDesktop = useMediaQuery('(min-width: 1024px)');
   const [isOpen, setIsOpen] = useState(false);
   const [selectedModal, setSelectedModal] = useAtom(selectedAddAction);
 
-  const toggleItemModal = (item: typeof addActionItems[number]) => {
-    if (item.renderModal) {
-      setSelectedModal(item.renderModal());
-    } else {
-      setSelectedModal(null);
-    }
+  const handleItemClick = (item: typeof addActionItems[number]) => {
+    if (item.isComingSoon) return;
+    
+   if (isDesktop && item.renderModal) {
+    setSelectedModal(item.renderModal());
+   } else if (item.mobileHref) {
+    router.push(item.mobileHref);
+   }
   };
 
   if (selectedModal) {
@@ -35,7 +41,7 @@ export function AddActionMenu() {
         <DropdownMenuContent className="bg-white-100 mr-7 mt-2 lg:min-w-[17.8125rem]">
           {addActionItems.map((item) => (
             <DropdownMenuItem 
-              onClick={() => toggleItemModal(item)} 
+              onClick={() => handleItemClick(item)} 
               className={`hover:bg-white-200 ${item.isComingSoon ? "pointer-events-none" : "cursor-pointer"}`}	
               key={item.label}
             >
