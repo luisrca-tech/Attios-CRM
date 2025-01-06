@@ -18,11 +18,12 @@ export function AddActionMenu() {
   const [selectedModal, setSelectedModal] = useAtom(selectedAddAction);
 
   const handleItemClick = (item: typeof addActionItems[number]) => {
-    if (item.isComingSoon) return;
+   if (item.isComingSoon) return;
     
    if (isDesktop && item.renderModal) {
     setSelectedModal(item.renderModal());
-   } else if (item.mobileHref) {
+   }
+   if (item.mobileHref) {
     router.push(item.mobileHref);
    }
   };
