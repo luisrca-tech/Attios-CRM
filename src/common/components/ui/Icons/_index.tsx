@@ -47,6 +47,7 @@ import { ReceiptIcon } from './Receipt';
 import { ShippingIcon } from './Shipping';
 import { MegaphoneIcon } from './Megaphone';
 import { BellIcon } from './Bell';
+import { TrashIcon } from './Trash';
 
 export const Icon = {
 	Email: EmailIcon,
@@ -76,6 +77,7 @@ export const Icon = {
 	Receipt: ReceiptIcon,
 	Earth: EarthIcon,
 	Bell: BellIcon,
+	Trash: TrashIcon,
 	List: {
 		White: ListIconWhite,
 		Blue: ListIconBlue
