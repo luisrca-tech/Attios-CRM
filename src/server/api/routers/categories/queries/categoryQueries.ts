@@ -7,5 +7,5 @@ export const categoryQueries = {
 				name: true
 			}
 		});
-	})
+	}),
 };
