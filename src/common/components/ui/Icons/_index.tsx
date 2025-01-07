@@ -40,6 +40,13 @@ import { SkuIcon } from './Sku';
 import { GarageIcon } from './Garage';
 import { WalletIcon } from './Wallet';
 import { CloseButton } from './CloseButton';
+import { ShopIcon } from './Shop';
+import { ShippedIcon } from './Shipped';
+import { EarthIcon } from './Earth';
+import { ReceiptIcon } from './Receipt';
+import { ShippingIcon } from './Shipping';
+import { MegaphoneIcon } from './Megaphone';
+import { BellIcon } from './Bell';
 
 export const Icon = {
 	Email: EmailIcon,
@@ -62,6 +69,13 @@ export const Icon = {
 	Garage: GarageIcon,
 	Wallet: WalletIcon,
 	CloseButton: CloseButton,
+	Shop: ShopIcon,
+	Shipped: ShippedIcon,
+	Shipping: ShippingIcon,
+	Megaphone: MegaphoneIcon,
+	Receipt: ReceiptIcon,
+	Earth: EarthIcon,
+	Bell: BellIcon,
 	List: {
 		White: ListIconWhite,
 		Blue: ListIconBlue
