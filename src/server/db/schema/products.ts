@@ -1,5 +1,5 @@
 import { relations } from 'drizzle-orm';
-import { decimal, index, integer, serial, varchar } from 'drizzle-orm/pg-core';
+import { decimal, index, integer, serial, text, varchar } from 'drizzle-orm/pg-core';
 import { createTable } from './config';
 
 export const brands = createTable('brand', {
@@ -27,7 +27,10 @@ export const products = createTable(
 		quantity: integer('quantity').notNull(),
 		listPrice: decimal('list_price', { precision: 10, scale: 2 }).notNull(),
 		sku: varchar('sku', { length: 100 }),
-		productImage: varchar('product_image', { length: 255 }),
+		currency: varchar('currency', { length: 3 }),
+		subcategory: varchar('subcategory', { length: 100 }),
+		initialImage: varchar('initial_image', { length: 255 }),
+		productImages: text('product_images').array(),
 		file: varchar('file', { length: 255 }),
 	},
 	(table) => ({
