@@ -11,5 +11,5 @@ export const newProductSchema = z.object({
   category: z.string().nonempty({ message: 'Category is required' }),
   brand: z.string().nonempty({ message: 'Brand is required' }),
   file: z.instanceof(File, { message: 'Image is required' }).optional(),
-  productImage: z.string().url({ message: 'Invalid image URL' }).optional(),
+  initialImage: z.string().url({ message: 'Invalid image URL' }).optional(),
 }) 

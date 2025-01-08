@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { newProductSchema } from "~/features/Products/schemas/newProduct.schema";
+import { updateProductSchema } from "~/features/Products/schemas/updateProduct.schema";
 import { publicProcedure } from "~/server/api/trpc";
 import { products } from "~/server/db/schema";
 
@@ -27,7 +28,7 @@ export const productMutations = {
       brandId: brand.id,
       name: input.name,
       sku: input.sku,
-      productImage: input.productImage,
+      initialImage: input.initialImage,
       listPrice: sql`${input.price}::decimal`,
       quantity: input.availableQuantity,
       categoryId: category.id,
@@ -35,6 +36,28 @@ export const productMutations = {
     }).returning({
       id: products.id
     });
+
+    return product;
+  }),
+  update: publicProcedure.input(updateProductSchema).mutation(async ({ ctx, input }) => {
+    const category = await ctx.db.query.categories.findFirst({
+      where: (categories, { eq }) => eq(categories.name, input.category)
+    });
+
+    if (!category) {
+      throw new Error("Category not found");
+    }
+
+    const product = await ctx.db.update(products).set({
+      name: input.name,
+      sku: input.sku,
+      listPrice: sql`${input.price}::decimal`,
+      quantity: input.availableQuantity,
+      categoryId: category.id,
+      subcategory: input.subcategory,
+      currency: input.currency,
+      productImages: input.productImages
+    }).where(eq(products.id, input.productId)).returning();
 
     return product;
   })

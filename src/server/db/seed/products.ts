@@ -41,7 +41,7 @@ export async function seedProducts() {
 			categoryId: randomCategory.id,
 			modelYear: faker.number.int({ min: 2020, max: 2024 }),
 			listPrice: faker.commerce.price({ min: 100, max: 2000, dec: 2 }),
-			productImage: faker.image.url({ width: 640, height: 480 }),
+			initialImage: faker.image.url({ width: 640, height: 480 }),
 			quantity: faker.number.int({ min: 0, max: 3000 })
 		};
 	});
