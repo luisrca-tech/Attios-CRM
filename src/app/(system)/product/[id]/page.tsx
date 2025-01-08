@@ -22,21 +22,21 @@ export default async function Product({ params }: { params: { id: string } }) {
   const product = await api.product.getById(params.id);
 
   return (
-    <div className="flex w-full">
-			<ContentSidebar.Page.Dashboard />
-			<div className="flex w-full flex-col bg-white-300">
-				<PagesHeader iconLeft={<Icon.Arrow.Left className="h-3 w-3" />} title={`Item Settings`}>
-					<AddActionMenu />
-				</PagesHeader>
-				<div className="bg-white-300 px-[1.625rem] pb-[1.625rem] h-full">
-        <div className="p-[1.625rem] flex gap-[1.875rem] bg-white-100 rounded-xl h-full">
-        <div className="flex-1">
-        {product && <UpdateProductForm product={product} />}
+    <div className="flex w-full h-screen">
+      <ContentSidebar.Page.Dashboard />
+      <div className="flex w-full flex-col bg-white-300">
+        <PagesHeader iconLeft={<Icon.Arrow.Left className="h-3 w-3" />} title="Item Settings">
+          <AddActionMenu />
+        </PagesHeader>
+        <div className="flex-1 overflow-hidden px-[1.625rem] pb-[1.625rem]">
+          <div className="flex gap-[1.875rem] bg-white-100 rounded-xl h-full p-[1.625rem]">
+            <div className="flex-1 overflow-hidden">
+              {product && <UpdateProductForm product={product} />}
+            </div>
+            <ProductActions />
+          </div>
         </div>
-        <ProductActions />
-        </div>
-        </div>
-			</div>
-		</div>
+      </div>
+    </div>
   )
 }
