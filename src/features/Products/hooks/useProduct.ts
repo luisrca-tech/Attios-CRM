@@ -78,5 +78,11 @@ export const useProduct = () => {
     }
   });
 
-  return { createCategory, createProduct, createBrand, filteredCategories, filteredBrands, setCategorySearch, setBrandSearch };
+  const updateProduct = api.product.update.useMutation({
+    onError: (error) => {
+      toast.error(error.message);
+    }
+  });
+
+  return { createCategory, createProduct, createBrand, filteredCategories, filteredBrands, setCategorySearch, setBrandSearch, updateProduct };
 }
