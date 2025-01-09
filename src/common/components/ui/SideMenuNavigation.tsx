@@ -73,7 +73,7 @@ export function SideMenu() {
 						>
 							<Link
 								aria-disabled={item.isComingSoon}
-								href={item.label}
+								href={`/${item.label}`}
 								className={cn(
 									'group flex items-center',
 									item.isComingSoon && 'pointer-events-none opacity-30',

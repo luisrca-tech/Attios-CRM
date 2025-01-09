@@ -55,7 +55,7 @@ export function BottomMenu() {
 						>
 							<Link
 								aria-disabled={item.isComingSoon}
-								href={item.label}
+								href={`/${item.label}`}
 								className={cn(
 									'group flex h-full w-full items-center justify-center',
 									item.isComingSoon && 'pointer-events-none opacity-50'
@@ -134,7 +134,7 @@ export function BottomMenu() {
 													<SheetClose asChild>
 														<Link
 															aria-disabled={item.isComingSoon}
-															href={item.label}
+															href={`/${item.label}`}
 															className={cn(
 																'group relative flex items-center gap-7 rounded-[0.625rem] bg-white-100 px-7 py-6 hover:bg-white-200',
 																item.isComingSoon &&
