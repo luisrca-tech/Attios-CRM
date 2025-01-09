@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "~/common/components/ui/Button";
@@ -9,6 +10,7 @@ import { Icon } from "~/common/components/ui/Icons/_index";
 import { Input } from "~/common/components/ui/Input";
 import { products } from "~/server/db/schema";
 import { api } from "~/trpc/react";
+import { useUploadThing } from "~/utils/uploadthing";
 import { useProduct } from "../hooks/useProduct";
 import { updateProductSchema } from "../schemas/updateProduct.schema";
 import type { UpdateProduct } from "../types/updateProduct.type";
@@ -16,39 +18,81 @@ import { ProductImageCarousel } from "./ProductImageCarousel";
 
 export const UpdateProductForm = ({ product }: { product: typeof products.$inferSelect }) => {
   const category = api.product.getById.useQuery(product.id);
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<UpdateProduct>({
+  const [filesToUpload, setFilesToUpload] = useState<File[]>([]);
+  const { register, handleSubmit, formState: { errors, isSubmitting, isDirty }, reset, setValue } = useForm<UpdateProduct>({
     resolver: zodResolver(updateProductSchema),
     defaultValues: {
+      productId: product.id,
       name: product.name,
       sku: product.sku ?? "",
       availableQuantity: product.quantity ?? 0,
       price: Number(product.listPrice) ?? 0,
       currency: "USD",
       category: category.data?.category?.name ?? "",
-      subcategory: "",
-      productImages: product.initialImage ? [product.initialImage] : []
+      subcategory: product.subcategory ?? "",
+      productImages: product.productImages ?? []
     }
   });
 
-  const { createCategory, filteredCategories, setCategorySearch: onSearchCategory } = useProduct();
+  const { createCategory, filteredCategories, setCategorySearch: onSearchCategory, updateProduct } = useProduct();
+  const { startUpload } = useUploadThing("imageUploader");
 
   const handleAddCategory = (value: string) => {
     createCategory.mutate({ name: value });
     return toast.success('Category added');
   }
 
-  const onSubmit = (data: UpdateProduct) => {
-    console.log(data);
+  const onSubmit = async (values: UpdateProduct) => {
+    try {
+      let uploadedImageUrls = values.productImages ?? [];
+      
+      if (filesToUpload.length > 0) {
+        const uploadResponse = await startUpload(filesToUpload);
+        if (!uploadResponse) {
+          toast.error('Failed to upload images');
+          return;
+        }
+        uploadedImageUrls = [...uploadedImageUrls, ...uploadResponse.map(file => file.url)];
+      }
+
+      console.log(values);
+
+      await updateProduct.mutateAsync({
+        productId: values.productId,
+        name: values.name,
+        sku: values.sku,
+        price: values.price,
+        availableQuantity: values.availableQuantity,
+        category: values.category,
+        subcategory: values.subcategory,
+        currency: values.currency,
+        productImages: uploadedImageUrls
+      });
+
+      toast.success('Product updated successfully');
+    } catch (error) {
+      toast.error('Failed to update product');
+    }
+  }
+
+  const handleCancel = () => {
+    reset();
+    setFilesToUpload([]);
+    setValue('productImages', product.productImages ?? []);
   }
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="h-full flex flex-col">
       <div className="flex-1 overflow-y-auto pr-6 -mr-6">
         <div className="flex flex-col gap-6">
-          <div className="bg-white-100 rounded-xl w-full flex flex-col">
+          <div className="bg-white-100 rounded-xl w-full flex flex-col max-w-screen-2xl">
             <ProductImageCarousel 
-              initialImages={product.initialImage ? [product.initialImage] : []}
-              {...register('productImages')}
+              productImages={(product.productImages ?? []).map(url => ({
+                image: url,
+                imageKey: url
+              }))}
+              onImagesChange={(images) => setValue('productImages', images)}
+              onFilesChange={setFilesToUpload}
             />
             {errors.productImages && <ErrorMessage children={errors.productImages.message} />}
           </div>
@@ -90,13 +134,31 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
             <div className="flex gap-[1.875rem] w-full">
               <div className="flex flex-col gap-1 w-full">
               <Input.Root className="w-full" fieldText="Category">
-                <Input.SelectInput {...register('category')} text={category.data?.category?.name ?? "Select category"} options={filteredCategories} onSearch={onSearchCategory} onChange={() => {}} onAdd={handleAddCategory} />
+                <Input.SelectInput 
+                  {...register('category')} 
+                  text={category.data?.category?.name ?? "Select category"}
+                  options={filteredCategories} 
+                  onSearch={onSearchCategory} 
+                  onChange={(value) => {
+                    setValue('category', value, { shouldDirty: true });
+                  }} 
+                  onAdd={handleAddCategory} 
+                />
               </Input.Root>
               {errors.category && <ErrorMessage children={errors.category.message} />}
               </div>
               <div className="flex flex-col gap-1 w-full">
               <Input.Root className="w-full" fieldText="Subcategory">
-                  <Input.SelectInput {...register('subcategory')} text={"Select subcategory"} options={filteredCategories} onSearch={onSearchCategory} onChange={() => {}} onAdd={handleAddCategory} />
+                  <Input.SelectInput 
+                    {...register('subcategory')} 
+                    text="Select subcategory"
+                    options={filteredCategories} 
+                    onSearch={onSearchCategory} 
+                    onChange={(value) => {
+                      setValue('subcategory', value, { shouldDirty: true });
+                    }} 
+                    onAdd={handleAddCategory} 
+                  />
                 </Input.Root>
                 {errors.subcategory && <ErrorMessage children={errors.subcategory.message} />}
               </div>
@@ -105,10 +167,10 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
         </div>
       </div>
       <div className="flex gap-[0.375rem] pt-6">
-        <Button className="w-[10.75rem]" disabled={isSubmitting}>
+        <Button type="submit" className="w-[10.75rem]" disabled={isSubmitting && !isDirty}>
           {isSubmitting ? 'Updating...' : 'Update Settings'}
         </Button>
-        <Button color="secondary" className="w-32">
+        <Button type="button" color="secondary" className="w-32" onClick={handleCancel}>
           Cancel
         </Button>
       </div>
