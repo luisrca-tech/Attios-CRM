@@ -1,26 +1,28 @@
 'use client'
 
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 
 export function useMediaQuery(query: string): boolean {
-  const getMatches = useCallback((query: string): boolean => {
-    if (typeof window !== 'undefined') {
-      return window.matchMedia(query).matches
-    }
-    return false
-  }, [])
+ const mediaQuery = useMemo(() => 
+    typeof window !== 'undefined' ? window.matchMedia(query) : null
+  , [query])
 
-  const [matches, setMatches] = useState<boolean>(false)
+  const [matches, setMatches] = useState<boolean>(() => 
+    mediaQuery ? mediaQuery.matches : false
+  )
 
   useEffect(() => {
-    const mediaQuery = window.matchMedia(query)
-    setMatches(mediaQuery.matches)
+    if (!mediaQuery) return
 
     const handler = (event: MediaQueryListEvent) => setMatches(event.matches)
     mediaQuery.addEventListener('change', handler)
     
     return () => mediaQuery.removeEventListener('change', handler)
-  }, [query, getMatches])
+  }, [mediaQuery])
 
   return matches
-} 
+}
+
+export function useIsDesktop(): boolean {
+  return useMediaQuery('(min-width: 1024px)')
+}
