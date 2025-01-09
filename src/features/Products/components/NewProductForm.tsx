@@ -14,7 +14,7 @@ import { newProductSchema } from "../schemas/newProduct.schema";
 import type { NewProduct } from "../types/newProduct.type";
 
 export function NewProductForm() {
-  const { register, handleSubmit, reset, setValue, watch, formState: { errors, isLoading } } = useForm<NewProduct>({
+  const { register, handleSubmit, setValue, watch, formState: { errors, isSubmitting } } = useForm<NewProduct>({
     resolver: zodResolver(newProductSchema),
     defaultValues: {
       price: 0,
@@ -64,11 +64,13 @@ export function NewProductForm() {
         availableQuantity: values.availableQuantity,
         category: values.category,
         brand: values.brand,
-        initialImage: uploadResponse[0].url
+        productImages: [{
+          url: uploadResponse[0].url,
+          key: uploadResponse[0].key
+        }]
       });
 
       toast.success('Product created successfully');
-      reset();
       router.push(`/product/${product[0]?.id}`);
     } catch (error) {
       toast.error('Failed to create product');
@@ -90,7 +92,7 @@ export function NewProductForm() {
                   src={URL.createObjectURL(file)} 
                   alt="Product preview" 
                   width={144} 
-                  height={144} 
+                  height={144}
                   className="rounded-xl object-cover"
                 />
                 <button
@@ -201,12 +203,12 @@ export function NewProductForm() {
         </div>
         <div className="hidden lg:flex justify-between mt-6 lg:mt-[1.6875rem]">
           <Button type="button" onClick={() => router.back()} className="bg-white-200 text-primary-200 hover:bg-secondary-300">Cancel</Button>
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? 'Creating...' : 'Add & Proceed'}
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Creating...' : 'Add & Proceed'}
           </Button>
         </div>
-        <Button type="submit" disabled={isLoading} className="w-full lg:hidden">
-          {isLoading ? 'Creating...' : 'Create Product'}
+        <Button type="submit" disabled={isSubmitting} className="w-full lg:hidden">
+          {isSubmitting ? 'Creating...' : 'Create Product'}
         </Button>
       </div>
     </form>
