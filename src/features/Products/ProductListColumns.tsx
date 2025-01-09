@@ -58,7 +58,7 @@ export const columnsList: ColumnType<Product> = [
 			return (
 				<div className="flex items-center md:gap-4 lg:gap-2 2xl:gap-4">
 					<Image
-						src={product.initialImage ?? ''}
+						src={product.productImages?.[0] ?? ''}
 						alt={product.name}
 						width={52}
 						height={52}
