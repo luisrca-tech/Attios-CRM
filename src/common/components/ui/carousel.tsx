@@ -201,6 +201,7 @@ const CarouselPrevious = React.forwardRef<
 
   return (
     <Button
+      type="button"
       ref={ref}
       variant={variant}
       color={color}
@@ -230,6 +231,7 @@ const CarouselNext = React.forwardRef<
 
   return (
     <Button
+      type="button"
       ref={ref}
       variant={variant}
       color={color}
