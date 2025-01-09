@@ -33,6 +33,7 @@ export async function seedProducts() {
 	const productsData = Array.from({ length: 50 }, () => {
 		const randomBrand = faker.helpers.arrayElement(insertedBrands);
 		const randomCategory = faker.helpers.arrayElement(insertedCategories);
+		const sku = 'SKU' + '-' + faker.number.int({ min: 1000, max: 9999 });
 
 		return {
 			id: randomUUID().slice(0, 10),
@@ -40,8 +41,9 @@ export async function seedProducts() {
 			brandId: randomBrand.id,
 			categoryId: randomCategory.id,
 			modelYear: faker.number.int({ min: 2020, max: 2024 }),
+			sku,
 			listPrice: faker.commerce.price({ min: 100, max: 2000, dec: 2 }),
-			initialImage: faker.image.url({ width: 640, height: 480 }),
+			productImages: Array.from({ length: 3 }, () => faker.image.url({ width: 640, height: 480 })),
 			quantity: faker.number.int({ min: 0, max: 3000 })
 		};
 	});
