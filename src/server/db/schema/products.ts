@@ -23,23 +23,33 @@ export const products = createTable(
 		categoryId: integer('category_id')
 			.references(() => categories.id)
 			.notNull(),
+		category: varchar('category', { length: 20 }),
 		modelYear: integer('model_year').notNull(),
 		quantity: integer('quantity').notNull(),
 		listPrice: decimal('list_price', { precision: 10, scale: 2 }).notNull(),
-		sku: varchar('sku', { length: 100 }),
+		sku: varchar('sku', { length: 100 }).unique(),
 		currency: varchar('currency', { length: 3 }),
 		subcategory: varchar('subcategory', { length: 100 }),
-		initialImage: varchar('initial_image', { length: 255 }),
 		productImages: text('product_images').array(),
 		file: varchar('file', { length: 255 }),
 	},
 	(table) => ({
 		brandIdIdx: index('brand_id_idx').on(table.brandId),
-		categoryIdIdx: index('category_id_idx').on(table.categoryId)
+		categoryIdIdx: index('category_id_idx').on(table.categoryId),
+		productImagesIdx: index('product_images_idx').on(table.productImages)
 	})
 );
 
-export const productsRelations = relations(products, ({ one }) => ({
+export const productImages = createTable('product_images', {
+	id: serial('id').primaryKey(),
+	productId: varchar('product_id', { length: 10 })
+		.references(() => products.id)
+		.notNull(),
+	image: varchar('url', { length: 255 }).notNull(),
+	imageKey: varchar('image_key', { length: 255 }).notNull()
+});
+
+export const productsRelations = relations(products, ({ one, many }) => ({
 	category: one(categories, {
 		fields: [products.categoryId],
 		references: [categories.id]
@@ -47,6 +57,14 @@ export const productsRelations = relations(products, ({ one }) => ({
 	brand: one(brands, {
 		fields: [products.brandId],
 		references: [brands.id]
+	}),
+	productImages: many(productImages)
+}));
+
+export const productImagesRelations = relations(productImages, ({ one }) => ({
+	product: one(products, {
+		fields: [productImages.productId],
+		references: [products.id]
 	})
 }));
 

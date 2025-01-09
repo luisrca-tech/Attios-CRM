@@ -28,37 +28,33 @@ export const productMutations = {
       brandId: brand.id,
       name: input.name,
       sku: input.sku,
-      initialImage: input.initialImage,
       listPrice: sql`${input.price}::decimal`,
       quantity: input.availableQuantity,
       categoryId: category.id,
-      modelYear: new Date().getFullYear()
+      category: category.name,
+      modelYear: new Date().getFullYear(),
+      productImages: (input.productImages ?? []).map(image => image.url),
     }).returning({
-      id: products.id
+      id: products.id,
     });
 
     return product;
   }),
   update: publicProcedure.input(updateProductSchema).mutation(async ({ ctx, input }) => {
-    const category = await ctx.db.query.categories.findFirst({
-      where: (categories, { eq }) => eq(categories.name, input.category)
-    });
-
-    if (!category) {
-      throw new Error("Category not found");
-    }
-
-    const product = await ctx.db.update(products).set({
-      name: input.name,
-      sku: input.sku,
-      listPrice: sql`${input.price}::decimal`,
-      quantity: input.availableQuantity,
-      categoryId: category.id,
-      subcategory: input.subcategory,
-      currency: input.currency,
-      productImages: input.productImages
-    }).where(eq(products.id, input.productId)).returning();
-
-    return product;
+    await ctx.db.update(products)
+      .set({
+        name: input.name,
+        sku: input.sku,
+        listPrice: sql`${input.price}::decimal`,
+        quantity: input.availableQuantity,
+        category: input.category,
+        subcategory: input.subcategory ?? null,
+        currency: input.currency,
+        productImages: input.productImages
+      })
+      .where(eq(products.id, input.productId))
+      .returning({
+        id: products.id
+      });
   })
 }
