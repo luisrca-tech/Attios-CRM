@@ -9,7 +9,7 @@ type Product = InferSelectModel<typeof products> & {
 };
 
 export function ProductListCard({
-	productImage,
+	productImages,
 	name,
 	modelYear,
 	id
@@ -19,7 +19,7 @@ export function ProductListCard({
 			<div className="flex gap-4">
 				<Image
 					className="h-[3.25rem] w-[3.25rem] rounded-md"
-					src={productImage ?? ''}
+					src={productImages?.[0] ?? ''}
 					alt={name}
 					width={52}
 					height={52}

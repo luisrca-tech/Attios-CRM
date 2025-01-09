@@ -10,14 +10,14 @@ type Product = InferSelectModel<typeof products>;
 interface ProductGridCardProps
 	extends Pick<
 		Product,
-		'productImage' | 'id' | 'name' | 'modelYear' | 'quantity' | 'listPrice'
+		'productImages' | 'id' | 'name' | 'modelYear' | 'quantity' | 'listPrice'
 	> {
 	isSelected?: boolean;
 	onSelect?: (value: boolean) => void;
 }
 
 export function ProductGridCard({
-	productImage,
+	productImages,
 	id,
 	name,
 	modelYear,
@@ -43,7 +43,7 @@ export function ProductGridCard({
 			</div>
 				<div className="flex flex-col items-center justify-center gap-4">
 					<Image
-						src={productImage ?? ''}
+						src={productImages?.[0] ?? ''}
 						alt={name}
 						width={80}
 						height={80}
