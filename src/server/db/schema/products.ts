@@ -1,5 +1,5 @@
-import { relations } from 'drizzle-orm';
-import { decimal, index, integer, serial, text, varchar } from 'drizzle-orm/pg-core';
+import { relations, sql } from 'drizzle-orm';
+import { decimal, index, integer, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { createTable } from './config';
 
 export const brands = createTable('brand', {
@@ -45,6 +45,8 @@ export const productImages = createTable('product_images', {
 		.references(() => products.id)
 		.notNull(),
 	url: varchar('url', { length: 255 }).notNull(),
+	createdAt: timestamp('created_at').default(sql`now()`).notNull(),
+	updatedAt: timestamp('updated_at').default(sql`now()`).notNull(),
 });
 
 export const productsRelations = relations(products, ({ one, many }) => ({
