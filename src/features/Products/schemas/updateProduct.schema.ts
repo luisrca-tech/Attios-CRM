@@ -9,5 +9,5 @@ export const updateProductSchema = z.object({
   category: z.string().min(1, "Category is required"),
   subcategory: z.string().optional(),
   currency: z.string().optional(),
-  productImages: z.array(z.string().url({ message: 'Invalid image URL' })).optional()
+  productImages: z.array(z.object({ url: z.string() })).optional()
 }); 

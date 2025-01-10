@@ -8,7 +8,7 @@ import { Button } from "~/common/components/ui/Button";
 import ErrorMessage from "~/common/components/ui/ErrorMessage";
 import { Icon } from "~/common/components/ui/Icons/_index";
 import { Input } from "~/common/components/ui/Input";
-import { products } from "~/server/db/schema";
+import type { products } from "~/server/db/schema";
 import { api } from "~/trpc/react";
 import { useUploadThing } from "~/utils/uploadthing";
 import { useProduct } from "../hooks/useProduct";
@@ -17,7 +17,8 @@ import type { UpdateProduct } from "../types/updateProduct.type";
 import { ProductImageCarousel } from "./ProductImageCarousel";
 
 export const UpdateProductForm = ({ product }: { product: typeof products.$inferSelect }) => {
-  const category = api.product.getById.useQuery(product.id);
+  const productData = api.product.getById.useQuery(product.id);
+  const category = productData.data?.category;
   const [filesToUpload, setFilesToUpload] = useState<File[]>([]);
   const { register, handleSubmit, formState: { errors, isSubmitting, isDirty }, reset, setValue } = useForm<UpdateProduct>({
     resolver: zodResolver(updateProductSchema),
@@ -28,9 +29,9 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
       availableQuantity: product.quantity ?? 0,
       price: Number(product.listPrice) ?? 0,
       currency: "USD",
-      category: category.data?.category?.name ?? "",
+      category: category?.name ?? "",
       subcategory: product.subcategory ?? "",
-      productImages: product.productImages ?? []
+      productImages: product.productImages?.map(img => ({ url: img })) ?? []
     }
   });
 
@@ -52,7 +53,7 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
           toast.error('Failed to upload images');
           return;
         }
-        uploadedImageUrls = [...uploadedImageUrls, ...uploadResponse.map(file => file.url)];
+        uploadedImageUrls = [...uploadedImageUrls, ...uploadResponse.map(file => ({ url: file.url }))];
       }
 
       await updateProduct.mutateAsync({
@@ -64,9 +65,9 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
         category: values.category,
         subcategory: values.subcategory,
         currency: values.currency,
-        productImages: uploadedImageUrls
+        productImages: uploadedImageUrls.map(img => ({ url: img.url }))
       });
-
+      
       toast.success('Product updated successfully');
     } catch (error) {
       toast.error('Failed to update product');
@@ -76,7 +77,7 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
   const handleCancel = () => {
     reset();
     setFilesToUpload([]);
-    setValue('productImages', product.productImages ?? []);
+    setValue('productImages', product.productImages?.map(img => ({ url: img })) ?? []);
   }
 
   return (
@@ -85,8 +86,8 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
         <div className="flex flex-col gap-6">
           <div className="bg-white-100 rounded-xl w-full flex flex-col max-w-screen-2xl">
             <ProductImageCarousel 
-              productImages={(product.productImages ?? []).map(url => ({ url, key: '' }))}
-              onImagesChange={(images) => setValue('productImages', images.map(image => image.url))}
+              productImages={product.productImages?.map(img => ({ url: img })) ?? []}
+              onImagesChange={images => setValue('productImages', images.map(img => ({ url: img.url })))}
               onFilesChange={setFilesToUpload}
             />
             {errors.productImages && <ErrorMessage children={errors.productImages.message} />}
@@ -131,7 +132,7 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
               <Input.Root className="w-full" fieldText="Category">
                 <Input.SelectInput 
                   {...register('category')} 
-                  text={category.data?.category?.name ?? "Select category"}
+                  text={category?.name ?? "Select category"}
                   options={filteredCategories} 
                   onSearch={onSearchCategory} 
                   onChange={(value) => {

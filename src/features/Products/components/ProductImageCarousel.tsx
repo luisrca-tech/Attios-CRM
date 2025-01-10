@@ -12,20 +12,15 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 import { cn } from "~/lib/utils";
 import { UploadDropzone } from "~/utils/uploadthing";
 
-type ProductImage = {
-  url: string;
-  key: string;
-};
-
 type ProductImageCarouselProps = {
-  productImages?: ProductImage[];
-  onImagesChange?: (images: ProductImage[]) => void;
+  productImages: { url: string }[]; 
+  onImagesChange?: (images: { url: string }[]) => void;
   onFilesChange?: (files: File[]) => void;
 };
 
 export const ProductImageCarousel = forwardRef<HTMLInputElement, ProductImageCarouselProps>(
   ({ productImages = [], onImagesChange, onFilesChange }, inputRef) => {
-    const [images, setImages] = useState<ProductImage[]>(productImages);
+    const [images, setImages] = useState(productImages);
     const [canScrollPrev, setCanScrollPrev] = useState(false);
     const [canScrollNext, setCanScrollNext] = useState(false);
     const [isShowingContentSidebar] = useAtom(isOpenContentSidebar);
@@ -39,7 +34,6 @@ export const ProductImageCarousel = forwardRef<HTMLInputElement, ProductImageCar
 
       const newPreviewImages = newFiles.map(file => ({
         url: URL.createObjectURL(file),
-        key: ''
       }));
 
       setImages(prev => {
@@ -50,16 +44,8 @@ export const ProductImageCarousel = forwardRef<HTMLInputElement, ProductImageCar
     };
 
     const handleRemoveImage = async (index: number) => {
-      const image = images[index];
+      const image = productImages[index];
       if (!image) return;
-      
-      if (image.key) {
-        await imageDelete(image.key);
-      }
-
-      const updatedImages = images.filter((_, i) => i !== index);
-      setImages(updatedImages);
-      onImagesChange?.(updatedImages);
     };
 
     return (
@@ -116,19 +102,6 @@ export const ProductImageCarousel = forwardRef<HTMLInputElement, ProductImageCar
                     <div className="relative">
                       <UploadDropzone
                         endpoint="imageUploader"
-                        onClientUploadComplete={(res) => {
-                          if (res) {
-                            const newImages = res.map(file => ({
-                              url: file.url,
-                              key: file.key
-                            }));
-                            setImages(prev => {
-                              const updated = [...prev, ...newImages];
-                              onImagesChange?.(updated);
-                              return updated;
-                            });
-                          }
-                        }}
                         onUploadError={(error: Error) => {
                           toast.error(`Error uploading: ${error.message}`);
                         }}
@@ -163,19 +136,6 @@ export const ProductImageCarousel = forwardRef<HTMLInputElement, ProductImageCar
           ) : (
             <UploadDropzone
               endpoint="imageUploader"
-              onClientUploadComplete={(res) => {
-                if (res) {
-                  const newImages = res.map(file => ({
-                    url: file.url,
-                    key: file.key
-                  }));
-                  setImages(prev => {
-                    const updated = [...prev, ...newImages];
-                    onImagesChange?.(updated);
-                    return updated;
-                  });
-                }
-              }}
               onUploadError={(error: Error) => {
                 toast.error(`Error uploading: ${error.message}`);
               }}

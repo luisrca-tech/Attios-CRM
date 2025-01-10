@@ -50,7 +50,7 @@ export const productMutations = {
         category: input.category,
         subcategory: input.subcategory ?? null,
         currency: input.currency,
-        productImages: input.productImages
+        productImages: input?.productImages?.map((image) => image.url) ?? []
       })
       .where(eq(products.id, input.productId))
       .returning({
