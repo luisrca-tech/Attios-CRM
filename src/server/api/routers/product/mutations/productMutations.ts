@@ -3,7 +3,7 @@ import { eq, sql } from "drizzle-orm";
 import { newProductSchema } from "~/features/Products/schemas/newProduct.schema";
 import { updateProductSchema } from "~/features/Products/schemas/updateProduct.schema";
 import { publicProcedure } from "~/server/api/trpc";
-import { products } from "~/server/db/schema";
+import { productImages, products } from "~/server/db/schema";
 
 export const productMutations = {
   create: publicProcedure.input(newProductSchema).mutation(async ({ ctx, input }) => {
@@ -23,8 +23,10 @@ export const productMutations = {
       throw new Error("Brand not found");
     }
 
+    const productId = randomUUID().slice(0, 10);
+
     const product = await ctx.db.insert(products).values({
-      id: randomUUID().slice(0, 10),
+      id: productId,
       brandId: brand.id,
       name: input.name,
       sku: input.sku,
@@ -37,6 +39,13 @@ export const productMutations = {
     }).returning({
       id: products.id,
     });
+
+    if (input.productImages?.[0]) {
+      await ctx.db.insert(productImages).values({
+        productId: productId,
+        url: input.productImages[0],
+      });
+    }
 
     return product;
   }),
