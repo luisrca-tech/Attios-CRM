@@ -11,6 +11,11 @@ export const productQueries = {
 					columns: {
 						name: true
 					}
+				},
+				productImages: {
+					columns: {
+						url: true,
+					}
 				}
 			}
 		});
@@ -24,8 +29,13 @@ export const productQueries = {
 						id: true,
 						name: true
 					}
+				},
+				productImages: {
+					columns: {
+						url: true,
+					}
 				}
 			}
 		});
-	})
+	}),
 };
