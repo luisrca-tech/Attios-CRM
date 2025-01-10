@@ -33,7 +33,7 @@ export const productMutations = {
       categoryId: category.id,
       category: category.name,
       modelYear: new Date().getFullYear(),
-      productImages: (input.productImages ?? []).map(image => image.url),
+      productImages: input.productImages,
     }).returning({
       id: products.id,
     });

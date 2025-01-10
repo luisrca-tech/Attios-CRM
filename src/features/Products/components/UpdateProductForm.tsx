@@ -55,8 +55,6 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
         uploadedImageUrls = [...uploadedImageUrls, ...uploadResponse.map(file => file.url)];
       }
 
-      console.log(values);
-
       await updateProduct.mutateAsync({
         productId: values.productId,
         name: values.name,
@@ -87,11 +85,8 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
         <div className="flex flex-col gap-6">
           <div className="bg-white-100 rounded-xl w-full flex flex-col max-w-screen-2xl">
             <ProductImageCarousel 
-              productImages={(product.productImages ?? []).map(url => ({
-                image: url,
-                imageKey: url
-              }))}
-              onImagesChange={(images) => setValue('productImages', images)}
+              productImages={(product.productImages ?? []).map(url => ({ url, key: '' }))}
+              onImagesChange={(images) => setValue('productImages', images.map(image => image.url))}
               onFilesChange={setFilesToUpload}
             />
             {errors.productImages && <ErrorMessage children={errors.productImages.message} />}

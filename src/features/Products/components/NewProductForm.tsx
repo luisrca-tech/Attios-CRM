@@ -64,10 +64,7 @@ export function NewProductForm() {
         availableQuantity: values.availableQuantity,
         category: values.category,
         brand: values.brand,
-        productImages: [{
-          url: uploadResponse[0].url,
-          key: uploadResponse[0].key
-        }]
+        productImages: [uploadResponse[0].url]
       });
 
       toast.success('Product created successfully');
