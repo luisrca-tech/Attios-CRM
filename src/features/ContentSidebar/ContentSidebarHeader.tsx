@@ -8,12 +8,16 @@ interface ContentSidebarHeaderProps {
 	isOpen: boolean;
 	onToggleSidebar: (isOpen: boolean) => void;
 	className?: string;
+	title?: string;
+	description?: string;
 }
 
 export function ContentSidebarHeader({
 	isOpen,
 	onToggleSidebar,
-	className
+	className,
+	title,
+	description
 }: ContentSidebarHeaderProps) {
 	const handleToggleSidebar = () => {
 		onToggleSidebar(!isOpen);
@@ -29,9 +33,9 @@ export function ContentSidebarHeader({
 			<div className="flex gap-3">
 				<Image src={Logo} alt="logo" width={30} height={30} />
 				<div className="flex flex-col">
-					<h1 className="font-bold text-black text-sm leading-5">Attios CRM</h1>
+					<h1 className="font-bold text-black text-sm leading-5">{title}</h1>
 					<span className="font-normal text-primary-200 text-xs leading-[1.125rem]">
-						8484 Rooss Wells
+						{description}
 					</span>
 				</div>
 			</div>
