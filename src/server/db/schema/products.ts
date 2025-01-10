@@ -23,7 +23,7 @@ export const products = createTable(
 		categoryId: integer('category_id')
 			.references(() => categories.id)
 			.notNull(),
-		category: varchar('category', { length: 20 }),
+		categoryName: varchar('category_name', { length: 20 }),
 		modelYear: integer('model_year').notNull(),
 		quantity: integer('quantity').notNull(),
 		listPrice: decimal('list_price', { precision: 10, scale: 2 }).notNull(),
