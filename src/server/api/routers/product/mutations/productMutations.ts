@@ -1,4 +1,4 @@
-import { randomUUID } from "crypto";
+import { randomUUID } from "node:crypto";
 import { eq, sql } from "drizzle-orm";
 import { newProductSchema } from "~/features/Products/schemas/newProduct.schema";
 import { updateProductSchema } from "~/features/Products/schemas/updateProduct.schema";
@@ -33,7 +33,7 @@ export const productMutations = {
       listPrice: sql`${input.price}::decimal`,
       quantity: input.availableQuantity,
       categoryId: category.id,
-      category: category.name,
+      categoryName: category.name,
       modelYear: new Date().getFullYear(),
       productImages: input.productImages,
     }).returning({
@@ -56,7 +56,7 @@ export const productMutations = {
         sku: input.sku,
         listPrice: sql`${input.price}::decimal`,
         quantity: input.availableQuantity,
-        category: input.category,
+        categoryName: input.category,
         subcategory: input.subcategory ?? null,
         currency: input.currency,
         productImages: input?.productImages?.map((image) => image.url) ?? []
