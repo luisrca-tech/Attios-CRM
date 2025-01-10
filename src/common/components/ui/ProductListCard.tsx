@@ -1,11 +1,12 @@
 import type { InferSelectModel } from 'drizzle-orm';
 import Image from 'next/image';
 import type { products } from '~/server/db/schema';
-import { Icon } from './Icons/_index';
 import { Button } from './Button';
+import { Icon } from './Icons/_index';
 
 type Product = InferSelectModel<typeof products> & {
 	category?: { name: string };
+	productImages?: { url: string }[];
 };
 
 export function ProductListCard({
@@ -19,7 +20,7 @@ export function ProductListCard({
 			<div className="flex gap-4">
 				<Image
 					className="h-[3.25rem] w-[3.25rem] rounded-md"
-					src={productImages?.[0] ?? ''}
+					src={productImages?.[0]?.url ?? ''}
 					alt={name}
 					width={52}
 					height={52}

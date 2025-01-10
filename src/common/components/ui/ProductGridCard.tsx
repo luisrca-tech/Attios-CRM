@@ -5,12 +5,15 @@ import type { products } from '~/server/db/schema';
 import { Button } from './Button';
 import { Icon } from './Icons/_index';
 
-type Product = InferSelectModel<typeof products>;
+type Product = InferSelectModel<typeof products> & {
+	category?: { name: string };
+	productImages?: { url: string }[];
+};
 
 interface ProductGridCardProps
 	extends Pick<
 		Product,
-		'productImages' | 'id' | 'name' | 'modelYear' | 'quantity' | 'listPrice'
+		'productImages' | 'id' | 'name' | 'modelYear' | 'quantity' | 'listPrice' | 'category' | 'sku'
 	> {
 	isSelected?: boolean;
 	onSelect?: (value: boolean) => void;
@@ -43,7 +46,7 @@ export function ProductGridCard({
 			</div>
 				<div className="flex flex-col items-center justify-center gap-4">
 					<Image
-						src={productImages?.[0] ?? ''}
+						src={productImages?.[0]?.url ?? ''}
 						alt={name}
 						width={80}
 						height={80}

@@ -31,7 +31,6 @@ export const products = createTable(
 		currency: varchar('currency', { length: 3 }),
 		subcategory: varchar('subcategory', { length: 100 }),
 		productImages: text('product_images').array(),
-		file: varchar('file', { length: 255 }),
 	},
 	(table) => ({
 		brandIdIdx: index('brand_id_idx').on(table.brandId),
@@ -45,8 +44,7 @@ export const productImages = createTable('product_images', {
 	productId: varchar('product_id', { length: 10 })
 		.references(() => products.id)
 		.notNull(),
-	image: varchar('url', { length: 255 }).notNull(),
-	imageKey: varchar('image_key', { length: 255 }).notNull()
+	url: varchar('url', { length: 255 }).notNull(),
 });
 
 export const productsRelations = relations(products, ({ one, many }) => ({

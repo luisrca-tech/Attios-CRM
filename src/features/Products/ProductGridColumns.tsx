@@ -7,7 +7,7 @@ import { Checkbox } from '~/common/components/ui/checkbox';
 import type { products } from '~/server/db/schema';
 
 export type ColumnType<TData> = ColumnDef<TData, unknown>[];
-type Product = InferSelectModel<typeof products>;
+type Product = InferSelectModel<typeof products>
 
 export const columnsGrid: ColumnDef<Product, unknown>[] = [
 	{
