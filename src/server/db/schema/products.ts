@@ -1,5 +1,5 @@
 import { relations, sql } from 'drizzle-orm';
-import { decimal, index, integer, serial, text, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { decimal, index, integer, serial, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { createTable } from './config';
 
 export const brands = createTable('brand', {
@@ -30,12 +30,10 @@ export const products = createTable(
 		sku: varchar('sku', { length: 100 }).unique(),
 		currency: varchar('currency', { length: 3 }),
 		subcategory: varchar('subcategory', { length: 100 }),
-		productImages: text('product_images').array(),
 	},
 	(table) => ({
 		brandIdIdx: index('brand_id_idx').on(table.brandId),
 		categoryIdIdx: index('category_id_idx').on(table.categoryId),
-		productImagesIdx: index('product_images_idx').on(table.productImages)
 	})
 );
 
