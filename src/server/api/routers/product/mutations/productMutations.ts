@@ -1,5 +1,5 @@
-import { randomUUID } from "node:crypto";
 import { eq, sql } from "drizzle-orm";
+import { randomUUID } from "node:crypto";
 import { newProductSchema } from "~/features/Products/schemas/newProduct.schema";
 import { updateProductSchema } from "~/features/Products/schemas/updateProduct.schema";
 import { publicProcedure } from "~/server/api/trpc";
@@ -35,16 +35,18 @@ export const productMutations = {
       categoryId: category.id,
       categoryName: category.name,
       modelYear: new Date().getFullYear(),
-      productImages: input.productImages,
     }).returning({
       id: products.id,
     });
 
-    if (input.productImages?.[0]) {
-      await ctx.db.insert(productImages).values({
-        productId: productId,
-        url: input.productImages[0],
-      });
+    if (input.productImages?.length) {
+      await ctx.db.insert(productImages).values(
+        input.productImages.map(image => ({
+          productId: productId,
+          url: image.url,
+          key: image.key
+        }))
+      ).returning();
     }
 
     return product;
@@ -59,11 +61,24 @@ export const productMutations = {
         categoryName: input.category,
         subcategory: input.subcategory ?? null,
         currency: input.currency,
-        productImages: input?.productImages?.map((image) => image.url) ?? []
       })
-      .where(eq(products.id, input.productId))
-      .returning({
-        id: products.id
-      });
+      .where(eq(products.id, input.productId));
+
+    if (input.productImages) {
+      await ctx.db.delete(productImages)
+        .where(eq(productImages.productId, input.productId));
+
+      if (input.productImages.length > 0) {
+        await ctx.db.insert(productImages).values(
+          input.productImages.map(image => ({
+            productId: input.productId,
+            url: image.url,
+            key: image.key,
+          }))
+        ).returning();
+      }
+    }
+
+    return { id: input.productId };
   })
 }
