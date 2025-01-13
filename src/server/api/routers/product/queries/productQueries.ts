@@ -15,6 +15,7 @@ export const productQueries = {
 				productImages: {
 					columns: {
 						url: true,
+						key: true
 					}
 				}
 			}
@@ -33,6 +34,7 @@ export const productQueries = {
 				productImages: {
 					columns: {
 						url: true,
+						key: true
 					}
 				}
 			}
