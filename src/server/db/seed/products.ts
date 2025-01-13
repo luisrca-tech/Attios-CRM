@@ -34,7 +34,7 @@ export async function seedProducts() {
 	const productsData = Array.from({ length: 50 }, (_) => {
 		const randomBrand = faker.helpers.arrayElement(insertedBrands);
 		const randomCategory = faker.helpers.arrayElement(insertedCategories);
-		const sku = 'SKU' + '-' + faker.number.int({ min: 1000, max: 9999 });
+		const sku = 'SKU-' + randomUUID().slice(0, 8);
 
 		return {
 			id: randomUUID().slice(0, 10),
@@ -54,6 +54,7 @@ export async function seedProducts() {
 		Array.from({ length: 3 }, () => ({
 			productId: product.id,
 			url: faker.image.url({ width: 640, height: 480 }),
+			key: randomUUID()
 		}))
 	);
 
