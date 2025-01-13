@@ -9,17 +9,33 @@ import ErrorMessage from "~/common/components/ui/ErrorMessage";
 import { Icon } from "~/common/components/ui/Icons/_index";
 import { Input } from "~/common/components/ui/Input";
 import type { products } from "~/server/db/schema";
-import { api } from "~/trpc/react";
 import { useUploadThing } from "~/utils/uploadthing";
 import { useProduct } from "../hooks/useProduct";
 import { updateProductSchema } from "../schemas/updateProduct.schema";
 import type { UpdateProduct } from "../types/updateProduct.type";
 import { ProductImageCarousel } from "./ProductImageCarousel";
 
-export const UpdateProductForm = ({ product }: { product: typeof products.$inferSelect }) => {
-  const productData = api.product.getById.useQuery(product.id);
-  const category = productData.data?.category;
+interface UpdateProductFormProps {
+  product: typeof products.$inferSelect & { 
+    category: { name: string } 
+  } & { 
+    productImages: { 
+      url: string;
+      key: string;
+    }[] 
+  }
+}
+
+export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
+  const categoryName = product.category?.name;
+  
+  const productImages = product.productImages.map(image => ({
+    url: image.url,
+    key: image.key,
+  }));
+  
   const [filesToUpload, setFilesToUpload] = useState<File[]>([]);
+
   const { register, handleSubmit, formState: { errors, isSubmitting, isDirty }, reset, setValue } = useForm<UpdateProduct>({
     resolver: zodResolver(updateProductSchema),
     defaultValues: {
@@ -29,9 +45,9 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
       availableQuantity: product.quantity ?? 0,
       price: Number(product.listPrice) ?? 0,
       currency: "USD",
-      category: category?.name ?? "",
+      category: categoryName ?? "",
       subcategory: product.subcategory ?? "",
-      productImages: product.productImages?.map(img => ({ url: img })) ?? []
+      productImages: productImages.map(image => ({ url: image.url, key: image.key }))
     }
   });
 
@@ -45,7 +61,7 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
 
   const onSubmit = async (values: UpdateProduct) => {
     try {
-      let uploadedImageUrls = values.productImages ?? [];
+      let uploadedImages = values?.productImages?.map(image => ({ url: image.url, key: image.key })) ?? [];
       
       if (filesToUpload.length > 0) {
         const uploadResponse = await startUpload(filesToUpload);
@@ -53,7 +69,7 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
           toast.error('Failed to upload images');
           return;
         }
-        uploadedImageUrls = [...uploadedImageUrls, ...uploadResponse.map(file => ({ url: file.url }))];
+        uploadedImages = [...uploadedImages, ...uploadResponse.map(file => ({ url: file.url, key: file.key }))];
       }
 
       await updateProduct.mutateAsync({
@@ -65,7 +81,7 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
         category: values.category,
         subcategory: values.subcategory,
         currency: values.currency,
-        productImages: uploadedImageUrls.map(img => ({ url: img.url }))
+        productImages: uploadedImages.map(image => ({ url: image.url, key: image.key }))
       });
       
       toast.success('Product updated successfully');
@@ -77,7 +93,7 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
   const handleCancel = () => {
     reset();
     setFilesToUpload([]);
-    setValue('productImages', product.productImages?.map(img => ({ url: img })) ?? []);
+    setValue('productImages', productImages.map(image => ({ url: image.url, key: image.key})));
   }
 
   return (
@@ -86,9 +102,12 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
         <div className="flex flex-col gap-6">
           <div className="bg-white-100 rounded-xl w-full flex flex-col max-w-screen-2xl">
             <ProductImageCarousel 
-              productImages={product.productImages?.map(img => ({ url: img })) ?? []}
-              onImagesChange={images => setValue('productImages', images.map(img => ({ url: img.url })))}
-              onFilesChange={setFilesToUpload}
+              productImages={productImages}
+              onImagesChange={images => setValue('productImages', images?.map(image => ({ 
+                url: typeof image.url === 'string' ? image.url : image.url.url, 
+                key: image.key
+              })), { shouldDirty: true })}
+              onFilesChange={files => setFilesToUpload(files)}
             />
             {errors.productImages && <ErrorMessage children={errors.productImages.message} />}
           </div>
@@ -132,7 +151,7 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
               <Input.Root className="w-full" fieldText="Category">
                 <Input.SelectInput 
                   {...register('category')} 
-                  text={category?.name ?? "Select category"}
+                  text={categoryName ?? "Select category"}
                   options={filteredCategories} 
                   onSearch={onSearchCategory} 
                   onChange={(value) => {
@@ -163,7 +182,7 @@ export const UpdateProductForm = ({ product }: { product: typeof products.$infer
         </div>
       </div>
       <div className="flex gap-[0.375rem] pt-6">
-        <Button type="submit" className="w-[10.75rem]" disabled={isSubmitting && !isDirty}>
+        <Button type="submit" className="w-[10.75rem]" disabled={isSubmitting || !isDirty}>
           {isSubmitting ? 'Updating...' : 'Update Settings'}
         </Button>
         <Button type="button" color="secondary" className="w-32" onClick={handleCancel}>
