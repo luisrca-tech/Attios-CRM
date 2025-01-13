@@ -43,6 +43,7 @@ export const productImages = createTable('product_images', {
 		.references(() => products.id)
 		.notNull(),
 	url: varchar('url', { length: 255 }).notNull(),
+	key: varchar('key', { length: 255 }).notNull(),
 	createdAt: timestamp('created_at').default(sql`now()`).notNull(),
 	updatedAt: timestamp('updated_at').default(sql`now()`).notNull(),
 });
