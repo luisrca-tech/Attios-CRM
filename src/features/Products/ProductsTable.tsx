@@ -26,6 +26,7 @@ export function ProductsTable() {
 	if (!ProductQuery.data && !ProductQuery.isLoading) {
 		return (
 			<NotFoundItem
+				href="#"
 				renderImage={() => (
 					<Image.NotFound className="h-[14.125rem] w-[20.625rem] md:h-[20rem] md:w-[22.625rem] lg:h-[24.0625rem] lg:w-[35rem]" />
 				)}
