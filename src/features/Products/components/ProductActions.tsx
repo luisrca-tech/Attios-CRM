@@ -3,7 +3,7 @@ import { productActionItems } from "../constants/productActionItems";
 
 export const ProductActions = () => {
   return (
-    <div className="h-full flex flex-col justify-between">
+    <div className="h-full  flex-col justify-between hidden lg:flex">
       <div className="flex flex-col justify-between border border-white-400 rounded-xl min-w-[21.75rem] max-h-[28.25rem]">
       {productActionItems.map((item) => (
         <div className="px-8 py-[1.625rem] flex gap-[1.3125rem] border-b border-white-400 last:border-b-0">
