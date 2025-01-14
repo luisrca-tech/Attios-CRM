@@ -12,6 +12,8 @@ import { UploadButton, useUploadThing } from "~/utils/uploadthing";
 import { useProduct } from "../hooks/useProduct";
 import { newProductSchema } from "../schemas/newProduct.schema";
 import type { NewProduct } from "../types/newProduct.type";
+import { useAtom } from "jotai";
+import { selectedAddAction } from "~/common/atoms/selected-add-action";
 
 export function NewProductForm() {
   const { register, handleSubmit, setValue, watch, formState: { errors, isSubmitting } } = useForm<NewProduct>({
@@ -24,9 +26,9 @@ export function NewProductForm() {
     }
   });
   const router = useRouter();
-  
   const file = watch('file');
   const { createCategory, createProduct, createBrand, filteredCategories, filteredBrands, setCategorySearch: onSearchCategory, setBrandSearch: onSearchBrand } = useProduct();
+  const [, setSelectedModal] = useAtom(selectedAddAction);
 
   const { startUpload } = useUploadThing("imageUploader");
 
@@ -68,6 +70,7 @@ export function NewProductForm() {
       });
 
       toast.success('Product created successfully');
+      setSelectedModal(null);
       router.push(`/product/${product[0]?.id}`);
     } catch (error) {
       toast.error('Failed to create product');
