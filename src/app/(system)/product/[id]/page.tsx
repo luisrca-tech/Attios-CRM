@@ -1,5 +1,8 @@
+import { redirect } from "next/navigation";
 import { AddActionMenu } from "~/common/components/ui/AddActionMenu";
 import { Icon } from "~/common/components/ui/Icons/_index";
+import { NotFoundImage } from "~/common/components/ui/images/NotFound";
+import { NotFoundItem } from "~/common/components/ui/NotFoundItem";
 import { PagesHeader } from "~/common/components/ui/PagesHeader";
 import { ContentSidebar } from "~/features/ContentSidebar";
 import { ProductActions } from "~/features/Products/components/ProductActions";
@@ -21,16 +24,20 @@ export const generateStaticParams = async () => {
 export default async function Product({ params }: { params: { id: string } }) {
   const product = await api.product.getById(params.id);
 
+  if (!product) {
+    return <NotFoundItem href="/products" className="w-full" renderImage={() => <NotFoundImage />} title="Item not found" description="The item you are looking for does not exist." textButton="Go back" />
+  }
+
   return (
     <div className="flex w-full h-screen">
-      <ContentSidebar.Page.Dashboard />
+      <ContentSidebar.Page.Product product={product} />
       <div className="flex w-full flex-col bg-white-300">
         <PagesHeader iconLeft={<Icon.Arrow.Left className="h-3 w-3" />} title="Item Settings">
           <AddActionMenu />
         </PagesHeader>
         <div className="flex-1 overflow-hidden px-[1.625rem] pb-[1.625rem]">
           <div className="flex gap-[1.875rem] bg-white-100 rounded-xl h-full p-[1.625rem]">
-            <div className="flex-1 overflow-hidden">
+            <div className="flex-1 overflow-hidden hidden lg:block">
               {product && <UpdateProductForm product={product} />}
             </div>
             <ProductActions />
