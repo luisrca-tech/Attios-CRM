@@ -7,13 +7,13 @@ import { Button } from "~/common/components/ui/Button";
 import ErrorMessage from "~/common/components/ui/ErrorMessage";
 import { Icon } from "~/common/components/ui/Icons/_index";
 import { Input } from "~/common/components/ui/Input";
-import { useMediaQuery } from "~/common/hooks/useMediaQuery";
 import { UploadButton, useUploadThing } from "~/utils/uploadthing";
 import { useProduct } from "../hooks/useProduct";
 import { newProductSchema } from "../schemas/newProduct.schema";
 import type { NewProduct } from "../types/newProduct.type";
 import { useAtom } from "jotai";
 import { selectedAddAction } from "~/common/atoms/selected-add-action";
+import { useIsDesktop } from "~/common/hooks/useMediaQuery";
 
 export function NewProductForm() {
   const { register, handleSubmit, setValue, watch, formState: { errors, isSubmitting } } = useForm<NewProduct>({
@@ -77,9 +77,7 @@ export function NewProductForm() {
     }
   }
 
-  const isDesktop = useMediaQuery('(min-width: 1024px)');
-  
-
+  const isDesktop = useIsDesktop();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

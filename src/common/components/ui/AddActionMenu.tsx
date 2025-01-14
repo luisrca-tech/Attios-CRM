@@ -5,15 +5,15 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { selectedAddAction } from "~/common/atoms/selected-add-action";
 import { addActionItems } from "~/common/constants/addActionItems";
-import { useMediaQuery } from "~/common/hooks/useMediaQuery";
 import { Button } from "./Button";
 import { CommingSoon } from "./CommingSoon";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "./dropdown-menu";
 import { Icon } from "./Icons/_index";
+import { useIsDesktop } from "~/common/hooks/useMediaQuery";
 
 export function AddActionMenu() { 
   const router = useRouter();
-  const isDesktop = useMediaQuery('(min-width: 1024px)');
+  const isDesktop = useIsDesktop();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedModal, setSelectedModal] = useAtom(selectedAddAction);
 
