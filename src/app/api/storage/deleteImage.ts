@@ -1,13 +1,13 @@
 "use server";
 
+import { toast } from "sonner";
 import { deleteStorageFile } from "~/app/server/storage";
 
 export const deleteImage = async (imageKey: string) => {
   try {
-    const response = await deleteStorageFile(imageKey);
-    return { success: response.success };
+    await deleteStorageFile(imageKey);
+    return toast.success('Image deleted successfully');
   } catch (error) {
-    console.error('Error deleting image:', error);
-    return { success: false };
+    return toast.error('Error deleting image');
   }
 };
