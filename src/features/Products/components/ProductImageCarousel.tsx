@@ -4,7 +4,7 @@ import { useAtom } from "jotai";
 import Image from "next/image";
 import { forwardRef, useState } from "react";
 import { toast } from "sonner";
-import { imageDelete } from "~/app/api/uploadthing/deleteImage";
+import { deleteImage } from "~/app/api/storage/deleteImage";
 import { isOpenContentSidebar } from "~/common/atoms/content-sidebar.atom";
 import { isOpenConfirmationModal } from "~/common/atoms/is-open-confirmation-modal";
 import { Button } from "~/common/components/ui/Button";
@@ -13,7 +13,7 @@ import { Icon } from "~/common/components/ui/Icons/_index";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "~/common/components/ui/carousel";
 import { cn } from "~/lib/utils";
 import { api } from "~/trpc/react";
-import { UploadDropzone } from "~/utils/uploadthing";
+import { UploadDropzone } from "~/utils/storage";
 
 interface ProductImage {
   url: string | { url: string };
@@ -47,7 +47,7 @@ export const ProductImageCarousel = forwardRef<HTMLInputElement, ProductImageCar
           productId: window.location.pathname.split('/').pop() ?? '',
           imageKey: key
         });
-        await imageDelete(key);
+        await deleteImage(key);
         const newImages = images.filter(img => img.key !== key);
         setImages(newImages);
         onImagesChange?.(newImages);

@@ -9,7 +9,7 @@ import ErrorMessage from "~/common/components/ui/ErrorMessage";
 import { Icon } from "~/common/components/ui/Icons/_index";
 import { Input } from "~/common/components/ui/Input";
 import type { products } from "~/server/db/schema";
-import { useUploadThing } from "~/utils/uploadthing";
+import { useUploadThing } from "~/utils/storage";
 import { useProduct } from "../hooks/useProduct";
 import { updateProductSchema } from "../schemas/updateProduct.schema";
 import type { UpdateProduct } from "../types/updateProduct.type";
