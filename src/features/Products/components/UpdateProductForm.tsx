@@ -29,10 +29,7 @@ interface UpdateProductFormProps {
 export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
   const categoryName = product.category?.name;
   
-  const productImages = product.productImages.map(image => ({
-    url: image.url,
-    key: image.key,
-  }));
+  const productImages = product.productImages
   
   const [filesToUpload, setFilesToUpload] = useState<File[]>([]);
 
@@ -47,7 +44,7 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
       currency: "USD",
       category: categoryName ?? "",
       subcategory: product.subcategory ?? "",
-      productImages: productImages.map(image => ({ url: image.url, key: image.key }))
+      productImages: productImages
     }
   });
 
@@ -61,7 +58,7 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 
   const onSubmit = async (values: UpdateProduct) => {
     try {
-      let uploadedImages = values?.productImages?.map(image => ({ url: image.url, key: image.key })) ?? [];
+      let uploadedImages = values?.productImages
       
       if (filesToUpload.length > 0) {
         const uploadResponse = await startUpload(filesToUpload);
@@ -69,7 +66,7 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
           toast.error('Failed to upload images');
           return;
         }
-        uploadedImages = [...uploadedImages, ...uploadResponse.map(file => ({ url: file.url, key: file.key }))];
+        uploadedImages = [...uploadResponse];
       }
 
       await updateProduct.mutateAsync({
@@ -81,7 +78,7 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
         category: values.category,
         subcategory: values.subcategory,
         currency: values.currency,
-        productImages: uploadedImages.map(image => ({ url: image.url, key: image.key }))
+        productImages: uploadedImages
       });
       
       toast.success('Product updated successfully');
@@ -93,7 +90,7 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
   const handleCancel = () => {
     reset();
     setFilesToUpload([]);
-    setValue('productImages', productImages.map(image => ({ url: image.url, key: image.key})));
+    setValue('productImages', productImages);
   }
 
   return (
@@ -103,10 +100,7 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
           <div className="bg-white-100 rounded-xl w-full flex flex-col max-w-screen-2xl">
             <ProductImageCarousel 
               productImages={productImages}
-              onImagesChange={images => setValue('productImages', images?.map(image => ({ 
-                url: typeof image.url === 'string' ? image.url : image.url.url, 
-                key: image.key
-              })), { shouldDirty: true })}
+              onImagesChange={images => setValue('productImages', images, { shouldDirty: true })}
               onFilesChange={files => setFilesToUpload(files)}
             />
             {errors.productImages && <ErrorMessage children={errors.productImages.message} />}

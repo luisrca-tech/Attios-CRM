@@ -104,6 +104,9 @@ export function NewProductForm() {
             ) : (
               <UploadButton
                 endpoint="imageUploader"
+                onBeforeUploadBegin={() => {
+                  return [];
+                }}
                 onChange={(files) => {
                   if (files?.[0]) {
                     handleFileSelect(files[0]);
