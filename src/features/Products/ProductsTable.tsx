@@ -38,7 +38,6 @@ to upload items list"
 		);
 	}
 
-
 	return (
 		<div className="flex w-full flex-col gap-1 bg-white-300 md:block md:bg-white-100 lg:block lg:gap-[0.875rem] lg:rounded-xl lg:bg--100">
 			<ViewTypeSelector viewType={viewType} onViewChange={setViewType}>

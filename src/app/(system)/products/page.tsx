@@ -9,7 +9,10 @@ export default function Products() {
 		<div className="flex w-full">
 			<ContentSidebar.Page.Products />
 			<div className="flex h-screen w-full flex-col bg-white-300 lg:px-7">
-				<PagesHeader title="Products" iconLeft={<Icon.Search className="h-4 w-4" />}>
+				<PagesHeader
+					title="Products"
+					iconLeft={<Icon.Search className="h-4 w-4" />}
+				>
 					<AddActionMenu />
 				</PagesHeader>
 				<ProductsTable />

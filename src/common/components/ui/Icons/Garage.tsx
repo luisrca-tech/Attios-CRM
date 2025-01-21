@@ -5,10 +5,6 @@ import type { IconProps } from '~/common/types/Icons.type';
 
 export function GarageIcon({ className }: IconProps) {
 	return (
-		<Image
-			className={cn(className)}
-			src={GarageIconImage}
-			alt="Garage icon"
-		/>
+		<Image className={cn(className)} src={GarageIconImage} alt="Garage icon" />
 	);
 }

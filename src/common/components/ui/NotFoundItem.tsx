@@ -21,7 +21,12 @@ export function NotFoundItem({
 	href
 }: NotFoundItemProps) {
 	return (
-		<div className={cn("flex flex-col items-center justify-center gap-7 text-center", className)}>
+		<div
+			className={cn(
+				'flex flex-col items-center justify-center gap-7 text-center',
+				className
+			)}
+		>
 			{renderImage()}
 			<div className="flex flex-col gap-2 lg:gap-3">
 				<strong className="text-2xl leading-[2.375rem] lg:text-3xl lg:leading-[2.65rem]">
@@ -31,7 +36,9 @@ export function NotFoundItem({
 					{description}
 				</p>
 			</div>
-			<LinkButton href={href} onClick={onClick}>{textButton}</LinkButton>
+			<LinkButton href={href} onClick={onClick}>
+				{textButton}
+			</LinkButton>
 		</div>
 	);
 }

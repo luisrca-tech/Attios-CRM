@@ -124,7 +124,6 @@ export function useAuth() {
 		}
 	}
 
-
 	async function resendCode() {
 		if (!isSignUpLoaded) return null;
 		try {
@@ -152,7 +151,7 @@ export function useAuth() {
 			await signIn?.create({
 				identifier: email,
 				strategy: 'reset_password_email_code'
-			})
+			});
 
 			setVerifyCode(true);
 		} catch (error) {
@@ -175,13 +174,15 @@ export function useAuth() {
 				strategy: 'reset_password_email_code',
 				code,
 				password
-			})
+			});
 
 			if (completeRecoverPassword?.status === 'complete') {
 				if (!setActiveSignIn) {
 					return null;
 				}
-				await setActiveSignIn({ session: completeRecoverPassword.createdSessionId });
+				await setActiveSignIn({
+					session: completeRecoverPassword.createdSessionId
+				});
 			}
 		} catch (error) {
 			if (isClerkAPIResponseError(error)) {
@@ -195,7 +196,7 @@ export function useAuth() {
 				description: 'Something went wrong. Please try again.'
 			});
 		}
-	}
+	};
 
 	const signInWithGoogle = () =>
 		signIn?.authenticateWithRedirect({

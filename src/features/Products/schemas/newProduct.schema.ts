@@ -1,12 +1,16 @@
-import { z } from "zod";
-import { defaultProductSchema } from "./defaultProduct.schema";
+import { z } from 'zod';
+import { defaultProductSchema } from './defaultProduct.schema';
 
 export const newProductSchema = z.object({
-  ...defaultProductSchema.shape,
-  brand: z.string().nonempty({ message: 'Brand is required' }),
-  file: z.instanceof(File).optional(),
-  productImages: z.array(z.object({ 
-    url: z.string(),
-    key: z.string()
-  })).optional()
-}); 
+	...defaultProductSchema.shape,
+	brand: z.string().nonempty({ message: 'Brand is required' }),
+	file: z.instanceof(File).optional(),
+	productImages: z
+		.array(
+			z.object({
+				url: z.string(),
+				key: z.string()
+			})
+		)
+		.optional()
+});

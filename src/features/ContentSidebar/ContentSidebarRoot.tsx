@@ -1,7 +1,7 @@
 'use client';
 
 import { useAtom } from 'jotai';
-import { type ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { isOpenContentSidebar } from '~/common/atoms/content-sidebar.atom';
 import { cn } from '~/lib/utils';
 import { ContentSidebarHeader } from './ContentSidebarHeader';
@@ -45,10 +45,7 @@ export function ContentSidebarRoot({
 					!hasHeader && 'hidden'
 				)}
 			/>
-			<div
-				className=
-					'flex flex-1 flex-col justify-between overflow-y-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'	
-			>
+			<div className="flex flex-1 flex-col justify-between overflow-y-auto [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
 				{children}
 			</div>
 		</div>

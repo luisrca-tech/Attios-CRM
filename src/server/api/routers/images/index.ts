@@ -1,3 +1,3 @@
-import { imagesRouter } from "./images";
+import { imagesRouter } from './images';
 
-export { imagesRouter }
+export { imagesRouter };

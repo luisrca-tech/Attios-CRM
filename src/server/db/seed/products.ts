@@ -1,7 +1,12 @@
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'node:crypto';
 import { db } from '../index';
-import { brands, categories, productImages, products } from '../schema/products';
+import {
+	brands,
+	categories,
+	productImages,
+	products
+} from '../schema/products';
 
 export async function seedProducts() {
 	await db.delete(productImages);
@@ -34,7 +39,7 @@ export async function seedProducts() {
 	const productsData = Array.from({ length: 50 }, (_) => {
 		const randomBrand = faker.helpers.arrayElement(insertedBrands);
 		const randomCategory = faker.helpers.arrayElement(insertedCategories);
-		const sku = 'SKU-' + randomUUID().slice(0, 8);
+		const sku = `SKU-${randomUUID().slice(0, 8)}`;
 
 		return {
 			id: randomUUID().slice(0, 10),
@@ -48,7 +53,10 @@ export async function seedProducts() {
 		};
 	});
 
-	const insertedProducts = await db.insert(products).values(productsData).returning();
+	const insertedProducts = await db
+		.insert(products)
+		.values(productsData)
+		.returning();
 
 	const productImagesData = insertedProducts.flatMap((product) =>
 		Array.from({ length: 3 }, () => ({

@@ -1,5 +1,12 @@
 import { relations, sql } from 'drizzle-orm';
-import { decimal, index, integer, serial, timestamp, varchar } from 'drizzle-orm/pg-core';
+import {
+	decimal,
+	index,
+	integer,
+	serial,
+	timestamp,
+	varchar
+} from 'drizzle-orm/pg-core';
 import { createTable } from './config';
 
 export const brands = createTable('brand', {
@@ -29,11 +36,11 @@ export const products = createTable(
 		listPrice: decimal('list_price', { precision: 10, scale: 2 }).notNull(),
 		sku: varchar('sku', { length: 100 }).unique(),
 		currency: varchar('currency', { length: 3 }),
-		subcategory: varchar('subcategory', { length: 100 }),
+		subcategory: varchar('subcategory', { length: 100 })
 	},
 	(table) => ({
 		brandIdIdx: index('brand_id_idx').on(table.brandId),
-		categoryIdIdx: index('category_id_idx').on(table.categoryId),
+		categoryIdIdx: index('category_id_idx').on(table.categoryId)
 	})
 );
 
@@ -45,7 +52,7 @@ export const productImages = createTable('product_images', {
 	url: varchar('url', { length: 255 }).notNull(),
 	key: varchar('key', { length: 255 }).notNull(),
 	createdAt: timestamp('created_at').default(sql`now()`).notNull(),
-	updatedAt: timestamp('updated_at').default(sql`now()`).notNull(),
+	updatedAt: timestamp('updated_at').default(sql`now()`).notNull()
 });
 
 export const productsRelations = relations(products, ({ one, many }) => ({

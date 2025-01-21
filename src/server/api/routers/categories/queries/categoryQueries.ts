@@ -1,4 +1,4 @@
-import { publicProcedure } from "~/server/api/trpc";
+import { publicProcedure } from '~/server/api/trpc';
 
 export const categoryQueries = {
 	getAll: publicProcedure.query(({ ctx }) => {
@@ -7,5 +7,5 @@ export const categoryQueries = {
 				name: true
 			}
 		});
-	}),
+	})
 };

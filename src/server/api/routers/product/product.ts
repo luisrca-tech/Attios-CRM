@@ -6,4 +6,3 @@ export const productRouter = createTRPCRouter({
 	...productQueries,
 	...productMutations
 });
-

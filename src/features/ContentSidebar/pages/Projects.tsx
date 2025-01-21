@@ -7,7 +7,11 @@ import { ContentSidebar } from '..';
 
 export function ProjectsWithSidebar() {
 	return (
-		<ContentSidebar.Root hasHeader headerTitle="Attios CRM" headerDescription="8484 Rooss Wells">
+		<ContentSidebar.Root
+			hasHeader
+			headerTitle="Attios CRM"
+			headerDescription="8484 Rooss Wells"
+		>
 			<div className="flex flex-col gap-2">
 				<div className="flex items-center justify-between">
 					<div className="flex items-center gap-1">
@@ -28,7 +32,7 @@ export function ProjectsWithSidebar() {
 					<ContentSidebar.Card key={chat.id}>
 						<div className="flex items-center justify-between gap-4">
 							<div className="relative">
-								{chat.UserImage}	
+								{chat.UserImage}
 								<UserStatusLogged
 									className="-right-1 bottom-0] absolute"
 									userStatus={`${chat.userStatus}`}

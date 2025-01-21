@@ -5,10 +5,6 @@ import type { IconProps } from '~/common/types/Icons.type';
 
 export function WalletIcon({ className }: IconProps) {
 	return (
-		<Image
-			className={cn(className)}
-			src={WalletIconImage}
-			alt="Wallet icon"
-		/>
+		<Image className={cn(className)} src={WalletIconImage} alt="Wallet icon" />
 	);
 }

@@ -1,4 +1,4 @@
-import { publicProcedure } from "~/server/api/trpc";
+import { publicProcedure } from '~/server/api/trpc';
 
 export const brandQueries = {
 	getAll: publicProcedure.query(({ ctx }) => {

@@ -50,14 +50,13 @@ export function SideMenu() {
 								{!isExpanded && (
 									<Icon.Expand className="-top-6 -left-4 absolute h-3 w-3" />
 								)}
-								<div className='flex gap-2'>
-								<Image
-									src={Logo}
-									alt="logo"
-									width={30}
-									height={30}
-								/>
-								{isExpanded && <strong className='text-xl text-primary-100'>Attios CRM</strong>}
+								<div className="flex gap-2">
+									<Image src={Logo} alt="logo" width={30} height={30} />
+									{isExpanded && (
+										<strong className='text-primary-100 text-xl'>
+											Attios CRM
+										</strong>
+									)}
 								</div>
 							</div>
 						</button>
@@ -77,9 +76,11 @@ export function SideMenu() {
 								className={cn(
 									'group flex items-center',
 									item.isComingSoon && 'pointer-events-none opacity-30',
-									isExpanded ? 'w-full' : 'p-2 justify-center',
-									pathname === `/${item.label}` && 'bg-primary-200/10 rounded',
-									pathname === `/${item.label}` && isExpanded && 'bg-primary-100/10 rounded'
+									isExpanded ? 'w-full' : 'justify-center p-2',
+									pathname === `/${item.label}` && 'rounded bg-primary-200/10',
+									pathname === `/${item.label}` &&
+										isExpanded &&
+										'rounded bg-primary-100/10'
 								)}
 							>
 								<div
@@ -88,18 +89,21 @@ export function SideMenu() {
 										pathname === `/${item.label}` ? 'scale-y-100' : 'scale-y-0'
 									)}
 								/>
-								<div className={cn('flex items-center justify-center', 
-									isExpanded && 'flex items-center w-full hover:rounded p-3',
-									pathname === `/${item.label}` && 'bg-primary-200/10 rounded-lg'
-								)}>
-									<div
-										className=
-											'flex h-[1,375rem] w-[1,375rem] items-center'
-									>
-										{item.icon(pathname === `/${item.label}` ? '#5E81F4' : '#8181A5')}
+								<div
+									className={cn(
+										'flex items-center justify-center',
+										isExpanded && 'flex w-full items-center p-3 hover:rounded',
+										pathname === `/${item.label}` &&
+											'rounded-lg bg-primary-200/10'
+									)}
+								>
+									<div className="flex h-[1,375rem] w-[1,375rem] items-center">
+										{item.icon(
+											pathname === `/${item.label}` ? '#5E81F4' : '#8181A5'
+										)}
 									</div>
 									{isExpanded && (
-										<span className="flex-1 font-bold leading-5 text-black text-sm capitalize text-center">
+										<span className='flex-1 text-center font-bold text-black text-sm capitalize leading-5'>
 											{item.isComingSoon ? (
 												<CommingSoon
 													className="min-w-max rounded-xl"
@@ -119,7 +123,7 @@ export function SideMenu() {
 						<div
 							className={cn(
 								'flex items-center justify-center',
-								isExpanded && 'gap-2 justify-start'
+								isExpanded && 'justify-start gap-2'
 							)}
 						>
 							{/* TODO: Create a component for the user button */}
@@ -140,7 +144,7 @@ export function SideMenu() {
 								/>
 							</div>
 							{isExpanded && user && (
-								<strong className="text-sm leading-5 transition-all duration-300 delay-500">
+								<strong className='text-sm leading-5 transition-all delay-500 duration-300'>
 									{user.fullName}
 								</strong>
 							)}

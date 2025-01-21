@@ -29,12 +29,12 @@ const nextConfig = {
 			},
 			...mockImagesHosts.map(
 				(host) =>
-					/** @type {const} */({
-					protocol: 'https',
-					hostname: host,
-					port: '',
-					pathname: '/**'
-				})
+					/** @type {const} */ ({
+						protocol: 'https',
+						hostname: host,
+						port: '',
+						pathname: '/**'
+					})
 			)
 		]
 	}

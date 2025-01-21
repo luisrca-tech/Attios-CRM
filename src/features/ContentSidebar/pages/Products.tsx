@@ -6,7 +6,11 @@ import ProductsGraph from '/public/images/mocks/graphs/productsMetricGraph.png';
 
 export default function ProductsWithSidebar() {
 	return (
-		<ContentSidebar.Root hasHeader headerTitle="Attios CRM" headerDescription="8484 Rooss Wells">
+		<ContentSidebar.Root
+			hasHeader
+			headerTitle="Attios CRM"
+			headerDescription="8484 Rooss Wells"
+		>
 			<div className="mb-10 flex flex-col gap-5">
 				<div className="flex flex-col">
 					<strong className="text-base leading-6">Popular categories</strong>
