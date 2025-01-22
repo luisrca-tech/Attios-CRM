@@ -8,7 +8,7 @@ interface ColorSwatchProps {
 const ColorSwatch = ({ colorName, colorVar }: ColorSwatchProps) => (
 	<div className="flex flex-col gap-2">
 		<div
-			className='h-24 w-24 rounded-lg shadow-md'
+			className="h-24 w-24 rounded-lg shadow-md"
 			style={{ backgroundColor: `rgb(var(--color-${colorVar}))` }}
 		/>
 		<div className="text-sm">
@@ -21,11 +21,11 @@ const ColorSwatch = ({ colorName, colorVar }: ColorSwatchProps) => (
 const ColorPalette = () => {
 	return (
 		<div className="p-6">
-			<h2 className='mb-6 font-bold text-2xl'>Color Palette</h2>
+			<h2 className="mb-6 font-bold text-2xl">Color Palette</h2>
 
 			<div className="space-y-8">
 				<section>
-					<h3 className='mb-4 font-semibold text-xl'>Base Colors</h3>
+					<h3 className="mb-4 font-semibold text-xl">Base Colors</h3>
 					<div className="flex gap-6">
 						<ColorSwatch colorName="Black" colorVar="black" />
 						<ColorSwatch colorName="White 100" colorVar="white-100" />
@@ -36,7 +36,7 @@ const ColorPalette = () => {
 				</section>
 
 				<section>
-					<h3 className='mb-4 font-semibold text-xl'>Primary Colors</h3>
+					<h3 className="mb-4 font-semibold text-xl">Primary Colors</h3>
 					<div className="flex gap-6">
 						<ColorSwatch colorName="Primary 100" colorVar="primary-100" />
 						<ColorSwatch colorName="Primary 200" colorVar="primary-200" />
@@ -44,7 +44,7 @@ const ColorPalette = () => {
 				</section>
 
 				<section>
-					<h3 className='mb-4 font-semibold text-xl'>Secondary Colors</h3>
+					<h3 className="mb-4 font-semibold text-xl">Secondary Colors</h3>
 					<div className="flex gap-6">
 						<ColorSwatch colorName="Secondary 100" colorVar="secondary-100" />
 						<ColorSwatch colorName="Secondary 200" colorVar="secondary-200" />

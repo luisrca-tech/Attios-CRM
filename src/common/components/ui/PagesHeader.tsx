@@ -31,7 +31,7 @@ export function PagesHeader({
 			<div className="flex w-full items-center justify-between lg:hidden">
 				<Button
 					onClick={onClickIconLeft}
-					className='h-10 w-10 p-0 hover:bg-white-200/60'
+					className="h-10 w-10 p-0 hover:bg-white-200/60"
 					color="secondary"
 				>
 					{iconLeft}
@@ -43,7 +43,7 @@ export function PagesHeader({
 				<div className="flex items-center gap-5">
 					<Button
 						onClick={toggleContentSidebar}
-						className='bg-primary-200/10 p-[0.625rem] hover:bg-primary-200/50'
+						className="bg-primary-200/10 p-[0.625rem] hover:bg-primary-200/50"
 						color="secondary"
 					>
 						<Icon.Menu className="h-4 w-4" />

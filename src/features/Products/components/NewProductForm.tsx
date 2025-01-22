@@ -97,8 +97,8 @@ export function NewProductForm() {
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
-			<div className='mt-6 flex max-h-[calc(100vh-12rem)] flex-col gap-[0.875rem] overflow-y-auto lg:mt-[2.625rem] lg:max-h-none lg:overflow-visible'>
-				<div className='mb-6 flex items-center justify-center lg:mb-[1.6875rem]'>
+			<div className="mt-6 flex max-h-[calc(100vh-12rem)] flex-col gap-[0.875rem] overflow-y-auto lg:mt-[2.625rem] lg:max-h-none lg:overflow-visible">
+				<div className="mb-6 flex items-center justify-center lg:mb-[1.6875rem]">
 					<div className="flex flex-col gap-2">
 						{file ? (
 							<div className="relative">
@@ -112,9 +112,9 @@ export function NewProductForm() {
 								<button
 									type="button"
 									onClick={() => setValue('file', undefined)}
-									className='-top-2 -right-2 absolute rounded-full bg-white-100 p-1 shadow-md hover:bg-gray-50'
+									className="-top-2 -right-2 absolute rounded-full bg-white-100 p-1 shadow-md hover:bg-gray-50"
 								>
-									<Icon.CloseButton className='h-4 w-4' />
+									<Icon.CloseButton className="h-4 w-4" />
 								</button>
 							</div>
 						) : (
@@ -138,26 +138,26 @@ export function NewProductForm() {
 								content={{
 									button: (
 										<Icon.Upload
-											className='h-[1.125rem] w-[1.125rem] text-primary-200 lg:h-8 lg:w-8 lg:text-primary-100'
+											className="h-[1.125rem] w-[1.125rem] text-primary-200 lg:h-8 lg:w-8 lg:text-primary-100"
 											fill={isDesktop ? '#1B51E5' : '#8181A5'}
 										/>
 									)
 								}}
 							/>
 						)}
-						{errors.file && <ErrorMessage children={errors.file.message} />}
+						{errors.file && <ErrorMessage>{errors.file.message}</ErrorMessage>}
 						<div className="flex flex-col items-center justify-center lg:hidden">
-							<strong className='text-xl leading-8'>
+							<strong className="text-xl leading-8">
 								Type new products name
 							</strong>
-							<p className='font-normal text-primary-200 text-xs leading-5'>
+							<p className="font-normal text-primary-200 text-xs leading-5">
 								Created on 07 jun 2019
 							</p>
 						</div>
 					</div>
 				</div>
-				<div className='flex flex-col gap-[0.875rem] rounded-md bg-white-100 px-3 py-[1.375rem] lg:rounded-none lg:bg-transparent lg:px-0'>
-					<div className='flex w-full flex-col gap-2'>
+				<div className="flex flex-col gap-[0.875rem] rounded-md bg-white-100 px-3 py-[1.375rem] lg:rounded-none lg:bg-transparent lg:px-0">
+					<div className="flex w-full flex-col gap-2">
 						<Input.Root fieldText="Product's name">
 							<Input.Text
 								{...register('name')}
@@ -171,10 +171,10 @@ export function NewProductForm() {
 								)}
 							/>
 						</Input.Root>
-						{errors.name && <ErrorMessage children={errors.name.message} />}
+						{errors.name && <ErrorMessage>{errors.name.message}</ErrorMessage>}
 					</div>
-					<div className='flex w-full flex-col gap-4 lg:flex-row lg:gap-[1.875rem]'>
-						<div className='flex w-full flex-col gap-2'>
+					<div className="flex w-full flex-col gap-4 lg:flex-row lg:gap-[1.875rem]">
+						<div className="flex w-full flex-col gap-2">
 							<Input.Root className="w-full" fieldText="Sku">
 								<Input.Text
 									className="px-0"
@@ -183,9 +183,9 @@ export function NewProductForm() {
 									{...register('sku')}
 								/>
 							</Input.Root>
-							{errors.sku && <ErrorMessage children={errors.sku.message} />}
+							{errors.sku && <ErrorMessage>{errors.sku.message}</ErrorMessage>}
 						</div>
-						<div className='flex w-full flex-col gap-2'>
+						<div className="flex w-full flex-col gap-2">
 							<Input.Root className="w-full" fieldText="Available quantity">
 								<Input.Text
 									type="number"
@@ -196,12 +196,12 @@ export function NewProductForm() {
 								/>
 							</Input.Root>
 							{errors.availableQuantity && (
-								<ErrorMessage children={errors.availableQuantity.message} />
+								<ErrorMessage>{errors.availableQuantity.message}</ErrorMessage>
 							)}
 						</div>
 					</div>
-					<div className='flex w-full flex-col gap-4 lg:flex-row lg:gap-[1.875rem]'>
-						<div className='flex w-full flex-col gap-2'>
+					<div className="flex w-full flex-col gap-4 lg:flex-row lg:gap-[1.875rem]">
+						<div className="flex w-full flex-col gap-2">
 							<Input.Root className="w-full" fieldText="Price">
 								<Input.Text
 									type="number"
@@ -211,9 +211,11 @@ export function NewProductForm() {
 									{...register('price', { valueAsNumber: true })}
 								/>
 							</Input.Root>
-							{errors.price && <ErrorMessage children={errors.price.message} />}
+							{errors.price && (
+								<ErrorMessage>{errors.price.message}</ErrorMessage>
+							)}
 						</div>
-						<div className='flex w-full flex-col gap-2'>
+						<div className="flex w-full flex-col gap-2">
 							<Input.Root className="w-full" fieldText="Category">
 								<div className="flex-1">
 									<Input.SelectInput
@@ -227,13 +229,13 @@ export function NewProductForm() {
 								</div>
 							</Input.Root>
 							{errors.category && (
-								<ErrorMessage children={errors.category.message} />
+								<ErrorMessage>{errors.category.message}</ErrorMessage>
 							)}
 						</div>
 					</div>
-					<div className='flex w-full flex-col gap-2'>
+					<div className="flex w-full flex-col gap-2">
 						<Input.Root className="w-full lg:w-[16.8125rem]" fieldText="Brand">
-							<div className='w-full flex-1'>
+							<div className="w-full flex-1">
 								<Input.SelectInput
 									text="Select brand"
 									options={filteredBrands}
@@ -244,10 +246,12 @@ export function NewProductForm() {
 								/>
 							</div>
 						</Input.Root>
-						{errors.brand && <ErrorMessage children={errors.brand.message} />}
+						{errors.brand && (
+							<ErrorMessage>{errors.brand.message}</ErrorMessage>
+						)}
 					</div>
 				</div>
-				<div className='mt-6 hidden justify-between lg:mt-[1.6875rem] lg:flex'>
+				<div className="mt-6 hidden justify-between lg:mt-[1.6875rem] lg:flex">
 					<Button
 						type="button"
 						onClick={() => router.back()}

@@ -45,14 +45,14 @@ const SelectInput = React.forwardRef<HTMLButtonElement, SelectInputProps>(
 		return (
 			<Popover open={open} onOpenChange={setOpen}>
 				<PopoverTrigger
-					className='flex w-full items-center justify-between'
+					className="flex w-full items-center justify-between"
 					asChild
 				>
 					<button
 						ref={ref}
 						role="combobox"
 						aria-expanded={open}
-						className='w-[16.8125rem] justify-between py-1 font-normal'
+						className="w-[16.8125rem] justify-between py-1 font-normal"
 						type="button"
 					>
 						{value ? options.find((option) => option === value) : text}
@@ -80,13 +80,13 @@ const SelectInput = React.forwardRef<HTMLButtonElement, SelectInputProps>(
 								</Button>
 							</CommandEmpty>
 
-							<CommandGroup className='bg-white-100 font-bold text-black'>
+							<CommandGroup className="bg-white-100 font-bold text-black">
 								{options.map((option) => (
 									<CommandItem
 										key={option}
 										value={option}
 										onSelect={handleSelect}
-										className='cursor-pointer hover:bg-primary-100 hover:text-white-100'
+										className="cursor-pointer hover:bg-primary-100 hover:text-white-100"
 									>
 										{option}
 									</CommandItem>

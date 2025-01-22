@@ -63,7 +63,7 @@ const SheetContent = React.forwardRef<
 			className={cn(sheetVariants({ side }), className)}
 			{...props}
 		>
-			<SheetClose className='absolute top-1 left-1 rounded-sm bg-white-400 opacity-70 hover:opacity-100'>
+			<SheetClose className="absolute top-1 left-1 rounded-sm bg-white-400 opacity-70 hover:opacity-100">
 				<Cross2Icon className="h-3 w-3" />
 				<span className="sr-only">Close</span>
 			</SheetClose>

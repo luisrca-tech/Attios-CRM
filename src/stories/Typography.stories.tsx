@@ -7,7 +7,7 @@ interface FontSizeDisplayProps {
 }
 
 const FontSizeDisplay = ({ name, size, sample }: FontSizeDisplayProps) => (
-	<div className='flex items-center gap-8 border-gray-200 border-b py-4'>
+	<div className="flex items-center gap-8 border-gray-200 border-b py-4">
 		<div className="w-24">
 			<p className="font-medium">{name}</p>
 			<p className="text-gray-600 text-sm">{size}</p>
@@ -18,8 +18,8 @@ const FontSizeDisplay = ({ name, size, sample }: FontSizeDisplayProps) => (
 
 const TypographyScale = () => {
 	return (
-		<div className='max-w-3xl p-6'>
-			<h2 className='mb-6 font-bold text-2xl'>Typography Scale</h2>
+		<div className="max-w-3xl p-6">
+			<h2 className="mb-6 font-bold text-2xl">Typography Scale</h2>
 
 			<div className="space-y-2">
 				<FontSizeDisplay

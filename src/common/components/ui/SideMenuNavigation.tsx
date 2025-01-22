@@ -53,7 +53,7 @@ export function SideMenu() {
 								<div className="flex gap-2">
 									<Image src={Logo} alt="logo" width={30} height={30} />
 									{isExpanded && (
-										<strong className='text-primary-100 text-xl'>
+										<strong className="text-primary-100 text-xl">
 											Attios CRM
 										</strong>
 									)}
@@ -103,7 +103,7 @@ export function SideMenu() {
 										)}
 									</div>
 									{isExpanded && (
-										<span className='flex-1 text-center font-bold text-black text-sm capitalize leading-5'>
+										<span className="flex-1 text-center font-bold text-black text-sm capitalize leading-5">
 											{item.isComingSoon ? (
 												<CommingSoon
 													className="min-w-max rounded-xl"
@@ -144,7 +144,7 @@ export function SideMenu() {
 								/>
 							</div>
 							{isExpanded && user && (
-								<strong className='text-sm leading-5 transition-all delay-500 duration-300'>
+								<strong className="text-sm leading-5 transition-all delay-500 duration-300">
 									{user.fullName}
 								</strong>
 							)}

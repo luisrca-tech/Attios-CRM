@@ -13,7 +13,7 @@ const meta = {
 			>
 				<div className="h-screen bg-white-100">
 					<div className="p-4">
-						<h1 className='font-bold text-2xl'>
+						<h1 className="font-bold text-2xl">
 							Please, place the screen on mobile to see the bottom menu
 						</h1>
 					</div>

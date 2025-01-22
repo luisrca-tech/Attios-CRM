@@ -52,7 +52,7 @@ export function ResetPassword() {
 					<Input.Password placeholder="********" {...register('password')} />
 				</Input.Root>
 			</div>
-			<div className='flex items-center gap-2'>
+			<div className="flex items-center gap-2">
 				<Button className="w-full" type="submit">
 					Recover password
 				</Button>

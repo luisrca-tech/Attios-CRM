@@ -33,14 +33,11 @@ interface ProductImageCarouselProps {
 export const ProductImageCarousel = forwardRef<
 	HTMLInputElement,
 	ProductImageCarouselProps
->(({ productImages, onImagesChange }) => {
+>(({ productImages, onImagesChange, onFilesChange }) => {
 	const [isShowingContentSidebar] = useAtom(isOpenContentSidebar);
 	const [isOpenModal, setIsOpenModal] = useAtom(isOpenConfirmationModal);
-	const [canScrollPrev, setCanScrollPrev] = useState(false);
-	const [canScrollNext, setCanScrollNext] = useState(false);
 	const [images, setImages] = useState<ProductImage[]>(productImages);
-	console.log('Product images:', productImages);
-	console.log('Images:', images);
+	const [previewImages, setPreviewImages] = useState<ProductImage[]>([]);
 
 	const toggleConfirmationModal = () => {
 		setIsOpenModal(!isOpenModal);
@@ -48,8 +45,10 @@ export const ProductImageCarousel = forwardRef<
 
 	const handleRemoveImage = async (key: string) => {
 		const newImages = images.filter((image) => image.key !== key);
+		const newPreviews = previewImages.filter((image) => image.key !== key);
 		setImages(newImages);
-		onImagesChange?.(newImages);
+		setPreviewImages(newPreviews);
+		onImagesChange?.([...newImages, ...newPreviews]);
 		setIsOpenModal(false);
 	};
 
@@ -70,22 +69,17 @@ export const ProductImageCarousel = forwardRef<
 					align: 'start',
 					containScroll: 'trimSnaps'
 				}}
-				setApi={(api) => {
-					if (!api) return;
-					setCanScrollPrev(api.canScrollPrev());
-					setCanScrollNext(api.canScrollNext());
-				}}
 			>
 				<CarouselContent>
-					{images.map((image, index) => (
+					{[...images, ...previewImages].map((image, index) => (
 						<CarouselItem key={image.key} className="basis-auto pr-2">
 							<div className="relative">
 								<Image
 									className={cn(
 										'rounded-lg object-cover',
 										isShowingContentSidebar
-											? 'max-h-[8.875rem] min-h-[8.875rem] min-w-[8.875rem] max-w-[8.875rem]'
-											: 'max-h-[10.875rem] min-h-[10.875rem] min-w-[10.875rem] max-w-[10.875rem]'
+											? 'h-[8.875rem] w-[8.875rem]'
+											: 'h-[10.875rem] w-[10.875rem]'
 									)}
 									src={image.url}
 									alt={`Product image ${index + 1}`}
@@ -96,42 +90,56 @@ export const ProductImageCarousel = forwardRef<
 									type="button"
 									variant="filled"
 									color="secondary"
-									className='absolute top-2 right-2 h-8 w-8 rounded-lg bg-white-100 p-0 hover:bg-secondary-300'
+									className="absolute top-2 right-2 h-8 w-8 rounded-lg bg-white-100 p-0 hover:bg-secondary-300"
 									onClick={() => {
-										setIsOpenModal((prev) => !prev);
+										if (previewImages.find((prev) => prev.key === image.key)) {
+											handleRemoveImage(image.key);
+										} else {
+											setIsOpenModal((prev) => !prev);
+										}
 									}}
 								>
 									<Icon.Trash fill="#8181A5" className="h-4 w-4" />
 								</Button>
-								{isOpenModal && (
-									<DeleteConfirmationModal
-										onConfirm={() => handleRemoveImage(image.key)}
-										onCancel={toggleConfirmationModal}
-									/>
-								)}
+								{isOpenModal &&
+									!previewImages.find((prev) => prev.key === image.key) && (
+										<DeleteConfirmationModal
+											onConfirm={() => handleRemoveImage(image.key)}
+											onCancel={toggleConfirmationModal}
+										/>
+									)}
 							</div>
 						</CarouselItem>
 					))}
 					<UploadDropzone
 						endpoint="imageUploader"
+						onClientUploadComplete={(res) => {
+							if (res) {
+								const newImages = res.map((file) => ({
+									url: file.url,
+									key: file.key
+								}));
+								setPreviewImages((prev) => [...prev, ...newImages]);
+								onImagesChange?.([...images, ...newImages]);
+							}
+						}}
 						onUploadError={(error: Error) => {
 							toast.error(`Error uploading: ${error.message}`);
 						}}
 						className={cn(
-							'ut-label:mt-2 ut-button:hidden ut-upload-icon:fill-[#8181A5] ut-label:text-gray-500 ut-label:text-sm',
+							'mt-0 ut-label:mt-2 ml-2 flex ut-button:hidden flex-col items-center justify-center rounded-lg border-2 border-primary-200 border-dashed bg-white-100 ut-upload-icon:fill-[#8181A5] ut-label:text-primary-200 ut-label:text-sm',
 							isShowingContentSidebar
 								? 'h-[8.875rem] w-[8.875rem]'
-								: 'h-[10.875rem] w-[10.875rem]',
-							'flex flex-col items-center justify-center rounded-lg border-2 border-primary-200 border-dashed bg-white-100'
+								: 'h-[10.875rem] w-[10.875rem]'
 						)}
 						content={{
-							allowedContent: null,
+							label: 'Choose your image',
 							button: <Icon.Upload fill="#8181A5" className="h-4 w-4" />
 						}}
 					/>
 				</CarouselContent>
-				{canScrollPrev && <CarouselPrevious />}
-				{canScrollNext && <CarouselNext />}
+				<CarouselPrevious className="-left-3" />
+				<CarouselNext className="-right-3" />
 			</Carousel>
 		</div>
 	);

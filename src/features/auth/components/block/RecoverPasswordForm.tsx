@@ -43,7 +43,7 @@ Enter your details to recover."
 							renderIconRight={() => <Icon.Email />}
 						/>
 					</Input.Root>
-					<div className='flex items-center gap-2'>
+					<div className="flex items-center gap-2">
 						<Button className="w-full" type="submit">
 							Confirm Email
 						</Button>

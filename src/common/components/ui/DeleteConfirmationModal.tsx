@@ -28,7 +28,7 @@ export const DeleteConfirmationModal = ({
 		<Dialog open={isOpen} onOpenChange={handleOpenChange}>
 			<DialogContent>
 				<DialogHeader>
-					<DialogTitle className='font-bold text-base text-black'>
+					<DialogTitle className="font-bold text-base text-black">
 						Are you sure you want to delete this item?
 					</DialogTitle>
 				</DialogHeader>

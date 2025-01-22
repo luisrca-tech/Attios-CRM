@@ -17,14 +17,14 @@ export default function NewProduct() {
 	}
 
 	return (
-		<div className='flex w-full flex-col bg-white-300'>
+		<div className="flex w-full flex-col bg-white-300">
 			<PagesHeader
-				iconLeft={<Icon.Arrow.Left className='h-3 w-3' />}
+				iconLeft={<Icon.Arrow.Left className="h-3 w-3" />}
 				title="Create New Product"
 				onClickIconLeft={() => router.back()}
 			>
 				<Button
-					className='h-10 w-10 p-0 hover:bg-white-200/60'
+					className="h-10 w-10 p-0 hover:bg-white-200/60"
 					color="secondary"
 				>
 					<Icon.MoreActions />

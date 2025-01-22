@@ -50,14 +50,14 @@ export function AddActionMenu() {
 					/>
 				</Button>
 			</DropdownMenuTrigger>
-			<DropdownMenuContent className='mt-2 mr-7 bg-white-100 lg:min-w-[17.8125rem]'>
+			<DropdownMenuContent className="mt-2 mr-7 bg-white-100 lg:min-w-[17.8125rem]">
 				{addActionItems.map((item) => (
 					<DropdownMenuItem
 						onClick={() => handleItemClick(item)}
 						className={`hover:bg-white-200 ${item.isComingSoon ? 'pointer-events-none' : 'cursor-pointer'}`}
 						key={item.label}
 					>
-						<div className='flex h-9 w-9 items-center justify-center rounded-lg bg-primary-100/10'>
+						<div className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-100/10">
 							{item.icon}
 						</div>
 						{item.isComingSoon ? (

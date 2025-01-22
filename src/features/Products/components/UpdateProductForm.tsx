@@ -107,11 +107,11 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
-			className='flex h-full flex-col pb-12 lg:pb-0'
+			className="flex h-full flex-col pb-12 lg:pb-0"
 		>
-			<div className='lg:-mr-6 flex-1 overflow-y-auto lg:pr-6'>
+			<div className="lg:-mr-6 flex-1 overflow-y-auto lg:pr-6">
 				<div className="flex flex-col gap-6">
-					<div className='flex w-full max-w-screen-2xl flex-col rounded-xl bg-white-100'>
+					<div className="flex w-full max-w-screen-2xl flex-col rounded-xl bg-white-100">
 						<ProductImageCarousel
 							productImages={productImages}
 							onImagesChange={(images) =>
@@ -120,11 +120,11 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 							onFilesChange={(files) => setFilesToUpload(files)}
 						/>
 						{errors.productImages && (
-							<ErrorMessage children={errors.productImages.message} />
+							<ErrorMessage>{errors.productImages.message}</ErrorMessage>
 						)}
 					</div>
-					<div className='flex flex-col gap-3 rounded-md bg-white-100 px-3 py-[1.375rem] lg:rounded-none lg:bg-transparent lg:p-0'>
-						<div className='flex w-full flex-col gap-1'>
+					<div className="flex flex-col gap-3 rounded-md bg-white-100 px-3 py-[1.375rem] lg:rounded-none lg:bg-transparent lg:p-0">
+						<div className="flex w-full flex-col gap-1">
 							<Input.Root fieldText="Product's name">
 								<Input.Text
 									{...register('name')}
@@ -132,10 +132,12 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 									renderIconRight={() => <Icon.Shop fill="#1C1D21" />}
 								/>
 							</Input.Root>
-							{errors.name && <ErrorMessage children={errors.name.message} />}
+							{errors.name && (
+								<ErrorMessage>{errors.name.message}</ErrorMessage>
+							)}
 						</div>
-						<div className='flex w-full flex-col gap-4 lg:flex-row lg:gap-[1.875rem]'>
-							<div className='flex w-full flex-col gap-1'>
+						<div className="flex w-full flex-col gap-4 lg:flex-row lg:gap-[1.875rem]">
+							<div className="flex w-full flex-col gap-1">
 								<Input.Root className="w-full" fieldText="Sku">
 									<Input.Text
 										{...register('sku')}
@@ -144,9 +146,11 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 										renderIconRight={() => <Icon.Shipping fill="#8181A5" />}
 									/>
 								</Input.Root>
-								{errors.sku && <ErrorMessage children={errors.sku.message} />}
+								{errors.sku && (
+									<ErrorMessage>{errors.sku.message}</ErrorMessage>
+								)}
 							</div>
-							<div className='flex w-full flex-col gap-1'>
+							<div className="flex w-full flex-col gap-1">
 								<Input.Root className="w-full" fieldText="Available quantity">
 									<Input.Text
 										{...register('availableQuantity', { valueAsNumber: true })}
@@ -156,12 +160,14 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 									/>
 								</Input.Root>
 								{errors.availableQuantity && (
-									<ErrorMessage children={errors.availableQuantity.message} />
+									<ErrorMessage>
+										{errors.availableQuantity.message}
+									</ErrorMessage>
 								)}
 							</div>
 						</div>
-						<div className='flex w-full flex-col gap-4 lg:flex-row lg:gap-[1.875rem]'>
-							<div className='flex w-full flex-col gap-1'>
+						<div className="flex w-full flex-col gap-4 lg:flex-row lg:gap-[1.875rem]">
+							<div className="flex w-full flex-col gap-1">
 								<Input.Root className="w-full" fieldText="Price">
 									<Input.Text
 										{...register('price', { valueAsNumber: true })}
@@ -171,10 +177,10 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 									/>
 								</Input.Root>
 								{errors.price && (
-									<ErrorMessage children={errors.price.message} />
+									<ErrorMessage>{errors.price.message}</ErrorMessage>
 								)}
 							</div>
-							<div className='flex w-full flex-col gap-1'>
+							<div className="flex w-full flex-col gap-1">
 								<Input.Root className="w-full" fieldText="Currency">
 									<Input.SelectInput
 										{...register('currency')}
@@ -186,12 +192,12 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 									/>
 								</Input.Root>
 								{errors.currency && (
-									<ErrorMessage children={errors.currency.message} />
+									<ErrorMessage>{errors.currency.message}</ErrorMessage>
 								)}
 							</div>
 						</div>
-						<div className='flex w-full flex-col gap-4 lg:flex-row lg:gap-[1.875rem]'>
-							<div className='flex w-full flex-col gap-1'>
+						<div className="flex w-full flex-col gap-4 lg:flex-row lg:gap-[1.875rem]">
+							<div className="flex w-full flex-col gap-1">
 								<Input.Root className="w-full" fieldText="Category">
 									<Input.SelectInput
 										{...register('category')}
@@ -205,10 +211,10 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 									/>
 								</Input.Root>
 								{errors.category && (
-									<ErrorMessage children={errors.category.message} />
+									<ErrorMessage>{errors.category.message}</ErrorMessage>
 								)}
 							</div>
-							<div className='flex w-full flex-col gap-1'>
+							<div className="flex w-full flex-col gap-1">
 								<Input.Root className="w-full" fieldText="Subcategory">
 									<Input.SelectInput
 										{...register('subcategory')}
@@ -222,7 +228,7 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 									/>
 								</Input.Root>
 								{errors.subcategory && (
-									<ErrorMessage children={errors.subcategory.message} />
+									<ErrorMessage>{errors.subcategory.message}</ErrorMessage>
 								)}
 							</div>
 						</div>

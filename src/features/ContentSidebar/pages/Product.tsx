@@ -23,7 +23,7 @@ export const ProductWithContentSidebar = ({
 			<div className="flex flex-col gap-[1.875rem]">
 				<div className="flex flex-col gap-2">
 					<strong className="text-sm leading-4">Description</strong>
-					<p className='teext-sm font-normal text-primary-200 leading-5'>
+					<p className="teext-sm font-normal text-primary-200 leading-5">
 						Color is so powerful that it can persuade, motivate, inspire and
 						touch people's soft spot the heart. This is the reason why
 						understanding colors is pretty crucial in relating.
@@ -41,19 +41,19 @@ export const ProductWithContentSidebar = ({
 					<strong className="text-sm leading-4">Item details</strong>
 					<div className="flex items-center gap-5">
 						<Icon.Garage className="h-[1.125rem] w-[1.125rem]" />
-						<span className='font-normal text-black text-sm leading-5'>
+						<span className="font-normal text-black text-sm leading-5">
 							{product.quantity} available
 						</span>
 					</div>
 					<div className="flex items-center gap-5">
 						<Icon.Shop className="h-[1.125rem] w-[1.125rem]" fill="#8181A5" />
-						<span className='font-normal text-black text-sm leading-5'>
+						<span className="font-normal text-black text-sm leading-5">
 							1.328 sold
 						</span>
 					</div>
 					<div className="flex items-center gap-5">
 						<Icon.Wallet className="h-[1.125rem] w-[1.125rem]" />
-						<span className='font-normal text-black text-sm leading-5'>
+						<span className="font-normal text-black text-sm leading-5">
 							${product.listPrice} current price
 						</span>
 					</div>
@@ -61,8 +61,8 @@ export const ProductWithContentSidebar = ({
 				<div className="flex flex-col gap-3">
 					<strong className="text-sm leading-4">Categories</strong>
 					<div className="flex items-center gap-1">
-						<div className='rounded-lg bg-white-200 px-5 py-2'>
-							<span className='font-bold text-primary-200 text-sm leading-5'>
+						<div className="rounded-lg bg-white-200 px-5 py-2">
+							<span className="font-bold text-primary-200 text-sm leading-5">
 								{product.category.name}
 							</span>
 						</div>
@@ -71,22 +71,22 @@ export const ProductWithContentSidebar = ({
 				<div className="flex flex-col gap-3">
 					<strong>Reviews</strong>
 					<ContentSidebar.Card>
-						<div className='flex w-full flex-col gap-3'>
+						<div className="flex w-full flex-col gap-3">
 							<div className="flex items-center justify-between">
-								<span className='font-normal text-black text-sm leading-5'>
+								<span className="font-normal text-black text-sm leading-5">
 									Good
 								</span>
 								<div className="flex items-center gap-1">
-									<span className='font-bold text-black text-sm leading-5'>
+									<span className="font-bold text-black text-sm leading-5">
 										4.2
 									</span>
-									<span className='font-normal text-black text-sm leading-5'>
+									<span className="font-normal text-black text-sm leading-5">
 										/ 5
 									</span>
 								</div>
 							</div>
-							<div className='h-1 w-full rounded-full bg-white-400'>
-								<div className='h-full w-[84%] rounded-full bg-secondary-200' />
+							<div className="h-1 w-full rounded-full bg-white-400">
+								<div className="h-full w-[84%] rounded-full bg-secondary-200" />
 							</div>
 						</div>
 					</ContentSidebar.Card>

@@ -18,7 +18,7 @@ export function NewProductModal() {
 				<DialogHeader>
 					<DialogTitle className="flex items-center gap-[0.625rem]">
 						<Checkbox className="h-5 w-5 rounded-[6.25rem] bg-white-200" />
-						<span className='font-bold text-primary-200 text-sm leading-5'>
+						<span className="font-bold text-primary-200 text-sm leading-5">
 							Create new product
 						</span>
 					</DialogTitle>
