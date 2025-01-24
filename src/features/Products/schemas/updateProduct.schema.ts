@@ -1,11 +1,14 @@
 import { z } from 'zod';
-import { defaultProductSchema } from './defaultProduct.schema';
 
 export const updateProductSchema = z.object({
-	...defaultProductSchema.shape,
-	productId: z.string(),
+	name: z.string().min(1, 'Name is required'),
+	sku: z.string().min(1, 'SKU is required'),
+	price: z.number().min(0, 'Price must be greater than 0'),
+	availableQuantity: z.number().min(0, 'Quantity must be greater than 0'),
+	category: z.string().min(1, 'Category is required'),
 	subcategory: z.string().optional(),
 	currency: z.string().optional(),
+	productId: z.string(),
 	productImages: z
 		.array(
 			z.object({
@@ -13,5 +16,6 @@ export const updateProductSchema = z.object({
 				key: z.string()
 			})
 		)
-		.optional()
+		.optional(),
+	filesToUpload: z.array(z.instanceof(File)).optional()
 });

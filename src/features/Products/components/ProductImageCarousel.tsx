@@ -138,7 +138,7 @@ export const ProductImageCarousel = forwardRef<
 						</CarouselItem>
 					))}
 					<CarouselItem className="basis-auto pl-2">
-						<div className='-mt-2 relative'>
+						<div className="-mt-2 relative">
 							<UploadDropzone
 								endpoint="imageUploader"
 								onClientUploadComplete={(res) => {
