@@ -40,7 +40,7 @@ export const ProductImageCarousel = forwardRef<
 >(({ images, productId, onImagesChange, onFilesChange }) => {
 	const [isShowingContentSidebar] = useAtom(isOpenContentSidebar);
 	const [isOpenModal, setIsOpenModal] = useAtom(isOpenConfirmationModal);
-	const imageDeletion = api.images.deleteImage.useMutation();
+	const imageDeletion = api.images.delete.useMutation();
 	const router = useRouter();
 
 	const toggleConfirmationModal = () => {
@@ -83,7 +83,7 @@ export const ProductImageCarousel = forwardRef<
 		onImagesChange?.(images);
 		router.refresh();
 	}, [images]);
-  console.log('images', images);
+	console.log('images', images);
 
 	return (
 		<div
@@ -124,22 +124,21 @@ export const ProductImageCarousel = forwardRef<
 									variant="filled"
 									color="secondary"
 									className="absolute top-2 right-2 h-8 w-8 rounded-lg bg-white-100 p-0 hover:bg-secondary-300"
-									onClick={() => handleRemoveImage(image.key)}
+									onClick={toggleConfirmationModal}
 								>
 									<Icon.Trash fill="#8181A5" className="h-4 w-4" />
 								</Button>
-								{isOpenModal &&
-									!images.find((prev) => prev.key === image.key) && (
-										<DeleteConfirmationModal
-											onConfirm={() => handleRemoveImage(image.key)}
-											onCancel={toggleConfirmationModal}
-										/>
-									)}
+								{isOpenModal && (
+									<DeleteConfirmationModal
+										onConfirm={() => handleRemoveImage(image.key)}
+										onCancel={toggleConfirmationModal}
+									/>
+								)}
 							</div>
 						</CarouselItem>
 					))}
 					<CarouselItem className="basis-auto pl-2">
-						<div className="relative">
+						<div className='-mt-2 relative'>
 							<UploadDropzone
 								endpoint="imageUploader"
 								onClientUploadComplete={(res) => {
@@ -155,7 +154,7 @@ export const ProductImageCarousel = forwardRef<
 									toast.error(`Error uploading: ${error.message}`);
 								}}
 								className={cn(
-									'mt-0 ut-label:mt-2 ut-button:hidden ut-upload-icon:fill-[#8181A5] ut-label:text-gray-500 ut-label:text-sm',
+									'ut-label:mt-2 ut-button:hidden ut-upload-icon:fill-[#8181A5] ut-label:text-gray-500 ut-label:text-sm',
 									isShowingContentSidebar
 										? 'h-[142px] w-[142px]'
 										: 'h-[174px] w-[174px]',
