@@ -1,18 +1,12 @@
-import { sql } from 'drizzle-orm';
-
-import { z } from 'zod';
+import { and, eq } from 'drizzle-orm';
 import { publicProcedure } from '~/server/api/trpc';
 import { productImages } from '~/server/db/schema/products';
+import { uploadImageSchema } from '../schemas/uploadImage.schema';
+import { defaultImageSchema } from '../schemas/defaultImage.schema';
 
 export const imagesMutations = {
 	upload: publicProcedure
-		.input(
-			z.object({
-				productId: z.string(),
-				imageUrl: z.string(),
-				imageKey: z.string()
-			})
-		)
+		.input(uploadImageSchema)
 		.mutation(async ({ ctx, input }) => {
 			await ctx.db.insert(productImages).values({
 				productId: input.productId,
@@ -22,17 +16,15 @@ export const imagesMutations = {
 		}),
 
 	delete: publicProcedure
-		.input(
-			z.object({
-				productId: z.string(),
-				imageKey: z.string()
-			})
-		)
+		.input(defaultImageSchema)
 		.mutation(async ({ ctx, input }) => {
 			await ctx.db
 				.delete(productImages)
 				.where(
-					sql`product_id = ${input.productId} AND key = ${input.imageKey}`
+					and(
+						eq(productImages.productId, input.productId),
+						eq(productImages.key, input.imageKey)
+					)
 				);
 
 			return { success: true };
