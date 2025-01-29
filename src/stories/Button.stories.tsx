@@ -73,15 +73,17 @@ export const Colors: Story = {
 
 	render: () => (
 		<div className="flex flex-wrap gap-4">
-			{[
-				'primary',
-				'secondary',
-				'tertiary',
-				'quaternary',
-				'quinternary',
-				'senary'
-			].map((color) => (
-				<Button key={color} color={color as any}>
+			{(
+				[
+					'primary',
+					'secondary',
+					'tertiary',
+					'quaternary',
+					'quinternary',
+					'senary'
+				] as const
+			).map((color) => (
+				<Button key={color} color={color}>
 					{color.charAt(0).toUpperCase() + color.slice(1)}
 				</Button>
 			))}
