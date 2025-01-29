@@ -2,7 +2,7 @@ import { setupClerkTestingToken } from '@clerk/testing/playwright';
 import { expect, test } from '@playwright/test';
 
 test('sign in successfully', async ({ page }) => {
-	await page.goto('/signIn', { waitUntil: 'networkidle' });
+	await page.goto('/sign-in', { waitUntil: 'networkidle' });
 
 	await page.getByLabel('Email').fill('john+clerk_test@example.com');
 	await page.getByLabel('Password').fill('Jd16012003@');
@@ -15,7 +15,7 @@ test('sign in successfully', async ({ page }) => {
 });
 
 test('sign up successfully', async ({ page }) => {
-	await page.goto('/signUp', { waitUntil: 'networkidle' });
+	await page.goto('/sign-up', { waitUntil: 'networkidle' });
 
 	await page.getByLabel('Full Name').fill('John Doe');
 	await page.getByLabel('Email').fill('john+clerk_test@example.com');
@@ -41,7 +41,7 @@ test('sign up successfully', async ({ page }) => {
 test('resend code', async ({ page }) => {
 	await setupClerkTestingToken({ page });
 
-	await page.goto('/signUp', { waitUntil: 'networkidle' });
+	await page.goto('/sign-up', { waitUntil: 'networkidle' });
 
 	await page.getByLabel('Full Name').fill('John Doe');
 	await page.getByLabel('Email').fill('john.doe@example.com');
