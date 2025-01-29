@@ -50,7 +50,7 @@ export default async function Product({ params }: { params: { id: string } }) {
 				<div className="flex-1 overflow-hidden px-3 pb-[1.625rem] lg:px-[1.625rem]">
 					<div className="flex h-full gap-[1.875rem] rounded-xl bg-white-100 p-3 lg:p-[1.625rem]">
 						<div className="flex-1 overflow-hidden">
-							{product && <UpdateProductForm product={product} />}
+							<UpdateProductForm product={product} />
 						</div>
 						<div className="hidden lg:block">
 							<ProductActions />

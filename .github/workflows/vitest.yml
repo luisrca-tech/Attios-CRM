@@ -1,4 +1,4 @@
-name: JEST TESTS
+name: VITEST TESTS
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   test:
-    name: JEST TESTS
+    name: VITEST TESTS
     runs-on: ubuntu-latest
     environment: TEST
     env:

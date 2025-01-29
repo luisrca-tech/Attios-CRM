@@ -50,12 +50,10 @@ export function NewProductForm() {
 
 	const handleAddCategory = (value: string) => {
 		createCategory.mutate({ name: value });
-		return toast.success('Category added');
 	};
 
 	const handleAddBrand = (value: string) => {
 		createBrand.mutate({ name: value });
-		return toast.success('Brand added');
 	};
 
 	const handleFileSelect = (file: File) => {
@@ -136,7 +134,9 @@ export function NewProductForm() {
 									}
 								}}
 								onUploadError={(error: Error) => {
-									toast.error(`ERROR! ${error.message}`);
+									toast.error(
+										`Something went wrong on uploading image: ${error.message} please, try again!`
+									);
 								}}
 								appearance={{
 									button:

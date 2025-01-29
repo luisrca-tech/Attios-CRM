@@ -24,7 +24,9 @@ export const useProduct = () => {
 	const createCategory = api.category.create.useMutation({
 		onMutate: async (data) => {
 			const newCategory = {
-				...data
+				id: Math.random(),
+				name: data.name,
+				products: []
 			};
 			await trpcUtils.category.getAll.cancel();
 
@@ -44,13 +46,16 @@ export const useProduct = () => {
 		},
 		onSettled: async () => {
 			await Promise.all([trpcUtils.category.getAll.invalidate()]);
+			return toast.success('Category added');
 		}
 	});
 
 	const createBrand = api.brand.create.useMutation({
 		onMutate: async (data) => {
 			const newBrand = {
-				...data
+				id: Math.random(),
+				name: data.name,
+				products: []
 			};
 			await trpcUtils.brand.getAll.cancel();
 
@@ -70,6 +75,7 @@ export const useProduct = () => {
 		},
 		onSettled: async () => {
 			await Promise.all([trpcUtils.brand.getAll.invalidate()]);
+			return toast.success('Brand added');
 		}
 	});
 

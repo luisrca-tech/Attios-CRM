@@ -83,7 +83,6 @@ export const ProductImageCarousel = forwardRef<
 		onImagesChange?.(images);
 		router.refresh();
 	}, [images]);
-	console.log('images', images);
 
 	return (
 		<div

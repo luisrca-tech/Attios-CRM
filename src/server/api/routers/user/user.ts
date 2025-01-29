@@ -1,4 +1,3 @@
-
 import { users } from '~/server/db/schema';
 import { createTRPCRouter, publicProcedure } from '../../trpc';
 import { userSchema } from './schemas/user.schema';
