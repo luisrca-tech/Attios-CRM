@@ -106,18 +106,20 @@ export function NewProductForm() {
 				<div className="mb-6 flex items-center justify-center lg:mb-[1.6875rem]">
 					<div className="flex flex-col gap-2">
 						{file ? (
-							<div className="relative">
-								<Image
-									src={URL.createObjectURL(file)}
-									alt="Product preview"
-									width={144}
-									height={144}
-									className="rounded-xl object-cover"
-								/>
+							<div className="relative flex items-center justify-center">
+								<div className="h-36 w-36">
+									<Image
+										src={URL.createObjectURL(file)}
+										width={144}
+										height={144}
+										alt="Product preview"
+										className="h-full w-full rounded-xl object-cover"
+									/>
+								</div>
 								<button
 									type="button"
 									onClick={() => setValue('file', undefined)}
-									className="-top-2 -right-2 absolute rounded-full bg-white-100 p-1 shadow-md hover:bg-gray-50"
+									className='absolute top-0 right-10 rounded-full bg-white-100 p-1 shadow-md hover:bg-gray-50 lg:top-0 lg:right-0'
 								>
 									<Icon.CloseButton className="h-4 w-4" />
 								</button>
