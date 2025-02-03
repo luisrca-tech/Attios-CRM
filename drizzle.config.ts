@@ -1,26 +1,26 @@
-import type { Config } from "drizzle-kit";
-import * as dotenv from "dotenv";
+import type { Config } from 'drizzle-kit';
+import * as dotenv from 'dotenv';
 
 // Load the appropriate .env file
-if (process.env.NODE_ENV === "test") {
-  dotenv.config({ path: ".env.test" });
+if (process.env.NODE_ENV === 'test') {
+	dotenv.config({ path: '.env.test' });
 } else {
-  dotenv.config();
+	dotenv.config();
 }
 
 const getDatabaseUrl = () => {
-  const url = process.env.DATABASE_URL;
-  if (!url) {
-    throw new Error("DATABASE_URL is not set in environment variables");
-  }
-  return url;
+	const url = process.env.DATABASE_URL;
+	if (!url) {
+		throw new Error('DATABASE_URL is not set in environment variables');
+	}
+	return url;
 };
 
 export default {
-  schema: "./src/server/db/schema",
-  dialect: "postgresql",
-  dbCredentials: {
-    url: getDatabaseUrl(),
-  },
-  tablesFilter: ["attios-crm_*"],
+	schema: './src/server/db/schema',
+	dialect: 'postgresql',
+	dbCredentials: {
+		url: getDatabaseUrl()
+	},
+	tablesFilter: ['attios-crm_*']
 } satisfies Config;
