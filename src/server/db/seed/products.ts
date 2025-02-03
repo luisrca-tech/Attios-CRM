@@ -8,6 +8,8 @@ import {
 	products
 } from '../schema/products';
 
+console.log(process.env.DATABASE_URL);
+
 export async function seedProducts() {
 	await db.delete(productImages);
 	await db.delete(products);
