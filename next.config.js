@@ -13,6 +13,7 @@ const mockImagesHosts = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	reactStrictMode: process.env.NODE_ENV !== 'test',
 	env: {
 		DATABASE_URL: process.env.DATABASE_URL
 	},
@@ -21,6 +22,11 @@ const nextConfig = {
 			{
 				protocol: 'https',
 				hostname: 'img.clerk.com'
+			},
+			{
+				protocol: 'https',
+				hostname: 'utfs.io',
+				pathname: '/**'
 			},
 			...mockImagesHosts.map(
 				(host) =>

@@ -1,4 +1,4 @@
-import { RecoverPassword } from "~/features/auth/components/block/RecoverPasswordForm";
+import { RecoverPassword } from '~/features/auth/components/block/RecoverPasswordForm';
 import { AuthBackground } from '~/features/auth/components/ui/AuthBackground';
 import ForgotPasswordImage from '/public/images/forgotPasswordImage.png';
 

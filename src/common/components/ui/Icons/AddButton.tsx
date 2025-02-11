@@ -1,14 +1,23 @@
-import Image from 'next/image';
-import AddButtonImageIcon from '/public/icons/addButton.png';
 import { cn } from '~/lib/utils';
 import type { IconProps } from '~/common/types/Icons.type';
 
-export function AddButtonIcon({ className }: IconProps) {
+export function AddButtonIcon({ className, fill }: IconProps) {
 	return (
-		<Image
+		<svg
 			className={cn(className)}
-			src={AddButtonImageIcon}
-			alt="Add button"
-		/>
+			width="14"
+			height="14"
+			viewBox="0 0 14 14"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<title>Add button icon</title>
+			<path
+				d="M7 0.5C5.82292 0.5 4.72917 0.796875 3.71875 1.39062C2.73958 1.96354 1.96354 2.73958 1.39062 3.71875C0.796875 4.72917 0.5 5.82292 0.5 7C0.5 8.17708 0.796875 9.27083 1.39062 10.2812C1.96354 11.2604 2.73958 12.0365 3.71875 12.6094C4.72917 13.2031 5.82292 13.5 7 13.5C8.17708 13.5 9.27083 13.2031 10.2812 12.6094C11.2604 12.0365 12.0365 11.2604 12.6094 10.2812C13.2031 9.27083 13.5 8.17708 13.5 7C13.5 5.82292 13.2031 4.72917 12.6094 3.71875C12.0365 2.73958 11.2604 1.96354 10.2812 1.39062C9.27083 0.796875 8.17708 0.5 7 0.5ZM7 1.5C8 1.5 8.92708 1.75 9.78125 2.25C10.6042 2.73958 11.2604 3.39583 11.75 4.21875C12.25 5.07292 12.5 6 12.5 7C12.5 8 12.25 8.92708 11.75 9.78125C11.2604 10.6042 10.6042 11.2604 9.78125 11.75C8.92708 12.25 8 12.5 7 12.5C6 12.5 5.07292 12.25 4.21875 11.75C3.39583 11.2604 2.73958 10.6042 2.25 9.78125C1.75 8.92708 1.5 8 1.5 7C1.5 6 1.75 5.07292 2.25 4.21875C2.73958 3.39583 3.39583 2.73958 4.21875 2.25C5.07292 1.75 6 1.5 7 1.5ZM6.5 4V6.5H4V7.5H6.5V10H7.5V7.5H10V6.5H7.5V4H6.5Z"
+				fill={fill}
+			/>
+		</svg>
 	);
 }
+
+AddButtonIcon.displayName = 'AddButtonIcon';

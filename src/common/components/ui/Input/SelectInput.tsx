@@ -1,73 +1,107 @@
 'use client';
 
-import type React from 'react';
-import { useRef, useState } from 'react';
-import { cn } from '../../../../lib/utils';
-import useClickOutside from '../../../hooks/useClickOutside';
+import * as React from 'react';
+import { Button } from '../Button';
+import {
+	Command,
+	CommandEmpty,
+	CommandGroup,
+	CommandInput,
+	CommandItem,
+	CommandList
+} from '../command';
+import { Icon } from '../Icons/_index';
+import { Popover, PopoverContent, PopoverTrigger } from '../popover';
 
 interface SelectInputProps {
 	options: string[];
 	text?: string;
-	renderIcon?: (isOpen: boolean) => React.ReactNode;
-	renderOptionIcon?: (option: string) => React.ReactNode;
+	onSearch: (value: string) => void;
+	onChange: (value: string) => void;
+	onAdd: (value: string) => void;
 }
 
-const SelectInput: React.FC<SelectInputProps> = ({
-	options,
-	text,
-	renderIcon,
-	renderOptionIcon
-}) => {
-	const [isOpen, setIsOpen] = useState(false);
-	const [selectedOption, setSelectedOption] = useState<string | null>(null);
-	const ref = useRef<HTMLDivElement>(null);
+const SelectInput = React.forwardRef<HTMLButtonElement, SelectInputProps>(
+	({ text, options, onSearch, onChange, onAdd }, ref) => {
+		const [open, setOpen] = React.useState(false);
+		const [value, setValue] = React.useState('');
+		const [searchValue, setSearchValue] = React.useState('');
 
-	const toggleDropdown = () => setIsOpen(!isOpen);
+		const handleSelect = React.useCallback(
+			(currentValue: string) => {
+				setValue(currentValue);
+				setSearchValue(currentValue);
+				setOpen(false);
+				onChange?.(currentValue);
+			},
+			[onChange]
+		);
 
-	useClickOutside(ref, () => setIsOpen(false));
+		const handleSearch = (search: string) => {
+			setSearchValue(search);
+			onSearch?.(search);
+		};
 
-	return (
-		<div
-			ref={ref}
-			className="relative inline-block w-full cursor-pointer text-left"
-		>
-			<button
-				onClick={toggleDropdown}
-				className={cn(
-					'flex w-full items-center justify-between rounded border-none font-bold text-sm leading-5 outline-none',
-					'placeholder:text-primary-200 hover:text-primary-100'
-				)}
-				type="button"
-			>
-				<span className="ml-2">{selectedOption || text}</span>
-				{renderIcon?.(isOpen)}
-			</button>
-			{isOpen && (
-				<div className="absolute mt-2 w-full rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5">
-					<div className="py-1">
-						{options.map((option) => (
-							<button
-								key={option}
-								value={option}
-								className={cn(
-									'flex w-full items-center px-4 py-5 text-left text-sm',
-									'hover:text-primary-100'
-								)}
-								onClick={() => {
-									setSelectedOption(option);
-									setIsOpen(false);
-								}}
-								type="button"
-							>
-								{renderOptionIcon?.(option)}
-								<span className="ml-2">{option}</span>
-							</button>
-						))}
-					</div>
-				</div>
-			)}
-		</div>
-	);
-};
+		return (
+			<Popover open={open} onOpenChange={setOpen}>
+				<PopoverTrigger
+					className="flex w-full items-center justify-between"
+					asChild
+				>
+					<button
+						ref={ref}
+						// biome-ignore lint/a11y/useAriaPropsForRole: <explanation>
+						// biome-ignore lint/a11y/useSemanticElements: <explanation>
+						role="combobox"
+						aria-expanded={open}
+						className="w-[16.8125rem] justify-between py-1 font-normal"
+						type="button"
+					>
+						{value ? options.find((option) => option === value) : text}
+						<Icon.Arrow.Down className="ml-2 h-3 w-3 shrink-0" />
+					</button>
+				</PopoverTrigger>
+				<PopoverContent
+					className="w-[16.8125rem] p-0"
+					align="start"
+					side="top"
+					sideOffset={4}
+				>
+					<Command className="bg-white-100 text-black">
+						<CommandInput
+							placeholder="Search..."
+							value={searchValue}
+							onValueChange={handleSearch}
+							className="h-9 px-3"
+						/>
+						<CommandList>
+							<CommandEmpty className="flex flex-col items-center justify-center gap-2">
+								No option found!
+								<Button onClick={() => onAdd?.(searchValue)}>
+									Add "{searchValue}"
+								</Button>
+							</CommandEmpty>
+
+							<CommandGroup className="bg-white-100 font-bold text-black">
+								{options.map((option) => (
+									<CommandItem
+										key={option}
+										value={option}
+										onSelect={handleSelect}
+										className="cursor-pointer hover:bg-primary-100 hover:text-white-100"
+									>
+										{option}
+									</CommandItem>
+								))}
+							</CommandGroup>
+						</CommandList>
+					</Command>
+				</PopoverContent>
+			</Popover>
+		);
+	}
+);
+
+SelectInput.displayName = 'SelectInput';
 
 export default SelectInput;

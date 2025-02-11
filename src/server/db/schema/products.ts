@@ -1,5 +1,12 @@
-import { relations } from 'drizzle-orm';
-import { decimal, index, integer, serial, varchar } from 'drizzle-orm/pg-core';
+import { relations, sql } from 'drizzle-orm';
+import {
+	decimal,
+	index,
+	integer,
+	serial,
+	timestamp,
+	varchar
+} from 'drizzle-orm/pg-core';
 import { createTable } from './config';
 
 export const brands = createTable('brand', {
@@ -23,10 +30,13 @@ export const products = createTable(
 		categoryId: integer('category_id')
 			.references(() => categories.id)
 			.notNull(),
+		categoryName: varchar('category_name', { length: 20 }),
 		modelYear: integer('model_year').notNull(),
 		quantity: integer('quantity').notNull(),
 		listPrice: decimal('list_price', { precision: 10, scale: 2 }).notNull(),
-		productImage: varchar('product_image', { length: 255 })
+		sku: varchar('sku', { length: 100 }).unique(),
+		currency: varchar('currency', { length: 3 }),
+		subcategory: varchar('subcategory', { length: 100 })
 	},
 	(table) => ({
 		brandIdIdx: index('brand_id_idx').on(table.brandId),
@@ -34,7 +44,18 @@ export const products = createTable(
 	})
 );
 
-export const productsRelations = relations(products, ({ one }) => ({
+export const productImages = createTable('product_images', {
+	id: serial('id').primaryKey(),
+	productId: varchar('product_id', { length: 10 })
+		.references(() => products.id)
+		.notNull(),
+	url: varchar('url', { length: 255 }).notNull(),
+	key: varchar('key', { length: 255 }).notNull(),
+	createdAt: timestamp('created_at').default(sql`now()`).notNull(),
+	updatedAt: timestamp('updated_at').default(sql`now()`).notNull()
+});
+
+export const productsRelations = relations(products, ({ one, many }) => ({
 	category: one(categories, {
 		fields: [products.categoryId],
 		references: [categories.id]
@@ -42,6 +63,14 @@ export const productsRelations = relations(products, ({ one }) => ({
 	brand: one(brands, {
 		fields: [products.brandId],
 		references: [brands.id]
+	}),
+	productImages: many(productImages)
+}));
+
+export const productImagesRelations = relations(productImages, ({ one }) => ({
+	product: one(products, {
+		fields: [productImages.productId],
+		references: [products.id]
 	})
 }));
 

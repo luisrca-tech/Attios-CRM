@@ -26,6 +26,7 @@ export function ProductsTable() {
 	if (!ProductQuery.data && !ProductQuery.isLoading) {
 		return (
 			<NotFoundItem
+				href="#"
 				renderImage={() => (
 					<Image.NotFound className="h-[14.125rem] w-[20.625rem] md:h-[20rem] md:w-[22.625rem] lg:h-[24.0625rem] lg:w-[35rem]" />
 				)}
@@ -36,7 +37,6 @@ to upload items list"
 			/>
 		);
 	}
-
 
 	return (
 		<div className="flex w-full flex-col gap-1 bg-white-300 md:block md:bg-white-100 lg:block lg:gap-[0.875rem] lg:rounded-xl lg:bg--100">

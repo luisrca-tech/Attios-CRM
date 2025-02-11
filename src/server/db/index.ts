@@ -1,7 +1,5 @@
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
-
-import { env } from '~/env';
 import * as schema from './schema';
 
 /**
@@ -12,7 +10,18 @@ const globalForDb = globalThis as unknown as {
 	conn: postgres.Sql | undefined;
 };
 
-const conn = globalForDb.conn ?? postgres(env.DATABASE_URL);
-if (env.NODE_ENV !== 'production') globalForDb.conn = conn;
+// Load test environment variables if in test mode
+if (process.env.NODE_ENV === 'test') {
+	const dotenv = await import('dotenv');
+	dotenv.config({ path: '.env.test' });
+}
+
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl) {
+	throw new Error('DATABASE_URL is not set');
+}
+
+const conn = globalForDb.conn ?? postgres(databaseUrl);
+if (process.env.NODE_ENV !== 'production') globalForDb.conn = conn;
 
 export const db = drizzle(conn, { schema });

@@ -5,6 +5,7 @@ import { DinamycGraph } from './Graph/DinamycGraph';
 import { MetricContainer } from './Graph/MetricContainer';
 import { Metric } from './Graph/Metrics';
 import { DashboardWithSidebar } from './pages/Dashboard';
+import { ProductWithContentSidebar } from './pages/Product';
 import ProductsWithSidebar from './pages/Products';
 import { ProjectsWithSidebar } from './pages/Projects';
 
@@ -20,6 +21,7 @@ export const ContentSidebar = {
 	Page: {
 		Projects: ProjectsWithSidebar,
 		Dashboard: DashboardWithSidebar,
-		Products: ProductsWithSidebar
+		Products: ProductsWithSidebar,
+		Product: ProductWithContentSidebar
 	}
 };
