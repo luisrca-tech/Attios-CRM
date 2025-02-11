@@ -1,10 +1,23 @@
-import Image from 'next/image';
 import type { IconProps } from '~/common/types/Icons.type';
 import { cn } from '~/lib/utils';
-import InvoicesIconImage from '/public/icons/sidebar/invoices.svg';
 
-export function InvoicesIcon({ className }: IconProps) {
+export function InvoicesIcon({ className, fill }: IconProps) {
 	return (
-		<Image className={cn(className)} src={InvoicesIconImage} alt="Invoices" />
+		<svg
+			className={cn(className)}
+			width="22"
+			height="22"
+			viewBox="0 0 14 19"
+			fill="none"
+			xmlns="http://www.w3.org/2000/svg"
+		>
+			<title>Invoices icon</title>
+			<path
+				d="M0.125 0.8125V18.6875H13.875V0.8125H0.125ZM1.5 2.1875H12.5V17.3125H1.5V2.1875ZM2.875 3.5625V7.6875H11.125V3.5625H2.875ZM4.25 4.9375H9.75V6.3125H4.25V4.9375ZM3.5625 9.0625V10.4375H4.9375V9.0625H3.5625ZM6.3125 9.0625V10.4375H7.6875V9.0625H6.3125ZM9.0625 9.0625V10.4375H10.4375V9.0625H9.0625ZM3.5625 11.8125V13.1875H4.9375V11.8125H3.5625ZM6.3125 11.8125V13.1875H7.6875V11.8125H6.3125ZM9.0625 11.8125V13.1875H10.4375V11.8125H9.0625ZM3.5625 14.5625V15.9375H4.9375V14.5625H3.5625ZM6.3125 14.5625V15.9375H7.6875V14.5625H6.3125ZM9.0625 14.5625V15.9375H10.4375V14.5625H9.0625Z"
+				fill={fill}
+			/>
+		</svg>
 	);
 }
+
+InvoicesIcon.displayName = 'InvoicesIcon';

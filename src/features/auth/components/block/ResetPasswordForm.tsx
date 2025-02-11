@@ -1,22 +1,18 @@
-"use client"
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Button } from "~/common/components/ui/Button";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Button } from '~/common/components/ui/Button';
 import {
 	InputOTP,
 	InputOTPGroup,
 	InputOTPSeparator,
 	InputOTPSlot
 } from '~/common/components/ui/input-otp';
-import { useAuth } from "../../hook/useAuth";
-import { verifyCodeSchema } from "../../schemas/verifyCode.schema";
-import type { VerifyCode } from "../../types/signUpCodeVerify.type";
-import { signUpFormSchema } from "../../schemas/signUpForm.schema";
-import type { SignUpFormType } from "../../types/signUpForm.type";
-import type { RecoverPassword } from "../../types/recoverPasssword.type";
-import { recoverPasswordSchema } from "../../schemas/recoverPassword.schema";
-import { Input } from "~/common/components/ui/Input";
+import { useAuth } from '../../hook/useAuth';
+import type { RecoverPassword } from '../../types/recoverPasssword.type';
+import { recoverPasswordSchema } from '../../schemas/recoverPassword.schema';
+import { Input } from '~/common/components/ui/Input';
 
 export function ResetPassword() {
 	const { setValue, handleSubmit, register } = useForm<RecoverPassword>({
@@ -30,8 +26,11 @@ export function ResetPassword() {
 	}
 
 	return (
-		<form onSubmit={handleSubmit(onSubmit)} className="flex w-[22.8125rem] flex-col gap-9">
-				<div className="flex flex-col gap-2">
+		<form
+			onSubmit={handleSubmit(onSubmit)}
+			className="flex w-[22.8125rem] flex-col gap-9"
+		>
+			<div className="flex flex-col gap-2">
 				<InputOTP
 					maxLength={6}
 					onChange={(value) => setValue('code', value)}
@@ -50,16 +49,17 @@ export function ResetPassword() {
 					</InputOTPGroup>
 				</InputOTP>
 				<Input.Root fieldText="New Password">
-					<Input.Password
-						placeholder="********"
-						{...register('password')}
-					/>
+					<Input.Password placeholder="********" {...register('password')} />
 				</Input.Root>
-				</div>
-				<div className="flex gap-2 items-center">
-					<Button className="w-full" type="submit">Recover password</Button>
-					<Button className="w-full" color="secondary" onClick={resendCode}>Resend code</Button>
-				</div>
-			</form>
+			</div>
+			<div className="flex items-center gap-2">
+				<Button className="w-full" type="submit">
+					Recover password
+				</Button>
+				<Button className="w-full" color="secondary" onClick={resendCode}>
+					Resend code
+				</Button>
+			</div>
+		</form>
 	);
 }

@@ -9,7 +9,7 @@ export const recoverPasswordSchema = z.object({
 			/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
 			"Password must contain at least one uppercase letter, one number, and one special character '@'."
 		),
-    code: z
+	code: z
 		.string()
 		.length(6, { message: 'O código deve ter 6 dígitos' })
 		.regex(/^\d+$/, { message: 'O código deve conter apenas números' })

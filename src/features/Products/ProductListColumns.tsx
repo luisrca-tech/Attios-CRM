@@ -14,6 +14,7 @@ const randomSales = () => Math.floor(Math.random() * 1000);
 
 type Product = InferSelectModel<typeof products> & {
 	category?: { name: string };
+	productImages?: { url: string }[];
 };
 
 export const columnsList: ColumnType<Product> = [
@@ -58,7 +59,7 @@ export const columnsList: ColumnType<Product> = [
 			return (
 				<div className="flex items-center md:gap-4 lg:gap-2 2xl:gap-4">
 					<Image
-						src={product.productImage ?? ''}
+						src={product.productImages?.[0]?.url ?? ''}
 						alt={product.name}
 						width={52}
 						height={52}

@@ -1,6 +1,8 @@
 import { GridIcon, KeyboardIcon, LaptopIcon } from '@radix-ui/react-icons';
 import { AddButtonIcon } from './AddButton';
 import { ArrowDown } from './ArrowDown';
+import { ArrowLeft } from './ArrowLeft';
+import { ArrowRight } from './ArrowRight';
 import { CalendarIcon } from './Calendar';
 import { ClosePadlockIcon } from './ClosePadlock';
 import { ContactsIcon } from './Contacts';
@@ -32,9 +34,20 @@ import { StatisticsGraphIcon } from './StatisticsGraph';
 import { TasksIcon } from './Tasks';
 import { TrowelIcon } from './Trowel';
 import { TwitterIcon } from './Twitter';
+import { UploadIcon } from './Upload';
 import { UserIcon } from './UserIcon';
-import { ArrowLeft } from './ArrowLeft';
-import { ArrowRight } from './ArrowRight';
+import { SkuIcon } from './Sku';
+import { GarageIcon } from './Garage';
+import { WalletIcon } from './Wallet';
+import { CloseButton } from './CloseButton';
+import { ShopIcon } from './Shop';
+import { ShippedIcon } from './Shipped';
+import { EarthIcon } from './Earth';
+import { ReceiptIcon } from './Receipt';
+import { ShippingIcon } from './Shipping';
+import { MegaphoneIcon } from './Megaphone';
+import { BellIcon } from './Bell';
+import { TrashIcon } from './Trash';
 
 export const Icon = {
 	Email: EmailIcon,
@@ -52,6 +65,19 @@ export const Icon = {
 	StarRating: StarRatingIcon,
 	Grid: GridIcon,
 	Ordenation: OrdenationIcon,
+	Upload: UploadIcon,
+	Sku: SkuIcon,
+	Garage: GarageIcon,
+	Wallet: WalletIcon,
+	CloseButton: CloseButton,
+	Shop: ShopIcon,
+	Shipped: ShippedIcon,
+	Shipping: ShippingIcon,
+	Megaphone: MegaphoneIcon,
+	Receipt: ReceiptIcon,
+	Earth: EarthIcon,
+	Bell: BellIcon,
+	Trash: TrashIcon,
 	List: {
 		White: ListIconWhite,
 		Blue: ListIconBlue

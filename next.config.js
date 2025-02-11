@@ -13,6 +13,7 @@ const mockImagesHosts = [
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+	reactStrictMode: process.env.NODE_ENV !== 'test',
 	env: {
 		DATABASE_URL: process.env.DATABASE_URL
 	},
