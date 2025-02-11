@@ -25,11 +25,21 @@ import { auth } from "@clerk/nextjs/server";
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const session = auth();
+  // In test environment, we'll use a mock session
+  if (process.env.NODE_ENV === "test") {
+    return {
+      db,
+      session: { userId: "test-user-id" },
+      ...opts,
+    };
+  }
+
+  // In non-test environments, use Clerk's auth
+  const { userId } = await auth();
 
   return {
     db,
-    session,
+    session: { userId },
     ...opts,
   };
 };
