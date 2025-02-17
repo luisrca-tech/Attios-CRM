@@ -1,16 +1,20 @@
-import { seedProducts } from './products';
+import { seedCustomers } from "./customers";
+import { seedOrders } from "./orders";
+import { seedProducts } from "./products";
 
 async function seed() {
-	try {
-		await seedProducts();
+  try {
+    await seedCustomers();
+    await seedProducts();
+    await seedOrders();
 
-		console.log('✅ Database seeded successfully');
-	} catch (e) {
-		console.error('❌ Error seeding database:', e);
-		process.exit(1);
-	} finally {
-		process.exit(0);
-	}
+    console.log("✅ Database seeded successfully");
+  } catch (e) {
+    console.error("❌ Error seeding database:", e);
+    process.exit(1);
+  } finally {
+    process.exit(0);
+  }
 }
 
 seed();
