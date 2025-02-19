@@ -45,7 +45,7 @@ export async function seedProducts() {
 
 		return {
 			id: randomUUID().slice(0, 10),
-			name: `${faker.commerce.productName()} - ${randomUUID().slice(0, 8)}`,
+			name: faker.commerce.productName(),
 			brandId: randomBrand.id,
 			categoryId: randomCategory.id,
 			modelYear: faker.number.int({ min: 2020, max: 2024 }),
