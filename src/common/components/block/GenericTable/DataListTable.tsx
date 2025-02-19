@@ -20,8 +20,10 @@ import {
 	TableRow
 } from '../../ui/table';
 import { Pagination } from './Pagination';
+import { cn } from '~/lib/utils';
 
 interface DataListTableProps<TData, TValue> {
+	className?: string;
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
 	pageSize?: number;
@@ -30,7 +32,8 @@ interface DataListTableProps<TData, TValue> {
 export function DataListTable<TData, TValue>({
 	columns,
 	data,
-	pageSize = 8
+	pageSize = 8,
+	className
 }: DataListTableProps<TData, TValue>) {
 	const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
 	const [sorting, setSorting] = useState<SortingState>([]);
@@ -68,14 +71,22 @@ export function DataListTable<TData, TValue>({
 	const paginatedData = sortedData.slice(start, end);
 
 	return (
-		<div className="flex flex-col gap-4">
-			<div className="hidden h-[calc(100vh-23rem)] w-full overflow-y-auto bg-white md:block lg:block lg:h-[calc(100vh-19rem)] [&::-webkit-scrollbar]:hidden">
+		<div className="flex flex-col">
+			<div
+				className={cn(
+					'hidden h-[calc(100vh-23rem)] w-full overflow-y-auto bg-white-100 md:block lg:block lg:h-[calc(100vh-19rem)] [&::-webkit-scrollbar]:hidden',
+					className
+				)}
+			>
 				<Table>
-					<TableHeader className="sticky top-0 z-10">
+					<TableHeader className="sticky top-0 z-10 bg-white-300">
 						{table.getHeaderGroups().map((headerGroup) => (
 							<TableRow key={headerGroup.id}>
 								{headerGroup.headers.map((header) => (
-									<TableHead key={header.id}>
+									<TableHead
+										className="font-bold text-primary-200 text-xs leading-[1.125rem]"
+										key={header.id}
+									>
 										{header.isPlaceholder
 											? null
 											: flexRender(
@@ -125,7 +136,7 @@ export function DataListTable<TData, TValue>({
 				</Table>
 			</div>
 
-			<div className="hidden md:mb-24 md:flex lg:mb-0 lg:flex">
+			<div className="hidden rounded-b-[0.625rem] bg-white-100 md:mb-24 md:flex lg:mb-0 lg:flex lg:pt-4">
 				<Pagination table={table} />
 			</div>
 		</div>
