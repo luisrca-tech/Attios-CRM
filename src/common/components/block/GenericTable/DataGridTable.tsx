@@ -20,6 +20,7 @@ interface DataGridTableProps<TData extends { id: string | number }> {
 	data: TData[];
 	columns: ColumnDef<TData, unknown>[];
 	pageSize?: number;
+	totalPages?: number;
 	CardComponent: ComponentType<
 		TData & { isSelected?: boolean; onSelect?: (value: boolean) => void }
 	>;
@@ -29,43 +30,37 @@ export function DataGridTable<TData extends { id: string | number }>({
 	data,
 	columns,
 	pageSize = 8,
+	totalPages,
 	CardComponent
 }: DataGridTableProps<TData>) {
-	const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
-	const [sorting, setSorting] = useState<SortingState>([]);
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [sorting, setSorting] = useState<SortingState>([]);
 
-	const table = useReactTable({
-		data,
-		columns,
-		getCoreRowModel: getCoreRowModel(),
-		getPaginationRowModel: getPaginationRowModel(),
-		getSortedRowModel: getSortedRowModel(),
-		pageCount: Math.ceil(data.length / pageSize),
-		state: {
-			sorting
-		},
-		onSortingChange: setSorting,
-		initialState: {
-			columnOrder: columns.map((column) => column.id ?? ''),
-			pagination: {
-				pageSize,
-				pageIndex: page - 1
-			}
-		},
-		onPaginationChange: (updater) => {
-			if (typeof updater === 'function') {
-				const newState = updater(table.getState().pagination);
-				setPage(newState.pageIndex + 1);
-			}
-		},
-		manualPagination: true
-	});
-
-	const sortedData = table.getSortedRowModel().rows.map((row) => row.original);
-
-	const start = (page - 1) * pageSize;
-	const end = start + pageSize;
-	const paginatedData = sortedData.slice(start, end);
+  const table = useReactTable({
+    data,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    pageCount: totalPages,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    initialState: {
+      pagination: {
+        pageSize,
+        pageIndex: page - 1,
+      },
+    },
+    onPaginationChange: (updater) => {
+      if (typeof updater === "function") {
+        const newState = updater(table.getState().pagination);
+        setPage(newState.pageIndex + 1);
+      }
+    },
+    manualPagination: true,
+  });
 
 	return (
 		<div className="hidden flex-col gap-6 md:flex">
@@ -89,7 +84,7 @@ export function DataGridTable<TData extends { id: string | number }>({
 			</Table>
 
 			<div className="grid h-[calc(100vh-30rem)] grid-cols-1 gap-4 overflow-y-auto px-7 sm:grid-cols-2 lg:h-[calc(100vh-23.5rem)] lg:grid-cols-3 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden">
-				{paginatedData.map((item) => {
+				{data.map((item) => {
 					const row = table.getRowModel().rows.find((r) => r.original === item);
 					return (
 						<div key={item.id}>

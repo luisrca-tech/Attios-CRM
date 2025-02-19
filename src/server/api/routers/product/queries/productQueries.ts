@@ -1,33 +1,48 @@
-import { eq } from 'drizzle-orm';
-import { z } from 'zod';
-import { publicProcedure } from '~/server/api/trpc';
-import { products } from '~/server/db/schema';
+import { count, eq, sql } from "drizzle-orm";
+import { z } from "zod";
+import { publicProcedure } from "~/server/api/trpc";
+import { products } from "~/server/db/schema";
+import { paginationSchema } from "../../schemas/pagination.schema";
 
 const requiredProductRelations = {
-	category: {
-		columns: {
-			id: true,
-			name: true
-		}
-	},
-	productImages: {
-		columns: {
-			url: true,
-			key: true
-		}
-	}
+  category: {
+    columns: {
+      id: true,
+      name: true,
+    },
+  },
+  productImages: {
+    columns: {
+      url: true,
+      key: true,
+    },
+  },
 } as const;
 
 export const productQueries = {
-	getAll: publicProcedure.query(({ ctx }) => {
-		return ctx.db.query.products.findMany({
-			with: requiredProductRelations
-		});
-	}),
-	getById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-		return ctx.db.query.products.findFirst({
-			where: eq(products.id, input),
-			with: requiredProductRelations
-		});
-	})
+  getPaginated: publicProcedure
+    .input(paginationSchema)
+    .query(async ({ ctx, input }) => {
+      return ctx.db.query.products.findMany({
+        with: requiredProductRelations,
+        limit: input.pageSize,
+        offset: (input.page - 1) * input.pageSize,
+      });
+    }),
+  getTotalPages: publicProcedure
+    .input(z.object({ pageSize: z.number().default(8) }))
+    .query(async ({ ctx, input }) => {
+      const [result] = await ctx.db
+        .select({ count: sql<number>`count(*)`.mapWith(Number) })
+        .from(products);
+
+      const totalCount = result?.count ?? 0;
+      return Math.ceil(totalCount / input.pageSize);
+    }),
+  getById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
+    return ctx.db.query.products.findFirst({
+      where: eq(products.id, input),
+      with: requiredProductRelations,
+    });
+  }),
 };
