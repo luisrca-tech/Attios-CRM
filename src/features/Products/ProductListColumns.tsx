@@ -17,7 +17,7 @@ type Product = InferSelectModel<typeof products> & {
 	productImages?: { url: string }[];
 };
 
-export const columnsList: ColumnType<Product> = [
+export const productListColumns: ColumnType<Product> = [
 	{
 		id: 'select',
 		header: ({ table }) => (

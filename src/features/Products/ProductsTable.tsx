@@ -2,17 +2,17 @@
 
 import { useState } from 'react';
 import { NotFoundItem } from '~/common/components/ui/NotFoundItem';
-import { ProductListCard } from '~/common/components/ui/ProductListCard';
+import { ProductListCard } from '~/features/Products/components/ProductListCard';
 import { Image } from '~/common/components/ui/images';
 import { calculateItemPerPage } from '~/common/utils/calculateItemPerPage';
 import { api } from '~/trpc/react';
 import { DataGridTable } from '../../common/components/block/GenericTable/DataGridTable';
 import { DataListTable } from '../../common/components/block/GenericTable/DataListTable';
 import { Icon } from '../../common/components/ui/Icons/_index';
-import { ProductGridCard } from '../../common/components/ui/ProductGridCard';
 import { ViewTypeSelector } from '../../common/components/ui/ViewTypeSelector';
 import { columnsGrid } from './ProductGridColumns';
-import { columnsList } from './ProductListColumns';
+import { productListColumns } from './ProductListColumns';
+import { ProductGridCard } from './components/ProductGridCard';
 
 export function ProductsTable() {
 	const [viewType, setViewType] = useState<'list' | 'grid'>('list');
@@ -39,7 +39,7 @@ to upload items list"
 	}
 
 	return (
-		<div className="flex w-full flex-col gap-1 bg-white-300 md:block md:bg-white-100 lg:block lg:gap-[0.875rem] lg:rounded-xl lg:bg--100">
+		<div className="flex w-full flex-col gap-1 bg-white-300 md:block md:bg-white-100 lg:block lg:gap-[0.875rem] lg:rounded-xl">
 			<ViewTypeSelector viewType={viewType} onViewChange={setViewType}>
 				<button
 					type="button"
@@ -53,11 +53,13 @@ to upload items list"
 			</ViewTypeSelector>
 			{viewType === 'list' ? (
 				<>
+					{/* This table list is showing on desktop */}
 					<DataListTable
-						columns={columnsList}
+						columns={productListColumns}
 						data={ProductData}
 						pageSize={Math.min(itemPerPage, maxItemPerPage)}
 					/>
+					{/* This list is showing on mobile */}
 					{ProductData.map((product) => (
 						<div className="flex flex-col gap-1 px-3" key={product.id}>
 							<ProductListCard {...product} />
@@ -66,12 +68,14 @@ to upload items list"
 				</>
 			) : (
 				<>
+					{/* This table grid is showing on desktop */}
 					<DataGridTable
 						data={ProductData}
 						columns={columnsGrid}
 						pageSize={8}
 						CardComponent={ProductGridCard}
 					/>
+					{/* This grid is showing on mobile */}
 					{ProductData.map((product) => (
 						<div
 							className="grid grid-cols-1 gap-1 px-3 md:hidden"
