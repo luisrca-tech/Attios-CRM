@@ -41,16 +41,28 @@ export async function seedOrders() {
 
 	const insertedOrders = await db.insert(orders).values(ordersData).returning();
 
-	const orderItemsData = insertedOrders.flatMap((order) =>
-		Array.from({ length: faker.number.int({ min: 1, max: 3 }) }, () => ({
-			orderId: order.id,
-			productId: faker.helpers.arrayElement(existingProducts).id,
-			quantity: faker.number.int({ min: 1, max: 100 }),
-			listPrice: faker.commerce.price({ min: 10, max: 1000, dec: 2 }),
-			discount: (faker.number.int({ min: 0, max: 100 }) / 100).toFixed(2)
-		}))
+	const orderItemsPromises = insertedOrders.flatMap((order) =>
+		Array.from({ length: faker.number.int({ min: 1, max: 3 }) }, async () => {
+			const product = faker.helpers.arrayElement(existingProducts);
+			const productWithImages = await db.query.products.findFirst({
+				where: (products, { eq }) => eq(products.id, product.id),
+				with: {
+					productImages: true
+				}
+			});
+
+			return {
+				orderId: order.id,
+				productId: product.id,
+				productImage: productWithImages?.productImages[0]?.url ?? '',
+				quantity: faker.number.int({ min: 1, max: 100 }),
+				listPrice: faker.commerce.price({ min: 10, max: 1000, dec: 2 }),
+				discount: (faker.number.int({ min: 0, max: 100 }) / 100).toFixed(2)
+			};
+		})
 	);
 
+	const orderItemsData = await Promise.all(orderItemsPromises.flat());
 	await db.insert(orderItems).values(orderItemsData);
 	console.log(`Created ${orderItemsData.length} order items`);
 }
