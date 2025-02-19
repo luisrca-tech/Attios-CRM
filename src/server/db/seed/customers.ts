@@ -1,8 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { db } from '..';
 import { customers } from '../schema/customers';
+import { orderItems, orders } from '../schema/orders';
 
 export async function seedCustomers() {
+	await db.delete(orderItems);
+	await db.delete(orders);
 	await db.delete(customers);
 
 	const customersData = Array.from({ length: 100 }, () => ({
