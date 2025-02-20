@@ -16,9 +16,25 @@ import { ProductGridCard } from "./components/ProductGridCard";
 import { parseAsInteger, useQueryState } from "nuqs";
 import { usePrefetchNextPage } from "~/common/hooks/usePrefetchNextPage";
 
+type SortState = {
+  column: "name" | "quantity" | "listPrice" | "modelYear";
+  direction: "asc" | "desc";
+};
+
 export function ProductsTable() {
   const [viewType, setViewType] = useState<"list" | "grid">("list");
   const [page] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [sort, setSort] = useState<SortState>({
+    column: "name",
+    direction: "asc",
+  });
+
+  const handleSort = (column: string, direction: "asc" | "desc") => {
+    setSort({
+      column: column as "name" | "quantity" | "listPrice" | "modelYear",
+      direction,
+    });
+  };
 
   const extraItemHeight = 65;
   const maxItemPerPage = 25;
@@ -35,6 +51,7 @@ export function ProductsTable() {
     {
       page,
       pageSize,
+      sort,
     },
     {
       staleTime: 0,
@@ -49,9 +66,15 @@ export function ProductsTable() {
     totalPages: totalPagesQuery.data,
     resource: "product",
     procedure: "getPaginated",
+    extraParams: { sort },
   });
 
   const ProductData = ProductQuery.data ?? [];
+
+  const columns = productListColumns({
+    onSort: handleSort,
+    currentSort: sort,
+  });
 
   if (!ProductData) {
     return (
@@ -88,7 +111,7 @@ to upload items list"
         <>
           {/* This table list is showing on desktop */}
           <DataListTable
-            columns={productListColumns}
+            columns={columns}
             data={ProductData}
             pageSize={pageSize}
             totalPages={totalPagesQuery.data}
@@ -107,7 +130,7 @@ to upload items list"
         <>
           {/* This table grid is showing on desktop */}
           <DataGridTable
-            columns={productListColumns}
+            columns={columns}
             data={ProductData}
             pageSize={pageSize}
             totalPages={totalPagesQuery.data}

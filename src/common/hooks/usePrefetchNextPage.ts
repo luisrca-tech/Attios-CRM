@@ -7,6 +7,7 @@ type PrefetchConfig = {
   totalPages?: number;
   resource: "product" | "orders";
   procedure: "getPaginated" | "getAll";
+  extraParams?: Record<string, unknown>;
 };
 
 export function usePrefetchNextPage({
@@ -15,13 +16,18 @@ export function usePrefetchNextPage({
   totalPages,
   resource,
   procedure,
+  extraParams,
 }: PrefetchConfig) {
   const utils = api.useUtils();
 
   useEffect(() => {
     if (totalPages && page < totalPages) {
       // @ts-expect-error - Dynamic access to tRPC utils
-      utils[resource][procedure].prefetch({ page: page + 1, pageSize });
+      utils[resource][procedure].prefetch({
+        page: page + 1,
+        pageSize,
+        ...extraParams,
+      });
     }
-  }, [page, pageSize, totalPages, resource, procedure, utils]);
+  }, [page, pageSize, totalPages, resource, procedure, utils, extraParams]);
 }

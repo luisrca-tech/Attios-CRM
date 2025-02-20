@@ -1,4 +1,4 @@
-import { count, eq, sql } from "drizzle-orm";
+import { eq, sql, asc, desc } from "drizzle-orm";
 import { z } from "zod";
 import { publicProcedure } from "~/server/api/trpc";
 import { products } from "~/server/db/schema";
@@ -19,14 +19,33 @@ const requiredProductRelations = {
   },
 } as const;
 
+const sortableColumns = ["name", "quantity", "listPrice", "modelYear"] as const;
+type SortableColumn = (typeof sortableColumns)[number];
+
 export const productQueries = {
   getPaginated: publicProcedure
-    .input(paginationSchema)
+    .input(
+      paginationSchema.extend({
+        sort: z
+          .object({
+            column: z.enum(["name", "quantity", "listPrice", "modelYear"]),
+            direction: z.enum(["asc", "desc"]).default("asc"),
+          })
+          .optional(),
+      })
+    )
     .query(async ({ ctx, input }) => {
       return ctx.db.query.products.findMany({
         with: requiredProductRelations,
         limit: input.pageSize,
         offset: (input.page - 1) * input.pageSize,
+        orderBy: input.sort
+          ? [
+              input.sort.direction === "asc"
+                ? asc(products[input.sort.column])
+                : desc(products[input.sort.column]),
+            ]
+          : [asc(products.name)],
       });
     }),
   getTotalPages: publicProcedure
