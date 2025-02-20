@@ -19,11 +19,7 @@ import { ProductGridSkeleton } from './components/ProductGridSkeleton';
 import { productGridColumns } from './ProductGridColumns';
 import { skeletonProductsData } from './constants/skeletonProductsData';
 import { useInfiniteScroll } from '~/common/hooks/useInfiniteScroll';
-
-type SortState = {
-	column: 'name' | 'quantity' | 'listPrice' | 'modelYear';
-	direction: 'asc' | 'desc';
-};
+import type { SortState } from './types/sortState';
 
 export function ProductsTable() {
 	const [viewType, setViewType] = useState<'list' | 'grid'>('list');
@@ -47,8 +43,8 @@ export function ProductsTable() {
 		);
 
 	const { loadMoreRef } = useInfiniteScroll({
-		hasNextPage: infiniteProducts.hasNextPage,
-		fetchNextPage: infiniteProducts.fetchNextPage
+		canLoadMore: infiniteProducts.hasNextPage,
+		fetchMore: infiniteProducts.fetchNextPage
 	});
 
 	const handleSort = (column: string, direction: 'asc' | 'desc') => {

@@ -40,8 +40,8 @@ export function DashboardTable() {
 		);
 
 	const { loadMoreRef } = useInfiniteScroll({
-		hasNextPage: infiniteOrders.hasNextPage,
-		fetchNextPage: infiniteOrders.fetchNextPage
+		canLoadMore: infiniteOrders.hasNextPage,
+		fetchMore: infiniteOrders.fetchNextPage
 	});
 
 	const extraItemHeight = 65;

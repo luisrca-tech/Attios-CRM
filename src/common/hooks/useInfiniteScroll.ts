@@ -1,14 +1,14 @@
 import { useEffect, useRef } from 'react';
 
 type InfiniteScrollOptions = {
-	hasNextPage?: boolean;
-	fetchNextPage: () => Promise<unknown>;
+	canLoadMore?: boolean;
+	fetchMore: () => Promise<unknown>;
 	threshold?: number;
 };
 
 export function useInfiniteScroll({
-	hasNextPage,
-	fetchNextPage,
+	canLoadMore,
+	fetchMore,
 	threshold = 0.1
 }: InfiniteScrollOptions) {
 	const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -16,8 +16,8 @@ export function useInfiniteScroll({
 	useEffect(() => {
 		const observer = new IntersectionObserver(
 			(entries) => {
-				if (entries[0]?.isIntersecting && hasNextPage) {
-					void fetchNextPage();
+				if (entries[0]?.isIntersecting && canLoadMore) {
+					void fetchMore();
 				}
 			},
 			{ threshold }
@@ -28,7 +28,7 @@ export function useInfiniteScroll({
 		}
 
 		return () => observer.disconnect();
-	}, [hasNextPage, fetchNextPage, threshold]);
+	}, [canLoadMore, fetchMore, threshold]);
 
 	return { loadMoreRef };
 }
