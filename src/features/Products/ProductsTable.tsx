@@ -46,7 +46,7 @@ export function ProductsTable() {
     pageSize,
   });
 
-  const ProductQuery = api.product.getPaginated.useQuery(
+  const ProductQuery = api.product.getProductsPaginated.useQuery(
     {
       page,
       pageSize,
@@ -64,7 +64,7 @@ export function ProductsTable() {
     pageSize,
     totalPages: totalPagesQuery.data,
     resource: "product",
-    procedure: "getPaginated",
+    procedure: "getProductsPaginated",
     extraParams: { sort },
   });
 
