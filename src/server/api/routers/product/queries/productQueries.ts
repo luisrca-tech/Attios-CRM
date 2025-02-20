@@ -1,92 +1,92 @@
-import { eq, sql, asc, desc } from "drizzle-orm";
-import { z } from "zod";
-import { publicProcedure } from "~/server/api/trpc";
-import { products } from "~/server/db/schema";
-import { paginationSchema } from "../../schemas/pagination.schema";
+import { eq, sql, asc, desc } from 'drizzle-orm';
+import { z } from 'zod';
+import { publicProcedure } from '~/server/api/trpc';
+import { products } from '~/server/db/schema';
+import { paginationSchema } from '../../schemas/pagination.schema';
 
 const requiredProductRelations = {
-  category: {
-    columns: {
-      id: true,
-      name: true,
-    },
-  },
-  productImages: {
-    columns: {
-      url: true,
-      key: true,
-    },
-  },
+	category: {
+		columns: {
+			id: true,
+			name: true
+		}
+	},
+	productImages: {
+		columns: {
+			url: true,
+			key: true
+		}
+	}
 } as const;
 
 export const productQueries = {
-  getProductsPaginated: publicProcedure
-    .input(
-      paginationSchema.extend({
-        sort: z
-          .object({
-            column: z.enum(["name", "quantity", "listPrice", "modelYear"]),
-            direction: z.enum(["asc", "desc"]).default("asc"),
-          })
-          .optional(),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      return ctx.db.query.products.findMany({
-        with: requiredProductRelations,
-        limit: input.pageSize,
-        offset: (input.page - 1) * input.pageSize,
-        orderBy: input.sort
-          ? [
-              input.sort.direction === "asc"
-                ? asc(products[input.sort.column])
-                : desc(products[input.sort.column]),
-            ]
-          : [asc(products.name)],
-      });
-    }),
-  getTotalPages: publicProcedure
-    .input(z.object({ pageSize: z.number().default(8) }))
-    .query(async ({ ctx, input }) => {
-      const [result] = await ctx.db
-        .select({ count: sql<number>`count(*)`.mapWith(Number) })
-        .from(products);
+	getProductsPaginated: publicProcedure
+		.input(
+			paginationSchema.extend({
+				sort: z
+					.object({
+						column: z.enum(['name', 'quantity', 'listPrice', 'modelYear']),
+						direction: z.enum(['asc', 'desc']).default('asc')
+					})
+					.optional()
+			})
+		)
+		.query(async ({ ctx, input }) => {
+			return ctx.db.query.products.findMany({
+				with: requiredProductRelations,
+				limit: input.pageSize,
+				offset: (input.page - 1) * input.pageSize,
+				orderBy: input.sort
+					? [
+							input.sort.direction === 'asc'
+								? asc(products[input.sort.column])
+								: desc(products[input.sort.column])
+						]
+					: [asc(products.name)]
+			});
+		}),
+	getTotalPages: publicProcedure
+		.input(z.object({ pageSize: z.number().default(8) }))
+		.query(async ({ ctx, input }) => {
+			const [result] = await ctx.db
+				.select({ count: sql<number>`count(*)`.mapWith(Number) })
+				.from(products);
 
-      const totalCount = result?.count ?? 0;
-      return Math.ceil(totalCount / input.pageSize);
-    }),
-  getControlledProductsInfinite: publicProcedure
-    .input(
-      z.object({
-        limit: z.number().min(1).max(50).default(10),
-        cursor: z.number().default(0),
-      })
-    )
-    .query(async ({ ctx, input }) => {
-      const { limit, cursor } = input;
+			const totalCount = result?.count ?? 0;
+			return Math.ceil(totalCount / input.pageSize);
+		}),
+	getControlledProductsInfinite: publicProcedure
+		.input(
+			z.object({
+				limit: z.number().min(1).max(50).default(10),
+				cursor: z.number().default(0)
+			})
+		)
+		.query(async ({ ctx, input }) => {
+			const { limit, cursor } = input;
 
-      const items = await ctx.db.query.products.findMany({
-        with: requiredProductRelations,
-        limit: limit + 1,
-        offset: cursor,
-        orderBy: [asc(products.name)],
-      });
+			const items = await ctx.db.query.products.findMany({
+				with: requiredProductRelations,
+				limit: limit + 1,
+				offset: cursor,
+				orderBy: [asc(products.name)]
+			});
 
-      let nextCursor: number | undefined = undefined;
-      if (items.length > limit) {
-        items.pop();
-        nextCursor = cursor + limit;
-      }
+			let nextCursor: number | undefined = undefined;
+			if (items.length > limit) {
+				items.pop();
+				nextCursor = cursor + limit;
+			}
 
-      return {
-        items,
-        nextCursor,
-      };
-    }),
-  getById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.db.query.products.findFirst({
-      where: eq(products.id, input),
-      with: requiredProductRelations,
-    });
-  }),
+			return {
+				items,
+				nextCursor
+			};
+		}),
+	getById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
+		return ctx.db.query.products.findFirst({
+			where: eq(products.id, input),
+			with: requiredProductRelations
+		});
+	})
 };
