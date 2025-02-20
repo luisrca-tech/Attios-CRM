@@ -9,8 +9,19 @@ import { DashboardFiltersAction } from './DashboardFiltersAction';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import { usePrefetchNextPage } from '~/common/hooks/usePrefetchNextPage';
 
+type TimeFrame = 'day' | 'week' | 'month';
+
 export function DashboardTable() {
 	const [page] = useQueryState('page', parseAsInteger.withDefault(1));
+	const [timeFrame, setTimeFrame] = useQueryState<TimeFrame | null>(
+		'timeFrame',
+		{
+			defaultValue: null,
+			parse: (value) => value as TimeFrame,
+			serialize: (value) => value || ''
+		}
+	);
+
 	const extraItemHeight = 65;
 	const maxItemPerPage = 25;
 	const pageSize = Math.min(
@@ -19,12 +30,14 @@ export function DashboardTable() {
 	);
 
 	const totalPagesQuery = api.orders.getTotalPages.useQuery({
-		pageSize
+		pageSize,
+		timeFrame: timeFrame || undefined
 	});
 
 	const orderQuery = api.orders.getOrdersPaginated.useQuery({
 		page,
-		pageSize
+		pageSize,
+		timeFrame: timeFrame || undefined
 	});
 
 	usePrefetchNextPage({
@@ -32,14 +45,18 @@ export function DashboardTable() {
 		pageSize,
 		totalPages: totalPagesQuery.data,
 		resource: 'orders',
-		procedure: 'getOrdersPaginated'
+		procedure: 'getOrdersPaginated',
+		extraParams: { timeFrame: timeFrame || undefined }
 	});
 
 	const orderData = orderQuery.data ?? [];
 
 	return (
 		<div className="flex flex-col gap-2 bg-white-300 lg:gap-0">
-			<DashboardFiltersAction />
+			<DashboardFiltersAction
+				onTimeFrameChange={setTimeFrame}
+				selectedTimeFrame={timeFrame || undefined}
+			/>
 			{/* This list table is showing on desktop and tablet */}
 			<DataListTable
 				className="md:max-h-[calc(100vh-32rem)] lg:max-h-[calc(100vh-28rem)]"

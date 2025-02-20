@@ -23,16 +23,23 @@ type SortState = {
 export function ProductsTable() {
 	const [viewType, setViewType] = useState<'list' | 'grid'>('list');
 	const [page] = useQueryState('page', parseAsInteger.withDefault(1));
-	const [sort, setSort] = useState<SortState>({
-		column: 'name',
-		direction: 'asc'
+	const [sortColumn, setSortColumn] = useQueryState<SortState['column']>(
+		'sortColumn',
+		{
+			defaultValue: 'name',
+			parse: (value) => value as SortState['column']
+		}
+	);
+	const [sortDirection, setSortDirection] = useQueryState<
+		SortState['direction']
+	>('sortDirection', {
+		defaultValue: 'asc',
+		parse: (value) => value as SortState['direction']
 	});
 
-	const handleSort = (column: string, direction: 'asc' | 'desc') => {
-		setSort({
-			column: column as 'name' | 'quantity' | 'listPrice' | 'modelYear',
-			direction
-		});
+	const handleSort = async (column: string, direction: 'asc' | 'desc') => {
+		await setSortColumn(column as SortState['column']);
+		await setSortDirection(direction);
 	};
 
 	const extraItemHeight = 65;
@@ -50,7 +57,10 @@ export function ProductsTable() {
 		{
 			page,
 			pageSize,
-			sort
+			sort: {
+				column: sortColumn,
+				direction: sortDirection
+			}
 		},
 		{
 			staleTime: 0,
@@ -65,14 +75,22 @@ export function ProductsTable() {
 		totalPages: totalPagesQuery.data,
 		resource: 'product',
 		procedure: 'getProductsPaginated',
-		extraParams: { sort }
+		extraParams: {
+			sort: {
+				column: sortColumn,
+				direction: sortDirection
+			}
+		}
 	});
 
 	const ProductData = ProductQuery.data ?? [];
 
 	const columns = productListColumns({
 		onSort: handleSort,
-		currentSort: sort
+		currentSort: {
+			column: sortColumn,
+			direction: sortDirection
+		}
 	});
 
 	if (!ProductData) {
