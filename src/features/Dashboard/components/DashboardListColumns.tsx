@@ -1,175 +1,175 @@
-"use client";
+'use client';
 
-import type { ColumnDef } from "@tanstack/react-table";
-import Image from "next/image";
-import { cn } from "~/lib/utils";
-import type { orders } from "~/server/db/schema/orders";
-import type { customers } from "~/server/db/schema/customers";
-import type { products } from "~/server/db/schema/products";
-import type { InferSelectModel } from "drizzle-orm";
-import type { orderItems } from "~/server/db/schema/orders";
+import type { ColumnDef } from '@tanstack/react-table';
+import Image from 'next/image';
+import { cn } from '~/lib/utils';
+import type { orders } from '~/server/db/schema/orders';
+import type { customers } from '~/server/db/schema/customers';
+import type { products } from '~/server/db/schema/products';
+import type { InferSelectModel } from 'drizzle-orm';
+import type { orderItems } from '~/server/db/schema/orders';
 
 export type ColumnType<TData> = ColumnDef<TData, unknown>[];
 
 const SHIPPING_PRICE = 18;
 
 type OrderItem = InferSelectModel<typeof orderItems> & {
-  product: Pick<InferSelectModel<typeof products>, "id" | "name">;
+	product: Pick<InferSelectModel<typeof products>, 'id' | 'name'>;
 };
 
 type Order = InferSelectModel<typeof orders> & {
-  customer: InferSelectModel<typeof customers>;
-  orderItems: OrderItem[];
+	customer: InferSelectModel<typeof customers>;
+	orderItems: OrderItem[];
 };
 
 export const dashboardListColumns: ColumnType<Order> = [
-  {
-    accessorKey: "orderItems",
-    header: () => <span className="pl-2">Product</span>,
-    cell: ({ row }) => {
-      const order = row.original;
-      const firstItem = order.orderItems[0];
-      const pickName =
-        firstItem?.product.name && firstItem.product.name.length > 10
-          ? `${firstItem.product.name.slice(0, 10)}...`
-          : (firstItem?.product.name ?? "");
-      return (
-        <div className="flex items-center gap-2 md:gap-4 2xl:gap-4">
-          <Image
-            src={firstItem?.productImage ?? ""}
-            alt={firstItem?.product.name ?? ""}
-            width={52}
-            height={52}
-            className="h-10 w-10 rounded-md"
-          />
-          <div className="flex flex-col">
-            <strong className="text-sm leading-5 md:block lg:hidden 2xl:block">
-              {firstItem?.product.name}
-            </strong>
-            <strong className="text-sm leading-5 md:hidden lg:block 2xl:hidden">
-              {pickName}
-            </strong>
-            <span className="font-normal text-primary-200 text-xs uppercase">
-              {firstItem?.product.id}
-            </span>
-          </div>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "customer",
-    header: "Customer",
-    cell: ({ row }) => {
-      const { customer } = row.original;
-      const pickEmail =
-        customer.email.length > 10
-          ? `${customer.email.slice(0, 10)}...`
-          : customer.email;
-      return (
-        <div className="flex flex-col gap-1">
-          <strong className="text-sm leading-5">
-            {customer.firstName} {customer.lastName}
-          </strong>
-          <span className="font-normal text-primary-200 text-sm lg:hidden 2xl:block">
-            {customer.email}
-          </span>
-          <span className="font-normal text-primary-200 text-sm md:hidden lg:block 2xl:hidden">
-            {pickEmail}
-          </span>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "delivery",
-    header: () => (
-      <span className="md:block lg:hidden 2xl:block">Delivery</span>
-    ),
-    cell: ({ row }) => {
-      const { customer } = row.original;
-      const pickStreet =
-        customer.street && customer.street.length > 10
-          ? `${customer.street.slice(0, 10)}...`
-          : (customer.street ?? "");
-      return (
-        <div className="flex flex-col gap-1 md:flex lg:hidden 2xl:flex">
-          <strong className="text-sm leading-5">{customer.city}</strong>
-          <span className="font-normal text-primary-200 text-sm md:block lg:hidden 2xl:block">
-            {customer.street}
-          </span>
-          <span className="font-normal text-primary-200 text-sm md:hidden lg:block 2xl:hidden">
-            {pickStreet}
-          </span>
-        </div>
-      );
-    },
-  },
-  {
-    accessorKey: "orderStatus",
-    header: () => <span />,
-    cell: ({ row }) => (
-      <div
-        className={cn(
-          "flex w-[6.125rem] items-center justify-center rounded-lg py-2",
-          row.original.orderStatus === "pending" && "bg-secondary-400/10",
-          row.original.orderStatus === "processing" && "bg-secondary-100/10",
-          row.original.orderStatus === "shipped" && "bg-primary-100/10",
-          row.original.orderStatus === "delivered" && "bg-secondary-200/10",
-          row.original.orderStatus === "cancelled" && "bg-secondary-300/0"
-        )}
-      >
-        <span
-          className={cn(
-            "font-bold text-sm leading-5 first-letter:capitalize",
-            row.original.orderStatus === "pending" && "text-secondary-400",
-            row.original.orderStatus === "processing" && "text-secondary-100",
-            row.original.orderStatus === "shipped" && "text-primary-100",
-            row.original.orderStatus === "delivered" && "text-secondary-200",
-            row.original.orderStatus === "cancelled" && "text-secondary-300"
-          )}
-        >
-          {row.original.orderStatus}
-        </span>
-      </div>
-    ),
-  },
-  {
-    id: "subtotal",
-    header: () => (
-      <span className="md:block lg:hidden 2xl:block">Subtotal</span>
-    ),
-    cell: ({ row }) => {
-      const subtotal = row.original.orderItems.reduce(
-        (acc, item) => acc + Number(item.listPrice) * item.quantity,
-        0
-      );
-      return (
-        <div className="font-bold text-sm leading-5 md:block lg:hidden 2xl:block">
-          ${subtotal.toFixed(2)}
-        </div>
-      );
-    },
-  },
-  {
-    id: "shipping",
-    header: "Shipping",
-    cell: () => <div className="font-bold">${SHIPPING_PRICE.toFixed(2)}</div>,
-  },
-  {
-    id: "total",
-    header: () => (
-      <div className="flex items-center justify-center">
-        <span className="text-right">Total</span>
-      </div>
-    ),
-    cell: ({ row }) => {
-      const subtotal = row.original.orderItems.reduce(
-        (acc, item) => acc + Number(item.listPrice) * item.quantity,
-        0
-      );
-      const total = subtotal + SHIPPING_PRICE;
-      return <div className="font-bold">${total.toFixed(2)}</div>;
-    },
-  },
+	{
+		accessorKey: 'orderItems',
+		header: () => <span className="pl-2">Product</span>,
+		cell: ({ row }) => {
+			const order = row.original;
+			const firstItem = order.orderItems[0];
+			const pickName =
+				firstItem?.product.name && firstItem.product.name.length > 10
+					? `${firstItem.product.name.slice(0, 10)}...`
+					: (firstItem?.product.name ?? '');
+			return (
+				<div className="flex items-center gap-2 md:gap-4 2xl:gap-4">
+					<Image
+						src={firstItem?.productImage ?? ''}
+						alt={firstItem?.product.name ?? ''}
+						width={52}
+						height={52}
+						className="h-10 w-10 rounded-md"
+					/>
+					<div className="flex flex-col">
+						<strong className="text-sm leading-5 md:block lg:hidden 2xl:block">
+							{firstItem?.product.name}
+						</strong>
+						<strong className="text-sm leading-5 md:hidden lg:block 2xl:hidden">
+							{pickName}
+						</strong>
+						<span className="font-normal text-primary-200 text-xs uppercase">
+							{firstItem?.product.id}
+						</span>
+					</div>
+				</div>
+			);
+		}
+	},
+	{
+		accessorKey: 'customer',
+		header: 'Customer',
+		cell: ({ row }) => {
+			const { customer } = row.original;
+			const pickEmail =
+				customer.email.length > 10
+					? `${customer.email.slice(0, 10)}...`
+					: customer.email;
+			return (
+				<div className="flex flex-col gap-1">
+					<strong className="text-sm leading-5">
+						{customer.firstName} {customer.lastName}
+					</strong>
+					<span className="font-normal text-primary-200 text-sm lg:hidden 2xl:block">
+						{customer.email}
+					</span>
+					<span className="font-normal text-primary-200 text-sm md:hidden lg:block 2xl:hidden">
+						{pickEmail}
+					</span>
+				</div>
+			);
+		}
+	},
+	{
+		accessorKey: 'delivery',
+		header: () => (
+			<span className="md:block lg:hidden 2xl:block">Delivery</span>
+		),
+		cell: ({ row }) => {
+			const { customer } = row.original;
+			const pickStreet =
+				customer.street && customer.street.length > 10
+					? `${customer.street.slice(0, 10)}...`
+					: (customer.street ?? '');
+			return (
+				<div className="flex flex-col gap-1 md:flex lg:hidden 2xl:flex">
+					<strong className="text-sm leading-5">{customer.city}</strong>
+					<span className="font-normal text-primary-200 text-sm md:block lg:hidden 2xl:block">
+						{customer.street}
+					</span>
+					<span className="font-normal text-primary-200 text-sm md:hidden lg:block 2xl:hidden">
+						{pickStreet}
+					</span>
+				</div>
+			);
+		}
+	},
+	{
+		accessorKey: 'orderStatus',
+		header: () => <span />,
+		cell: ({ row }) => (
+			<div
+				className={cn(
+					'flex w-[6.125rem] items-center justify-center rounded-lg py-2',
+					row.original.orderStatus === 'pending' && 'bg-secondary-400/10',
+					row.original.orderStatus === 'processing' && 'bg-secondary-100/10',
+					row.original.orderStatus === 'shipped' && 'bg-primary-100/10',
+					row.original.orderStatus === 'delivered' && 'bg-secondary-200/10',
+					row.original.orderStatus === 'cancelled' && 'bg-secondary-300/0'
+				)}
+			>
+				<span
+					className={cn(
+						'font-bold text-sm leading-5 first-letter:capitalize',
+						row.original.orderStatus === 'pending' && 'text-secondary-400',
+						row.original.orderStatus === 'processing' && 'text-secondary-100',
+						row.original.orderStatus === 'shipped' && 'text-primary-100',
+						row.original.orderStatus === 'delivered' && 'text-secondary-200',
+						row.original.orderStatus === 'cancelled' && 'text-secondary-300'
+					)}
+				>
+					{row.original.orderStatus}
+				</span>
+			</div>
+		)
+	},
+	{
+		id: 'subtotal',
+		header: () => (
+			<span className="md:block lg:hidden 2xl:block">Subtotal</span>
+		),
+		cell: ({ row }) => {
+			const subtotal = row.original.orderItems.reduce(
+				(acc, item) => acc + Number(item.listPrice) * item.quantity,
+				0
+			);
+			return (
+				<div className="font-bold text-sm leading-5 md:block lg:hidden 2xl:block">
+					${subtotal.toFixed(2)}
+				</div>
+			);
+		}
+	},
+	{
+		id: 'shipping',
+		header: 'Shipping',
+		cell: () => <div className="font-bold">${SHIPPING_PRICE.toFixed(2)}</div>
+	},
+	{
+		id: 'total',
+		header: () => (
+			<div className="flex items-center justify-center">
+				<span className="text-right">Total</span>
+			</div>
+		),
+		cell: ({ row }) => {
+			const subtotal = row.original.orderItems.reduce(
+				(acc, item) => acc + Number(item.listPrice) * item.quantity,
+				0
+			);
+			const total = subtotal + SHIPPING_PRICE;
+			return <div className="font-bold">${total.toFixed(2)}</div>;
+		}
+	}
 ];

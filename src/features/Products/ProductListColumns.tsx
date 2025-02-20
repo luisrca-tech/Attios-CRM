@@ -113,9 +113,7 @@ export const productListColumns = ({
 						currentDirection={
 							currentSort.column === 'sales' ? currentSort.direction : undefined
 						}
-						onClick={() =>
-							toast.warning('Sales order is still in development')
-						}
+						onClick={() => toast.warning('Sales order is still in development')}
 					/>
 				</div>
 			),
