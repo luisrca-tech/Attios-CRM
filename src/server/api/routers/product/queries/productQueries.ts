@@ -20,7 +20,7 @@ const requiredProductRelations = {
 } as const;
 
 export const productQueries = {
-  getPaginated: publicProcedure
+  getProductsPaginated: publicProcedure
     .input(
       paginationSchema.extend({
         sort: z
