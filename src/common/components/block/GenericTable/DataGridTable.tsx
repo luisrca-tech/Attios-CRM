@@ -33,34 +33,34 @@ export function DataGridTable<TData extends { id: string | number }>({
 	totalPages,
 	CardComponent
 }: DataGridTableProps<TData>) {
-  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
-  const [sorting, setSorting] = useState<SortingState>([]);
+	const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
+	const [sorting, setSorting] = useState<SortingState>([]);
 
-  const table = useReactTable({
-    data,
-    columns,
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    pageCount: totalPages,
-    state: {
-      sorting,
-    },
-    onSortingChange: setSorting,
-    initialState: {
-      pagination: {
-        pageSize,
-        pageIndex: page - 1,
-      },
-    },
-    onPaginationChange: (updater) => {
-      if (typeof updater === "function") {
-        const newState = updater(table.getState().pagination);
-        setPage(newState.pageIndex + 1);
-      }
-    },
-    manualPagination: true,
-  });
+	const table = useReactTable({
+		data,
+		columns,
+		getCoreRowModel: getCoreRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
+		getSortedRowModel: getSortedRowModel(),
+		pageCount: totalPages,
+		state: {
+			sorting
+		},
+		onSortingChange: setSorting,
+		initialState: {
+			pagination: {
+				pageSize,
+				pageIndex: page - 1
+			}
+		},
+		onPaginationChange: (updater) => {
+			if (typeof updater === 'function') {
+				const newState = updater(table.getState().pagination);
+				setPage(newState.pageIndex + 1);
+			}
+		},
+		manualPagination: true
+	});
 
 	return (
 		<div className="hidden flex-col gap-6 md:flex">
