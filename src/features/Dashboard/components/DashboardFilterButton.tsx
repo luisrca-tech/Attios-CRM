@@ -28,7 +28,7 @@ export function DashboardFilterButton({
 		>
 			<span
 				className={`font-bold ${
-					selectedTimeFrame === timeFrame ? 'text-white' : 'text-primary-200'
+					selectedTimeFrame === timeFrame ? 'text-black' : 'text-primary-200'
 				} text-sm leading-5 hover:text-black`}
 			>
 				{title}

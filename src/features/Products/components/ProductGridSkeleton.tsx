@@ -1,8 +1,8 @@
-import { Skeleton } from "~/common/components/ui/skeleton";
+import { Skeleton } from '~/common/components/ui/skeleton';
 
 export function ProductGridSkeleton() {
-  return (
-    <div className="flex h-full flex-col justify-between rounded-xl bg-white-100 lg:border lg:border-white-400">
+	return (
+		<div className="flex h-full flex-col justify-between rounded-xl bg-white-100 lg:border lg:border-white-400">
 			<div className="flex justify-between p-4">
 				<Skeleton className="h-5 w-5 rounded-md" />
 				<Skeleton className="h-5 w-5 rounded-md" />
@@ -26,5 +26,5 @@ export function ProductGridSkeleton() {
 				</div>
 			</div>
 		</div>
-  );
+	);
 }

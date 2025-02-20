@@ -3,30 +3,47 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import Image from 'next/image';
 import { cn } from '~/lib/utils';
-import type { orders } from '~/server/db/schema/orders';
+import type { orders } from '~/server/db/schema';
 import type { customers } from '~/server/db/schema/customers';
 import type { products } from '~/server/db/schema/products';
 import type { InferSelectModel } from 'drizzle-orm';
 import type { orderItems } from '~/server/db/schema/orders';
+import { Skeleton } from '~/common/components/ui/skeleton';
 
 export type ColumnType<TData> = ColumnDef<TData, unknown>[];
 
 const SHIPPING_PRICE = 18;
 
-type OrderItem = InferSelectModel<typeof orderItems> & {
-	product: Pick<InferSelectModel<typeof products>, 'id' | 'name'>;
-};
-
-type Order = InferSelectModel<typeof orders> & {
+type Order = typeof orders.$inferSelect & {
 	customer: InferSelectModel<typeof customers>;
-	orderItems: OrderItem[];
+	orderItems: (InferSelectModel<typeof orderItems> & {
+		product: Pick<InferSelectModel<typeof products>, 'id' | 'name'>;
+		productImage: string | null;
+	})[];
 };
 
-export const dashboardListColumns: ColumnType<Order> = [
+interface DashboardColumnsProps {
+	isLoading?: boolean;
+}
+
+export const dashboardListColumns = ({
+	isLoading
+}: DashboardColumnsProps): ColumnDef<Order, unknown>[] => [
 	{
 		accessorKey: 'orderItems',
 		header: () => <span className="pl-2">Product</span>,
 		cell: ({ row }) => {
+			if (isLoading) {
+				return (
+					<div className="flex items-center gap-2 md:gap-4 2xl:gap-4">
+						<Skeleton className="h-10 w-10 rounded-md" />
+						<div className="flex flex-col gap-1">
+							<Skeleton className="h-4 w-32" />
+							<Skeleton className="h-3 w-20" />
+						</div>
+					</div>
+				);
+			}
 			const order = row.original;
 			const firstItem = order.orderItems[0];
 			const pickName =
@@ -43,10 +60,10 @@ export const dashboardListColumns: ColumnType<Order> = [
 						className="h-10 w-10 rounded-md"
 					/>
 					<div className="flex flex-col">
-						<strong className="text-sm leading-5 md:block lg:hidden 2xl:block">
+						<strong className="text-sm leading-5 md:hidden lg:hidden 2xl:block">
 							{firstItem?.product.name}
 						</strong>
-						<strong className="text-sm leading-5 md:hidden lg:block 2xl:hidden">
+						<strong className="text-sm leading-5 md:block lg:block 2xl:hidden">
 							{pickName}
 						</strong>
 						<span className="font-normal text-primary-200 text-xs uppercase">
@@ -61,20 +78,35 @@ export const dashboardListColumns: ColumnType<Order> = [
 		accessorKey: 'customer',
 		header: 'Customer',
 		cell: ({ row }) => {
+			if (isLoading) {
+				return (
+					<div className="flex flex-col gap-1">
+						<Skeleton className="h-4 w-24" />
+						<Skeleton className="h-4 w-32" />
+					</div>
+				);
+			}
 			const { customer } = row.original;
+			const pickName =
+				customer.firstName.length + customer.lastName.length > 10
+					? `${customer.firstName.slice(0, 10)}...`
+					: customer.firstName;
 			const pickEmail =
 				customer.email.length > 10
 					? `${customer.email.slice(0, 10)}...`
 					: customer.email;
 			return (
 				<div className="flex flex-col gap-1">
-					<strong className="text-sm leading-5">
+					<strong className="text-sm leading-5 md:hidden lg:hidden 2xl:block">
 						{customer.firstName} {customer.lastName}
 					</strong>
-					<span className="font-normal text-primary-200 text-sm lg:hidden 2xl:block">
+					<strong className="text-sm leading-5 md:block lg:block 2xl:hidden">
+						{pickName}
+					</strong>
+					<span className="font-normal text-primary-200 text-sm md:hidden lg:hidden 2xl:block">
 						{customer.email}
 					</span>
-					<span className="font-normal text-primary-200 text-sm md:hidden lg:block 2xl:hidden">
+					<span className="font-normal text-primary-200 text-sm md:block lg:block 2xl:hidden">
 						{pickEmail}
 					</span>
 				</div>
@@ -87,6 +119,14 @@ export const dashboardListColumns: ColumnType<Order> = [
 			<span className="md:block lg:hidden 2xl:block">Delivery</span>
 		),
 		cell: ({ row }) => {
+			if (isLoading) {
+				return (
+					<div className="flex flex-col gap-1 md:flex lg:hidden 2xl:flex">
+						<Skeleton className="h-4 w-20" />
+						<Skeleton className="h-4 w-32" />
+					</div>
+				);
+			}
 			const { customer } = row.original;
 			const pickStreet =
 				customer.street && customer.street.length > 10
@@ -108,31 +148,40 @@ export const dashboardListColumns: ColumnType<Order> = [
 	{
 		accessorKey: 'orderStatus',
 		header: () => <span />,
-		cell: ({ row }) => (
-			<div
-				className={cn(
-					'flex w-[6.125rem] items-center justify-center rounded-lg py-2',
-					row.original.orderStatus === 'pending' && 'bg-secondary-400/10',
-					row.original.orderStatus === 'processing' && 'bg-secondary-100/10',
-					row.original.orderStatus === 'shipped' && 'bg-primary-100/10',
-					row.original.orderStatus === 'delivered' && 'bg-secondary-200/10',
-					row.original.orderStatus === 'cancelled' && 'bg-secondary-300/0'
-				)}
-			>
-				<span
+		cell: ({ row }) => {
+			if (isLoading) {
+				return (
+					<div className="flex w-[6.125rem] items-center justify-center rounded-lg bg-white-200 py-2">
+						<Skeleton className="h-4 w-16" />
+					</div>
+				);
+			}
+			return (
+				<div
 					className={cn(
-						'font-bold text-sm leading-5 first-letter:capitalize',
-						row.original.orderStatus === 'pending' && 'text-secondary-400',
-						row.original.orderStatus === 'processing' && 'text-secondary-100',
-						row.original.orderStatus === 'shipped' && 'text-primary-100',
-						row.original.orderStatus === 'delivered' && 'text-secondary-200',
-						row.original.orderStatus === 'cancelled' && 'text-secondary-300'
+						'flex w-[6.125rem] items-center justify-center rounded-lg py-2',
+						row.original.orderStatus === 'pending' && 'bg-secondary-400/10',
+						row.original.orderStatus === 'processing' && 'bg-secondary-100/10',
+						row.original.orderStatus === 'shipped' && 'bg-primary-100/10',
+						row.original.orderStatus === 'delivered' && 'bg-secondary-200/10',
+						row.original.orderStatus === 'cancelled' && 'bg-secondary-300/0'
 					)}
 				>
-					{row.original.orderStatus}
-				</span>
-			</div>
-		)
+					<span
+						className={cn(
+							'font-bold text-sm leading-5 first-letter:capitalize',
+							row.original.orderStatus === 'pending' && 'text-secondary-400',
+							row.original.orderStatus === 'processing' && 'text-secondary-100',
+							row.original.orderStatus === 'shipped' && 'text-primary-100',
+							row.original.orderStatus === 'delivered' && 'text-secondary-200',
+							row.original.orderStatus === 'cancelled' && 'text-secondary-300'
+						)}
+					>
+						{row.original.orderStatus}
+					</span>
+				</div>
+			);
+		}
 	},
 	{
 		id: 'subtotal',
@@ -140,6 +189,13 @@ export const dashboardListColumns: ColumnType<Order> = [
 			<span className="md:block lg:hidden 2xl:block">Subtotal</span>
 		),
 		cell: ({ row }) => {
+			if (isLoading) {
+				return (
+					<div className="font-bold text-sm leading-5 md:block lg:hidden 2xl:block">
+						<Skeleton className="h-4 w-16" />
+					</div>
+				);
+			}
 			const subtotal = row.original.orderItems.reduce(
 				(acc, item) => acc + Number(item.listPrice) * item.quantity,
 				0
@@ -154,7 +210,12 @@ export const dashboardListColumns: ColumnType<Order> = [
 	{
 		id: 'shipping',
 		header: 'Shipping',
-		cell: () => <div className="font-bold">${SHIPPING_PRICE.toFixed(2)}</div>
+		cell: () => {
+			if (isLoading) {
+				return <Skeleton className="h-4 w-16" />;
+			}
+			return <div className="font-bold">${SHIPPING_PRICE.toFixed(2)}</div>;
+		}
 	},
 	{
 		id: 'total',
@@ -164,6 +225,9 @@ export const dashboardListColumns: ColumnType<Order> = [
 			</div>
 		),
 		cell: ({ row }) => {
+			if (isLoading) {
+				return <Skeleton className="h-4 w-16" />;
+			}
 			const subtotal = row.original.orderItems.reduce(
 				(acc, item) => acc + Number(item.listPrice) * item.quantity,
 				0
