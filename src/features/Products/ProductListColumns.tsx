@@ -6,6 +6,7 @@ import { Icon } from '~/common/components/ui/Icons/_index';
 import { Checkbox } from '~/common/components/ui/checkbox';
 import type { products } from '~/server/db/schema';
 import { OrdenationButton } from '~/common/components/block/OrdenationButton';
+import { toast } from 'sonner';
 
 export type ColumnType<TData> = ColumnDef<TData, unknown>[];
 
@@ -113,13 +114,7 @@ export const productListColumns = ({
 							currentSort.column === 'sales' ? currentSort.direction : undefined
 						}
 						onClick={() =>
-							onSort(
-								'sales',
-								currentSort.column === 'sales' &&
-									currentSort.direction === 'asc'
-									? 'desc'
-									: 'asc'
-							)
+							toast.warning('Sales order is still in development')
 						}
 					/>
 				</div>

@@ -1,3 +1,4 @@
+import { cn } from '~/lib/utils';
 import { Icon } from '../ui/Icons/_index';
 
 interface OrdenationButtonProps {
@@ -11,7 +12,14 @@ export function OrdenationButton({
 	onClick
 }: OrdenationButtonProps) {
 	return (
-		<button type="button" onClick={onClick} className="hover:opacity-80">
+		<button
+			type="button"
+			onClick={onClick}
+			className={cn(
+				'hover:opacity-80',
+				currentDirection === 'asc' ? 'rotate-180' : ''
+			)}
+		>
 			<Icon.Ordenation className="h-3 w-3" />
 		</button>
 	);
