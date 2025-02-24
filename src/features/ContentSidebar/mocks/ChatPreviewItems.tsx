@@ -1,4 +1,3 @@
-import crypto from 'node:crypto';
 import { User } from '~/common/components/ui/images/mocks/User';
 
 type ChatPreviewItem = {
@@ -12,7 +11,7 @@ type ChatPreviewItem = {
 
 export const ChatPreviewItems: ChatPreviewItem[] = [
 	{
-		id: crypto.randomUUID(),
+		id: '1',
 		UserImage: <User userNumber={1} />,
 		userStatus: 'online',
 		userName: 'Nicholas Gordon',
@@ -20,7 +19,7 @@ export const ChatPreviewItems: ChatPreviewItem[] = [
 		messageTimestamp: '10m'
 	},
 	{
-		id: crypto.randomUUID(),
+		id: '2',
 		UserImage: <User userNumber={2} />,
 		userStatus: 'offline',
 		userName: 'Douglas Payne',
@@ -28,7 +27,7 @@ export const ChatPreviewItems: ChatPreviewItem[] = [
 		messageTimestamp: '1hr'
 	},
 	{
-		id: crypto.randomUUID(),
+		id: '3',
 		UserImage: <User userNumber={3} />,
 		userStatus: 'busy',
 		userName: 'Harriett Robbins',
@@ -36,7 +35,7 @@ export const ChatPreviewItems: ChatPreviewItem[] = [
 		messageTimestamp: '2hr'
 	},
 	{
-		id: crypto.randomUUID(),
+		id: '4',
 		UserImage: <User userNumber={4} />,
 		userStatus: 'away',
 		userName: 'Polly Robbins',

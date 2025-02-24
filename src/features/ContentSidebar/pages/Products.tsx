@@ -1,10 +1,14 @@
+'use client';
+
 import Image from 'next/image';
 import { cn } from '~/lib/utils';
 import { ContentSidebar } from '..';
 import { PopularProductCategories } from '../mocks/PopularProductCategories';
-import ProductsGraph from '/public/images/mocks/graphs/productsMetricGraph.png';
+import { useGraphWaveImages } from '../mocks/GraphWaveImages';
 
 export default function ProductsWithSidebar() {
+	const { productsGraph } = useGraphWaveImages();
+
 	return (
 		<ContentSidebar.Root
 			hasHeader
@@ -58,7 +62,7 @@ export default function ProductsWithSidebar() {
 				<ContentSidebar.Graph.Dinamyc className="flex items-center justify-center p-0">
 					<div className="px-[1.4375rem] py-[1.375rem]">
 						<Image
-							src={ProductsGraph}
+							src={productsGraph.imageUrl ?? ''}
 							alt="Products graph"
 							width={176}
 							height={176}
