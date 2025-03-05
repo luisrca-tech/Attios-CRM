@@ -11,7 +11,7 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { db } from "~/server/db";
-import { AuthService } from "../auth";
+import { auth } from "@clerk/nextjs/server";
 
 /**
  * 1. CONTEXT
@@ -26,20 +26,11 @@ import { AuthService } from "../auth";
  * @see https://trpc.io/docs/server/context
  */
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  // In test environment, we'll use a mock session
-  if (process.env.NODE_ENV === "test") {
-    return {
-      db,
-      session: { userId: "test-user-id" },
-      ...opts,
-    };
-  }
-
-  const isAuthenticated = await AuthService.isAuthenticated();
+  const session = await auth();
 
   return {
     db,
-    session: isAuthenticated ? { userId: "authenticated" } : null,
+    session,
     ...opts,
   };
 };
@@ -113,7 +104,7 @@ const timingMiddleware = t.middleware(async ({ next, path }) => {
  * Middleware to verify if the user is authenticated
  */
 const isAuthed = t.middleware(async ({ next, ctx }) => {
-  if (!ctx.session) {
+  if (!ctx.session?.userId) {
     throw new TRPCError({
       code: "UNAUTHORIZED",
       message: "You must be logged in to access this resource",
