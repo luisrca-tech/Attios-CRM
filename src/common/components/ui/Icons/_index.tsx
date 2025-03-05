@@ -48,6 +48,8 @@ import { ShippingIcon } from './Shipping';
 import { MegaphoneIcon } from './Megaphone';
 import { BellIcon } from './Bell';
 import { TrashIcon } from './Trash';
+import { LeadIcon } from './LeadIcon';
+import { AquariusMetric } from './AquariusMetric';
 
 export const Icon = {
 	Email: EmailIcon,
@@ -78,6 +80,8 @@ export const Icon = {
 	Earth: EarthIcon,
 	Bell: BellIcon,
 	Trash: TrashIcon,
+	Lead: LeadIcon,
+	AquariusMetric: AquariusMetric,
 	List: {
 		White: ListIconWhite,
 		Blue: ListIconBlue

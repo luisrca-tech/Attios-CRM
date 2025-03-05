@@ -51,7 +51,10 @@ describe('Product', () => {
 
 	it('should be able return all products', async () => {
 		mockDb.query.products.findMany.mockResolvedValue(mockProducts);
-		const products = await caller.product.getAll();
+		const products = await caller.product.getProductsPaginated({
+			page: 1,
+			pageSize: 10
+		});
 		expect(products).toBeDefined();
 		expect(products).toHaveLength(2);
 		expect(products[0]).toEqual(
