@@ -7,8 +7,10 @@ import {
 	productImages,
 	products
 } from '../schema/products';
+import { orderItems } from '../schema/orders';
 
 export async function seedProducts() {
+	await db.delete(orderItems);
 	await db.delete(productImages);
 	await db.delete(products);
 	await db.delete(categories);
@@ -36,14 +38,25 @@ export async function seedProducts() {
 		.values(categoriesData)
 		.returning();
 
-	const productsData = Array.from({ length: 50 }, (_) => {
+	// Generate unique product names
+	const usedNames = new Set<string>();
+	const generateUniqueName = () => {
+		let name = faker.commerce.productName();
+		while (usedNames.has(name)) {
+			name = `${faker.commerce.productName()} ${faker.string.alphanumeric(4)}`;
+		}
+		usedNames.add(name);
+		return name;
+	};
+
+	const productsData = Array.from({ length: 500 }, (_) => {
 		const randomBrand = faker.helpers.arrayElement(insertedBrands);
 		const randomCategory = faker.helpers.arrayElement(insertedCategories);
 		const sku = `SKU-${randomUUID().slice(0, 8)}`;
 
 		return {
 			id: randomUUID().slice(0, 10),
-			name: `${faker.commerce.productName()} - ${randomUUID().slice(0, 8)}`,
+			name: generateUniqueName(),
 			brandId: randomBrand.id,
 			categoryId: randomCategory.id,
 			modelYear: faker.number.int({ min: 2020, max: 2024 }),
@@ -67,4 +80,6 @@ export async function seedProducts() {
 	);
 
 	await db.insert(productImages).values(productImagesData);
+
+	console.log('✓ Created 500 products with unique names');
 }

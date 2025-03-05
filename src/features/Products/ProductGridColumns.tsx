@@ -1,15 +1,30 @@
-'use client';
-
 import type { ColumnDef } from '@tanstack/react-table';
 import type { InferSelectModel } from 'drizzle-orm';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import { Checkbox } from '~/common/components/ui/checkbox';
 import type { products } from '~/server/db/schema';
+import { Skeleton } from '~/common/components/ui/skeleton';
 
 export type ColumnType<TData> = ColumnDef<TData, unknown>[];
-type Product = InferSelectModel<typeof products>;
+type Product = InferSelectModel<typeof products> & {
+	category?: { name: string };
+	productImages?: { url: string }[];
+};
 
-export const columnsGrid: ColumnDef<Product, unknown>[] = [
+interface ProductGridColumnsProps {
+	onSort: (column: string, direction: 'asc' | 'desc') => void;
+	currentSort: {
+		column: string;
+		direction: 'asc' | 'desc';
+	};
+	isLoading?: boolean;
+}
+
+export const productGridColumns = ({
+	onSort,
+	currentSort,
+	isLoading
+}: ProductGridColumnsProps): ColumnDef<Product, unknown>[] => [
 	{
 		id: 'select',
 		header: ({ table }) => (
@@ -17,6 +32,7 @@ export const columnsGrid: ColumnDef<Product, unknown>[] = [
 				checked={table.getIsAllPageRowsSelected()}
 				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
 				aria-label="Select all"
+				disabled={isLoading}
 			/>
 		),
 		cell: ({ row }) => (
@@ -24,50 +40,104 @@ export const columnsGrid: ColumnDef<Product, unknown>[] = [
 				checked={row.getIsSelected()}
 				onCheckedChange={(value) => row.toggleSelected(!!value)}
 				aria-label="Select row"
+				disabled={isLoading}
 			/>
 		),
 		enableSorting: false
 	},
 	{
 		accessorKey: 'name',
-		header: ({ column }) => (
+		header: () => (
 			<div className="flex items-center justify-between">
 				<span>Name</span>
-				<button
-					type="button"
-					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-				>
-					<Icon.Ordenation className="h-3 w-3" />
-				</button>
+				{isLoading ? (
+					<Skeleton className="h-4 w-4" />
+				) : (
+					<button
+						type="button"
+						onClick={() =>
+							onSort(
+								'name',
+								currentSort.column === 'name' && currentSort.direction === 'asc'
+									? 'desc'
+									: 'asc'
+							)
+						}
+					>
+						<Icon.Ordenation className="h-3 w-3" />
+					</button>
+				)}
 			</div>
-		)
+		),
+		cell: ({ row }) => {
+			if (isLoading) {
+				return <Skeleton className="h-4 w-32" />;
+			}
+			return row.getValue('name');
+		}
 	},
 	{
 		accessorKey: 'modelYear',
-		header: ({ column }) => (
+		header: () => (
 			<div className="flex items-center justify-between">
 				<span>Sales</span>
-				<button
-					type="button"
-					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-				>
-					<Icon.Ordenation className="h-3 w-3" />
-				</button>
+				{isLoading ? (
+					<Skeleton className="h-4 w-4" />
+				) : (
+					<button
+						type="button"
+						onClick={() =>
+							onSort(
+								'modelYear',
+								currentSort.column === 'modelYear' &&
+									currentSort.direction === 'asc'
+									? 'desc'
+									: 'asc'
+							)
+						}
+					>
+						<Icon.Ordenation className="h-3 w-3" />
+					</button>
+				)}
 			</div>
-		)
+		),
+		cell: ({ row }) => {
+			if (isLoading) {
+				return <Skeleton className="h-4 w-16" />;
+			}
+			return row.getValue('modelYear');
+		}
 	},
 	{
 		accessorKey: 'listPrice',
-		header: ({ column }) => (
+		header: () => (
 			<div className="flex items-center justify-between">
 				<span>Price</span>
-				<button
-					type="button"
-					onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
-				>
-					<Icon.Ordenation className="h-3 w-3" />
-				</button>
+				{isLoading ? (
+					<Skeleton className="h-4 w-4" />
+				) : (
+					<button
+						type="button"
+						onClick={() =>
+							onSort(
+								'listPrice',
+								currentSort.column === 'listPrice' &&
+									currentSort.direction === 'asc'
+									? 'desc'
+									: 'asc'
+							)
+						}
+					>
+						<Icon.Ordenation className="h-3 w-3" />
+					</button>
+				)}
 			</div>
-		)
+		),
+		cell: ({ row }) => {
+			if (isLoading) {
+				return <Skeleton className="h-4 w-16" />;
+			}
+			return `$${row.getValue('listPrice')}`;
+		}
 	}
 ];
