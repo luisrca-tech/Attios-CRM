@@ -11,7 +11,8 @@ import superjson from "superjson";
 import { ZodError } from "zod";
 
 import { db } from "~/server/db";
-import { auth } from "@clerk/nextjs/server";
+import { AuthService } from "../auth";
+
 /**
  * 1. CONTEXT
  *
@@ -34,12 +35,11 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
     };
   }
 
-  // In non-test environments, use Clerk's auth
-  const { userId } = await auth();
+  const isAuthenticated = await AuthService.isAuthenticated();
 
   return {
     db,
-    session: { userId },
+    session: isAuthenticated ? { userId: "authenticated" } : null,
     ...opts,
   };
 };
