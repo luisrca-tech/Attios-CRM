@@ -113,20 +113,20 @@ export const ProductWithContentSidebar = ({
 						</Button>
 					</div>
 					<div className="absolute right-0 bottom-0">
-						<div className='h-full w-full'>
+						<div className="h-full w-full">
 							<Image
 								src={whiteWaveGraphBackground.imageUrl ?? ''}
 								alt="White background wave graph"
-								className='-top-4 absolute h-full w-full'
+								className="-top-4 absolute h-full w-full"
 								height={93}
 								width={330}
 							/>
 						</div>
-						<div className='h-full w-full'>
+						<div className="h-full w-full">
 							<Image
 								src={blueWaveGraphForeground.imageUrl ?? ''}
 								alt="Blue foreground wave graph"
-								className='h-full w-full object-cover'
+								className="h-full w-full object-cover"
 								height={93}
 								width={330}
 							/>

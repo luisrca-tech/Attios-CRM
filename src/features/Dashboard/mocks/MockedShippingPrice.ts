@@ -1,1 +1,1 @@
-export const mockedShippingPrice = 18
+export const mockedShippingPrice = 18;

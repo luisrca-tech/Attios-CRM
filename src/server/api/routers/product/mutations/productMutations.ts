@@ -2,11 +2,11 @@ import { eq, sql } from 'drizzle-orm';
 import { randomUUID } from 'node:crypto';
 import { newProductSchema } from '~/features/Products/schemas/newProduct.schema';
 import { updateProductSchema } from '~/features/Products/schemas/updateProduct.schema';
-import { publicProcedure } from '~/server/api/trpc';
+import { protectedProcedure } from '~/server/api/trpc';
 import { products, productImages } from '~/server/db/schema';
 
 export const productMutations = {
-	create: publicProcedure
+	create: protectedProcedure
 		.input(newProductSchema)
 		.mutation(async ({ ctx, input }) => {
 			return await ctx.db.transaction(async (tx) => {
@@ -49,7 +49,7 @@ export const productMutations = {
 			});
 		}),
 
-	update: publicProcedure
+	update: protectedProcedure
 		.input(updateProductSchema)
 		.mutation(async ({ ctx, input }) => {
 			return await ctx.db.transaction(async (tx) => {
