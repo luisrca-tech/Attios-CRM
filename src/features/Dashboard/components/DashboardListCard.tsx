@@ -2,6 +2,7 @@ import Image from 'next/image';
 import type { InferSelectModel } from 'drizzle-orm';
 import type { orders, orderItems } from '~/server/db/schema/orders';
 import type { products } from '~/server/db/schema/products';
+import { mockedShippingPrice } from '../mocks/MockedShippingPrice';
 
 type OrderItem = InferSelectModel<typeof orderItems> & {
 	product: Pick<InferSelectModel<typeof products>, 'id' | 'name'>;
@@ -12,7 +13,7 @@ type Order = Pick<InferSelectModel<typeof orders>, 'id'> & {
 };
 
 export function DashboardListCard(order: Order) {
-	const SHIPPING_PRICE = 18;
+	const SHIPPING_PRICE = mockedShippingPrice;
 	const firstItem = order.orderItems[0];
 	const subtotal = order.orderItems.reduce(
 		(acc, item) => acc + Number(item.listPrice) * item.quantity,

@@ -164,7 +164,7 @@ export const dashboardListColumns = ({
 						row.original.orderStatus === 'processing' && 'bg-secondary-100/10',
 						row.original.orderStatus === 'shipped' && 'bg-primary-100/10',
 						row.original.orderStatus === 'delivered' && 'bg-secondary-200/10',
-						row.original.orderStatus === 'cancelled' && 'bg-secondary-300/0'
+						row.original.orderStatus === 'cancelled' && 'bg-secondary-300/10'
 					)}
 				>
 					<span

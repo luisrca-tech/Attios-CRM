@@ -1,14 +1,18 @@
+'use client';
+
 import Image from 'next/image';
 import Logo from '/public/favicon.svg';
-import BlueWaveGraphForeground from '/public/images/mocks/graphs/blueWaveGraph.png';
-import WhiteWaveGraphBackground from '/public/images/mocks/graphs/whiteWaveGraph.png';
 
 import { Button } from '~/common/components/ui/Button';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import { ChatPreviewItems } from '~/features/ContentSidebar/mocks/ChatPreviewItems';
 import { ContentSidebar } from '..';
+import { useGraphWaveImages } from '../mocks/GraphWaveImages';
 
 export function DashboardWithSidebar() {
+	const { blueWaveGraphForeground, whiteWaveGraphBackground } =
+		useGraphWaveImages();
+
 	return (
 		<ContentSidebar.Root hasHeader={false}>
 			<div className="flex flex-col gap-11">
@@ -63,15 +67,24 @@ export function DashboardWithSidebar() {
 					</Button>
 				</div>
 				<div className="absolute right-0 bottom-0">
-					<Image
-						src={WhiteWaveGraphBackground}
-						alt="White background wave graph"
-						className="-top-4 absolute"
-					/>
-					<Image
-						src={BlueWaveGraphForeground}
-						alt="Blue foreground wave graph"
-					/>
+					<div className='h-full w-full'>
+						<Image
+							src={whiteWaveGraphBackground.imageUrl ?? ''}
+							alt="White background wave graph"
+							className='-top-4 absolute h-full w-full'
+							height={93}
+							width={330}
+						/>
+					</div>
+					<div className='h-full w-full'>
+						<Image
+							src={blueWaveGraphForeground.imageUrl ?? ''}
+							alt="Blue foreground wave graph"
+							className='h-full w-full object-cover'
+							height={93}
+							width={330}
+						/>
+					</div>
 				</div>
 			</ContentSidebar.Graph.Dinamyc>
 		</ContentSidebar.Root>

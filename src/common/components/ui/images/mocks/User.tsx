@@ -1,30 +1,46 @@
+'use client';
+
 import Image from 'next/image';
 import type { IconProps } from '~/common/types/Icons.type';
 import { cn } from '~/lib/utils';
-import User1Image from '/public/images/mocks/users/1.png';
-import User2Image from '/public/images/mocks/users/2.png';
-import User3Image from '/public/images/mocks/users/3.png';
-import User4Image from '/public/images/mocks/users/4.png';
+import { useUploadThingImage } from '~/common/hooks/useUploadThingImage';
 
-const userImages = {
-	1: User1Image,
-	2: User2Image,
-	3: User3Image,
-	4: User4Image
+const userImageKeys = {
+	1: 'oOhzVgQXSdmBdfqz8csTIFvtcaLjoZq0bH3DMzdrOyNERJg4',
+	2: 'oOhzVgQXSdmBar0zusi2PlzsqbJwL7MgFrSQZ5OHK40yfEeW',
+	3: 'oOhzVgQXSdmBDpZoO9VK7VlSR4CNs5UwZa8T6vo0BfgM1GJW',
+	4: 'oOhzVgQXSdmBE35DC6ptzn6H9LYyifo5maQcOkFSN3VrdWeG'
 } as const;
 
-type UserNumber = keyof typeof userImages;
+type UserNumber = keyof typeof userImageKeys;
 
 interface UserProps extends IconProps {
 	userNumber: UserNumber;
 }
 
 export function User({ className, userNumber }: UserProps) {
+	const { imageUrl, isLoading } = useUploadThingImage(
+		userImageKeys[userNumber]
+	);
+
+	if (isLoading || !imageUrl) {
+		return (
+			<div
+				className={cn(
+					'h-[2.375rem] w-[2.375rem] animate-pulse rounded-full bg-gray-200',
+					className
+				)}
+			/>
+		);
+	}
+
 	return (
 		<Image
-			className={cn('h-[2.375rem] w-[2.375rem] self-start', className)}
-			src={userImages[userNumber]}
+			className={cn('h-[2.375rem] w-[2.375rem]', className)}
+			src={imageUrl}
 			alt={`User ${userNumber}`}
+			width={38}
+			height={38}
 		/>
 	);
 }
