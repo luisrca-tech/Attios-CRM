@@ -16,7 +16,7 @@ export default function NewProduct() {
 	}
 
 	return (
-		<div className="flex w-full flex-col bg-white-300">
+		<main className="flex w-full flex-col bg-white-300">
 			<PagesHeader
 				iconLeft={<Icon.Arrow.Left className="h-3 w-3" />}
 				title="Create New Product"
@@ -32,6 +32,6 @@ export default function NewProduct() {
 			<div className="px-4 lg:px-0">
 				<NewProductForm />
 			</div>
-		</div>
+		</main>
 	);
 }

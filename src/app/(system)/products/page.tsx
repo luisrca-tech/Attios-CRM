@@ -6,7 +6,7 @@ import { ProductsTable } from '~/features/Products/ProductsTable';
 
 export default function Products() {
 	return (
-		<div className="flex w-full">
+		<main className="flex w-full">
 			<ContentSidebar.Page.Products />
 			<div className="flex h-screen w-full flex-col bg-white-300 lg:px-7">
 				<PagesHeader
@@ -17,6 +17,6 @@ export default function Products() {
 				</PagesHeader>
 				<ProductsTable />
 			</div>
-		</div>
+		</main>
 	);
 }

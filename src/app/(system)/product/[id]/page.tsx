@@ -38,7 +38,7 @@ export default async function Product({ params }: { params: { id: string } }) {
 	}
 
 	return (
-		<div className="flex h-screen w-full">
+		<main className="flex h-screen w-full">
 			<ContentSidebar.Page.Product product={product} />
 			<div className="flex w-full flex-col bg-white-300">
 				<PagesHeader
@@ -58,6 +58,6 @@ export default async function Product({ params }: { params: { id: string } }) {
 					</div>
 				</div>
 			</div>
-		</div>
+		</main>
 	);
 }
