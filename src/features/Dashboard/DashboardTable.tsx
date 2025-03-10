@@ -1,7 +1,7 @@
 'use client';
 
 import { dashboardListColumns } from './DashboardListColumns';
-import { DataListTable } from '~/common/components/block/GenericTable/DataListTable';
+import { GenericDataListTable } from '~/common/components/block/GenericTable/DataListTable';
 import { calculateItemPerPage } from '~/common/utils/calculateItemPerPage';
 import { api } from '~/trpc/react';
 import { DashboardListCard } from './components/DashboardListCard';
@@ -92,7 +92,7 @@ export function DashboardTable() {
 				selectedTimeFrame={timeFrame || undefined}
 			/>
 			{/* This list table is showing on desktop and tablet */}
-			<DataListTable
+			<GenericDataListTable
 				className="md:max-h-[calc(100vh-28rem)]"
 				columns={columns}
 				data={displayData}

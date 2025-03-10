@@ -28,7 +28,7 @@ interface DataGridTableProps<TData extends { id: string | number }> {
 	isLoading?: boolean;
 }
 
-export function DataGridTable<TData extends { id: string | number }>({
+export function GenericDataGridTable<TData extends { id: string | number }>({
 	data,
 	columns,
 	pageSize = 8,
