@@ -1,7 +1,9 @@
+import { PagesHeader } from '~/common/components/ui/PagesHeader';
+
 export default function ContactsPage() {
-  return  (
-    <main>
-      <h1>Contacts</h1>
-    </main>
-  );
+	return (
+		<main className="flex h-screen w-full">
+			<PagesHeader title="Leads" />
+		</main>
+	);
 }

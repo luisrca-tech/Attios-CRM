@@ -41,7 +41,7 @@ export const ProductImageCarousel = forwardRef<
 	const [isShowingContentSidebar] = useAtom(isOpenContentSidebar);
 	const [isOpenModal, setIsOpenModal] = useAtom(isOpenConfirmationModal);
 	const imageDeletion = api.images.delete.useMutation();
-	const router = useRouter();
+	const _router = useRouter();
 
 	const toggleConfirmationModal = () => {
 		setIsOpenModal(!isOpenModal);

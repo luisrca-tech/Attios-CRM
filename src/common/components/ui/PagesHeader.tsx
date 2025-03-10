@@ -27,7 +27,7 @@ export function PagesHeader({
 	};
 
 	return (
-		<header className="border-white-200 border-b bg-white-100 p-[0.9375rem] lg:bg-white-300 lg:py-6">
+		<header className="w-full border-white-200 border-b bg-white-100 p-[0.9375rem] lg:bg-white-300 lg:py-6">
 			<div className="flex w-full items-center justify-between lg:hidden">
 				<Button
 					onClick={onClickIconLeft}
