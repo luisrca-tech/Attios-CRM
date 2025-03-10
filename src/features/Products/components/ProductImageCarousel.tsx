@@ -81,8 +81,7 @@ export const ProductImageCarousel = forwardRef<
 
 	useEffect(() => {
 		onImagesChange?.(images);
-		router.refresh();
-	}, [images, router, onImagesChange]);
+	}, [images, onImagesChange]);
 
 	return (
 		<div
