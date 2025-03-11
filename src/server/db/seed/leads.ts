@@ -27,13 +27,7 @@ export async function seedLeads() {
 			convertedToCustomerAt: faker.datatype.boolean()
 				? faker.date.past()
 				: null,
-			status: faker.helpers.arrayElement([
-				'New',
-				'Contacted',
-				'Qualified',
-				'Lost',
-				'Won'
-			])
+			status: faker.helpers.arrayElement(['online', 'offline', 'away', 'busy'])
 		};
 	});
 

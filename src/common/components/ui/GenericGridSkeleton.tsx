@@ -1,6 +1,6 @@
 import { Skeleton } from '~/common/components/ui/skeleton';
 
-export function ProductGridSkeleton() {
+export function GenericGridSkeleton() {
 	return (
 		<div className="flex h-full flex-col justify-between rounded-xl bg-white-100 lg:border lg:border-white-400">
 			<div className="flex justify-between p-4">

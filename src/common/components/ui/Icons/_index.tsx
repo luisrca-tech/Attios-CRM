@@ -50,6 +50,8 @@ import { BellIcon } from './Bell';
 import { TrashIcon } from './Trash';
 import { LeadIcon } from './LeadIcon';
 import { AquariusMetric } from './AquariusMetric';
+import { FunnelIcon } from './Funnel';
+import { CallIcon } from './Call';
 
 export const Icon = {
 	Email: EmailIcon,
@@ -82,6 +84,8 @@ export const Icon = {
 	Trash: TrashIcon,
 	Lead: LeadIcon,
 	AquariusMetric: AquariusMetric,
+	Funnel: FunnelIcon,
+	Call: CallIcon,
 	List: {
 		White: ListIconWhite,
 		Blue: ListIconBlue

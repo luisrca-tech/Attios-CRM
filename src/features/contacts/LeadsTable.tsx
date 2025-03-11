@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { NotFoundItem } from '~/common/components/ui/NotFoundItem';
-import { ProductListCard } from '~/features/Products/components/ProductListCard';
 import { Image } from '~/common/components/ui/images';
 import { calculateItemPerPage } from '~/common/utils/calculateItemPerPage';
 import { api } from '~/trpc/react';
@@ -10,46 +9,47 @@ import { GenericDataGridTable } from '../../common/components/block/GenericTable
 import { GenericDataListTable } from '../../common/components/block/GenericTable/DataListTable';
 import { Icon } from '../../common/components/ui/Icons/_index';
 import { ViewTypeSelector } from '../../common/components/ui/ViewTypeSelector';
-import { productListColumns } from './ProductListColumns';
-import { ProductGridCard } from './components/ProductGridCard';
 import { parseAsInteger, useQueryState } from 'nuqs';
 import { usePrefetchNextPage } from '~/common/hooks/usePrefetchNextPage';
-import { GenericListSkeleton } from '../../common/components/ui/GenericListSkeleton';
-import { GenericGridSkeleton } from '../../common/components/ui/GenericGridSkeleton';
-import { productGridColumns } from './ProductGridColumns';
-import { skeletonProductsData } from './constants/skeletonProductsData';
 import { useInfiniteScroll } from '~/common/hooks/useInfiniteScroll';
-import type { ProductSort } from './types/productSort.type';
+import { GenericGridSkeleton } from '../../common/components/ui/GenericGridSkeleton';
+import { GenericListSkeleton } from '../../common/components/ui/GenericListSkeleton';
+import type { LeadSort } from './types/leadSort.type';
+import { leadListColumns } from './components/LeadListColumns';
+import { skeletonLeadsData } from './constants/skeletonLeadsData';
+import { leadGridColumns } from './components/LeadGridColumns';
+import { LeadGridCard } from './components/LeadGridCard';
+import { cn } from '~/lib/utils';
+import { LeadListCard } from './components/LeadListCard';
 
-export function ProductsTable() {
+export function LeadsTable() {
 	const [viewType, setViewType] = useState<'list' | 'grid'>('list');
 	const [page] = useQueryState('page', parseAsInteger.withDefault(1));
-	const [sort, setSort] = useState<ProductSort>({
+	const [sort, setSort] = useState<LeadSort>({
 		column: 'name',
 		direction: 'asc'
 	});
 
-	const infiniteProducts =
-		api.product.getControlledProductsInfinite.useInfiniteQuery(
-			{
-				limit: 8
-			},
-			{
-				getNextPageParam: (lastPage) => lastPage.nextCursor,
-				staleTime: 0,
-				refetchOnMount: false,
-				refetchOnWindowFocus: false
-			}
-		);
+	const infiniteLeads = api.leads.getControlledLeadsInfinite.useInfiniteQuery(
+		{
+			limit: 8
+		},
+		{
+			getNextPageParam: (lastPage) => lastPage.nextCursor,
+			staleTime: 0,
+			refetchOnMount: false,
+			refetchOnWindowFocus: false
+		}
+	);
 
 	const { loadMoreRef } = useInfiniteScroll({
-		canLoadMore: infiniteProducts.hasNextPage,
-		fetchMore: infiniteProducts.fetchNextPage
+		canLoadMore: infiniteLeads.hasNextPage,
+		fetchMore: infiniteLeads.fetchNextPage
 	});
 
 	const handleSort = (column: string, direction: 'asc' | 'desc') => {
 		setSort({
-			column: column as 'name' | 'quantity' | 'listPrice' | 'modelYear',
+			column: column as 'name' | 'email' | 'phone' | 'role' | 'status',
 			direction
 		});
 	};
@@ -61,11 +61,11 @@ export function ProductsTable() {
 		maxItemPerPage
 	);
 
-	const totalPagesQuery = api.product.getTotalPages.useQuery({
+	const totalPagesQuery = api.leads.getTotalPages.useQuery({
 		pageSize
 	});
 
-	const productQuery = api.product.getProductsPaginated.useQuery(
+	const leadQuery = api.leads.getLeadsPaginated.useQuery(
 		{
 			page,
 			pageSize,
@@ -82,49 +82,48 @@ export function ProductsTable() {
 		page,
 		pageSize,
 		totalPages: totalPagesQuery.data,
-		resource: 'product',
-		procedure: 'getProductsPaginated',
+		resource: 'leads',
+		procedure: 'getLeadsPaginated',
 		extraParams: { sort }
 	});
 
-	const productData = productQuery.data ?? [];
-	// Only show loading state on first load or when we don't have data
+	const leadData = leadQuery.data ?? [];
 	const isLoading =
-		productQuery.isLoading || (productQuery.isFetching && !productQuery.data);
+		leadQuery.isLoading || (leadQuery.isFetching && !leadQuery.data);
 
-	const columnsList = productListColumns({
+	const columnsList = leadListColumns({
 		onSort: handleSort,
 		currentSort: sort,
 		isLoading
 	});
 
-	const columnsGrid = productGridColumns({
+	const columnsGrid = leadGridColumns({
 		onSort: handleSort,
 		currentSort: sort,
 		isLoading
 	});
 
-	const skeletonData = skeletonProductsData({ pageSize });
+	const skeletonData = skeletonLeadsData({ pageSize });
 
-	const displayData = isLoading ? skeletonData : productData;
+	const displayData = isLoading ? skeletonData : leadData;
 
-	const infiniteProductsData =
-		infiniteProducts.data?.pages.flatMap((page) => page.items) ?? [];
+	const infiniteLeadsData =
+		infiniteLeads.data?.pages.flatMap((page) => page.items) ?? [];
 	const isLoadingInfinite =
-		infiniteProducts.isLoading ||
-		(infiniteProducts.isFetching && !infiniteProducts.data);
+		infiniteLeads.isLoading ||
+		(infiniteLeads.isFetching && !infiniteLeads.data);
 
-	if (!productData.length && !isLoading) {
+	if (!leadData.length && !isLoading) {
 		return (
 			<NotFoundItem
 				href="#"
 				renderImage={() => (
 					<Image.NotFound className="h-[14.125rem] w-[20.625rem] md:h-[20rem] md:w-[22.625rem] lg:h-[24.0625rem] lg:w-[35rem]" />
 				)}
-				title="No products found?"
-				description="Try to create more new products or drag xls files
+				title="No leads found?"
+				description="Try to create more new leads or drag xls files
 to upload items list"
-				textButton="Create Product"
+				textButton="Create Lead"
 			/>
 		);
 	}
@@ -136,10 +135,29 @@ to upload items list"
 					type="button"
 					className="flex items-center gap-1 rounded-lg bg-white-100"
 				>
-					<Icon.MoreActions />
-					<span className="font-extrabold text-black text-xs leading-[0.875rem] hover:font-semibold">
-						ALL ACTIONS
-					</span>
+					<div className="flex items-center gap-1">
+						<Icon.Funnel className="h-[1.125rem] w-[1.125rem]" />
+						<button
+							type="button"
+							className="flex items-center gap-1 font-bold text-primary-200 text-xs uppercase leading-[1.125rem]"
+							onClick={() =>
+								handleSort(
+									'name',
+									sort.column === 'name' && sort.direction === 'asc'
+										? 'desc'
+										: 'asc'
+								)
+							}
+						>
+							Sort: <span className="font-extrabold text-black">A-Z</span>
+							<Icon.Arrow.Down
+								className={cn(
+									'h-3 w-4',
+									sort.direction === 'asc' && 'rotate-180'
+								)}
+							/>
+						</button>
+					</div>
 				</button>
 			</ViewTypeSelector>
 			{viewType === 'list' ? (
@@ -153,18 +171,18 @@ to upload items list"
 					/>
 					{/* This list is showing on mobile */}
 					<div className="flex flex-col gap-1 md:hidden">
-						{infiniteProductsData.map((product) => (
-							<div className="px-3" key={product.id}>
-								<ProductListCard {...product} />
+						{infiniteLeadsData.map((lead) => (
+							<div className="px-3" key={lead.id}>
+								<LeadListCard {...lead} />
 							</div>
 						))}
-						{(isLoadingInfinite || infiniteProducts.isFetchingNextPage) &&
+						{(isLoadingInfinite || infiniteLeads.isFetchingNextPage) &&
 							Array.from({ length: 8 }).map((_, index) => (
 								<GenericListSkeleton
 									key={`product-list-skeleton-${Date.now()}-${index}`}
 								/>
 							))}
-						{infiniteProducts.hasNextPage && (
+						{infiniteLeads.hasNextPage && (
 							<div ref={loadMoreRef} className="h-10" />
 						)}
 					</div>
@@ -173,25 +191,25 @@ to upload items list"
 				<>
 					{/* This table grid is showing on desktop */}
 					<GenericDataGridTable
+						CardComponent={LeadGridCard}
 						columns={columnsGrid}
 						data={displayData}
 						pageSize={pageSize}
 						totalPages={totalPagesQuery.data}
-						CardComponent={ProductGridCard}
 						isLoading={isLoading}
 					/>
 					{/* This grid is showing on mobile */}
 					<div className="grid grid-cols-1 gap-1 px-3 md:hidden">
-						{infiniteProductsData.map((product) => (
-							<ProductGridCard key={product.id} {...product} />
+						{infiniteLeadsData.map((lead) => (
+							<LeadGridCard key={lead.id} {...lead} />
 						))}
-						{(isLoadingInfinite || infiniteProducts.isFetchingNextPage) &&
+						{(isLoadingInfinite || infiniteLeads.isFetchingNextPage) &&
 							Array.from({ length: 8 }).map((_, index) => (
 								<GenericGridSkeleton
 									key={`product-grid-skeleton-${Date.now()}-${index}`}
 								/>
 							))}
-						{infiniteProducts.hasNextPage && (
+						{infiniteLeads.hasNextPage && (
 							<div ref={loadMoreRef} className="h-10" />
 						)}
 					</div>

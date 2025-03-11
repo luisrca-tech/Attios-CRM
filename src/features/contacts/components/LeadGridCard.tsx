@@ -1,0 +1,109 @@
+import type { InferSelectModel } from 'drizzle-orm';
+import Image from 'next/image';
+import type { leads } from '~/server/db/schema';
+import { Button } from '~/common/components/ui/Button';
+import { Icon } from '~/common/components/ui/Icons/_index';
+import Link from 'next/link';
+import type { UserStatus } from '~/common/types/userStatus';
+import { UserStatusLogged } from '~/common/components/ui/UserStatusLogged';
+import { Skeleton } from '~/common/components/ui/skeleton';
+
+type Lead = InferSelectModel<typeof leads>;
+
+interface LeadGridCardProps
+	extends Pick<
+		Lead,
+		'firstName' | 'lastName' | 'email' | 'phone' | 'role' | 'image' | 'status'
+	> {
+	isLoading?: boolean;
+}
+
+export function LeadGridCard({
+	firstName,
+	lastName,
+	email,
+	phone,
+	role,
+	image,
+	status,
+	isLoading
+}: LeadGridCardProps) {
+	if (isLoading) {
+		return (
+			<div className="flex h-full flex-col justify-between rounded-xl bg-white-100 lg:border lg:border-white-400">
+				<div className="flex justify-end p-4">
+					<Skeleton className="h-9 w-9" />
+				</div>
+				<div className="flex flex-col items-center justify-center gap-4">
+					<Skeleton className="h-20 w-20 rounded-lg" />
+					<div className="flex flex-col items-center gap-1">
+						<Skeleton className="h-6 w-32" />
+						<Skeleton className="h-8 w-24" />
+					</div>
+				</div>
+				<div className="mt-4 flex w-full border-white-400 border-t">
+					<div className="flex flex-1 items-center justify-center border-white-400 border-r py-4">
+						<Skeleton className="h-4 w-16" />
+					</div>
+					<div className="flex flex-1 items-center justify-center py-4">
+						<Skeleton className="h-4 w-16" />
+					</div>
+				</div>
+			</div>
+		);
+	}
+
+	return (
+		<div className="flex h-full flex-col justify-between rounded-xl bg-white-100 lg:border lg:border-white-400">
+			<div className="flex justify-between p-4 lg:justify-end">
+				<Icon.Sidebar.Contacts fill="#000" className="h-4 w-4 lg:hidden" />
+
+				<Button color="septenary" className="h-9 w-9 border border-white-200">
+					<Icon.MoreActions />
+				</Button>
+			</div>
+			<div className="flex flex-col items-center justify-center gap-4">
+				<div className="relative h-20 w-20">
+					<Image
+						src={image ?? '/placeholder-avatar.png'}
+						alt={`${firstName} ${lastName}`}
+						width={80}
+						height={80}
+						className="3xl:h-32 h-20 3xl:w-32 w-20 rounded-lg object-cover"
+					/>
+					<UserStatusLogged userStatus={status as UserStatus} />
+				</div>
+				<div className="flex flex-col items-center justify-between">
+					<div className="flex flex-col items-center gap-1">
+						<strong className="text-base leading-6">{`${firstName} ${lastName}`}</strong>
+						<div className="flex min-w-[8rem] items-center justify-center rounded-lg bg-white-200 px-7 py-2 lg:hidden 2xl:flex">
+							<span className="font-bold text-primary-200 text-sm leading-5">
+								{role}
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div className="3xl:mt-8 mt-4 flex w-full border-white-400 border-t">
+				<div className="flex flex-1 items-center justify-center border-white-400 border-r py-4">
+					<Link
+						href={`mailto:${email}`}
+						className="flex items-center gap-1 font-black text-black-100 text-xs uppercase transition-colors hover:text-primary-200"
+					>
+						<Icon.Email className="h-[1.125rem] w-[1.125rem]" />
+						Email
+					</Link>
+				</div>
+				<div className="flex flex-1 items-center justify-center py-4">
+					<Link
+						href={`tel:${phone}`}
+						className="flex items-center gap-1 font-black text-black-100 text-xs uppercase transition-colors hover:text-primary-200"
+					>
+						<Icon.Call className="h-[1.125rem] w-[1.125rem]" />
+						Call
+					</Link>
+				</div>
+			</div>
+		</div>
+	);
+}

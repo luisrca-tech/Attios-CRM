@@ -1,8 +1,6 @@
-interface SkeletonProduct {
-	pageSize: number;
-}
+import type { SkeletonTable } from '~/common/types/skeletonTable.type';
 
-export const skeletonProductsData = ({ pageSize }: SkeletonProduct) =>
+export const skeletonProductsData = ({ pageSize }: SkeletonTable) =>
 	Array.from({ length: pageSize }, (_, index) => ({
 		id: `skeleton-${index}`,
 		name: '',

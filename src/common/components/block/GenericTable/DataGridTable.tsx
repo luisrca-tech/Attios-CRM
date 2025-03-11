@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { cn } from '~/lib/utils';
 import { Table, TableHead, TableHeader, TableRow } from '../../ui/table';
 import { Pagination } from './Pagination';
-import { ProductGridSkeleton } from '~/features/Products/components/ProductGridSkeleton';
+import { GenericGridSkeleton } from '~/common/components/ui/GenericGridSkeleton';
 
 interface DataGridTableProps<TData extends { id: string | number }> {
 	data: TData[];
@@ -89,7 +89,7 @@ export function GenericDataGridTable<TData extends { id: string | number }>({
 			<div className="grid h-[calc(100vh-30rem)] grid-cols-1 gap-4 overflow-y-auto px-7 sm:grid-cols-2 lg:h-[calc(100vh-23.5rem)] lg:grid-cols-3 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden">
 				{isLoading
 					? Array.from({ length: 8 }).map((_, index) => (
-							<ProductGridSkeleton
+							<GenericGridSkeleton
 								key={`product-skeleton-${Date.now()}-${index}`}
 							/>
 						))
@@ -103,6 +103,7 @@ export function GenericDataGridTable<TData extends { id: string | number }>({
 										{...item}
 										isSelected={row?.getIsSelected()}
 										onSelect={(value) => row?.toggleSelected(!!value)}
+										isLoading={isLoading}
 									/>
 								</div>
 							);
