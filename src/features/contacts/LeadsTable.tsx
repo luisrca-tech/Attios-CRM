@@ -164,6 +164,7 @@ to upload items list"
 				<>
 					{/* This table list is showing on desktop */}
 					<GenericDataListTable
+						className="h-[calc(100vh-21.5rem)]"
 						columns={columnsList}
 						data={displayData}
 						pageSize={pageSize}
@@ -197,6 +198,7 @@ to upload items list"
 						pageSize={pageSize}
 						totalPages={totalPagesQuery.data}
 						isLoading={isLoading}
+            className="h-[calc(100vh-27.5rem)]"
 					/>
 					{/* This grid is showing on mobile */}
 					<div className="grid grid-cols-1 gap-1 px-3 md:hidden">
