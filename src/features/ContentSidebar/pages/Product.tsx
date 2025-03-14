@@ -12,9 +12,9 @@ interface ProductWithContentSidebarProps {
 	product: typeof products.$inferSelect & { category: { name: string } };
 }
 
-export const ProductWithContentSidebar = ({
-	product
-}: ProductWithContentSidebarProps) => {
+export const ProductWithContentSidebar: React.FC<
+	ProductWithContentSidebarProps
+> = ({ product }) => {
 	const { blueWaveGraphForeground, whiteWaveGraphBackground } =
 		useGraphWaveImages();
 

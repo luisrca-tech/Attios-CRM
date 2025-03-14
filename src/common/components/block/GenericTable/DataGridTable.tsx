@@ -15,7 +15,7 @@ import { useState } from 'react';
 import { cn } from '~/lib/utils';
 import { Table, TableHead, TableHeader, TableRow } from '../../ui/table';
 import { Pagination } from './Pagination';
-import { ProductGridSkeleton } from '~/features/Products/components/ProductGridSkeleton';
+import { GenericGridSkeleton } from '~/common/components/ui/GenericGridSkeleton';
 
 interface DataGridTableProps<TData extends { id: string | number }> {
 	data: TData[];
@@ -26,15 +26,17 @@ interface DataGridTableProps<TData extends { id: string | number }> {
 		TData & { isSelected?: boolean; onSelect?: (value: boolean) => void }
 	>;
 	isLoading?: boolean;
+	className?: string;
 }
 
-export function DataGridTable<TData extends { id: string | number }>({
+export function GenericDataGridTable<TData extends { id: string | number }>({
 	data,
 	columns,
 	pageSize = 8,
 	totalPages,
 	CardComponent,
-	isLoading
+	isLoading,
+	className
 }: DataGridTableProps<TData>) {
 	const [page, setPage] = useQueryState('page', parseAsInteger.withDefault(1));
 	const [sorting, setSorting] = useState<SortingState>([]);
@@ -86,10 +88,15 @@ export function DataGridTable<TData extends { id: string | number }>({
 				</TableHeader>
 			</Table>
 
-			<div className="grid h-[calc(100vh-30rem)] grid-cols-1 gap-4 overflow-y-auto px-7 sm:grid-cols-2 lg:h-[calc(100vh-23.5rem)] lg:grid-cols-3 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden">
+			<div
+				className={cn(
+					'grid h-[calc(100vh-30rem)] grid-cols-1 gap-4 overflow-y-auto px-7 sm:grid-cols-2 lg:h-[calc(100vh-23.5rem)] lg:grid-cols-3 xl:grid-cols-4 [&::-webkit-scrollbar]:hidden',
+					className
+				)}
+			>
 				{isLoading
 					? Array.from({ length: 8 }).map((_, index) => (
-							<ProductGridSkeleton
+							<GenericGridSkeleton
 								key={`product-skeleton-${Date.now()}-${index}`}
 							/>
 						))
@@ -103,6 +110,7 @@ export function DataGridTable<TData extends { id: string | number }>({
 										{...item}
 										isSelected={row?.getIsSelected()}
 										onSelect={(value) => row?.toggleSelected(!!value)}
+										isLoading={isLoading}
 									/>
 								</div>
 							);

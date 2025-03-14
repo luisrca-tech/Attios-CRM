@@ -1,9 +1,11 @@
 import { desc, sql, and, gte, lte } from 'drizzle-orm';
 import type { SQL } from 'drizzle-orm';
-import { z } from 'zod';
 import { publicProcedure } from '~/server/api/trpc';
 import { orders } from '~/server/db/schema/orders';
 import { paginationSchema } from '../../schemas/pagination.schema';
+import { dateFilterSchema } from '../schemas/dateFilter.schema';
+import { controlledOrdersSchema } from '../schemas/controlledOrders.schema';
+import { totalPageOrdersSchema } from '../schemas/totalPageOrders.schema';
 
 const requiredOrderRelations = {
 	customer: true,
@@ -19,11 +21,8 @@ const requiredOrderRelations = {
 	}
 } as const;
 
-const dateFilterSchema = z.object({
-	timeFrame: z.enum(['day', 'week', 'month']).optional()
-});
-
 export const orderQueries = {
+	// This is the paginated query for the desktop order table
 	getOrdersPaginated: publicProcedure
 		.input(paginationSchema.merge(dateFilterSchema))
 		.query(async ({ ctx, input }) => {
@@ -67,12 +66,7 @@ export const orderQueries = {
 		}),
 
 	getTotalPages: publicProcedure
-		.input(
-			z.object({
-				pageSize: z.number().default(8),
-				timeFrame: z.enum(['day', 'week', 'month']).optional()
-			})
-		)
+		.input(totalPageOrdersSchema)
 		.query(async ({ ctx, input }) => {
 			const now = new Date();
 			let dateFilter: SQL | undefined;
@@ -105,14 +99,9 @@ export const orderQueries = {
 			return Math.ceil(totalCount / input.pageSize);
 		}),
 
+	// This is the infinite scroll query for the mobile order table
 	getControlledOrdersInfinite: publicProcedure
-		.input(
-			z.object({
-				limit: z.number().min(1).max(50).default(10),
-				cursor: z.number().default(0),
-				timeFrame: z.enum(['day', 'week', 'month']).optional()
-			})
-		)
+		.input(controlledOrdersSchema)
 		.query(async ({ ctx, input }) => {
 			const { limit, cursor, timeFrame } = input;
 

@@ -5,7 +5,7 @@ import { ArrowLeft } from './ArrowLeft';
 import { ArrowRight } from './ArrowRight';
 import { CalendarIcon } from './Calendar';
 import { ClosePadlockIcon } from './ClosePadlock';
-import { ContactsIcon } from './Contacts';
+import { LeadsIcon } from './Leads';
 import { DashboardIcon } from './Dashboard';
 import { DiamondIcon } from './Diamond';
 import { EmailIcon } from './Email';
@@ -50,6 +50,8 @@ import { BellIcon } from './Bell';
 import { TrashIcon } from './Trash';
 import { LeadIcon } from './LeadIcon';
 import { AquariusMetric } from './AquariusMetric';
+import { FunnelIcon } from './Funnel';
+import { CallIcon } from './Call';
 
 export const Icon = {
 	Email: EmailIcon,
@@ -82,6 +84,8 @@ export const Icon = {
 	Trash: TrashIcon,
 	Lead: LeadIcon,
 	AquariusMetric: AquariusMetric,
+	Funnel: FunnelIcon,
+	Call: CallIcon,
 	List: {
 		White: ListIconWhite,
 		Blue: ListIconBlue
@@ -111,7 +115,7 @@ export const Icon = {
 		Kanban: KanbanIcon,
 		Notifications: NotificationsIcon,
 		Calendar: CalendarIcon,
-		Contacts: ContactsIcon,
+		Leads: LeadsIcon,
 		Projects: ProjectsIcon,
 		Reports: ReportsIcon,
 		Tasks: TasksIcon,

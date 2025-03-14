@@ -2,7 +2,9 @@ import { eq, sql, asc, desc } from 'drizzle-orm';
 import { z } from 'zod';
 import { publicProcedure } from '~/server/api/trpc';
 import { products } from '~/server/db/schema';
-import { paginationSchema } from '../../schemas/pagination.schema';
+import { controlledQuerySchema } from '../../schemas/controlledQuery.schema';
+import { totalPagesQuerySchema } from '../../schemas/totalPagesQuery.schema';
+import { paginatedProductsSchema } from '../schemas/paginatedProducts.schema';
 
 const requiredProductRelations = {
 	category: {
@@ -22,16 +24,7 @@ const requiredProductRelations = {
 export const productQueries = {
 	// This is a paginated query that returns a list of products to be displayed in the desktop product tablee
 	getProductsPaginated: publicProcedure
-		.input(
-			paginationSchema.extend({
-				sort: z
-					.object({
-						column: z.enum(['name', 'quantity', 'listPrice', 'modelYear']),
-						direction: z.enum(['asc', 'desc']).default('asc')
-					})
-					.optional()
-			})
-		)
+		.input(paginatedProductsSchema)
 		.query(async ({ ctx, input }) => {
 			return ctx.db.query.products.findMany({
 				with: requiredProductRelations,
@@ -48,7 +41,7 @@ export const productQueries = {
 		}),
 
 	getTotalPages: publicProcedure
-		.input(z.object({ pageSize: z.number().default(8) }))
+		.input(totalPagesQuerySchema)
 		.query(async ({ ctx, input }) => {
 			const [result] = await ctx.db
 				.select({ count: sql<number>`count(*)`.mapWith(Number) })
@@ -60,12 +53,7 @@ export const productQueries = {
 
 	// This is the infinite scroll query for the mobile product table
 	getControlledProductsInfinite: publicProcedure
-		.input(
-			z.object({
-				limit: z.number().min(1).max(50).default(10),
-				cursor: z.number().default(0)
-			})
-		)
+		.input(controlledQuerySchema)
 		.query(async ({ ctx, input }) => {
 			const { limit, cursor } = input;
 

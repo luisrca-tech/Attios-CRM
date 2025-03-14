@@ -10,7 +10,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { createTable } from './config';
 import { users } from './auth';
-import { products, productImages } from './products';
+import { products } from './products';
 import { customers } from './customers';
 
 export const orderStatusEnum = pgEnum('order_status', [
@@ -88,7 +88,7 @@ export const ordersRelations = relations(orders, ({ many, one }) => ({
 	orderItems: many(orderItems)
 }));
 
-export const orderItemsRelations = relations(orderItems, ({ one, many }) => ({
+export const orderItemsRelations = relations(orderItems, ({ one }) => ({
 	order: one(orders, {
 		fields: [orderItems.orderId],
 		references: [orders.id]
@@ -96,6 +96,5 @@ export const orderItemsRelations = relations(orderItems, ({ one, many }) => ({
 	product: one(products, {
 		fields: [orderItems.productId],
 		references: [products.id]
-	}),
-	productImages: many(productImages)
+	})
 }));

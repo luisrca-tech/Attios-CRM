@@ -2,12 +2,12 @@ import { AddActionMenu } from '~/common/components/ui/AddActionMenu';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import { PagesHeader } from '~/common/components/ui/PagesHeader';
 import { ContentSidebar } from '~/features/ContentSidebar';
-import { DashboardMetrics } from '~/features/Dashboard/components/DashboardMetrics';
-import { DashboardTable } from '~/features/Dashboard/DashboardTable';
+import { DashboardMetrics } from '~/features/dashboard/components/DashboardMetrics';
+import { DashboardTable } from '~/features/dashboard/DashboardTable';
 
 export default function Dashboard() {
 	return (
-		<div className="flex h-screen w-full">
+		<main className="flex h-screen w-full">
 			<ContentSidebar.Page.Dashboard />
 			<div className="flex w-full flex-col gap-[0.875rem] bg-white-300 lg:pl-7">
 				<PagesHeader
@@ -21,6 +21,6 @@ export default function Dashboard() {
 					<DashboardTable />
 				</div>
 			</div>
-		</div>
+		</main>
 	);
 }

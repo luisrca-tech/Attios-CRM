@@ -1,0 +1,5 @@
+import { z } from 'zod';
+
+export const totalPagesQuerySchema = z.object({
+	pageSize: z.number().min(1).max(50).default(10)
+});

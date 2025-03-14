@@ -4,8 +4,8 @@ import { NotFoundImage } from '~/common/components/ui/images/NotFound';
 import { NotFoundItem } from '~/common/components/ui/NotFoundItem';
 import { PagesHeader } from '~/common/components/ui/PagesHeader';
 import { ContentSidebar } from '~/features/ContentSidebar';
-import { ProductActions } from '~/features/Products/components/ProductActions';
-import { UpdateProductForm } from '~/features/Products/components/UpdateProductForm';
+import { ProductActions } from '~/features/products/components/ProductActions';
+import { UpdateProductForm } from '~/features/products/components/UpdateProductForm';
 import { db } from '~/server/db';
 import { api } from '~/trpc/server';
 
@@ -38,7 +38,7 @@ export default async function Product({ params }: { params: { id: string } }) {
 	}
 
 	return (
-		<div className="flex h-screen w-full">
+		<main className="flex h-screen w-full">
 			<ContentSidebar.Page.Product product={product} />
 			<div className="flex w-full flex-col bg-white-300">
 				<PagesHeader
@@ -58,6 +58,6 @@ export default async function Product({ params }: { params: { id: string } }) {
 					</div>
 				</div>
 			</div>
-		</div>
+		</main>
 	);
 }

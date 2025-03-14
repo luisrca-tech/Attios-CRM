@@ -5,8 +5,11 @@ type PrefetchConfig = {
 	page: number;
 	pageSize: number;
 	totalPages?: number;
-	resource: 'product' | 'orders';
-	procedure: 'getProductsPaginated' | 'getOrdersPaginated';
+	resource: 'product' | 'orders' | 'leads';
+	procedure:
+		| 'getProductsPaginated'
+		| 'getOrdersPaginated'
+		| 'getLeadsPaginated';
 	extraParams?: Record<string, unknown>;
 };
 

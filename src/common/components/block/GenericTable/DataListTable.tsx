@@ -30,7 +30,7 @@ interface DataListTableProps<TData, TValue> {
 	totalPages?: number;
 }
 
-export function DataListTable<TData, TValue>({
+export function GenericDataListTable<TData, TValue>({
 	columns,
 	data,
 	pageSize = 8,

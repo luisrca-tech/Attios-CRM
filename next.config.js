@@ -8,7 +8,8 @@ await import('./src/env.js');
 const mockImagesHosts = [
 	'loremflickr.com',
 	'picsum.photos',
-	'faker.cloudflare.com'
+	'faker.cloudflare.com',
+	'avatars.githubusercontent.com'
 ];
 
 /** @type {import('next').NextConfig} */

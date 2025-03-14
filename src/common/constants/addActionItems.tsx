@@ -1,4 +1,4 @@
-import { NewProductModal } from '~/features/Products/components/NewProductModal';
+import { NewProductModal } from '~/features/products/components/NewProductModal';
 import { Icon } from '../components/ui/Icons/_index';
 
 interface AddActionItem {
@@ -43,9 +43,9 @@ export const addActionItems: AddActionItem[] = [
 		isComingSoon: true
 	},
 	{
-		label: 'New Contact',
+		label: 'New Lead',
 		icon: (
-			<Icon.Sidebar.Contacts
+			<Icon.Sidebar.Leads
 				className="h-[1.125rem] w-[1.125rem]"
 				fill="#5E81F4"
 			/>
