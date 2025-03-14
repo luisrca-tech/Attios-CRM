@@ -5,7 +5,7 @@ import { ArrowLeft } from './ArrowLeft';
 import { ArrowRight } from './ArrowRight';
 import { CalendarIcon } from './Calendar';
 import { ClosePadlockIcon } from './ClosePadlock';
-import { ContactsIcon } from './Contacts';
+import { LeadsIcon } from './Leads';
 import { DashboardIcon } from './Dashboard';
 import { DiamondIcon } from './Diamond';
 import { EmailIcon } from './Email';
@@ -115,7 +115,7 @@ export const Icon = {
 		Kanban: KanbanIcon,
 		Notifications: NotificationsIcon,
 		Calendar: CalendarIcon,
-		Contacts: ContactsIcon,
+		Leads: LeadsIcon,
 		Projects: ProjectsIcon,
 		Reports: ReportsIcon,
 		Tasks: TasksIcon,

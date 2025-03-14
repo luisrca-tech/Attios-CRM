@@ -1,17 +1,11 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import type { InferSelectModel } from 'drizzle-orm';
 import { Icon } from '~/common/components/ui/Icons/_index';
-import { Checkbox } from '~/common/components/ui/checkbox';
-import type { products } from '~/server/db/schema';
 import { Skeleton } from '~/common/components/ui/skeleton';
+import type { Lead } from '../types/lead.type';
 
 export type ColumnType<TData> = ColumnDef<TData, unknown>[];
-type Product = InferSelectModel<typeof products> & {
-	category?: { name: string };
-	productImages?: { url: string }[];
-};
 
-interface ProductGridColumnsProps {
+interface LeadGridColumnsProps {
 	onSort: (column: string, direction: 'asc' | 'desc') => void;
 	currentSort: {
 		column: string;
@@ -20,33 +14,14 @@ interface ProductGridColumnsProps {
 	isLoading?: boolean;
 }
 
-export const productGridColumns = ({
+export const leadGridColumns = ({
 	onSort,
 	currentSort,
 	isLoading
-}: ProductGridColumnsProps): ColumnDef<Product, unknown>[] => [
+}: LeadGridColumnsProps): ColumnDef<Lead, unknown>[] => [
 	{
-		id: 'select',
-		header: ({ table }) => (
-			<Checkbox
-				checked={table.getIsAllPageRowsSelected()}
-				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-				aria-label="Select all"
-				disabled={isLoading}
-			/>
-		),
-		cell: ({ row }) => (
-			<Checkbox
-				checked={row.getIsSelected()}
-				onCheckedChange={(value) => row.toggleSelected(!!value)}
-				aria-label="Select row"
-				disabled={isLoading}
-			/>
-		),
-		enableSorting: false
-	},
-	{
-		accessorKey: 'name',
+		accessorFn: (row) => `${row.firstName} ${row.lastName}`,
+		id: 'name',
 		header: () => (
 			<div className="flex items-center justify-between">
 				<span>Name</span>
@@ -73,14 +48,14 @@ export const productGridColumns = ({
 			if (isLoading) {
 				return <Skeleton className="h-4 w-32" />;
 			}
-			return row.getValue('name');
+			return `${row.original.firstName} ${row.original.lastName}`;
 		}
 	},
 	{
-		accessorKey: 'modelYear',
+		accessorKey: 'email',
 		header: () => (
 			<div className="flex items-center justify-between">
-				<span>Sales</span>
+				<span>Email</span>
 				{isLoading ? (
 					<Skeleton className="h-4 w-4" />
 				) : (
@@ -88,8 +63,8 @@ export const productGridColumns = ({
 						type="button"
 						onClick={() =>
 							onSort(
-								'modelYear',
-								currentSort.column === 'modelYear' &&
+								'email',
+								currentSort.column === 'email' &&
 									currentSort.direction === 'asc'
 									? 'desc'
 									: 'asc'
@@ -105,14 +80,14 @@ export const productGridColumns = ({
 			if (isLoading) {
 				return <Skeleton className="h-4 w-16" />;
 			}
-			return row.getValue('modelYear');
+			return row.original.email;
 		}
 	},
 	{
-		accessorKey: 'listPrice',
+		accessorKey: 'role',
 		header: () => (
 			<div className="flex items-center justify-between">
-				<span>Price</span>
+				<span>Tag</span>
 				{isLoading ? (
 					<Skeleton className="h-4 w-4" />
 				) : (
@@ -120,9 +95,8 @@ export const productGridColumns = ({
 						type="button"
 						onClick={() =>
 							onSort(
-								'listPrice',
-								currentSort.column === 'listPrice' &&
-									currentSort.direction === 'asc'
+								'role',
+								currentSort.column === 'role' && currentSort.direction === 'asc'
 									? 'desc'
 									: 'asc'
 							)
@@ -137,7 +111,7 @@ export const productGridColumns = ({
 			if (isLoading) {
 				return <Skeleton className="h-4 w-16" />;
 			}
-			return `$${row.getValue('listPrice')}`;
+			return row.original.role;
 		}
 	}
 ];

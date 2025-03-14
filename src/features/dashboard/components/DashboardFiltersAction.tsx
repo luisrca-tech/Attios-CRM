@@ -2,8 +2,8 @@ import { Button } from '~/common/components/ui/Button';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import { api } from '~/trpc/react';
 import { DashboardFilterButton } from './DashboardFilterButton';
+import type { TimeFrame } from '../types/timeFrame.type';
 
-type TimeFrame = 'day' | 'week' | 'month';
 
 interface DashboardFiltersActionProps {
 	selectedTimeFrame?: TimeFrame;

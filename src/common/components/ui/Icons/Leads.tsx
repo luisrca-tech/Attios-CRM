@@ -1,7 +1,7 @@
 import type { IconProps } from '~/common/types/Icons.type';
 import { cn } from '~/lib/utils';
 
-export function ContactsIcon({ className, fill }: IconProps) {
+export function LeadsIcon({ className, fill }: IconProps) {
 	return (
 		<svg
 			className={cn(className)}
@@ -20,4 +20,4 @@ export function ContactsIcon({ className, fill }: IconProps) {
 	);
 }
 
-ContactsIcon.displayName = 'ContactsIcon';
+LeadsIcon.displayName = 'LeadsIcon';

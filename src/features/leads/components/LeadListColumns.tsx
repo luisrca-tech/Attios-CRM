@@ -1,17 +1,15 @@
 import type { ColumnDef } from '@tanstack/react-table';
-import type { InferSelectModel } from 'drizzle-orm';
 import Image from 'next/image';
 import { Button } from '~/common/components/ui/Button';
 import { Icon } from '~/common/components/ui/Icons/_index';
-import type { leads } from '~/server/db/schema';
 import { OrdenationButton } from '~/common/components/block/OrdenationButton';
 import { Skeleton } from '~/common/components/ui/skeleton';
 import { UserStatusLogged } from '~/common/components/ui/UserStatusLogged';
 import type { UserStatus } from '~/common/types/userStatus';
+import type { Lead } from '../types/lead.type';
 
 export type ColumnType<TData> = ColumnDef<TData, unknown>[];
 
-type Lead = InferSelectModel<typeof leads>;
 
 interface LeadListColumnsProps {
 	onSort: (column: string, direction: 'asc' | 'desc') => void;

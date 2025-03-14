@@ -1,6 +1,6 @@
 import { Button } from '~/common/components/ui/Button';
+import type { TimeFrame } from '../types/timeFrame.type';
 
-type TimeFrame = 'day' | 'week' | 'month';
 
 interface DashboardFilterButtonProps {
 	selectedTimeFrame?: TimeFrame;
