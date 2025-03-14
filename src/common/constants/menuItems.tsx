@@ -40,10 +40,7 @@ export const menuItems: Props[] = [
 	{
 		label: 'leads',
 		icon: (fill: string) => (
-			<Icon.Sidebar.Leads
-				className="h-[1.375rem] w-[1.375rem]"
-				fill={fill}
-			/>
+			<Icon.Sidebar.Leads className="h-[1.375rem] w-[1.375rem]" fill={fill} />
 		),
 		isComingSoon: false
 	},

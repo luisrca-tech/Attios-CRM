@@ -10,7 +10,6 @@ import type { Lead } from '../types/lead.type';
 
 export type ColumnType<TData> = ColumnDef<TData, unknown>[];
 
-
 interface LeadListColumnsProps {
 	onSort: (column: string, direction: 'asc' | 'desc') => void;
 	currentSort: {

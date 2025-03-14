@@ -4,7 +4,6 @@ import { api } from '~/trpc/react';
 import { DashboardFilterButton } from './DashboardFilterButton';
 import type { TimeFrame } from '../types/timeFrame.type';
 
-
 interface DashboardFiltersActionProps {
 	selectedTimeFrame?: TimeFrame;
 	onTimeFrameChange: (value: TimeFrame | null) => void;

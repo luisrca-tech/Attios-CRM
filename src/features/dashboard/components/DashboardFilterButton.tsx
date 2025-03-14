@@ -1,7 +1,6 @@
 import { Button } from '~/common/components/ui/Button';
 import type { TimeFrame } from '../types/timeFrame.type';
 
-
 interface DashboardFilterButtonProps {
 	selectedTimeFrame?: TimeFrame;
 	handleTimeFrameClick: (timeFrame: TimeFrame) => void;
