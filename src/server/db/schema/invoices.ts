@@ -2,6 +2,7 @@ import { integer, serial, timestamp } from 'drizzle-orm/pg-core';
 import { varchar } from 'drizzle-orm/pg-core';
 import { createTable } from './config';
 import { customers } from './customers';
+import { relations } from 'drizzle-orm';
 
 export const invoices = createTable('invoice', {
 	id: serial('id').primaryKey(),
@@ -13,3 +14,10 @@ export const invoices = createTable('invoice', {
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	updatedAt: timestamp('updated_at').notNull().defaultNow()
 });
+
+export const invoicesRelations = relations(invoices, ({ one }) => ({
+	customer: one(customers, {
+		fields: [invoices.customerId],
+		references: [customers.id]
+	})
+}));

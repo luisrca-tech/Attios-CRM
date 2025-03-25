@@ -17,7 +17,12 @@ export async function seedInvoices() {
 			number,
 			date: faker.date.recent(),
 			customerId: randomCustomer.id,
-			status: faker.helpers.arrayElement(['Paid', 'Unpaid', 'Scheduled']),
+			status: faker.helpers.arrayElement([
+				'Draft',
+				'Paid',
+				'Unpaid',
+				'Scheduled'
+			]),
 			amount: faker.number.int({ min: 100, max: 1000000 })
 		};
 	});
