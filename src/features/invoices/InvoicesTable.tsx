@@ -159,7 +159,12 @@ to upload items list"
 					}
 				>
 					<div className="flex items-center gap-1">
-						<Icon.Funnel className="h-[1.125rem] w-[1.125rem]" />
+						<Icon.Funnel
+							className={cn(
+								"h-[1.125rem] w-[1.125rem]",
+								sort.direction === "asc" && "rotate-180"
+							)}
+						/>
 						<div className="hidden items-center gap-1 font-bold text-primary-200 text-xs uppercase leading-[1.125rem] lg:flex">
 							Sort: <span className="font-extrabold text-black">A-Z</span>
 							<Icon.Arrow.Down
