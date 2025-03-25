@@ -5,20 +5,13 @@ import {
 	CarouselContent,
 	CarouselItem
 } from '~/common/components/ui/carousel';
+import { statusOptions } from '../constants/statusOptions';
 
 interface StatusFilterProps {
 	status: StatusType;
 	onStatusChange: (status: StatusType) => void;
 	className?: string;
 }
-
-const statusOptions: { value: StatusType; label: string }[] = [
-	{ value: 'All', label: 'All' },
-	{ value: 'Draft', label: 'Draft' },
-	{ value: 'Paid', label: 'Paid' },
-	{ value: 'Unpaid', label: 'Unpaid' },
-	{ value: 'Scheduled', label: 'Scheduled' }
-];
 
 export function StatusFilter({
 	status,
@@ -42,12 +35,13 @@ export function StatusFilter({
 					</button>
 				))}
 			</div>
-			<Carousel opts={{ loop: true }} className="lg:hidden">
+			<Carousel opts={{ loop: true, align: 'start' }} className="lg:hidden">
 				<CarouselContent>
 					{statusOptions.map((option) => (
 						<CarouselItem className="basis-24" key={option.value}>
 							<button
 								type="button"
+								onClick={() => onStatusChange(option.value)}
 								className={cn(
 									'flex w-full items-center justify-center rounded-lg bg-transparent font-bold text-primary-200 text-sm leading-5',
 									status === option.value &&
