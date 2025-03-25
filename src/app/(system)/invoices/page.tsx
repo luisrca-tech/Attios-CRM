@@ -1,6 +1,7 @@
 import { AddActionMenu } from '~/common/components/ui/AddActionMenu';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import { PagesHeader } from '~/common/components/ui/PagesHeader';
+import { InvoicesTable } from '~/features/invoices/InvoicesTable';
 
 export default function Invoices() {
 	return (
@@ -12,6 +13,7 @@ export default function Invoices() {
 				>
 					<AddActionMenu />
 				</PagesHeader>
+				<InvoicesTable />
 			</div>
 		</main>
 	);
