@@ -146,7 +146,7 @@ to upload items list"
         />
         <button
           type="button"
-          className="flex h-10 w-10 lg:min-w-28  gap-1 rounded-lg bg-white-100 items-center justify-center"
+          className="flex h-10 w-10 items-center justify-center gap-1 rounded-lg bg-white-100 lg:min-w-28"
           onClick={() =>
             handleSort(
               "number",
@@ -158,17 +158,7 @@ to upload items list"
         >
           <div className="flex items-center gap-1">
             <Icon.Funnel className="h-[1.125rem] w-[1.125rem]" />
-            <div
-              className="lg:flex items-center gap-1 font-bold text-primary-200 text-xs uppercase leading-[1.125rem] hidden"
-              onClick={() =>
-                handleSort(
-                  "number",
-                  sort.column === "number" && sort.direction === "asc"
-                    ? "desc"
-                    : "asc"
-                )
-              }
-            >
+            <div className="hidden items-center gap-1 font-bold text-primary-200 text-xs uppercase leading-[1.125rem] lg:flex">
               Sort: <span className="font-extrabold text-black">A-Z</span>
               <Icon.Arrow.Down
                 className={cn(

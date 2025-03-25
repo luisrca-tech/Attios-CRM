@@ -134,21 +134,18 @@ to upload items list"
 				<button
 					type="button"
 					className="flex items-center gap-1 rounded-lg bg-white-100"
+					onClick={() =>
+						handleSort(
+							'name',
+							sort.column === 'name' && sort.direction === 'asc'
+								? 'desc'
+								: 'asc'
+						)
+					}
 				>
 					<div className="flex items-center gap-1">
 						<Icon.Funnel className="h-[1.125rem] w-[1.125rem]" />
-						<button
-							type="button"
-							className="flex items-center gap-1 font-bold text-primary-200 text-xs uppercase leading-[1.125rem]"
-							onClick={() =>
-								handleSort(
-									'name',
-									sort.column === 'name' && sort.direction === 'asc'
-										? 'desc'
-										: 'asc'
-								)
-							}
-						>
+						<div className="flex items-center gap-1 font-bold text-primary-200 text-xs uppercase leading-[1.125rem]">
 							Sort: <span className="font-extrabold text-black">A-Z</span>
 							<Icon.Arrow.Down
 								className={cn(
@@ -156,7 +153,7 @@ to upload items list"
 									sort.direction === 'asc' && 'rotate-180'
 								)}
 							/>
-						</button>
+						</div>
 					</div>
 				</button>
 			</ViewTypeSelector>
