@@ -3,6 +3,7 @@ import { asc, sql, desc, eq } from 'drizzle-orm';
 import { totalPagesQuerySchema } from '../../schemas/totalPagesQuery.schema';
 import { controlledQuerySchema } from '../../schemas/controlledQuery.schema';
 import { paginatedInvoicesSchema } from '../schemas/paginatedInvoices.schema';
+import { controlledInvoicesSchema } from '../schemas/controlledInvoices.schema';
 import { invoices } from '~/server/db/schema/invoices';
 
 const requiredInvoiceRelations = {
@@ -122,21 +123,57 @@ export const invoiceQueries = {
 		}),
 
 	getControlledInvoicesInfinite: publicProcedure
-		.input(controlledQuerySchema)
+		.input(controlledInvoicesSchema)
 		.query(async ({ ctx, input }) => {
-			const { limit, cursor } = input;
+			const { limit, cursor, status, sort } = input;
 
 			const items = await ctx.db.query.invoices.findMany({
 				with: requiredInvoiceRelations,
 				limit: limit + 1,
 				offset: cursor,
-				orderBy: [asc(invoices.number)]
+				where:
+					status !== 'All'
+						? eq(
+								invoices.status,
+								status as 'Draft' | 'Paid' | 'Unpaid' | 'Scheduled'
+							)
+						: undefined,
+				orderBy: sort
+					? [
+							sort.column === 'customer'
+								? sort.direction === 'asc'
+									? asc(invoices.customerId)
+									: desc(invoices.customerId)
+								: sort.direction === 'asc'
+									? asc(
+											invoices[
+												sort.column as keyof typeof invoices
+											] as typeof invoices.number
+										)
+									: desc(
+											invoices[
+												sort.column as keyof typeof invoices
+											] as typeof invoices.number
+										)
+						]
+					: [asc(invoices.number)]
 			});
 
 			let nextCursor: number | undefined = undefined;
 			if (items.length > limit) {
 				items.pop();
 				nextCursor = cursor + limit;
+			}
+
+			// If sorting by customer, we need to sort the results in memory
+			if (sort?.column === 'customer') {
+				items.sort((a, b) => {
+					const aName = `${a.customer?.firstName ?? ''} ${a.customer?.lastName ?? ''}`;
+					const bName = `${b.customer?.firstName ?? ''} ${b.customer?.lastName ?? ''}`;
+					return sort.direction === 'asc'
+						? aName.localeCompare(bName)
+						: bName.localeCompare(aName);
+				});
 			}
 
 			return {
