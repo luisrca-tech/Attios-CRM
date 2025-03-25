@@ -161,8 +161,8 @@ to upload items list"
 					<div className="flex items-center gap-1">
 						<Icon.Funnel
 							className={cn(
-								"h-[1.125rem] w-[1.125rem]",
-								sort.direction === "asc" && "rotate-180"
+								'h-[1.125rem] w-[1.125rem]',
+								sort.direction === 'asc' && 'rotate-180'
 							)}
 						/>
 						<div className="hidden items-center gap-1 font-bold text-primary-200 text-xs uppercase leading-[1.125rem] lg:flex">
@@ -186,7 +186,7 @@ to upload items list"
 				totalPages={totalPagesQuery.data}
 			/>
 			{/* This list is showing on mobile */}
-			<div className='mb-20 flex flex-col gap-1 md:hidden'>
+			<div className="mb-20 flex flex-col gap-1 md:hidden">
 				{infiniteInvoicesData.map((invoice) => (
 					<div className="px-3" key={invoice.id}>
 						<InvoiceCard invoice={invoice} />
