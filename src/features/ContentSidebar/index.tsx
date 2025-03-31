@@ -5,7 +5,7 @@ import { DinamycGraph } from './Graph/DinamycGraph';
 import { MetricContainer } from './Graph/MetricContainer';
 import { Metric } from './Graph/Metrics';
 import { DashboardWithSidebar } from './pages/Dashboard';
-import LeadsWithSidebar from './pages/Lads';
+import LeadsWithSidebar from './pages/Leads';
 import { ProductWithContentSidebar } from './pages/Product';
 import ProductsWithSidebar from './pages/Products';
 import { ProjectsWithSidebar } from './pages/Projects';
