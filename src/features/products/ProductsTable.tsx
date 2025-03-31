@@ -32,7 +32,8 @@ export function ProductsTable() {
 	const infiniteProducts =
 		api.product.getControlledProductsInfinite.useInfiniteQuery(
 			{
-				limit: 8
+				limit: 8,
+				sort
 			},
 			{
 				getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -131,7 +132,12 @@ to upload items list"
 
 	return (
 		<div className="flex w-full flex-col gap-1 bg-white-300 md:block md:bg-white-100 lg:block lg:gap-[0.875rem] lg:rounded-xl">
-			<ViewTypeSelector viewType={viewType} onViewChange={setViewType}>
+			<ViewTypeSelector
+				viewType={viewType}
+				onViewChange={setViewType}
+				onSort={handleSort}
+				currentSort={sort}
+			>
 				<button
 					type="button"
 					className="flex items-center gap-1 rounded-lg bg-white-100"

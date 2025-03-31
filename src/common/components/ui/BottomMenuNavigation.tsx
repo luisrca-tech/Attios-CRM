@@ -29,7 +29,7 @@ export function BottomMenu() {
 	const pathname = usePathname();
 
 	const mainItemsMenu = menuItems.slice(0, 4);
-	const remainingItemsMenu = menuItems.slice(6);
+	const remainingItemsMenu = menuItems.slice(4);
 
 	const [selectedIcon, setSelectedIcon] = useState<React.ReactNode>(
 		<Icon.Menu className="text-primary-200" />

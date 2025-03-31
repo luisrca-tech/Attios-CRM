@@ -2,9 +2,9 @@ import { eq, sql, asc, desc } from 'drizzle-orm';
 import { z } from 'zod';
 import { publicProcedure } from '~/server/api/trpc';
 import { products } from '~/server/db/schema';
-import { controlledQuerySchema } from '../../schemas/controlledQuery.schema';
 import { totalPagesQuerySchema } from '../../schemas/totalPagesQuery.schema';
 import { paginatedProductsSchema } from '../schemas/paginatedProducts.schema';
+import { controlledProductsSchema } from '../schemas/controlledProducts.schema';
 
 const requiredProductRelations = {
 	category: {
@@ -53,15 +53,21 @@ export const productQueries = {
 
 	// This is the infinite scroll query for the mobile product table
 	getControlledProductsInfinite: publicProcedure
-		.input(controlledQuerySchema)
+		.input(controlledProductsSchema)
 		.query(async ({ ctx, input }) => {
-			const { limit, cursor } = input;
+			const { limit, cursor, sort } = input;
 
 			const items = await ctx.db.query.products.findMany({
 				with: requiredProductRelations,
 				limit: limit + 1,
 				offset: cursor,
-				orderBy: [asc(products.name)]
+				orderBy: sort
+					? [
+							sort.direction === 'asc'
+								? asc(products[sort.column])
+								: desc(products[sort.column])
+						]
+					: [asc(products.name)]
 			});
 
 			let nextCursor: number | undefined = undefined;
