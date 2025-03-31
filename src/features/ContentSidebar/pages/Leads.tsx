@@ -3,11 +3,11 @@
 import Image from 'next/image';
 import { cn } from '~/lib/utils';
 import { ContentSidebar } from '..';
-import { PopularProductCategories } from '../mocks/PopularProductCategories';
 import { useGraphWaveImages } from '../mocks/GraphWaveImages';
+import { LeadsOverview } from '../mocks/LeadsOverview';
 import { getCategoryColor } from '../constants/categoryColors';
 
-export default function ProductsWithSidebar() {
+export default function LeadsWithSidebar() {
 	const { productsGraph } = useGraphWaveImages();
 
 	return (
@@ -18,13 +18,15 @@ export default function ProductsWithSidebar() {
 		>
 			<div className="mb-10 flex flex-col gap-5">
 				<div className="flex flex-col">
-					<strong className="text-base leading-6">Popular categories</strong>
+					<strong className="text-base text-black leading-6">
+						Leads overview
+					</strong>
 					<span className="font-normal text-primary-200 text-sm leading-5">
-						Explore most popular product categories
+						Your employees and clients details
 					</span>
 				</div>
 				<div className="flex flex-col gap-[0.375rem]">
-					{PopularProductCategories.map((category) => (
+					{LeadsOverview.map((category) => (
 						<ContentSidebar.Card className="bg-white-200/40" key={category.id}>
 							<div className="flex w-full items-center justify-between py-1">
 								<div className="flex flex-col">

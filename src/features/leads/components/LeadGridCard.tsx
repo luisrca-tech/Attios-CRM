@@ -39,7 +39,7 @@ export function LeadGridCard({
 				</Button>
 			</div>
 			<div className="flex flex-col items-center justify-center gap-4">
-				<div className="relative h-20 w-20">
+				<div className="min-h-20 min-w-20">
 					<Image
 						src={image ?? '/placeholder-avatar.png'}
 						alt={`${firstName} ${lastName}`}
