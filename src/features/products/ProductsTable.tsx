@@ -12,7 +12,7 @@ import { Icon } from '../../common/components/ui/Icons/_index';
 import { ViewTypeSelector } from '../../common/components/ui/ViewTypeSelector';
 import { productListColumns } from './ProductListColumns';
 import { ProductGridCard } from './components/ProductGridCard';
-import { parseAsInteger, useQueryState } from 'nuqs';
+import { parseAsInteger, parseAsString, useQueryState } from 'nuqs';
 import { usePrefetchNextPage } from '~/common/hooks/usePrefetchNextPage';
 import { GenericListSkeleton } from '../../common/components/ui/GenericListSkeleton';
 import { GenericGridSkeleton } from '../../common/components/ui/GenericGridSkeleton';
@@ -24,15 +24,19 @@ import type { ProductSort } from './types/productSort.type';
 export function ProductsTable() {
 	const [viewType, setViewType] = useState<'list' | 'grid'>('list');
 	const [page] = useQueryState('page', parseAsInteger.withDefault(1));
+	const [search] = useQueryState('search', parseAsString.withDefault(''));
 	const [sort, setSort] = useState<ProductSort>({
 		column: 'name',
 		direction: 'asc'
 	});
 
+	console.log('Search value in ProductsTable:', search);
+
 	const infiniteProducts =
 		api.product.getControlledProductsInfinite.useInfiniteQuery(
 			{
 				limit: 8,
+				search,
 				sort
 			},
 			{
@@ -63,14 +67,16 @@ export function ProductsTable() {
 	);
 
 	const totalPagesQuery = api.product.getTotalPages.useQuery({
-		pageSize
+		pageSize,
+		search
 	});
 
 	const productQuery = api.product.getProductsPaginated.useQuery(
 		{
 			page,
 			pageSize,
-			sort
+			sort,
+			search
 		},
 		{
 			staleTime: 0,
@@ -79,13 +85,15 @@ export function ProductsTable() {
 		}
 	);
 
+	console.log('Product query data:', productQuery.data);
+
 	usePrefetchNextPage({
 		page,
 		pageSize,
 		totalPages: totalPagesQuery.data,
 		resource: 'product',
 		procedure: 'getProductsPaginated',
-		extraParams: { sort }
+		extraParams: { sort, search }
 	});
 
 	const productData = productQuery.data ?? [];
