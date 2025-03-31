@@ -15,6 +15,7 @@ export const customers = createTable(
 		city: varchar('city', { length: 100 }),
 		state: varchar('state', { length: 2 }),
 		zipCode: varchar('zip_code', { length: 10 }),
+		avatar: varchar('avatar', { length: 255 }),
 		createdAt: timestamp('created_at')
 			.default(sql`CURRENT_TIMESTAMP`)
 			.notNull(),

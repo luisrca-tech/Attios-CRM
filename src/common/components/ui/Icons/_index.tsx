@@ -52,6 +52,8 @@ import { LeadIcon } from './LeadIcon';
 import { AquariusMetric } from './AquariusMetric';
 import { FunnelIcon } from './Funnel';
 import { CallIcon } from './Call';
+import { LeadsWaitingIcon } from './LeadsWaiting';
+import { LeadsCheckIcon } from './LeadsCheck';
 
 export const Icon = {
 	Email: EmailIcon,
@@ -86,6 +88,8 @@ export const Icon = {
 	AquariusMetric: AquariusMetric,
 	Funnel: FunnelIcon,
 	Call: CallIcon,
+	LeadsCheck: LeadsCheckIcon,
+	LeadsWaiting: LeadsWaitingIcon,
 	List: {
 		White: ListIconWhite,
 		Blue: ListIconBlue

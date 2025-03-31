@@ -45,6 +45,16 @@ export const menuItems: Props[] = [
 		isComingSoon: false
 	},
 	{
+		label: 'invoices',
+		icon: (fill: string) => (
+			<Icon.Sidebar.Invoices
+				className="h-[1.375rem] w-[1.375rem]"
+				fill={fill}
+			/>
+		),
+		isComingSoon: false
+	},
+	{
 		label: 'tasks',
 		icon: (fill: string) => (
 			<Icon.Sidebar.Tasks className="h-[1.375rem] w-[1.375rem]" fill={fill} />
@@ -72,16 +82,6 @@ export const menuItems: Props[] = [
 		label: 'messages',
 		icon: (fill: string) => (
 			<Icon.Sidebar.Messages
-				className="h-[1.375rem] w-[1.375rem]"
-				fill={fill}
-			/>
-		),
-		isComingSoon: true
-	},
-	{
-		label: 'invoices',
-		icon: (fill: string) => (
-			<Icon.Sidebar.Invoices
 				className="h-[1.375rem] w-[1.375rem]"
 				fill={fill}
 			/>

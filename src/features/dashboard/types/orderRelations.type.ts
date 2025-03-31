@@ -7,7 +7,9 @@ import type {
 } from '~/server/db/schema';
 
 export type OrderRelations = typeof orders.$inferSelect & {
-	customer: InferSelectModel<typeof customers>;
+	customer: Omit<InferSelectModel<typeof customers>, 'avatar'> & {
+		avatar?: string | null;
+	};
 	orderItems: (InferSelectModel<typeof orderItems> & {
 		product: Pick<InferSelectModel<typeof products>, 'id' | 'name'>;
 		productImage: string | null;
