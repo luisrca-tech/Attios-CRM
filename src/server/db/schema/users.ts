@@ -1,6 +1,7 @@
-import { sql } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import { index, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { createTable } from './config';
+import { teams } from './teams';
 
 export const users = createTable(
 	'user',
@@ -20,3 +21,7 @@ export const users = createTable(
 		emailIndex: index('email_idx').on(table.email)
 	})
 );
+
+export const usersRelations = relations(users, ({ many }) => ({
+	teams: many(teams)
+}));

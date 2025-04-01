@@ -7,17 +7,11 @@ import {
 	timestamp,
 	varchar
 } from 'drizzle-orm/pg-core';
+import { brands } from './brands';
+import { categories } from './categories';
 import { createTable } from './config';
-
-export const brands = createTable('brand', {
-	id: serial('id').primaryKey(),
-	name: varchar('name', { length: 100 }).notNull()
-});
-
-export const categories = createTable('category', {
-	id: serial('id').primaryKey(),
-	name: varchar('name', { length: 100 }).notNull()
-});
+import { leads } from './leads';
+import { teams } from './teams';
 
 export const products = createTable(
 	'product',
@@ -36,11 +30,15 @@ export const products = createTable(
 		listPrice: decimal('list_price', { precision: 10, scale: 2 }).notNull(),
 		sku: varchar('sku', { length: 100 }).unique(),
 		currency: varchar('currency', { length: 3 }),
-		subcategory: varchar('subcategory', { length: 100 })
+		subcategory: varchar('subcategory', { length: 100 }),
+		teamId: integer('team_id')
+			.references(() => teams.id)
+			.notNull()
 	},
 	(table) => ({
 		brandIdIdx: index('brand_id_idx').on(table.brandId),
-		categoryIdIdx: index('category_id_idx').on(table.categoryId)
+		categoryIdIdx: index('category_id_idx').on(table.categoryId),
+		teamIdIdx: index('team_id_idx').on(table.teamId)
 	})
 );
 
@@ -64,7 +62,12 @@ export const productsRelations = relations(products, ({ one, many }) => ({
 		fields: [products.brandId],
 		references: [brands.id]
 	}),
-	productImages: many(productImages)
+	productImages: many(productImages),
+	team: one(teams, {
+		fields: [products.teamId],
+		references: [teams.id]
+	}),
+	leads: many(leads)
 }));
 
 export const productImagesRelations = relations(productImages, ({ one }) => ({
@@ -72,12 +75,4 @@ export const productImagesRelations = relations(productImages, ({ one }) => ({
 		fields: [productImages.productId],
 		references: [products.id]
 	})
-}));
-
-export const categoriesRelations = relations(categories, ({ many }) => ({
-	products: many(products)
-}));
-
-export const brandsRelations = relations(brands, ({ many }) => ({
-	products: many(products)
 }));

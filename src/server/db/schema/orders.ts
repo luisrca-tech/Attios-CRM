@@ -9,9 +9,9 @@ import {
 	varchar
 } from 'drizzle-orm/pg-core';
 import { createTable } from './config';
-import { users } from './auth';
-import { products } from './products';
 import { customers } from './customers';
+import { products } from './products';
+import { users } from './users';
 
 export const orderStatusEnum = pgEnum('order_status', [
 	'pending',
