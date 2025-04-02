@@ -2,8 +2,10 @@ import { faker } from '@faker-js/faker';
 import { db } from '..';
 import { customers } from '../schema/customers';
 import { orderItems, orders } from '../schema/orders';
+import { invoices } from '../schema/invoices';
 
 export async function seedCustomers() {
+	await db.delete(invoices);
 	await db.delete(orderItems);
 	await db.delete(orders);
 	await db.delete(customers);
@@ -13,6 +15,7 @@ export async function seedCustomers() {
 		lastName: faker.person.lastName(),
 		email: faker.internet.email(),
 		phone: faker.phone.number({ style: 'national' }),
+		avatar: faker.image.avatar(),
 		street: faker.location.streetAddress(),
 		city: faker.location.city(),
 		state: faker.location.state({ abbreviated: true }),

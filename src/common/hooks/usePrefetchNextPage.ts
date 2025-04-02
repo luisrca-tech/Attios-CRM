@@ -5,11 +5,12 @@ type PrefetchConfig = {
 	page: number;
 	pageSize: number;
 	totalPages?: number;
-	resource: 'product' | 'orders' | 'leads';
+	resource: 'product' | 'orders' | 'leads' | 'invoices';
 	procedure:
 		| 'getProductsPaginated'
 		| 'getOrdersPaginated'
-		| 'getLeadsPaginated';
+		| 'getLeadsPaginated'
+		| 'getInvoicesPaginated';
 	extraParams?: Record<string, unknown>;
 };
 

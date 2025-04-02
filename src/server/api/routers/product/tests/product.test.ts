@@ -2,7 +2,10 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 import mockDb from '~/server/api/mocks/db.mock';
 import { appRouter } from '~/server/api/root';
 import { createCallerFactory, createTRPCContext } from '~/server/api/trpc';
-import { faker } from '@faker-js/faker';
+import type { MockProduct } from './types/mockProduct.type';
+import { mockProducts } from './mock/mockProducts';
+import { newProduct } from './mock/newProduct';
+import { updateData } from './mock/updateProduct';
 
 vi.mock('~/server/db', () => ({
 	db: mockDb
@@ -15,35 +18,6 @@ vi.mock('@clerk/nextjs/server', () => ({
 describe('Product', () => {
 	const createCaller = createCallerFactory(appRouter);
 	let caller: ReturnType<typeof createCaller>;
-
-	const mockProducts = [
-		{
-			id: 'PROD1',
-			name: 'Test Product 1',
-			brandId: 1,
-			categoryId: 1,
-			categoryName: 'Test Category',
-			modelYear: 2024,
-			quantity: 10,
-			listPrice: '99.99',
-			sku: 'SKU001',
-			currency: 'USD',
-			subcategory: 'Test Subcategory'
-		},
-		{
-			id: 'PROD2',
-			name: 'Test Product 2',
-			brandId: 1,
-			categoryId: 1,
-			categoryName: 'Test Category',
-			modelYear: 2024,
-			quantity: 5,
-			listPrice: '149.99',
-			sku: 'SKU002',
-			currency: 'USD',
-			subcategory: 'Test Subcategory'
-		}
-	];
 
 	beforeEach(async () => {
 		const ctx = await createTRPCContext({
@@ -97,21 +71,6 @@ describe('Product', () => {
 			return callback(tx as any);
 		});
 
-		const newProduct = {
-			name: 'Test Product 3',
-			sku: 'SKU003',
-			price: 199.99,
-			availableQuantity: 15,
-			category: 'Test Category',
-			brand: 'Test Brand',
-			productImages: [
-				{
-					url: faker.image.url(),
-					key: faker.string.uuid()
-				}
-			]
-		};
-
 		const result = await caller.product.create(newProduct);
 
 		expect(result).toBeDefined();
@@ -123,23 +82,6 @@ describe('Product', () => {
 	});
 
 	it('should be able to update a product', async () => {
-		const updateData = {
-			productId: 'PROD1',
-			name: 'Updated Product',
-			sku: 'SKU002',
-			price: 149.99,
-			availableQuantity: 20,
-			category: 'Test Category',
-			subcategory: 'New Subcategory',
-			currency: 'USD',
-			productImages: [
-				{
-					url: faker.image.url(),
-					key: faker.string.uuid()
-				}
-			]
-		};
-
 		mockDb.transaction.mockImplementation(async (callback) => {
 			const tx = {
 				update: () => ({
@@ -175,21 +117,7 @@ describe('Product', () => {
 		expect(result).toBeDefined();
 		expect(result.items).toHaveLength(2);
 		expect(result.nextCursor).toBeUndefined();
-		expect(result.items[0]).toEqual(
-			expect.objectContaining({
-				id: 'PROD1',
-				name: 'Test Product 1',
-				brandId: 1,
-				categoryId: 1,
-				categoryName: 'Test Category',
-				modelYear: 2024,
-				quantity: 10,
-				listPrice: '99.99',
-				sku: 'SKU001',
-				currency: 'USD',
-				subcategory: 'Test Subcategory'
-			})
-		);
+		expect(result.items[0]).toEqual(mockProducts[0]);
 	});
 
 	it('should return next cursor when there are more items', async () => {
@@ -219,5 +147,172 @@ describe('Product', () => {
 		expect(result).toBeDefined();
 		expect(result.items).toHaveLength(2);
 		expect(result.nextCursor).toBe(2);
+	});
+
+	describe('Search, sort and order functionality', () => {
+		it('should filter products by name in paginated query', async () => {
+			const searchTerm = 'Test Product 1';
+			const [firstProduct] = mockProducts as [MockProduct, ...MockProduct[]];
+			mockDb.query.products.findMany.mockResolvedValue([firstProduct]);
+
+			const result = await caller.product.getProductsPaginated({
+				page: 1,
+				pageSize: 10,
+				search: searchTerm
+			});
+
+			expect(result).toHaveLength(1);
+			expect(result[0]?.name).toContain(searchTerm);
+			expect(mockDb.query.products.findMany).toHaveBeenCalledWith(
+				expect.objectContaining({
+					where: expect.any(Object)
+				})
+			);
+		});
+
+		it('should return empty array when search term matches no products', async () => {
+			mockDb.query.products.findMany.mockResolvedValue([]);
+
+			const result = await caller.product.getProductsPaginated({
+				page: 1,
+				pageSize: 10,
+				search: 'NonexistentProduct'
+			});
+
+			expect(result).toHaveLength(0);
+		});
+
+		it('should filter products by name in infinite scroll query', async () => {
+			const searchTerm = 'Test Product 2';
+			const [, secondProduct] = mockProducts as [MockProduct, MockProduct];
+			mockDb.query.products.findMany.mockResolvedValue([secondProduct]);
+
+			const result = await caller.product.getControlledProductsInfinite({
+				limit: 10,
+				cursor: 0,
+				search: searchTerm
+			});
+
+			expect(result.items).toHaveLength(1);
+			expect(result.items[0]?.name).toContain(searchTerm);
+			expect(result.nextCursor).toBeUndefined();
+		});
+
+		it('should order products by name in paginated query', async () => {
+			const ascOrder = [{ ...mockProducts[0] }, { ...mockProducts[1] }];
+			const descOrder = [{ ...mockProducts[1] }, { ...mockProducts[0] }];
+
+			mockDb.query.products.findMany.mockResolvedValueOnce(
+				ascOrder as MockProduct[]
+			);
+			const acrescentResult = await caller.product.getProductsPaginated({
+				page: 1,
+				pageSize: 10,
+				sort: {
+					column: 'name',
+					direction: 'asc'
+				}
+			});
+
+			expect(acrescentResult).toBeDefined();
+			expect(acrescentResult).toHaveLength(2);
+			expect(acrescentResult[0]?.name).toBe('Test Product 1');
+			expect(acrescentResult[1]?.name).toBe('Test Product 2');
+
+			mockDb.query.products.findMany.mockResolvedValueOnce(
+				descOrder as MockProduct[]
+			);
+			const decrescentResult = await caller.product.getProductsPaginated({
+				page: 1,
+				pageSize: 10,
+				sort: {
+					column: 'name',
+					direction: 'desc'
+				}
+			});
+
+			expect(decrescentResult).toBeDefined();
+			expect(decrescentResult).toHaveLength(2);
+			expect(decrescentResult[0]?.name).toBe('Test Product 2');
+			expect(decrescentResult[1]?.name).toBe('Test Product 1');
+		});
+
+		it('should order products by quantity in paginated query', async () => {
+			const ascOrder = [{ ...mockProducts[1] }, { ...mockProducts[0] }];
+			const descOrder = [{ ...mockProducts[0] }, { ...mockProducts[1] }];
+
+			mockDb.query.products.findMany.mockResolvedValueOnce(
+				ascOrder as MockProduct[]
+			);
+			const acrescentResult = await caller.product.getProductsPaginated({
+				page: 1,
+				pageSize: 10,
+				sort: {
+					column: 'quantity',
+					direction: 'asc'
+				}
+			});
+
+			expect(acrescentResult).toBeDefined();
+			expect(acrescentResult).toHaveLength(2);
+			expect(acrescentResult[0]?.quantity).toBe(5);
+			expect(acrescentResult[1]?.quantity).toBe(10);
+
+			mockDb.query.products.findMany.mockResolvedValueOnce(
+				descOrder as MockProduct[]
+			);
+			const decrescentResult = await caller.product.getProductsPaginated({
+				page: 1,
+				pageSize: 10,
+				sort: {
+					column: 'quantity',
+					direction: 'desc'
+				}
+			});
+
+			expect(decrescentResult).toBeDefined();
+			expect(decrescentResult).toHaveLength(2);
+			expect(decrescentResult[0]?.quantity).toBe(10);
+			expect(decrescentResult[1]?.quantity).toBe(5);
+		});
+
+		it('should order products by price in paginated query', async () => {
+			const ascOrder = [{ ...mockProducts[0] }, { ...mockProducts[1] }];
+			const descOrder = [{ ...mockProducts[1] }, { ...mockProducts[0] }];
+
+			mockDb.query.products.findMany.mockResolvedValueOnce(
+				ascOrder as MockProduct[]
+			);
+			const acrescentResult = await caller.product.getProductsPaginated({
+				page: 1,
+				pageSize: 10,
+				sort: {
+					column: 'listPrice',
+					direction: 'asc'
+				}
+			});
+
+			expect(acrescentResult).toBeDefined();
+			expect(acrescentResult).toHaveLength(2);
+			expect(acrescentResult[0]?.listPrice).toBe('99.99');
+			expect(acrescentResult[1]?.listPrice).toBe('149.99');
+
+			mockDb.query.products.findMany.mockResolvedValueOnce(
+				descOrder as MockProduct[]
+			);
+			const decrescentResult = await caller.product.getProductsPaginated({
+				page: 1,
+				pageSize: 10,
+				sort: {
+					column: 'listPrice',
+					direction: 'desc'
+				}
+			});
+
+			expect(decrescentResult).toBeDefined();
+			expect(decrescentResult).toHaveLength(2);
+			expect(decrescentResult[0]?.listPrice).toBe('149.99');
+			expect(decrescentResult[1]?.listPrice).toBe('99.99');
+		});
 	});
 });

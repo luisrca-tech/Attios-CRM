@@ -167,6 +167,7 @@ to upload items list"
       <ViewTypeSelector
         viewType={viewType}
         onViewChange={setViewType}
+        onSort={handleSort}
       >
         <Button
           type="button"

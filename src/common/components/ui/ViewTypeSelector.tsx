@@ -7,15 +7,19 @@ type ViewType = 'list' | 'grid';
 interface ViewTypeSelectorProps {
 	viewType: ViewType;
 	onViewChange: (view: ViewType) => void;
+	onSort: (column: string, direction: 'asc' | 'desc') => void;
 	children?: React.ReactNode;
 	className?: string;
+	currentSort?: { column: string; direction: 'asc' | 'desc' };
 }
 
 export function ViewTypeSelector({
 	viewType,
 	onViewChange,
+	onSort,
 	children,
-	className
+	className,
+	currentSort
 }: ViewTypeSelectorProps) {
 	return (
 		<div
@@ -41,8 +45,25 @@ export function ViewTypeSelector({
 				>
 					Grid
 				</Button>
-				<Button color="septenary" className="h-10 w-full min-w-10">
-					<Icon.Trowel />
+				<Button
+					type="button"
+					onClick={() =>
+						onSort(
+							'name',
+							currentSort?.column === 'name' && currentSort.direction === 'asc'
+								? 'desc'
+								: 'asc'
+						)
+					}
+					color="septenary"
+					className="h-10 w-full min-w-10"
+				>
+					<Icon.Trowel
+						className={cn(
+							'h-4 w-4',
+							currentSort?.direction === 'asc' && 'rotate-180'
+						)}
+					/>
 				</Button>
 			</div>
 			<div className="hidden gap-1 md:flex lg:flex">

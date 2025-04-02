@@ -1,4 +1,5 @@
 import { seedCustomers } from './customers';
+import { seedInvoices } from './invoices';
 import { seedLeads } from './leads';
 import { seedOrders } from './orders';
 import { seedProducts } from './products';
@@ -9,6 +10,7 @@ async function seed() {
 		await seedProducts();
 		await seedLeads();
 		await seedOrders();
+		await seedInvoices();
 
 		console.log('✅ Database seeded successfully');
 	} catch (e) {

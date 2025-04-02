@@ -5,6 +5,7 @@ import { cn } from '~/lib/utils';
 import { ContentSidebar } from '..';
 import { PopularProductCategories } from '../mocks/PopularProductCategories';
 import { useGraphWaveImages } from '../mocks/GraphWaveImages';
+import { getCategoryColor } from '../constants/categoryColors';
 
 export default function ProductsWithSidebar() {
 	const { productsGraph } = useGraphWaveImages();
@@ -38,10 +39,7 @@ export default function ProductsWithSidebar() {
 								<div
 									className={cn(
 										'rounded-[0.625rem] p-4',
-										category.name === 'Eletronics' &&
-											'bg-primary-100/15 text-primary-100',
-										category.name === 'Accessories' && 'bg-secondary-300/25',
-										category.name === 'Digital goods' && 'bg-white-400'
+										getCategoryColor(category.name)
 									)}
 								>
 									{category.icon}

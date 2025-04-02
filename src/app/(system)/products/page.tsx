@@ -1,3 +1,5 @@
+'use client';
+
 import { AddActionMenu } from '~/common/components/ui/AddActionMenu';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import { PagesHeader } from '~/common/components/ui/PagesHeader';
