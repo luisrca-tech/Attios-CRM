@@ -36,6 +36,7 @@ export function ProductsTable() {
 		direction: 'asc'
 	});
 	const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+  console.log(selectedProducts)
 	const tableRef = useRef<Table<Product> | null>(null);
 	const { bulkDeleteProducts } = useProduct();
 
@@ -81,6 +82,7 @@ export function ProductsTable() {
 
 		try {
 			await bulkDeleteProducts.mutateAsync({ ids: selectedProducts });
+			
 			toast.success(`Successfully deleted ${selectedProducts.length} products`);
 			setSelectedProducts([]);
 			// Reset table row selection
