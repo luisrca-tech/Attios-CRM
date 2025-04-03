@@ -13,32 +13,50 @@ interface ProductGridColumnsProps {
 		direction: 'asc' | 'desc';
 	};
 	isLoading?: boolean;
+	selectedProducts: string[];
+	onSelectProducts: (productIds: string[]) => void;
 }
 
 export const productGridColumns = ({
 	onSort,
 	currentSort,
-	isLoading
+	isLoading,
+	onSelectProducts
 }: ProductGridColumnsProps): ColumnDef<Product, unknown>[] => [
 	{
 		id: 'select',
 		header: ({ table }) => (
 			<Checkbox
 				checked={table.getIsAllPageRowsSelected()}
-				onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+				onCheckedChange={(value) => {
+					table.toggleAllPageRowsSelected(!!value);
+					setTimeout(() => {
+						const selectedRows = table.getSelectedRowModel().rows;
+						const selectedIds = selectedRows.map((row) => row.original.id);
+						onSelectProducts(selectedIds);
+					}, 0);
+				}}
 				aria-label="Select all"
 				disabled={isLoading}
 			/>
 		),
-		cell: ({ row }) => (
+		cell: ({ row, table }) => (
 			<Checkbox
 				checked={row.getIsSelected()}
-				onCheckedChange={(value) => row.toggleSelected(!!value)}
+				onCheckedChange={(value) => {
+					row.toggleSelected(!!value);
+					setTimeout(() => {
+						const selectedRows = table.getSelectedRowModel().rows;
+						const selectedIds = selectedRows.map((row) => row.original.id);
+						onSelectProducts(selectedIds);
+					}, 0);
+				}}
 				aria-label="Select row"
 				disabled={isLoading}
 			/>
 		),
-		enableSorting: false
+		enableSorting: false,
+		enableHiding: false
 	},
 	{
 		accessorKey: 'name',

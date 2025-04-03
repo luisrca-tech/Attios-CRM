@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { NotFoundItem } from '~/common/components/ui/NotFoundItem';
 import { ProductListCard } from '~/features/products/components/ProductListCard';
 import { Image } from '~/common/components/ui/images';
@@ -20,6 +20,12 @@ import { productGridColumns } from './ProductGridColumns';
 import { skeletonProductsData } from './constants/skeletonProductsData';
 import { useInfiniteScroll } from '~/common/hooks/useInfiniteScroll';
 import type { ProductSort } from './types/productSort.type';
+import { Button } from '~/common/components/ui/Button';
+import { toast } from 'sonner';
+import { useProduct } from './hooks/useProduct';
+import type { Table } from '@tanstack/react-table';
+import type { Product } from './types/product.type';
+import { ProductGridCardWrapper } from './constants/productGridCardWrapper';
 
 export function ProductsTable() {
 	const [viewType, setViewType] = useState<'list' | 'grid'>('list');
@@ -29,15 +35,16 @@ export function ProductsTable() {
 		column: 'name',
 		direction: 'asc'
 	});
-
-	console.log('Search value in ProductsTable:', search);
+	const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
+	console.log(selectedProducts);
+	const tableRef = useRef<Table<Product> | null>(null);
+	const { bulkDeleteProducts } = useProduct();
 
 	const infiniteProducts =
 		api.product.getControlledProductsInfinite.useInfiniteQuery(
 			{
 				limit: 8,
-				search,
-				sort
+				search
 			},
 			{
 				getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -57,6 +64,35 @@ export function ProductsTable() {
 			column: column as 'name' | 'quantity' | 'listPrice' | 'modelYear',
 			direction
 		});
+	};
+
+	const handleSelectProduct = (productId: string, isSelected: boolean) => {
+		if (isSelected) {
+			setSelectedProducts((prev) => [...prev, productId]);
+		} else {
+			setSelectedProducts((prev) => prev.filter((id) => id !== productId));
+		}
+	};
+
+	const handleBulkDelete = async () => {
+		if (selectedProducts.length === 0) {
+			toast.warning('Please select at least one product to delete');
+			return;
+		}
+
+		try {
+			await bulkDeleteProducts.mutateAsync({ ids: selectedProducts });
+
+			toast.success(`Successfully deleted ${selectedProducts.length} products`);
+			setSelectedProducts([]);
+			// Reset table row selection
+			if (tableRef.current) {
+				tableRef.current.resetRowSelection();
+			}
+		} catch (error) {
+			console.error('Error deleting products:', error);
+			toast.error('Failed to delete products');
+		}
 	};
 
 	const extraItemHeight = 65;
@@ -85,8 +121,6 @@ export function ProductsTable() {
 		}
 	);
 
-	console.log('Product query data:', productQuery.data);
-
 	usePrefetchNextPage({
 		page,
 		pageSize,
@@ -97,20 +131,28 @@ export function ProductsTable() {
 	});
 
 	const productData = productQuery.data ?? [];
-	// Only show loading state on first load or when we don't have data
+
 	const isLoading =
 		productQuery.isLoading || (productQuery.isFetching && !productQuery.data);
 
 	const columnsList = productListColumns({
 		onSort: handleSort,
 		currentSort: sort,
-		isLoading
+		isLoading,
+		selectedProducts,
+		onSelectProducts: (productIds) => {
+			setSelectedProducts(productIds);
+		}
 	});
 
 	const columnsGrid = productGridColumns({
 		onSort: handleSort,
 		currentSort: sort,
-		isLoading
+		isLoading,
+		selectedProducts,
+		onSelectProducts: (productIds) => {
+			setSelectedProducts(productIds);
+		}
 	});
 
 	const skeletonData = skeletonProductsData({ pageSize });
@@ -144,22 +186,27 @@ to upload items list"
 				viewType={viewType}
 				onViewChange={setViewType}
 				onSort={handleSort}
-				currentSort={sort}
 			>
-				<button
+				<Button
 					type="button"
-					className="flex items-center gap-1 rounded-lg bg-white-100"
+					color="secondary"
+					className="flex items-center gap-2 rounded-lg"
+					onClick={handleBulkDelete}
+					disabled={selectedProducts.length === 0}
 				>
-					<Icon.MoreActions />
-					<span className="font-extrabold text-black text-xs leading-[0.875rem] hover:font-semibold">
-						ALL ACTIONS
+					<span className="font-extrabold text-sm text-white leading-[0.875rem] hover:font-semibold">
+						{selectedProducts.length > 0
+							? `DELETE ${selectedProducts.length} ITEMS`
+							: 'ALL ACTIONS'}
 					</span>
-				</button>
+					<Icon.Trash fill="#FF808B" />
+				</Button>
 			</ViewTypeSelector>
 			{viewType === 'list' ? (
 				<>
 					{/* This table list is showing on desktop */}
 					<GenericDataListTable
+						ref={tableRef}
 						columns={columnsList}
 						data={displayData}
 						pageSize={pageSize}
@@ -169,7 +216,11 @@ to upload items list"
 					<div className="flex flex-col gap-1 md:hidden">
 						{infiniteProductsData.map((product) => (
 							<div className="px-3" key={product.id}>
-								<ProductListCard {...product} />
+								<ProductListCard
+									product={product}
+									isSelected={selectedProducts.includes(product.id)}
+									onSelect={(value) => handleSelectProduct(product.id, value)}
+								/>
 							</div>
 						))}
 						{(isLoadingInfinite || infiniteProducts.isFetchingNextPage) &&
@@ -187,17 +238,25 @@ to upload items list"
 				<>
 					{/* This table grid is showing on desktop */}
 					<GenericDataGridTable
+						ref={tableRef}
 						columns={columnsGrid}
 						data={displayData}
 						pageSize={pageSize}
 						totalPages={totalPagesQuery.data}
-						CardComponent={ProductGridCard}
+						CardComponent={ProductGridCardWrapper}
 						isLoading={isLoading}
+						selectedItems={selectedProducts}
+						onSelectItem={handleSelectProduct}
 					/>
 					{/* This grid is showing on mobile */}
 					<div className="grid grid-cols-1 gap-1 px-3 md:hidden">
 						{infiniteProductsData.map((product) => (
-							<ProductGridCard key={product.id} {...product} />
+							<ProductGridCard
+								key={product.id}
+								product={product}
+								isSelected={selectedProducts.includes(product.id)}
+								onSelect={(value) => handleSelectProduct(product.id, value)}
+							/>
 						))}
 						{(isLoadingInfinite || infiniteProducts.isFetchingNextPage) &&
 							Array.from({ length: 8 }).map((_, index) => (

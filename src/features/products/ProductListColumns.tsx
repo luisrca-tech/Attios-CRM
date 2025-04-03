@@ -1,12 +1,11 @@
 import type { ColumnDef } from '@tanstack/react-table';
 import Image from 'next/image';
-import { Button } from '~/common/components/ui/Button';
-import { Icon } from '~/common/components/ui/Icons/_index';
 import { Checkbox } from '~/common/components/ui/checkbox';
 import { OrdenationButton } from '~/common/components/block/OrdenationButton';
 import { toast } from 'sonner';
 import { Skeleton } from '~/common/components/ui/skeleton';
 import type { Product } from './types/product.type';
+import { ProductMoreActions } from '~/features/products/components/ProductMoreActions';
 
 export type ColumnType<TData> = ColumnDef<TData, unknown>[];
 
@@ -17,12 +16,15 @@ interface ProductListColumnsProps {
 		direction: 'asc' | 'desc';
 	};
 	isLoading?: boolean;
+	selectedProducts: string[];
+	onSelectProducts: (productIds: string[]) => void;
 }
 
 export const productListColumns = ({
 	onSort,
 	currentSort,
-	isLoading
+	isLoading,
+	onSelectProducts
 }: ProductListColumnsProps): ColumnDef<Product, unknown>[] => {
 	const columns: ColumnDef<Product, unknown>[] = [
 		{
@@ -30,15 +32,29 @@ export const productListColumns = ({
 			header: ({ table }) => (
 				<Checkbox
 					checked={table.getIsAllPageRowsSelected()}
-					onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+					onCheckedChange={(value) => {
+						table.toggleAllPageRowsSelected(!!value);
+						setTimeout(() => {
+							const selectedRows = table.getSelectedRowModel().rows;
+							const selectedIds = selectedRows.map((row) => row.original.id);
+							onSelectProducts(selectedIds);
+						}, 0);
+					}}
 					className="h-5 w-5"
 					disabled={isLoading}
 				/>
 			),
-			cell: ({ row }) => (
+			cell: ({ row, table }) => (
 				<Checkbox
 					checked={row.getIsSelected()}
-					onCheckedChange={(value) => row.toggleSelected(!!value)}
+					onCheckedChange={(value) => {
+						row.toggleSelected(!!value);
+						setTimeout(() => {
+							const selectedRows = table.getSelectedRowModel().rows;
+							const selectedIds = selectedRows.map((row) => row.original.id);
+							onSelectProducts(selectedIds);
+						}, 0);
+					}}
 					className="h-5 w-5"
 					disabled={isLoading}
 				/>
@@ -284,15 +300,11 @@ export const productListColumns = ({
 			id: 'actions',
 			enableGrouping: false,
 			header: () => null,
-			cell: () => {
+			cell: ({ row }) => {
 				if (isLoading) {
 					return <Skeleton className="h-9 w-9" />;
 				}
-				return (
-					<Button color="septenary" className="h-9 w-9 border border-white-200">
-						<Icon.MoreActions />
-					</Button>
-				);
+				return <ProductMoreActions product={row.original} />;
 			}
 		}
 	];

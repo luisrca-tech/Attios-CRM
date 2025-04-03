@@ -15,6 +15,7 @@ import { useProduct } from '../hooks/useProduct';
 import { updateProductSchema } from '../schemas/updateProduct.schema';
 import type { UpdateProduct } from '../types/updateProduct.type';
 import { ProductImageCarousel } from './ProductImageCarousel';
+import { Textarea } from '~/common/components/ui/textarea';
 
 interface UpdateProductFormProps {
 	product: typeof products.$inferSelect & {
@@ -52,7 +53,8 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 			currency: 'USD',
 			category: categoryName ?? '',
 			subcategory: product.subcategory ?? '',
-			productImages: productImages
+			productImages: productImages,
+			description: product.description ?? ''
 		}
 	});
 
@@ -107,7 +109,8 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 				category: values.category,
 				subcategory: values.subcategory,
 				currency: values.currency,
-				productImages: uploadedImages
+				productImages: uploadedImages,
+				description: values.description
 			});
 
 			toast.success('Product updated successfully');
@@ -254,6 +257,10 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 								)}
 							</div>
 						</div>
+						<Textarea
+							{...register('description')}
+							placeholder="Type the product description here..."
+						/>
 					</div>
 				</div>
 			</div>

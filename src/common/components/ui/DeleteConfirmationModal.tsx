@@ -1,5 +1,3 @@
-import { useAtom } from 'jotai';
-import { isOpenConfirmationModal } from '~/common/atoms/is-open-confirmation-modal';
 import { Button } from './Button';
 import {
 	Dialog,
@@ -12,20 +10,16 @@ import {
 interface DeleteConfirmationModalProps {
 	onConfirm: () => void;
 	onCancel: () => void;
+	isOpen: boolean;
 }
 
 export const DeleteConfirmationModal = ({
 	onConfirm,
-	onCancel
+	onCancel,
+	isOpen
 }: DeleteConfirmationModalProps) => {
-	const [isOpen, setIsOpen] = useAtom(isOpenConfirmationModal);
-
-	const handleOpenChange = () => {
-		setIsOpen((prev) => !prev);
-	};
-
 	return (
-		<Dialog open={isOpen} onOpenChange={handleOpenChange}>
+		<Dialog open={isOpen} onOpenChange={onCancel}>
 			<DialogContent>
 				<DialogHeader>
 					<DialogTitle className="font-bold text-base text-black">

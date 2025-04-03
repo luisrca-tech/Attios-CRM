@@ -4,6 +4,7 @@ import {
 	index,
 	integer,
 	serial,
+	text,
 	timestamp,
 	varchar
 } from 'drizzle-orm/pg-core';
@@ -36,7 +37,8 @@ export const products = createTable(
 		listPrice: decimal('list_price', { precision: 10, scale: 2 }).notNull(),
 		sku: varchar('sku', { length: 100 }).unique(),
 		currency: varchar('currency', { length: 3 }),
-		subcategory: varchar('subcategory', { length: 100 })
+		subcategory: varchar('subcategory', { length: 100 }),
+		description: text('description')
 	},
 	(table) => ({
 		brandIdIdx: index('brand_id_idx').on(table.brandId),

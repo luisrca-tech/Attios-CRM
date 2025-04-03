@@ -315,4 +315,43 @@ describe('Product', () => {
 			expect(decrescentResult[1]?.listPrice).toBe('99.99');
 		});
 	});
+
+	it('should be able to delete a single product', async () => {
+		mockDb.transaction.mockImplementation(async (callback) => {
+			const tx = {
+				delete: () => ({
+					where: () => Promise.resolve([{ id: 'PROD1' }])
+				})
+			};
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+			return callback(tx as any);
+		});
+
+		const result = await caller.product.delete({ id: 'PROD1' });
+
+		expect(result).toBeDefined();
+		expect(result).toEqual([{ id: 'PROD1' }]);
+		expect(mockDb.transaction).toHaveBeenCalled();
+	});
+
+	it('should be able to delete multiple products in bulk', async () => {
+		const productIds = ['PROD1', 'PROD2'];
+
+		mockDb.transaction.mockImplementation(async (callback) => {
+			const tx = {
+				delete: () => ({
+					where: () => Promise.resolve([{ id: 'PROD1' }, { id: 'PROD2' }])
+				})
+			};
+			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
+			return callback(tx as any);
+		});
+
+		const result = await caller.product.bulkDelete({ ids: productIds });
+
+		expect(result).toBeDefined();
+		expect(result).toHaveLength(2);
+		expect(result).toEqual([{ id: 'PROD1' }, { id: 'PROD2' }]);
+		expect(mockDb.transaction).toHaveBeenCalled();
+	});
 });
