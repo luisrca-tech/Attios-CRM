@@ -17,5 +17,6 @@ export const updateProductSchema = z.object({
 			})
 		)
 		.optional(),
+	description: z.string().optional(),
 	filesToUpload: z.array(z.any()).optional()
 });
