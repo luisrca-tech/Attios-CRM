@@ -8,7 +8,6 @@ import {
 	DialogTitle
 } from '~/common/components/ui/dialog';
 import { NewProductForm } from './NewProductForm';
-
 export function NewProductModal() {
 	const [, setSelectedModal] = useAtom(selectedAddAction);
 
