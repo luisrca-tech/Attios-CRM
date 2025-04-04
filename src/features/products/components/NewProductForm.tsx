@@ -16,8 +16,10 @@ import { useProduct } from '../hooks/useProduct';
 import { newProductSchema } from '../schemas/newProduct.schema';
 import type { NewProduct } from '../types/newProduct.type';
 import { api } from '~/trpc/react';
+import { useRouter } from 'next/navigation';
 
 export function NewProductForm() {
+	const router = useRouter();
 	const {
 		register,
 		handleSubmit,
@@ -44,7 +46,7 @@ export function NewProductForm() {
 		setCategorySearch: onSearchCategory,
 		setBrandSearch: onSearchBrand
 	} = useProduct();
-	const [, _setSelectedModal] = useAtom(selectedAddAction);
+	const [, setSelectedModal] = useAtom(selectedAddAction);
 
 	const { startUpload } = useUploadThing('imageUploader');
 	const imageCreation = api.images.upload.useMutation();
@@ -95,7 +97,8 @@ export function NewProductForm() {
 					imageKey: uploadResponse[0]?.key ?? ''
 				});
 			}
-
+			router.push(`/product/${product[0].id}`);
+			setSelectedModal(null);
 			toast.success('Product created successfully');
 		} catch (_error) {
 			toast.error('Failed to create product');
