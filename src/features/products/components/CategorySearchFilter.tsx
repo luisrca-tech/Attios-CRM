@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import { useProduct } from "../hooks/useProduct";
-import { Input } from "~/common/components/ui/Input";
-import { useProductFilters } from "../hooks/useProductFilters";
+import { useProduct } from '../hooks/useProduct';
+import { Input } from '~/common/components/ui/Input';
+import { useProductFilters } from '../hooks/useProductFilters';
 export function CategorySearchFilter() {
-  const { filteredCategories, setCategorySearch: onSearchCategory } =
-    useProduct();
+	const { filteredCategories, setCategorySearch: onSearchCategory } =
+		useProduct();
 
-  const { handleFilterChange } = useProductFilters();
-  return (
-    <Input.SelectInput
-      text="Category"
-      options={filteredCategories}
-      onSearch={(value) => {
-        onSearchCategory(value);
-        console.log(value);
-      }}
-      onChange={(value) => handleFilterChange("category", value)}
-      variant="v2"
-    />
-  );
+	const { handleFilterChange } = useProductFilters();
+	return (
+		<Input.SelectInput
+			text="Category"
+			options={filteredCategories}
+			onSearch={(value) => {
+				onSearchCategory(value);
+				console.log(value);
+			}}
+			onChange={(value) => handleFilterChange('category', value)}
+			variant="v2"
+		/>
+	);
 }
