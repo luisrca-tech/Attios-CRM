@@ -36,7 +36,7 @@ export function ProductActions({ product }: { product: Product }) {
 
     toggleActive({ id });
     setIsOpenModal(false);
-    router.refresh();
+    router.push("/products");
 
     if (newActiveState) {
       toast.success("Product activated successfully");
