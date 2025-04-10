@@ -16,8 +16,9 @@ export function CategorySearchFilter() {
 				onSearchCategory(value);
 				console.log(value);
 			}}
+
 			onChange={(value) => handleFilterChange('category', value)}
-			variant="v2"
+			withoutAddButton
 		/>
 	);
 }

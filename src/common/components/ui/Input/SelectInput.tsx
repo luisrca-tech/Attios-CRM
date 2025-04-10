@@ -19,11 +19,11 @@ interface SelectInputProps {
 	onSearch: (value: string) => void;
 	onChange: (value: string) => void;
 	onAdd?: (value: string) => void;
-	variant?: 'v1' | 'v2';
+	withoutAddButton?: boolean;
 }
 
 const SelectInput = React.forwardRef<HTMLButtonElement, SelectInputProps>(
-	({ text, options, onSearch, onChange, onAdd, variant = 'v1' }, ref) => {
+	({ text, options, onSearch, onChange, onAdd, withoutAddButton = false }, ref) => {
 		const [open, setOpen] = React.useState(false);
 		const [value, setValue] = React.useState('');
 		const [searchValue, setSearchValue] = React.useState('');
@@ -79,7 +79,7 @@ const SelectInput = React.forwardRef<HTMLButtonElement, SelectInputProps>(
 						<CommandList>
 							<CommandEmpty className="flex flex-col items-center justify-center gap-2">
 								No option found!
-								{variant === 'v1' && (
+								{!withoutAddButton && (
 									<Button onClick={() => onAdd?.(searchValue)}>
 										Add "{searchValue}"
 									</Button>
