@@ -1,6 +1,6 @@
 import { relations, sql } from 'drizzle-orm';
 import {
-  boolean,
+	boolean,
 	decimal,
 	index,
 	integer,

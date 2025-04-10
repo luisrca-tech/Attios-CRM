@@ -73,10 +73,10 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 	};
 
 	const onSubmit = async (values: UpdateProduct) => {
-    if (!product.isActive) {
-      toast.error('active the product before updating');
-      return;
-    }
+		if (!product.isActive) {
+			toast.error('active the product before updating');
+			return;
+		}
 
 		try {
 			let uploadedImages: { url: string; key: string }[] =

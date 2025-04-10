@@ -20,7 +20,7 @@ export function ContentSidebarHeader({
 	title,
 	description
 }: ContentSidebarHeaderProps) {
-  const router = useRouter();
+	const router = useRouter();
 
 	return (
 		<div
