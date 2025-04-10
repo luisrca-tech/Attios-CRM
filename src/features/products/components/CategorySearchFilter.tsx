@@ -14,9 +14,7 @@ export function CategorySearchFilter() {
 			options={filteredCategories}
 			onSearch={(value) => {
 				onSearchCategory(value);
-				console.log(value);
 			}}
-
 			onChange={(value) => handleFilterChange('category', value)}
 			withoutAddButton
 		/>
