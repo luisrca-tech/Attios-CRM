@@ -1,10 +1,11 @@
-import { eq, sql, asc, desc, ilike } from 'drizzle-orm';
+import { eq, sql, asc, desc } from 'drizzle-orm';
 import { z } from 'zod';
 import { publicProcedure } from '~/server/api/trpc';
 import { products } from '~/server/db/schema';
 import { totalPagesQuerySchema } from '../../schemas/totalPagesQuery.schema';
 import { paginatedProductsSchema } from '../schemas/paginatedProducts.schema';
 import { controlledProductsSchema } from '../schemas/controlledProducts.schema';
+import { createSearchCondition } from '~/server/api/routers/utils/searchCondition';
 
 const requiredProductRelations = {
 	category: {
@@ -26,10 +27,9 @@ export const productQueries = {
 	getProductsPaginated: publicProcedure
 		.input(paginatedProductsSchema)
 		.query(async ({ ctx, input }) => {
-			const searchTerm = input.search?.trim() || '';
-			const searchCondition = searchTerm
-				? ilike(products.name, `%${searchTerm}%`)
-				: undefined;
+			const searchCondition = createSearchCondition(input.search, {
+				name: products.name
+			});
 
 			return ctx.db.query.products.findMany({
 				with: requiredProductRelations,
@@ -49,10 +49,9 @@ export const productQueries = {
 	getTotalPages: publicProcedure
 		.input(totalPagesQuerySchema)
 		.query(async ({ ctx, input }) => {
-			const searchTerm = input.search?.trim() || '';
-			const searchCondition = searchTerm
-				? ilike(products.name, `%${searchTerm}%`)
-				: undefined;
+			const searchCondition = createSearchCondition(input.search, {
+				name: products.name
+			});
 
 			const [result] = await ctx.db
 				.select({ count: sql<number>`count(*)`.mapWith(Number) })
@@ -68,10 +67,9 @@ export const productQueries = {
 		.input(controlledProductsSchema)
 		.query(async ({ ctx, input }) => {
 			const { limit, cursor, sort } = input;
-			const searchTerm = input.search?.trim() || '';
-			const searchCondition = searchTerm
-				? ilike(products.name, `%${searchTerm}%`)
-				: undefined;
+			const searchCondition = createSearchCondition(input.search, {
+				name: products.name
+			});
 
 			const items = await ctx.db.query.products.findMany({
 				with: requiredProductRelations,

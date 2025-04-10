@@ -1,21 +1,19 @@
 import { publicProcedure } from '~/server/api/trpc';
-import { asc, desc, ilike, sql, or } from 'drizzle-orm';
+import { asc, desc, sql } from 'drizzle-orm';
 import { leads } from '~/server/db/schema/leads';
 import { paginatedLeadsSchema } from '../schemas/paginatedLeads.schema';
 import { totalPagesQuerySchema } from '../../schemas/totalPagesQuery.schema';
 import { controlledLeadsSchema } from '../schemas/controlledLeads.schema';
+import { createSearchCondition } from '~/server/api/routers/utils/searchCondition';
 
 export const leadQueries = {
 	getLeadsPaginated: publicProcedure
 		.input(paginatedLeadsSchema)
 		.query(async ({ ctx, input }) => {
-			const searchTerm = input.search?.trim() || '';
-			const searchCondition = searchTerm
-				? or(
-						ilike(leads.firstName, `%${searchTerm}%`),
-						ilike(leads.lastName, `%${searchTerm}%`)
-					)
-				: undefined;
+			const searchCondition = createSearchCondition(input.search, {
+				firstName: leads.firstName,
+				lastName: leads.lastName
+			});
 
 			return ctx.db.query.leads.findMany({
 				limit: input.pageSize,
@@ -46,13 +44,10 @@ export const leadQueries = {
 	getTotalPages: publicProcedure
 		.input(totalPagesQuerySchema)
 		.query(async ({ ctx, input }) => {
-			const searchTerm = input.search?.trim() || '';
-			const searchCondition = searchTerm
-				? or(
-						ilike(leads.firstName, `%${searchTerm}%`),
-						ilike(leads.lastName, `%${searchTerm}%`)
-					)
-				: undefined;
+			const searchCondition = createSearchCondition(input.search, {
+				firstName: leads.firstName,
+				lastName: leads.lastName
+			});
 
 			const [result] = await ctx.db
 				.select({ count: sql<number>`count(*)`.mapWith(Number) })
@@ -68,13 +63,10 @@ export const leadQueries = {
 		.input(controlledLeadsSchema)
 		.query(async ({ ctx, input }) => {
 			const { limit, cursor, sort } = input;
-			const searchTerm = input.search?.trim() || '';
-			const searchCondition = searchTerm
-				? or(
-						ilike(leads.firstName, `%${searchTerm}%`),
-						ilike(leads.lastName, `%${searchTerm}%`)
-					)
-				: undefined;
+			const searchCondition = createSearchCondition(input.search, {
+				firstName: leads.firstName,
+				lastName: leads.lastName
+			});
 
 			const items = await ctx.db.query.leads.findMany({
 				limit: limit + 1,
