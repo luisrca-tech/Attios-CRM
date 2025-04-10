@@ -7,5 +7,5 @@ export const paginatedLeadsSchema = paginationSchema.extend({
 			column: z.enum(['name', 'email', 'phone', 'status', 'role']),
 			direction: z.enum(['asc', 'desc']).default('asc')
 		})
-		.optional()
+		.optional(),
 });
