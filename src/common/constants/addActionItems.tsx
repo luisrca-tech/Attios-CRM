@@ -1,5 +1,6 @@
 import { NewProductModal } from '~/features/products/components/NewProductModal';
 import { Icon } from '../components/ui/Icons/_index';
+import { NewLeadModal } from '~/features/leads/components/NewLeadModal';
 
 interface AddActionItem {
 	label: string;
@@ -50,7 +51,9 @@ export const addActionItems: AddActionItem[] = [
 				fill="#5E81F4"
 			/>
 		),
-		isComingSoon: true
+		isComingSoon: false,
+		renderModal: () => <NewLeadModal />,
+		mobileHref: '/leads/new'
 	},
 	{
 		label: 'New Event',

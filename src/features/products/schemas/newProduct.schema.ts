@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { storageFileSchema } from '~/features/schemas/storageFile.schema';
 
 export const newProductSchema = z.object({
 	name: z.string().min(1, 'Name is required'),
@@ -8,12 +9,5 @@ export const newProductSchema = z.object({
 	category: z.string().min(1, 'Category is required'),
 	brand: z.string().min(1, 'Brand is required'),
 	file: z.any().optional(),
-	productImages: z
-		.array(
-			z.object({
-				url: z.string(),
-				key: z.string()
-			})
-		)
-		.optional()
+	productImages: storageFileSchema
 });

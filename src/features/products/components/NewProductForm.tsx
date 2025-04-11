@@ -15,6 +15,8 @@ import { useProduct } from '../hooks/useProduct';
 import { newProductSchema } from '../schemas/newProduct.schema';
 import type { NewProduct } from '../types/newProduct.type';
 import { api } from '~/trpc/react';
+import { useCategory } from '~/features/hooks/useCategory';
+import { useBrand } from '~/features/hooks/useBrand';
 
 export function NewProductForm() {
 	const {
@@ -34,27 +36,25 @@ export function NewProductForm() {
 	});
 	const router = useRouter();
 	const file = watch('file');
+	const imageCreation = api.images.upload.useMutation();
+
+	const { createProduct } = useProduct();
+
 	const {
-		createCategory,
-		createProduct,
-		createBrand,
-		filteredCategories,
 		filteredBrands,
+		setBrandSearch: onSearchBrand,
+		handleAddBrand
+	} = useBrand();
+
+	const {
+		filteredCategories,
 		setCategorySearch: onSearchCategory,
-		setBrandSearch: onSearchBrand
-	} = useProduct();
+		handleAddCategory
+	} = useCategory();
+
 	const [, _setSelectedModal] = useAtom(selectedAddAction);
 
 	const { startUpload } = useUploadThing('imageUploader');
-	const imageCreation = api.images.upload.useMutation();
-
-	const handleAddCategory = (value: string) => {
-		createCategory.mutate({ name: value });
-	};
-
-	const handleAddBrand = (value: string) => {
-		createBrand.mutate({ name: value });
-	};
 
 	const handleFileSelect = (file: File) => {
 		setValue('file', file);
@@ -79,7 +79,8 @@ export function NewProductForm() {
 				price: values.price,
 				availableQuantity: values.availableQuantity,
 				category: values.category,
-				brand: values.brand
+				brand: values.brand,
+				productImages: values.productImages
 			});
 
 			if (!product?.[0]) {

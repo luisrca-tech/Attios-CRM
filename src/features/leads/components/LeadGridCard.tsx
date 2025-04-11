@@ -39,7 +39,7 @@ export function LeadGridCard({
 				</Button>
 			</div>
 			<div className="flex flex-col items-center justify-center gap-4">
-				<div className="min-h-20 min-w-20">
+				<div className="relative min-h-20 min-w-20">
 					<Image
 						src={image ?? '/placeholder-avatar.png'}
 						alt={`${firstName} ${lastName}`}
@@ -47,7 +47,10 @@ export function LeadGridCard({
 						height={80}
 						className="3xl:h-32 h-20 3xl:w-32 w-20 rounded-lg object-cover"
 					/>
-					<UserStatusLogged userStatus={status as UserStatus} />
+					<UserStatusLogged
+						userStatus={status as UserStatus}
+						className="lg:h-4 lg:w-4"
+					/>
 				</div>
 				<div className="flex flex-col items-center justify-between">
 					<div className="flex flex-col items-center gap-1">
