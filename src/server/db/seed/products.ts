@@ -1,86 +1,70 @@
-import { faker } from '@faker-js/faker';
-import { randomUUID } from 'node:crypto';
-import { db } from '../index';
-import {
-	brands,
-	categories,
-	productImages,
-	products
-} from '../schema/products';
-import { orderItems } from '../schema/orders';
+import { faker } from "@faker-js/faker";
+import { randomUUID } from "node:crypto";
+import { db } from "../index";
+import { productImages, products } from "../schema/products";
+import { brands } from "../schema/brands";
+import { categories } from "../schema/categories";
+import { orderItems } from "../schema/orders";
+import { seedCategories } from "./categories";
+import { seedBrands } from "./brands";
 
 export async function seedProducts() {
-	await db.delete(orderItems);
-	await db.delete(productImages);
-	await db.delete(products);
-	await db.delete(categories);
-	await db.delete(brands);
+  await db.delete(orderItems);
+  await db.delete(productImages);
+  await db.delete(products);
+  await db.delete(categories);
+  await db.delete(brands);
 
-	const brandsData = Array.from({ length: 10 }, () => ({
-		name: faker.company.name()
-	}));
+  const { insertedCategories } = (await seedCategories()) as {
+    insertedCategories: { id: number; name: string }[];
+  };
+  const { insertedBrands } = (await seedBrands()) as {
+    insertedBrands: { id: number; name: string }[];
+  };
 
-	const insertedBrands = await db.insert(brands).values(brandsData).returning();
+  // Generate unique product names
+  const usedNames = new Set<string>();
+  const generateUniqueName = () => {
+    let name = faker.commerce.productName();
+    while (usedNames.has(name)) {
+      name = `${faker.commerce.productName()} ${faker.string.alphanumeric(4)}`;
+    }
+    usedNames.add(name);
+    return name;
+  };
 
-	const categoriesData = [
-		{ name: 'Smartphones' },
-		{ name: 'Laptops' },
-		{ name: 'Tablets' },
-		{ name: 'Smartwatches' },
-		{ name: 'Headphones' },
-		{ name: 'Cameras' },
-		{ name: 'Gaming Consoles' },
-		{ name: 'Speakers' }
-	];
+  const productsData = Array.from({ length: 500 }, (_) => {
+    const randomBrand = faker.helpers.arrayElement(insertedBrands);
+    const randomCategory = faker.helpers.arrayElement(insertedCategories);
+    const sku = `SKU-${randomUUID().slice(0, 8)}`;
 
-	const insertedCategories = await db
-		.insert(categories)
-		.values(categoriesData)
-		.returning();
+    return {
+      id: randomUUID().slice(0, 10),
+      name: generateUniqueName(),
+      brandId: randomBrand.id,
+      categoryId: randomCategory.id,
+      modelYear: faker.number.int({ min: 2020, max: 2024 }),
+      sku,
+      listPrice: faker.commerce.price({ min: 100, max: 2000, dec: 2 }),
+      quantity: faker.number.int({ min: 0, max: 3000 }),
+      description: faker.lorem.paragraph({ min: 10, max: 1000 }),
+    };
+  });
 
-	// Generate unique product names
-	const usedNames = new Set<string>();
-	const generateUniqueName = () => {
-		let name = faker.commerce.productName();
-		while (usedNames.has(name)) {
-			name = `${faker.commerce.productName()} ${faker.string.alphanumeric(4)}`;
-		}
-		usedNames.add(name);
-		return name;
-	};
+  const insertedProducts = await db
+    .insert(products)
+    .values(productsData)
+    .returning();
 
-	const productsData = Array.from({ length: 500 }, (_) => {
-		const randomBrand = faker.helpers.arrayElement(insertedBrands);
-		const randomCategory = faker.helpers.arrayElement(insertedCategories);
-		const sku = `SKU-${randomUUID().slice(0, 8)}`;
+  const productImagesData = insertedProducts.flatMap((product) =>
+    Array.from({ length: 3 }, () => ({
+      productId: product.id,
+      url: faker.image.url({ width: 640, height: 480 }),
+      key: randomUUID(),
+    }))
+  );
 
-		return {
-			id: randomUUID().slice(0, 10),
-			name: generateUniqueName(),
-			brandId: randomBrand.id,
-			categoryId: randomCategory.id,
-			modelYear: faker.number.int({ min: 2020, max: 2024 }),
-			sku,
-			listPrice: faker.commerce.price({ min: 100, max: 2000, dec: 2 }),
-			quantity: faker.number.int({ min: 0, max: 3000 }),
-			description: faker.lorem.paragraph({ min: 10, max: 1000 })
-		};
-	});
+  await db.insert(productImages).values(productImagesData);
 
-	const insertedProducts = await db
-		.insert(products)
-		.values(productsData)
-		.returning();
-
-	const productImagesData = insertedProducts.flatMap((product) =>
-		Array.from({ length: 3 }, () => ({
-			productId: product.id,
-			url: faker.image.url({ width: 640, height: 480 }),
-			key: randomUUID()
-		}))
-	);
-
-	await db.insert(productImages).values(productImagesData);
-
-	console.log('✓ Created 500 products with unique names');
+  console.log("✓ Created 500 products with unique names");
 }

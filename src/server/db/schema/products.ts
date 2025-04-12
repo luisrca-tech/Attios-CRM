@@ -9,16 +9,8 @@ import {
 	varchar
 } from 'drizzle-orm/pg-core';
 import { createTable } from './config';
-
-export const brands = createTable('brand', {
-	id: serial('id').primaryKey(),
-	name: varchar('name', { length: 100 }).notNull()
-});
-
-export const categories = createTable('category', {
-	id: serial('id').primaryKey(),
-	name: varchar('name', { length: 100 }).notNull()
-});
+import { categories } from './categories';
+import { brands } from './brands';
 
 export const products = createTable(
 	'product',
@@ -74,12 +66,4 @@ export const productImagesRelations = relations(productImages, ({ one }) => ({
 		fields: [productImages.productId],
 		references: [products.id]
 	})
-}));
-
-export const categoriesRelations = relations(categories, ({ many }) => ({
-	products: many(products)
-}));
-
-export const brandsRelations = relations(brands, ({ many }) => ({
-	products: many(products)
 }));
