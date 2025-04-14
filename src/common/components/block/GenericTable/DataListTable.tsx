@@ -27,8 +27,10 @@ import {
 } from '../../ui/table';
 import { Pagination } from './Pagination';
 import { cn } from '~/lib/utils';
+import { useAtomValue } from 'jotai';
+import { productActiveStatesAtom } from '~/features/products/atoms/productAtoms';
 
-interface DataListTableProps<TData, TValue> {
+interface DataListTableProps<TData extends { id: string | number }, TValue> {
 	className?: string;
 	columns: ColumnDef<TData, TValue>[];
 	data: TData[];
@@ -37,7 +39,7 @@ interface DataListTableProps<TData, TValue> {
 }
 
 export const GenericDataListTable = forwardRef(
-	<TData, TValue>(
+	<TData extends { id: string | number }, TValue>(
 		{
 			columns,
 			data,
@@ -52,6 +54,7 @@ export const GenericDataListTable = forwardRef(
 			parseAsInteger.withDefault(1)
 		);
 		const [sorting, setSorting] = useState<SortingState>([]);
+		const activeStates = useAtomValue(productActiveStatesAtom);
 
 		const table = useReactTable({
 			data,
@@ -117,8 +120,16 @@ export const GenericDataListTable = forwardRef(
 										.rows.find((r) => r.original === row);
 									if (!tableRow) return null;
 
+									const rowWithIsActive = row as TData & { isActive?: boolean };
+									const isActive =
+										activeStates[row.id as string] ?? rowWithIsActive.isActive;
+
 									return (
 										<TableRow
+											className={cn(
+												'cursor-pointer',
+												'isActive' in row && !isActive && 'bg-secondary-300/30'
+											)}
 											key={tableRow.id}
 											data-state={tableRow.getIsSelected() && 'selected'}
 										>
@@ -153,7 +164,7 @@ export const GenericDataListTable = forwardRef(
 			</div>
 		);
 	}
-) as <TData, TValue>(
+) as <TData extends { id: string | number }, TValue>(
 	props: DataListTableProps<TData, TValue> & {
 		ref?: React.ForwardedRef<Table<TData>>;
 	}

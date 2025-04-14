@@ -130,5 +130,14 @@ export const productMutations = {
 
 				return await tx.delete(products).where(inArray(products.id, input.ids));
 			});
+		}),
+
+	toggleActive: protectedProcedure
+		.input(z.object({ id: z.string() }))
+		.mutation(async ({ ctx, input }) => {
+			return await ctx.db
+				.update(products)
+				.set({ isActive: sql`NOT ${products.isActive}` })
+				.where(eq(products.id, input.id));
 		})
 };

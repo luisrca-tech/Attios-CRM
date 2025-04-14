@@ -3,6 +3,9 @@ import { Checkbox } from '~/common/components/ui/checkbox';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import type { Product } from '../types/product.type';
 import { ProductMoreActions } from './ProductMoreActions';
+import { cn } from '~/lib/utils';
+import { useAtomValue } from 'jotai';
+import { productActiveStatesAtom } from '../atoms/productAtoms';
 
 interface ProductGridCardProps {
 	product: Product;
@@ -15,8 +18,16 @@ export function ProductGridCard({
 	isSelected,
 	onSelect
 }: ProductGridCardProps) {
+	const activeStates = useAtomValue(productActiveStatesAtom);
+	const isActive = activeStates[product.id] ?? product.isActive;
+
 	return (
-		<div className="flex h-full flex-col justify-between rounded-xl bg-white-100 lg:border lg:border-white-400">
+		<div
+			className={cn(
+				'flex h-full flex-col justify-between rounded-xl bg-white-100 lg:border lg:border-white-400',
+				!isActive && 'bg-secondary-300/30'
+			)}
+		>
 			<div className="flex justify-between p-4">
 				<Checkbox
 					className="hidden h-5 w-5 lg:flex"
