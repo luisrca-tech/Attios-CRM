@@ -1,7 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { serial, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { createTable } from './config';
-import { teams } from './teams';
+import { users } from './users';
 
 export const subDomains = createTable('sub_domain', {
 	id: serial('id').primaryKey(),
@@ -11,5 +11,5 @@ export const subDomains = createTable('sub_domain', {
 });
 
 export const subDomainsRelations = relations(subDomains, ({ many }) => ({
-	teams: many(teams)
+	users: many(users)
 }));

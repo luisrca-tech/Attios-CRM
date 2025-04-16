@@ -6,6 +6,7 @@ import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
 import { BottomMenu } from '~/common/components/ui/BottomMenuNavigation';
 import { SideMenu } from '~/common/components/ui/SideMenuNavigation';
+import { api } from '~/trpc/server';
 
 export const metadata: Metadata = {
 	title: 'Attios',
@@ -22,6 +23,17 @@ export default async function RootLayout({
 	if (!userId) {
 		redirect('/sign-in');
 	}
+
+	const user = await api.user.getUserById(userId);
+	if (!user) {
+		redirect('/sign-in');
+	}
+
+	if (!user.subDomains) {
+		redirect('/teams/create');
+	}
+
+	console.log(user);
 
 	return (
 		<div className="h-screen">

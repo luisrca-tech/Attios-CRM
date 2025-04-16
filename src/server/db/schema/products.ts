@@ -10,7 +10,7 @@ import {
 import { brands } from './brands';
 import { categories } from './categories';
 import { createTable } from './config';
-import { leads } from './leads';
+import { leadProducts } from './leads';
 import { teams } from './teams';
 
 export const products = createTable(
@@ -33,7 +33,9 @@ export const products = createTable(
 		subcategory: varchar('subcategory', { length: 100 }),
 		teamId: integer('team_id')
 			.references(() => teams.id)
-			.notNull()
+			.notNull(),
+		createdAt: timestamp('created_at').notNull().defaultNow(),
+		updatedAt: timestamp('updated_at').notNull().defaultNow()
 	},
 	(table) => ({
 		brandIdIdx: index('brand_id_idx').on(table.brandId),
@@ -67,7 +69,7 @@ export const productsRelations = relations(products, ({ one, many }) => ({
 		fields: [products.teamId],
 		references: [teams.id]
 	}),
-	leads: many(leads)
+	leads: many(leadProducts)
 }));
 
 export const productImagesRelations = relations(productImages, ({ one }) => ({

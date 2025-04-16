@@ -1,4 +1,4 @@
-import { relations } from 'drizzle-orm';
+import { relations, sql } from 'drizzle-orm';
 import {
 	boolean,
 	integer,
@@ -30,10 +30,33 @@ export const leads = createTable('lead', {
 		.notNull()
 });
 
+export const leadProducts = createTable('lead_products', {
+	id: serial('id').primaryKey(),
+	leadId: integer('lead_id')
+		.references(() => leads.id)
+		.notNull(),
+	productId: varchar('product_id', { length: 10 })
+		.references(() => products.id)
+		.notNull(),
+	createdAt: timestamp('created_at').default(sql`now()`).notNull(),
+	updatedAt: timestamp('updated_at').default(sql`now()`).notNull()
+});
+
 export const leadsRelations = relations(leads, ({ many, one }) => ({
-	products: many(products),
+	products: many(leadProducts),
 	team: one(teams, {
 		fields: [leads.teamId],
 		references: [teams.id]
+	})
+}));
+
+export const leadProductsRelations = relations(leadProducts, ({ one }) => ({
+	lead: one(leads, {
+		fields: [leadProducts.leadId],
+		references: [leads.id]
+	}),
+	product: one(products, {
+		fields: [leadProducts.productId],
+		references: [products.id]
 	})
 }));

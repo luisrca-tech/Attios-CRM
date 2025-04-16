@@ -3,5 +3,6 @@ import { z } from 'zod';
 export const userSchema = z.object({
 	userId: z.string(),
 	email: z.string().email(),
-	fullName: z.string()
+	fullName: z.string(),
+	subDomainId: z.number().optional()
 });
