@@ -25,6 +25,7 @@ export default async function RootLayout({
 	}
 
 	const user = await api.user.getUserById(userId);
+	console.log(user);
 	if (!user) {
 		redirect('/sign-in');
 	}

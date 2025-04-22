@@ -1,5 +1,11 @@
 import { relations, sql } from 'drizzle-orm';
-import { index, integer, timestamp, varchar } from 'drizzle-orm/pg-core';
+import {
+	index,
+	integer,
+	serial,
+	timestamp,
+	varchar
+} from 'drizzle-orm/pg-core';
 import { createTable } from './config';
 import { subDomains } from './subDomain';
 import { teams } from './teams';
@@ -24,8 +30,8 @@ export const users = createTable(
 	})
 );
 
-export const teamUsers = createTable('team_users', {
-	id: integer('id').primaryKey().notNull(),
+export const teamUsers = createTable('team_user', {
+	id: serial('id').primaryKey(),
 	userId: varchar('user_id', { length: 50 })
 		.references(() => users.id)
 		.notNull(),
