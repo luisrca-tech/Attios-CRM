@@ -49,7 +49,7 @@ export async function seedProducts() {
 		return name;
 	};
 
-	const productsData = Array.from({ length: 500 }, (_) => {
+	const productsData = Array.from({ length: 500 }, (_, index) => {
 		const randomBrand = faker.helpers.arrayElement(insertedBrands);
 		const randomCategory = faker.helpers.arrayElement(insertedCategories);
 		const sku = `SKU-${randomUUID().slice(0, 8)}`;
@@ -62,7 +62,9 @@ export async function seedProducts() {
 			modelYear: faker.number.int({ min: 2020, max: 2024 }),
 			sku,
 			listPrice: faker.commerce.price({ min: 100, max: 2000, dec: 2 }),
-			quantity: faker.number.int({ min: 0, max: 3000 })
+			quantity: faker.number.int({ min: 0, max: 3000 }),
+			description: faker.lorem.paragraph({ min: 10, max: 1000 }),
+			isActive: index >= 50 // Set first 50 products as inactive
 		};
 	});
 

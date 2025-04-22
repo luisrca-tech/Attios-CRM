@@ -2,11 +2,10 @@
 
 import { useAtom } from 'jotai';
 import Image from 'next/image';
-import { forwardRef, useEffect } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { deleteImage } from '~/app/api/uploadthing/deleteImage';
 import { isOpenContentSidebar } from '~/common/atoms/content-sidebar.atom';
-import { isOpenConfirmationModal } from '~/common/atoms/is-open-confirmation-modal';
 import { Button } from '~/common/components/ui/Button';
 import { DeleteConfirmationModal } from '~/common/components/ui/DeleteConfirmationModal';
 import { Icon } from '~/common/components/ui/Icons/_index';
@@ -35,7 +34,7 @@ export const ProductImageCarousel = forwardRef<
 	ProductImageCarouselProps
 >(({ images, productId, onImagesChange, onFilesChange }) => {
 	const [isShowingContentSidebar] = useAtom(isOpenContentSidebar);
-	const [isOpenModal, setIsOpenModal] = useAtom(isOpenConfirmationModal);
+	const [isOpenModal, setIsOpenModal] = useState(false);
 	const imageDeletion = api.images.delete.useMutation();
 
 	const toggleConfirmationModal = () => {
@@ -123,6 +122,8 @@ export const ProductImageCarousel = forwardRef<
 								</Button>
 								{isOpenModal && (
 									<DeleteConfirmationModal
+										isOpen={isOpenModal}
+										title="Are you sure you want to delete this image?"
 										onConfirm={() => handleRemoveImage(image.key)}
 										onCancel={toggleConfirmationModal}
 									/>

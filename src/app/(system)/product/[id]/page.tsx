@@ -53,7 +53,7 @@ export default async function Product({ params }: { params: { id: string } }) {
 							<UpdateProductForm product={product} />
 						</div>
 						<div className="hidden lg:block">
-							<ProductActions />
+							<ProductActions product={product} />
 						</div>
 					</div>
 				</div>

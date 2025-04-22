@@ -1,9 +1,11 @@
+'use client';
+
 import Image from 'next/image';
 import { Button } from '~/common/components/ui/Button';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import { cn } from '~/lib/utils';
 import Logo from '/public/favicon.svg';
-
+import { useRouter } from 'next/navigation';
 interface ContentSidebarHeaderProps {
 	isOpen: boolean;
 	onToggleSidebar: (isOpen: boolean) => void;
@@ -14,14 +16,11 @@ interface ContentSidebarHeaderProps {
 
 export function ContentSidebarHeader({
 	isOpen,
-	onToggleSidebar,
 	className,
 	title,
 	description
 }: ContentSidebarHeaderProps) {
-	const handleToggleSidebar = () => {
-		onToggleSidebar(!isOpen);
-	};
+	const router = useRouter();
 
 	return (
 		<div
@@ -40,7 +39,7 @@ export function ContentSidebarHeader({
 				</div>
 			</div>
 			<Button
-				onClick={handleToggleSidebar}
+				onClick={() => router.back()}
 				className="h-9 w-9 bg-primary-200/10 p-0 hover:bg-primary-200/50"
 				color="secondary"
 			>

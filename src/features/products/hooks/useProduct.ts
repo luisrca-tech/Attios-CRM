@@ -91,6 +91,23 @@ export const useProduct = () => {
 		}
 	});
 
+	const deleteProduct = api.product.delete.useMutation({
+		onSuccess: () => {
+			trpcUtils.product.getProductsPaginated.invalidate();
+			trpcUtils.product.getControlledProductsInfinite.invalidate();
+		},
+		onError: (error) => {
+			toast.error(error.message);
+		}
+	});
+
+	const bulkDeleteProducts = api.product.bulkDelete.useMutation({
+		onSuccess: () => {
+			trpcUtils.product.getProductsPaginated.invalidate();
+			trpcUtils.product.getControlledProductsInfinite.invalidate();
+		}
+	});
+
 	return {
 		createCategory,
 		createProduct,
@@ -99,6 +116,8 @@ export const useProduct = () => {
 		filteredBrands,
 		setCategorySearch,
 		setBrandSearch,
-		updateProduct
+		updateProduct,
+		deleteProduct,
+		bulkDeleteProducts
 	};
 };

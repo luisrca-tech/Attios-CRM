@@ -9,7 +9,7 @@ import { GenericDataGridTable } from '../../common/components/block/GenericTable
 import { GenericDataListTable } from '../../common/components/block/GenericTable/DataListTable';
 import { Icon } from '../../common/components/ui/Icons/_index';
 import { ViewTypeSelector } from '../../common/components/ui/ViewTypeSelector';
-import { parseAsInteger, useQueryState } from 'nuqs';
+import { parseAsInteger, parseAsString, useQueryState } from 'nuqs';
 import { usePrefetchNextPage } from '~/common/hooks/usePrefetchNextPage';
 import { useInfiniteScroll } from '~/common/hooks/useInfiniteScroll';
 import { GenericGridSkeleton } from '../../common/components/ui/GenericGridSkeleton';
@@ -25,6 +25,7 @@ import { LeadListCard } from './components/LeadListCard';
 export function LeadsTable() {
 	const [viewType, setViewType] = useState<'list' | 'grid'>('list');
 	const [page] = useQueryState('page', parseAsInteger.withDefault(1));
+	const [search] = useQueryState('search', parseAsString.withDefault(''));
 	const [sort, setSort] = useState<LeadSort>({
 		column: 'name',
 		direction: 'asc'
@@ -33,7 +34,8 @@ export function LeadsTable() {
 	const infiniteLeads = api.leads.getControlledLeadsInfinite.useInfiniteQuery(
 		{
 			limit: 8,
-			sort
+			sort,
+			search
 		},
 		{
 			getNextPageParam: (lastPage) => lastPage.nextCursor,
@@ -63,14 +65,16 @@ export function LeadsTable() {
 	);
 
 	const totalPagesQuery = api.leads.getTotalPages.useQuery({
-		pageSize
+		pageSize,
+		search
 	});
 
 	const leadQuery = api.leads.getLeadsPaginated.useQuery(
 		{
 			page,
 			pageSize,
-			sort
+			sort,
+			search
 		},
 		{
 			staleTime: 0,
@@ -85,7 +89,7 @@ export function LeadsTable() {
 		totalPages: totalPagesQuery.data,
 		resource: 'leads',
 		procedure: 'getLeadsPaginated',
-		extraParams: { sort }
+		extraParams: { sort, search }
 	});
 
 	const leadData = leadQuery.data ?? [];

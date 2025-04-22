@@ -1,9 +1,11 @@
-import { eq, sql } from 'drizzle-orm';
+import { eq, sql, inArray } from 'drizzle-orm';
 import { randomUUID } from 'node:crypto';
+import { z } from 'zod';
 import { newProductSchema } from '~/features/products/schemas/newProduct.schema';
 import { updateProductSchema } from '~/features/products/schemas/updateProduct.schema';
 import { protectedProcedure } from '~/server/api/trpc';
-import { products, productImages } from '~/server/db/schema';
+import { products, productImages, orderItems } from '~/server/db/schema';
+import { deleteStorageFile } from '~/app/server/storage';
 
 export const productMutations = {
 	create: protectedProcedure
@@ -82,5 +84,60 @@ export const productMutations = {
 
 				return { id: input.productId };
 			});
+		}),
+
+	delete: protectedProcedure
+		.input(z.object({ id: z.string() }))
+		.mutation(async ({ ctx, input }) => {
+			return await ctx.db.transaction(async (tx) => {
+				// Get product images before deleting them
+				const images = await tx.query.productImages.findMany({
+					where: eq(productImages.productId, input.id)
+				});
+
+				await tx.delete(orderItems).where(eq(orderItems.productId, input.id));
+
+				await tx
+					.delete(productImages)
+					.where(eq(productImages.productId, input.id));
+
+				// Delete images from UploadThing
+				await Promise.all(images.map((image) => deleteStorageFile(image.key)));
+
+				return await tx.delete(products).where(eq(products.id, input.id));
+			});
+		}),
+
+	bulkDelete: protectedProcedure
+		.input(z.object({ ids: z.array(z.string()) }))
+		.mutation(async ({ ctx, input }) => {
+			return await ctx.db.transaction(async (tx) => {
+				// Get product images before deleting them
+				const images = await tx.query.productImages.findMany({
+					where: inArray(productImages.productId, input.ids)
+				});
+
+				await tx
+					.delete(orderItems)
+					.where(inArray(orderItems.productId, input.ids));
+
+				await tx
+					.delete(productImages)
+					.where(inArray(productImages.productId, input.ids));
+
+				// Delete images from UploadThing
+				await Promise.all(images.map((image) => deleteStorageFile(image.key)));
+
+				return await tx.delete(products).where(inArray(products.id, input.ids));
+			});
+		}),
+
+	toggleActive: protectedProcedure
+		.input(z.object({ id: z.string() }))
+		.mutation(async ({ ctx, input }) => {
+			return await ctx.db
+				.update(products)
+				.set({ isActive: sql`NOT ${products.isActive}` })
+				.where(eq(products.id, input.id));
 		})
 };

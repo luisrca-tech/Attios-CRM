@@ -14,5 +14,7 @@ export const skeletonProductsData = ({ pageSize }: SkeletonTable) =>
 		categoryName: '',
 		sku: '',
 		currency: '',
-		subcategory: ''
+		subcategory: '',
+		description: null,
+		isActive: true
 	}));
