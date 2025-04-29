@@ -62,13 +62,12 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 	const {
 		handleAddCategory,
 		filteredCategories,
-		setCategorySearch: onSearchCategory,
+		setCategorySearch: onSearchCategory
 	} = useCategory();
-  const { updateProduct } = useProduct();
+	const { updateProduct } = useProduct();
 
 	const { startUpload } = useUploadThing('imageUploader');
 	const imageCreation = api.images.upload.useMutation();
-
 
 	const onSubmit = async (values: UpdateProduct) => {
 		try {

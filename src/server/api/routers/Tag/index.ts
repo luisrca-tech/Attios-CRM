@@ -1,3 +1,3 @@
-import { tagRouter } from "./tags";
+import { tagRouter } from './tags';
 
 export { tagRouter };

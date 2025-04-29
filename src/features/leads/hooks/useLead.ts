@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { api } from "~/trpc/react";
 import { useUploadThing } from "~/utils/storage";
+import type { Lead } from "../types/lead.type";
 
 export function useLead() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -19,7 +20,7 @@ export function useLead() {
     },
   });
 
-  const handleCreateLead = async (data: any) => {
+  const handleCreateLead = async (data: Lead) => {
     try {
       setIsSubmitting(true);
 
