@@ -84,7 +84,7 @@ export const leadListColumns = ({
                 {row.original.firstName} {row.original.lastName}
               </span>
               <span className="font-normal text-primary-200 text-sm leading-5">
-                {row.original.role?.name}
+                {row.original.tag?.name}
               </span>
             </div>
           </div>
@@ -219,7 +219,7 @@ export const leadListColumns = ({
         return (
           <div className="flex min-w-[11.25rem] items-center justify-center rounded-lg bg-white-200 px-7 py-2 lg:hidden 2xl:flex">
             <span className="font-bold text-base text-primary-200 leading-5">
-              {row.original.role?.name}
+              {row.original.tag?.name}
             </span>
           </div>
         );

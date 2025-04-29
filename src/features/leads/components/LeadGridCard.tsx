@@ -11,7 +11,7 @@ interface LeadGridCardProps {
   lastName: string;
   email: string;
   phone: string;
-  role?: { name: string };
+  tag?: { name: string };
   image: string;
   status: string;
   isLoading?: boolean;
@@ -22,7 +22,7 @@ export function LeadGridCard({
   lastName,
   email,
   phone,
-  role,
+  tag,
   image,
   status,
   isLoading,
@@ -65,7 +65,7 @@ export function LeadGridCard({
             <strong className="text-base leading-6">{`${firstName} ${lastName}`}</strong>
             <div className="flex min-w-[8rem] items-center justify-center rounded-lg bg-white-200 px-7 py-2 lg:hidden 2xl:flex">
               <span className="font-bold text-primary-200 text-sm leading-5">
-                {role?.name}
+                {tag?.name}
               </span>
             </div>
           </div>
