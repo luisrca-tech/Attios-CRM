@@ -2,8 +2,6 @@ import { faker } from "@faker-js/faker";
 import { randomUUID } from "node:crypto";
 import { db } from "../index";
 import { productImages, products } from "../schema/products";
-import { brands } from "../schema/brands";
-import { categories } from "../schema/categories";
 import { orderItems } from "../schema/orders";
 import { seedCategories } from "./categories";
 import { seedBrands } from "./brands";
@@ -12,8 +10,6 @@ export async function seedProducts() {
   await db.delete(orderItems);
   await db.delete(productImages);
   await db.delete(products);
-  await db.delete(categories);
-  await db.delete(brands);
 
   const { insertedCategories } = (await seedCategories()) as {
     insertedCategories: { id: number; name: string }[];

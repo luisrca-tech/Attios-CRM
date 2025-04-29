@@ -1,7 +1,7 @@
 import { boolean, serial, timestamp } from "drizzle-orm/pg-core";
 import { varchar } from "drizzle-orm/pg-core";
 import { createTable } from "./config";
-import { roles } from "./roles";
+import { tags } from "./tags";
 import { relations } from "drizzle-orm";
 
 export const leads = createTable("lead", {
@@ -10,7 +10,7 @@ export const leads = createTable("lead", {
   lastName: varchar("last_name", { length: 255 }).notNull(),
   email: varchar("email", { length: 255 }).notNull(),
   phone: varchar("phone", { length: 255 }).notNull(),
-  roleId: serial("role_id").references(() => roles.id),
+  tagId: serial("tag_id").references(() => tags.id),
   image: varchar("image", { length: 255 }).notNull(),
   convertedToCustomer: boolean("converted_to_customer")
     .notNull()
@@ -22,8 +22,8 @@ export const leads = createTable("lead", {
 });
 
 export const leadsRelations = relations(leads, ({ one }) => ({
-  role: one(roles, {
-    fields: [leads.roleId],
-    references: [roles.id],
+  tag: one(tags, {
+    fields: [leads.tagId],
+    references: [tags.id],
   }),
 }));

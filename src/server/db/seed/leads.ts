@@ -2,14 +2,13 @@ import { db } from "../index";
 import { leads } from "../schema/leads";
 import { faker } from "@faker-js/faker";
 import { categories } from "../schema/categories";
-import { seedRoles } from "./roles";
+import { seedTags } from "./tags";
 
 const LEADS_TO_GENERATE = 30;
 
 export async function seedLeads() {
   await db.delete(leads);
 
-  // Get existing categories
   const existingCategories = await db.select().from(categories);
 
   if (!existingCategories.length) {
@@ -18,8 +17,8 @@ export async function seedLeads() {
     );
   }
 
-  const { insertedRoles } = (await seedRoles()) as {
-    insertedRoles: { id: number; name: string }[];
+  const { insertedTags } = (await seedTags()) as {
+    insertedTags: { id: number; name: string }[];
   };
 
   const leadsData = Array.from({ length: LEADS_TO_GENERATE }, () => {
@@ -32,7 +31,7 @@ export async function seedLeads() {
       lastName,
       email: faker.internet.email({ firstName, lastName }),
       phone: faker.phone.number(),
-      roleId: faker.helpers.arrayElement(insertedRoles).id,
+      tagId: faker.helpers.arrayElement(insertedTags).id,
       image: faker.image.avatar(),
       categoryId: randomCategory.id,
       convertedToCustomer: faker.datatype.boolean(),

@@ -5,7 +5,7 @@ import { paginatedLeadsSchema } from "../schemas/paginatedLeads.schema";
 import { totalPagesQuerySchema } from "../../schemas/totalPagesQuery.schema";
 import { controlledLeadsSchema } from "../schemas/controlledLeads.schema";
 import { z } from "zod";
-import { roles } from "~/server/db/schema/roles";
+import { tags } from "~/server/db/schema/tags";
 
 export const leadQueries = {
   getLeadsPaginated: publicProcedure
@@ -15,7 +15,7 @@ export const leadQueries = {
         limit: input.pageSize,
         offset: (input.page - 1) * input.pageSize,
         with: {
-          role: true,
+          tag: true,
         },
         orderBy: input.sort
           ? [
@@ -27,10 +27,10 @@ export const leadQueries = {
                   : desc(
                       sql<string>`concat(${leads.firstName}, ' ', ${leads.lastName})`
                     )
-                : input.sort.column === "role"
+                : input.sort.column === "tag"
                   ? input.sort.direction === "asc"
-                    ? asc(roles.name)
-                    : desc(roles.name)
+                    ? asc(tags.name)
+                    : desc(tags.name)
                   : input.sort.column === "email"
                     ? input.sort.direction === "asc"
                       ? asc(leads.email)
@@ -76,7 +76,7 @@ export const leadQueries = {
         limit: limit + 1,
         offset: cursor,
         with: {
-          role: true,
+          tag: true,
         },
         orderBy: sort
           ? [
@@ -88,10 +88,10 @@ export const leadQueries = {
                   : desc(
                       sql<string>`concat(${leads.firstName}, ' ', ${leads.lastName})`
                     )
-                : sort.column === "role"
+                : sort.column === "tag"
                   ? sort.direction === "asc"
-                    ? asc(roles.name)
-                    : desc(roles.name)
+                    ? asc(tags.name)
+                    : desc(tags.name)
                   : sort.column === "email"
                     ? sort.direction === "asc"
                       ? asc(leads.email)
@@ -138,23 +138,23 @@ export const leadQueries = {
       };
     }),
 
-  // Get leads by role
-  getLeadsByRole: publicProcedure
+  // Get leads by tag
+  getLeadsByTag: publicProcedure
     .input(
       z.object({
-        role: z.enum(["Customer", "Prospect", "Partner", "Supplier"]),
+        tag: z.enum(["Customer", "Prospect", "Partner", "Supplier"]),
         page: z.number().min(1).default(1),
         pageSize: z.number().min(1).max(100).default(10),
       })
     )
     .query(async ({ ctx, input }) => {
-      const { role, page, pageSize } = input;
+      const { tag, page, pageSize } = input;
 
       const leadsByRole = await ctx.db.query.leads.findMany({
         with: {
-          role: true,
+          tag: true,
         },
-        where: eq(roles.name, role),
+        where: eq(tags.name, tag),
         limit: pageSize,
         offset: (page - 1) * pageSize,
         orderBy: [
@@ -165,8 +165,8 @@ export const leadQueries = {
       const [countResult] = await ctx.db
         .select({ count: sql<number>`count(*)`.mapWith(Number) })
         .from(leads)
-        .innerJoin(roles, eq(leads.roleId, roles.id))
-        .where(eq(roles.name, role));
+        .innerJoin(tags, eq(leads.tagId, tags.id))
+        .where(eq(tags.name, tag));
 
       const totalCount = countResult?.count ?? 0;
       const totalPages = Math.ceil(totalCount / pageSize);

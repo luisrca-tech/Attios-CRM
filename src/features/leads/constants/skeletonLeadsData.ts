@@ -7,8 +7,8 @@ export const skeletonLeadsData = ({ pageSize }: SkeletonTable) =>
     lastName: "",
     email: "",
     phone: "",
-    roleId: 0,
-    role: {
+    tagId: 0,
+    tag: {
       id: 0,
       name: "",
       createdAt: new Date(),

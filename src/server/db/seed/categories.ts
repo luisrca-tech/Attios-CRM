@@ -1,8 +1,10 @@
 import { db } from "../index";
 import { categories } from "../schema/categories";
 import { faker } from "@faker-js/faker";
+import { products } from "../schema/products";
 
 export async function seedCategories() {
+  await db.delete(products);
   await db.delete(categories);
 
   const categoriesData = Array.from({ length: 10 }, () => ({

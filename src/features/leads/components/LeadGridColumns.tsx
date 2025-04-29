@@ -84,7 +84,7 @@ export const leadGridColumns = ({
     },
   },
   {
-    accessorKey: "role",
+    accessorKey: "tag",
     header: () => (
       <div className="flex items-center justify-between">
         <span>Tag</span>
@@ -95,8 +95,8 @@ export const leadGridColumns = ({
             type="button"
             onClick={() =>
               onSort(
-                "role",
-                currentSort.column === "role" && currentSort.direction === "asc"
+                "tag",
+                currentSort.column === "tag" && currentSort.direction === "asc"
                   ? "desc"
                   : "asc"
               )
@@ -111,7 +111,7 @@ export const leadGridColumns = ({
       if (isLoading) {
         return <Skeleton className="h-4 w-16" />;
       }
-      return row.original.role?.name;
+      return row.original.tag?.name;
     },
   },
 ];

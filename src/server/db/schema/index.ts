@@ -7,4 +7,4 @@ export * from "./leads";
 export * from "./invoices";
 export * from "./categories";
 export * from "./brands";
-export * from "./roles";
+export * from "./tags";

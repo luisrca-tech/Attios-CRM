@@ -5,18 +5,25 @@ import { seedInvoices } from "./invoices";
 import { seedLeads } from "./leads";
 import { seedOrders } from "./orders";
 import { seedProducts } from "./products";
-import { seedRoles } from "./roles";
+import { seedTags } from "./tags";
+import { orderItems } from "../schema/orders";
+import { productImages, products } from "../schema/products";
+import { db } from "..";
 
 async function seed() {
   try {
+    await db.delete(orderItems);
+    await db.delete(productImages);
+    await db.delete(products);
+
     await seedCustomers();
-    await seedProducts();
-    await seedBrands();
+    await seedTags();
     await seedCategories();
-    await seedLeads();
+    await seedBrands();
+    await seedProducts();
     await seedOrders();
     await seedInvoices();
-    await seedRoles();
+    await seedLeads();
 
     console.log("✅ Database seeded successfully");
   } catch (e) {

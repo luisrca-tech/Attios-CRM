@@ -50,7 +50,7 @@ export function LeadsTable() {
 
   const handleSort = (column: string, direction: "asc" | "desc") => {
     setSort({
-      column: column as "name" | "email" | "phone" | "role" | "status",
+      column: column as "name" | "email" | "phone" | "tag" | "status",
       direction,
     });
   };
