@@ -16,6 +16,7 @@ import { updateProductSchema } from '../schemas/updateProduct.schema';
 import type { UpdateProduct } from '../types/updateProduct.type';
 import { ProductImageCarousel } from './ProductImageCarousel';
 import { Textarea } from '~/common/components/ui/textarea';
+import { useCategory } from '~/features/hooks/useCategory';
 
 interface UpdateProductFormProps {
 	product: typeof products.$inferSelect & {
@@ -59,18 +60,15 @@ export const UpdateProductForm = ({ product }: UpdateProductFormProps) => {
 	});
 
 	const {
-		createCategory,
+		handleAddCategory,
 		filteredCategories,
 		setCategorySearch: onSearchCategory,
-		updateProduct
-	} = useProduct();
+	} = useCategory();
+  const { updateProduct } = useProduct();
+
 	const { startUpload } = useUploadThing('imageUploader');
 	const imageCreation = api.images.upload.useMutation();
 
-	const handleAddCategory = (value: string) => {
-		createCategory.mutate({ name: value });
-		return toast.success('Category added');
-	};
 
 	const onSubmit = async (values: UpdateProduct) => {
 		try {
