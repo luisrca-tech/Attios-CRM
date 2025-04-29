@@ -39,7 +39,7 @@ export function useLead() {
         ...data,
         leadImages: [
           {
-            url: uploadResponse[0].url,
+            url: uploadResponse[0].ufsUrl,
             key: uploadResponse[0].key,
           },
         ],

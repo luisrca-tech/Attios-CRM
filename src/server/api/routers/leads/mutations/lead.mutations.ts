@@ -23,7 +23,7 @@ export const leadMutations = {
 						email: input.email,
 						phone: input.phone,
 						tagId: tag.id,
-						image: input.leadImages[0]?.url ?? '',
+						image: input.leadImages?.[0]?.url ?? '',
 						status: 'online',
 						convertedToCustomer: false
 					})

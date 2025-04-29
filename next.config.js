@@ -6,40 +6,44 @@ await import('./src/env.js');
 
 // TODO: Remove this once we have a real image source
 const mockImagesHosts = [
-	'loremflickr.com',
-	'picsum.photos',
-	'faker.cloudflare.com',
-	'avatars.githubusercontent.com'
+  'loremflickr.com',
+  'picsum.photos',
+  'faker.cloudflare.com',
+  'avatars.githubusercontent.com'
 ];
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-	reactStrictMode: process.env.NODE_ENV !== 'test',
-	env: {
-		DATABASE_URL: process.env.DATABASE_URL
-	},
-	images: {
-		remotePatterns: [
-			{
-				protocol: 'https',
-				hostname: 'img.clerk.com'
-			},
-			{
-				protocol: 'https',
-				hostname: 'utfs.io',
-				pathname: '/**'
-			},
-			...mockImagesHosts.map(
-				(host) =>
-					/** @type {const} */ ({
-						protocol: 'https',
-						hostname: host,
-						port: '',
-						pathname: '/**'
-					})
-			)
-		]
-	}
+  reactStrictMode: process.env.NODE_ENV !== 'test',
+  env: {
+    DATABASE_URL: process.env.DATABASE_URL
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'img.clerk.com'
+      },
+      {
+        protocol: 'https',
+        hostname: 'utfs.io',
+        pathname: '/**'
+      },
+      ...mockImagesHosts.map(
+        (host) =>
+					/** @type {const} */({
+          protocol: 'https',
+          hostname: host,
+          port: '',
+          pathname: '/**'
+        })
+      ),
+      {
+        protocol: 'https',
+        hostname: '**.ufs.sh',
+      },
+    ]
+  }
 };
 
 export default nextConfig;
