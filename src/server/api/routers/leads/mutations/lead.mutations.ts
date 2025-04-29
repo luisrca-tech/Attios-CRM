@@ -1,19 +1,22 @@
-import { newLeadSchema } from "~/features/leads/schemas/newLead.schema";
-import { protectedProcedure } from "~/server/api/trpc";
-import { leads } from "~/server/db/schema";
+// import { newLeadSchema } from "~/features/leads/schemas/newLead.schema";
+// import { protectedProcedure } from "~/server/api/trpc";
+// import { tags } from "~/server/db/schema";
 
-export const leadMutations = {
-  create: protectedProcedure
-    .input(newLeadSchema)
-    .mutation(async ({ ctx, input }) => {
-      return await ctx.db.transaction(async (tx) => {
-        const category = await tx.query.categories.findFirst({
-          where: (categories, { eq }) => eq(categories.name, input.category),
-        });
+// export const leadMutations = {
+//   create: protectedProcedure
+//     .input(newLeadSchema)
+//     .mutation(async ({ ctx, input }) => {
+//       return await ctx.db.transaction(async (tx) => {
+//         const tag = await tx.query.tags.findFirst({
+//           where: (tags, { eq }) => eq(tags.name, input.tag),
+//         });
 
-        if (!category) {
-          throw new Error("Category not found");
-        }
-      });
-    }),
-};
+//         if (!tag) {
+//           throw new Error("Tag not found");
+//         }
+//       });
+
+
+
+//     }),
+// };
