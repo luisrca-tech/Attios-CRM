@@ -7,9 +7,10 @@ export function useTag() {
   const trpcUtils = api.useUtils();
   const getAllTags = api.tag.getAll.useQuery();
   const tags = getAllTags.data?.map((tag) => tag.name) ?? [];
-  const filteredTags = tags
-    .filter((tag) => tag.toLowerCase().includes(tagSearch.toLowerCase()))
-    .slice(0, tagSearch ? undefined : 5);
+  const filteredTags =
+    tags
+      .filter((tag) => tag.toLowerCase().includes(tagSearch.toLowerCase()))
+      .slice(0, tagSearch ? undefined : 5) ?? [];
 
   const createTag = api.tag.create.useMutation({
     onMutate: async (data) => {

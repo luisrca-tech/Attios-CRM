@@ -9,16 +9,16 @@ import { UploadButton } from "~/utils/storage";
 import { toast } from "sonner";
 import ErrorMessage from "~/common/components/ui/ErrorMessage";
 import { useIsDesktop } from "~/common/hooks/useMediaQuery";
-import { useCategory } from "~/features/hooks/useCategory";
 import { useTag } from "~/features/hooks/useTag";
 import { Button } from "~/common/components/ui/Button";
 import { useRouter } from "next/navigation";
+import { useLead } from "../hooks/useLead";
 
 export function NewLeadForm() {
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
     watch,
     setValue,
   } = useForm<NewLead>({
@@ -27,21 +27,20 @@ export function NewLeadForm() {
   const file = watch("file");
   const router = useRouter();
   const isDesktop = useIsDesktop();
+  const { createLead, isSubmitting } = useLead();
 
   const handleFileSelect = (file: File) => {
     setValue("file", file);
   };
 
-  const {
-    filteredCategories,
-    setCategorySearch: onSearchCategory,
-    handleAddCategory,
-  } = useCategory();
-
   const { filteredTags, setTagSearch: onSearchTag, handleAddTag } = useTag();
 
-  const onSubmit = (data: NewLead) => {
+  const onSubmit = async (data: NewLead) => {
     console.log(data);
+    const success = await createLead(data);
+    if (success) {
+      router.push("/leads");
+    }
   };
 
   return (
@@ -72,8 +71,8 @@ export function NewLeadForm() {
             <UploadButton
               data-testid="product-image-upload-button"
               endpoint="imageUploader"
-              onBeforeUploadBegin={() => {
-                return [];
+              onBeforeUploadBegin={(files) => {
+                return files;
               }}
               onChange={(files) => {
                 if (files?.[0]) {
