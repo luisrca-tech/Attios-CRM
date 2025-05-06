@@ -58,6 +58,7 @@ import { IdentityIcon } from './Identity';
 import { FlyerIcon } from './Flyer';
 import { AddLeadIcon } from './AddLead';
 import { TelephoneIcon } from './Telephone';
+import { CheckIcon } from './Check';
 
 export const Icon = {
 	Email: EmailIcon,
@@ -98,6 +99,7 @@ export const Icon = {
 	Flyer: FlyerIcon,
 	AddLead: AddLeadIcon,
 	Telephone: TelephoneIcon,
+	Check: CheckIcon,
 	List: {
 		White: ListIconWhite,
 		Blue: ListIconBlue

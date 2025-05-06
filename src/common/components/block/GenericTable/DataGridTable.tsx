@@ -35,6 +35,7 @@ interface DataGridTableProps<TData, TValue> {
 	className?: string;
 	selectedItems?: string[];
 	onSelectItem?: (id: string, isSelected: boolean) => void;
+	isActive?: boolean;
 }
 
 export const GenericDataGridTable = forwardRef(
@@ -48,7 +49,8 @@ export const GenericDataGridTable = forwardRef(
 			isLoading,
 			className,
 			selectedItems = [],
-			onSelectItem
+			onSelectItem,
+			isActive = true
 		}: DataGridTableProps<TData, TValue>,
 		ref: React.ForwardedRef<TableInstance<TData>>
 	): ReactNode => {
@@ -128,6 +130,7 @@ export const GenericDataGridTable = forwardRef(
 								return (
 									<div key={item.id}>
 										<CardComponent
+											isActive={isActive}
 											{...item}
 											isSelected={isSelected}
 											onSelect={(value) => {

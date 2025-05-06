@@ -1,5 +1,6 @@
 import { relations, sql } from 'drizzle-orm';
 import {
+	boolean,
 	decimal,
 	index,
 	integer,
@@ -30,7 +31,8 @@ export const products = createTable(
 		sku: varchar('sku', { length: 100 }).unique(),
 		currency: varchar('currency', { length: 3 }),
 		subcategory: varchar('subcategory', { length: 100 }),
-		description: text('description')
+		description: text('description'),
+		isActive: boolean('is_active').notNull().default(true)
 	},
 	(table) => ({
 		brandIdIdx: index('brand_id_idx').on(table.brandId),

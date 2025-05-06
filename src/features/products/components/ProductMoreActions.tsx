@@ -68,6 +68,7 @@ export function ProductMoreActions({ product }: MoreActionsProps) {
 				</DropdownMenuContent>
 			</DropdownMenu>
 			<DeleteConfirmationModal
+				title="Are you sure you want to delete this item?"
 				isOpen={isModalOpen}
 				onCancel={handleCancel}
 				onConfirm={handleDelete}
