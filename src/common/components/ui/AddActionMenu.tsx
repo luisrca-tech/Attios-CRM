@@ -29,8 +29,8 @@ export function AddActionMenu() {
     if (!a.isComingSoon && b.isComingSoon) return -1;
 
     // Then sort by matching pathname
-    const aMatchesPath = a.startsWith === pathname;
-    const bMatchesPath = b.startsWith === pathname;
+    const aMatchesPath = a.startsWith && pathname.startsWith(a.startsWith);
+    const bMatchesPath = b.startsWith && pathname.startsWith(b.startsWith);
     if (aMatchesPath && !bMatchesPath) return -1;
     if (!aMatchesPath && bMatchesPath) return 1;
 
