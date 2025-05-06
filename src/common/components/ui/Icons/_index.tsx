@@ -54,6 +54,7 @@ import { FunnelIcon } from './Funnel';
 import { CallIcon } from './Call';
 import { LeadsWaitingIcon } from './LeadsWaiting';
 import { LeadsCheckIcon } from './LeadsCheck';
+import { CheckIcon } from './Check';
 
 export const Icon = {
 	Email: EmailIcon,
@@ -90,6 +91,7 @@ export const Icon = {
 	Call: CallIcon,
 	LeadsCheck: LeadsCheckIcon,
 	LeadsWaiting: LeadsWaitingIcon,
+	Check: CheckIcon,
 	List: {
 		White: ListIconWhite,
 		Blue: ListIconBlue
