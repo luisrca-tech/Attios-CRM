@@ -22,8 +22,8 @@ export function ProductFilterDropdown({
 	return (
 		<DropdownMenu>
 			<DropdownMenuTrigger className="flex items-center gap-2 rounded-lg px-3 py-2 font-bold text-primary-200 text-sm transition-colors duration-200 hover:bg-primary-100 hover:text-white-100">
-				{text}
 				<Icon.Arrow.Down className="h-3 w-3 text-primary-200" />
+				{text}
 			</DropdownMenuTrigger>
 			<DropdownMenuContent className="bg-white-100">
 				{filtersCondition.map((filter) => (

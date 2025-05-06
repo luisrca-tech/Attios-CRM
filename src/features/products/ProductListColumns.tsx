@@ -223,7 +223,7 @@ export const productListColumns = ({
 		{
 			accessorKey: 'listPrice',
 			header: () => (
-				<div className="flex w-full items-center justify-between">
+				<div className="flex w-full items-center justify-between gap-2">
 					<ProductFilterDropdown
 						text="Price"
 						type="price"
@@ -263,7 +263,7 @@ export const productListColumns = ({
 		{
 			accessorKey: 'modelYear',
 			header: () => (
-				<div className="flex w-full items-center justify-between">
+				<div className="flex w-full items-center justify-between gap-2">
 					Year
 					{isLoading ? (
 						<Skeleton className="h-4 w-4" />
