@@ -5,6 +5,7 @@ export const skeletonProductsData = ({ pageSize }: SkeletonTable) =>
 		id: `skeleton-${index}`,
 		name: '',
 		quantity: 0,
+		sales: 0,
 		listPrice: '',
 		modelYear: 0,
 		category: { name: '' },

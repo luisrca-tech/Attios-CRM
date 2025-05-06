@@ -12,7 +12,8 @@ export const mockProducts: MockProduct[] = [
 		listPrice: '99.99',
 		sku: null,
 		currency: null,
-		subcategory: null
+		subcategory: null,
+		description: null
 	},
 	{
 		id: 'PROD2',
@@ -25,6 +26,7 @@ export const mockProducts: MockProduct[] = [
 		listPrice: '149.99',
 		sku: null,
 		currency: null,
-		subcategory: null
+		subcategory: null,
+		description: null
 	}
 ];

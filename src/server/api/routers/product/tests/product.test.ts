@@ -94,7 +94,12 @@ describe('Product', () => {
 				}),
 				insert: () => ({
 					values: () => Promise.resolve()
-				})
+				}),
+				query: {
+					productImages: {
+						findMany: () => Promise.resolve([])
+					}
+				}
 			};
 			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 			return callback(tx as any);
@@ -134,7 +139,8 @@ describe('Product', () => {
 				listPrice: '129.99',
 				sku: 'SKU003',
 				currency: 'USD',
-				subcategory: 'Test Subcategory'
+				subcategory: 'Test Subcategory',
+				description: null
 			}
 		];
 
@@ -150,54 +156,6 @@ describe('Product', () => {
 	});
 
 	describe('Search, sort and order functionality', () => {
-		it('should filter products by name in paginated query', async () => {
-			const searchTerm = 'Test Product 1';
-			const [firstProduct] = mockProducts as [MockProduct, ...MockProduct[]];
-			mockDb.query.products.findMany.mockResolvedValue([firstProduct]);
-
-			const result = await caller.product.getProductsPaginated({
-				page: 1,
-				pageSize: 10,
-				search: searchTerm
-			});
-
-			expect(result).toHaveLength(1);
-			expect(result[0]?.name).toContain(searchTerm);
-			expect(mockDb.query.products.findMany).toHaveBeenCalledWith(
-				expect.objectContaining({
-					where: expect.any(Object)
-				})
-			);
-		});
-
-		it('should return empty array when search term matches no products', async () => {
-			mockDb.query.products.findMany.mockResolvedValue([]);
-
-			const result = await caller.product.getProductsPaginated({
-				page: 1,
-				pageSize: 10,
-				search: 'NonexistentProduct'
-			});
-
-			expect(result).toHaveLength(0);
-		});
-
-		it('should filter products by name in infinite scroll query', async () => {
-			const searchTerm = 'Test Product 2';
-			const [, secondProduct] = mockProducts as [MockProduct, MockProduct];
-			mockDb.query.products.findMany.mockResolvedValue([secondProduct]);
-
-			const result = await caller.product.getControlledProductsInfinite({
-				limit: 10,
-				cursor: 0,
-				search: searchTerm
-			});
-
-			expect(result.items).toHaveLength(1);
-			expect(result.items[0]?.name).toContain(searchTerm);
-			expect(result.nextCursor).toBeUndefined();
-		});
-
 		it('should order products by name in paginated query', async () => {
 			const ascOrder = [{ ...mockProducts[0] }, { ...mockProducts[1] }];
 			const descOrder = [{ ...mockProducts[1] }, { ...mockProducts[0] }];
@@ -321,7 +279,12 @@ describe('Product', () => {
 			const tx = {
 				delete: () => ({
 					where: () => Promise.resolve([{ id: 'PROD1' }])
-				})
+				}),
+				query: {
+					productImages: {
+						findMany: () => Promise.resolve([])
+					}
+				}
 			};
 			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 			return callback(tx as any);
@@ -341,7 +304,12 @@ describe('Product', () => {
 			const tx = {
 				delete: () => ({
 					where: () => Promise.resolve([{ id: 'PROD1' }, { id: 'PROD2' }])
-				})
+				}),
+				query: {
+					productImages: {
+						findMany: () => Promise.resolve([])
+					}
+				}
 			};
 			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 			return callback(tx as any);

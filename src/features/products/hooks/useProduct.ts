@@ -11,10 +11,11 @@ export const useProduct = () => {
 	const categories = getAllCategories.data?.map((cat) => cat.name) ?? [];
 	const brands = getAllBrands.data?.map((brand) => brand.name) ?? [];
 
-	const filteredCategories = categories.filter((category) =>
-		category.toLowerCase().includes(categorySearch.toLowerCase())
-	);
-
+	const filteredCategories = categories
+		.filter((category) =>
+			category.toLowerCase().includes(categorySearch.toLowerCase())
+		)
+		.slice(0, categorySearch ? undefined : 5);
 	const filteredBrands = brands.filter((brand) =>
 		brand.toLowerCase().includes(brandSearch.toLowerCase())
 	);

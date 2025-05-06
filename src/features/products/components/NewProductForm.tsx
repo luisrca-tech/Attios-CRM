@@ -1,7 +1,8 @@
+'use client';
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { selectedAddAction } from '~/common/atoms/selected-add-action';
@@ -15,13 +16,16 @@ import { useProduct } from '../hooks/useProduct';
 import { newProductSchema } from '../schemas/newProduct.schema';
 import type { NewProduct } from '../types/newProduct.type';
 import { api } from '~/trpc/react';
+import { useRouter } from 'next/navigation';
 
 export function NewProductForm() {
+	const router = useRouter();
 	const {
 		register,
 		handleSubmit,
 		setValue,
 		watch,
+		reset,
 		formState: { errors, isSubmitting }
 	} = useForm<NewProduct>({
 		resolver: zodResolver(newProductSchema),
@@ -32,7 +36,6 @@ export function NewProductForm() {
 			brand: ''
 		}
 	});
-	const router = useRouter();
 	const file = watch('file');
 	const {
 		createCategory,
@@ -43,7 +46,7 @@ export function NewProductForm() {
 		setCategorySearch: onSearchCategory,
 		setBrandSearch: onSearchBrand
 	} = useProduct();
-	const [, _setSelectedModal] = useAtom(selectedAddAction);
+	const [, setSelectedModal] = useAtom(selectedAddAction);
 
 	const { startUpload } = useUploadThing('imageUploader');
 	const imageCreation = api.images.upload.useMutation();
@@ -94,7 +97,8 @@ export function NewProductForm() {
 					imageKey: uploadResponse[0]?.key ?? ''
 				});
 			}
-
+			router.push(`/product/${product[0].id}`);
+			setSelectedModal(null);
 			toast.success('Product created successfully');
 		} catch (_error) {
 			toast.error('Failed to create product');
@@ -277,7 +281,7 @@ export function NewProductForm() {
 				<div className="mt-6 hidden justify-between lg:mt-[1.6875rem] lg:flex">
 					<Button
 						type="button"
-						onClick={() => router.back()}
+						onClick={() => reset()}
 						className="bg-white-200 text-primary-200 hover:bg-secondary-300"
 					>
 						Cancel
