@@ -100,6 +100,7 @@ export function NewLeadForm() {
 						<div className="flex flex-col gap-2">
 							<Input.Root fieldText="First name">
 								<Input.Text
+									data-testid="lead-first-name-input"
 									className="px-0"
 									renderIconRight={() => (
 										<Icon.Identity className="h-[1.125rem] min-w-[1.125rem]" />
@@ -115,6 +116,7 @@ export function NewLeadForm() {
 						<div className="flex flex-col gap-2">
 							<Input.Root fieldText="Last name">
 								<Input.Text
+									data-testid="lead-last-name-input"
 									renderIconRight={() => (
 										<Icon.Flyer className="h-[1.125rem] min-w-[1.125rem]" />
 									)}
@@ -131,6 +133,7 @@ export function NewLeadForm() {
 					<div className="flex flex-col gap-2">
 						<Input.Root fieldText="Email">
 							<Input.Text
+								data-testid="lead-email-input"
 								placeholder="Start typing..."
 								className="px-0"
 								renderIconRight={() => (
@@ -150,6 +153,7 @@ export function NewLeadForm() {
 						<div className="flex flex-col gap-2">
 							<Input.Root fieldText="Phone">
 								<Input.Text
+									data-testid="lead-phone-input"
 									placeholder="Start typing..."
 									className="px-0"
 									renderIconRight={() => (
@@ -169,6 +173,7 @@ export function NewLeadForm() {
 							<Input.Root className="w-full" fieldText="Tag">
 								<div className="flex-1">
 									<Input.SelectInput
+										data-testid="lead-tag-input"
 										text="Select tag"
 										options={filteredTags}
 										onSearch={onSearchTag}
@@ -191,12 +196,17 @@ export function NewLeadForm() {
 					>
 						Cancel
 					</Button>
-					<Button type="submit" disabled={isSubmitting}>
-						{isSubmitting ? 'Creating...' : 'Add Lead'}
+					<Button type="submit" className="w-full" disabled={isSubmitting}>
+						{isSubmitting ? 'Creating...' : 'Create Lead'}
 					</Button>
 				</div>
 				<div className="w-fulll lg:hidden">
-					<Button type="submit" className="w-full" disabled={isSubmitting}>
+					<Button
+						type="submit"
+						className="w-full"
+						disabled={isSubmitting}
+						data-testid="lead-create-button"
+					>
 						{isSubmitting ? 'Creating...' : 'Add Lead'}
 					</Button>
 				</div>

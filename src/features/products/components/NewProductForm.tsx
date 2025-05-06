@@ -99,8 +99,6 @@ export function NewProductForm() {
 				imageUrl: uploadResponse[0].ufsUrl,
 				imageKey: uploadResponse[0].key
 			});
-
-			toast.success('Product created successfully');
 			router.push(`/product/${product[0].id}`);
 		} catch (_error) {
 			toast.error('Failed to create product');
@@ -141,7 +139,7 @@ export function NewProductForm() {
 								</button>
 							</div>
 						) : (
-							<div className="relative">
+							<div className="relative flex items-center justify-center">
 								<input
 									type="file"
 									accept="image/*"
@@ -150,7 +148,7 @@ export function NewProductForm() {
 											handleFileSelect(e.target.files[0]);
 										}
 									}}
-									className="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+									className="absolute inset-0 flex h-full w-full cursor-pointer opacity-0"
 								/>
 								<div className="flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-xl bg-white-100 p-9 lg:h-[6.5rem] lg:w-[6.5rem] lg:bg-primary-100/10">
 									<Icon.Upload

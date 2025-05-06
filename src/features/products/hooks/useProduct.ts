@@ -5,6 +5,9 @@ export const useProduct = () => {
 	const trpcUtils = api.useUtils();
 
 	const createProduct = api.product.create.useMutation({
+		onSuccess: () => {
+			toast.success('Product created successfully');
+		},
 		onError: (error) => {
 			toast.error(error.message);
 		}

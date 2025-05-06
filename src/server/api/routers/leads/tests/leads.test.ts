@@ -3,6 +3,7 @@ import mockDb from '~/server/api/mocks/db.mock';
 import { appRouter } from '~/server/api/root';
 import { createCallerFactory, createTRPCContext } from '~/server/api/trpc';
 import { faker } from '@faker-js/faker';
+import { mockLeads } from './constants/mockLeads';
 
 vi.mock('~/server/db', () => ({
 	db: mockDb
@@ -15,37 +16,6 @@ vi.mock('@clerk/nextjs/server', () => ({
 describe('Leads', () => {
 	const createCaller = createCallerFactory(appRouter);
 	let caller: ReturnType<typeof createCaller>;
-
-	const mockLeads = [
-		{
-			id: 1,
-			firstName: 'John',
-			lastName: 'Doe',
-			email: 'john.doe@example.com',
-			phone: '+1234567890',
-			role: 'Customer',
-			image: faker.image.avatar(),
-			convertedToCustomer: true,
-			convertedToCustomerAt: new Date('2024-01-01'),
-			status: 'online',
-			createdAt: new Date('2024-01-01'),
-			updatedAt: new Date('2024-01-01')
-		},
-		{
-			id: 2,
-			firstName: 'Jane',
-			lastName: 'Smith',
-			email: 'jane.smith@example.com',
-			phone: '+0987654321',
-			role: 'Prospect',
-			image: faker.image.avatar(),
-			convertedToCustomer: false,
-			convertedToCustomerAt: null,
-			status: 'offline',
-			createdAt: new Date('2024-01-02'),
-			updatedAt: new Date('2024-01-02')
-		}
-	];
 
 	beforeEach(async () => {
 		const ctx = await createTRPCContext({
@@ -117,7 +87,8 @@ describe('Leads', () => {
 				convertedToCustomerAt: null,
 				status: 'away',
 				createdAt: new Date('2024-01-03'),
-				updatedAt: new Date('2024-01-03')
+				updatedAt: new Date('2024-01-03'),
+				tagId: 3
 			}
 		];
 
@@ -132,15 +103,48 @@ describe('Leads', () => {
 		expect(result.nextCursor).toBe(2);
 	});
 
-	it('should return total pages for leads', async () => {
-		mockDb.select.mockReturnValue({
-			from: () => Promise.resolve([{ count: 30 }])
+	it('should create a lead', async () => {
+		const mockTag = {
+			id: 1,
+			name: 'Customer',
+			createdAt: new Date(),
+			updatedAt: new Date()
+		};
+		const mockCreatedLead = { id: 3 };
+
+		mockDb.query.tags.findFirst.mockResolvedValue(mockTag);
+		mockDb.transaction.mockImplementation(async (callback) => {
+			const tx = {
+				query: mockDb.query,
+				insert: () => ({
+					values: () => ({
+						returning: () => Promise.resolve([mockCreatedLead])
+					})
+				})
+			};
 			// biome-ignore lint/suspicious/noExplicitAny: <explanation>
-		} as any);
-		const totalPages = await caller.leads.getTotalPages({
-			pageSize: 10
+			return callback(tx as any);
 		});
 
-		expect(totalPages).toBe(3); // 30 items with pageSize 10 should give 3 pages
+		const result = await caller.leads.create({
+			firstName: 'John',
+			lastName: 'Doe',
+			email: 'john.doe@example.com',
+			phone: '+1234567890',
+			tag: 'Customer',
+			file: faker.image.avatar(),
+			leadImages: [
+				{
+					url: faker.image.avatar(),
+					key: faker.string.uuid()
+				}
+			]
+		});
+
+		expect(result).toBeDefined();
+		expect(result).toHaveLength(1);
+		expect(result[0]?.id).toBe(3);
+		expect(mockDb.query.tags.findFirst).toHaveBeenCalled();
+		expect(mockDb.transaction).toHaveBeenCalled();
 	});
 });
