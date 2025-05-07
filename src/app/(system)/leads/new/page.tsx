@@ -4,12 +4,12 @@ import { useRouter } from 'next/navigation';
 import { Button } from '~/common/components/ui/Button';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import { PagesHeader } from '~/common/components/ui/PagesHeader';
-import { useIsDesktop } from '~/common/hooks/useMediaQuery';
+import { useIsLargeScreen } from '~/common/hooks/useMediaQuery';
 import { NewLeadForm } from '~/features/leads/components/NewLeadForm';
 
 export default function NewLead() {
 	const router = useRouter();
-	const isDesktop = useIsDesktop();
+	const isDesktop = useIsLargeScreen();
 
 	if (isDesktop) {
 		return null;

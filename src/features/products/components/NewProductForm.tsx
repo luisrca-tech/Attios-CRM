@@ -10,7 +10,7 @@ import { Button } from "~/common/components/ui/Button";
 import ErrorMessage from "~/common/components/ui/ErrorMessage";
 import { Icon } from "~/common/components/ui/Icons/_index";
 import { Input } from "~/common/components/ui/Input";
-import { useIsDesktop } from "~/common/hooks/useMediaQuery";
+import { useIsLargeScreen } from "~/common/hooks/useMediaQuery";
 import { useUploadThing } from "~/utils/storage";
 import { useProduct } from "../hooks/useProduct";
 import { newProductSchema } from "../schemas/newProduct.schema";
@@ -109,7 +109,7 @@ export function NewProductForm() {
     }
   };
 
-  const isDesktop = useIsDesktop();
+  const isDesktop = useIsLargeScreen();
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

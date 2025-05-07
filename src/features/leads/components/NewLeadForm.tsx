@@ -6,7 +6,7 @@ import { Input } from '~/common/components/ui/Input';
 import Image from 'next/image';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import ErrorMessage from '~/common/components/ui/ErrorMessage';
-import { useIsDesktop } from '~/common/hooks/useMediaQuery';
+import { useIsLargeScreen } from '~/common/hooks/useMediaQuery';
 import { useTag } from '~/features/hooks/useTag';
 import { Button } from '~/common/components/ui/Button';
 import { useRouter } from 'next/navigation';
@@ -29,7 +29,7 @@ export function NewLeadForm() {
 	});
 	const file = watch('file');
 	const router = useRouter();
-	const isDesktop = useIsDesktop();
+	const isDesktop = useIsLargeScreen();
 	const { createLead, isSubmitting } = useLead();
 	const [, _setSelectedModal] = useAtom(selectedAddAction);
 
@@ -196,7 +196,7 @@ export function NewLeadForm() {
 					>
 						Cancel
 					</Button>
-					<Button type="submit" disabled={isSubmitting}>
+					<Button type="submit" className="w-full" disabled={isSubmitting}>
 						{isSubmitting ? 'Creating...' : 'Create Lead'}
 					</Button>
 				</div>

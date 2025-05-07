@@ -4,12 +4,12 @@ import { useRouter } from 'next/navigation';
 import { Button } from '~/common/components/ui/Button';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import { PagesHeader } from '~/common/components/ui/PagesHeader';
-import { useIsDesktop } from '~/common/hooks/useMediaQuery';
+import { useIsLargeScreen } from '~/common/hooks/useMediaQuery';
 import { NewProductForm } from '~/features/products/components/NewProductForm';
 
 export default function NewProduct() {
 	const router = useRouter();
-	const isDesktop = useIsDesktop();
+	const isDesktop = useIsLargeScreen();
 
 	if (isDesktop) {
 		return null;

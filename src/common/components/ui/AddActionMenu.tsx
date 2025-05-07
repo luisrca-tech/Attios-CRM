@@ -14,12 +14,12 @@ import {
 	DropdownMenuTrigger
 } from './dropdown-menu';
 import { Icon } from './Icons/_index';
-import { useIsDesktop } from '~/common/hooks/useMediaQuery';
+import { useIsLargeScreen } from '~/common/hooks/useMediaQuery';
 
 export function AddActionMenu() {
 	const router = useRouter();
 	const pathname = usePathname();
-	const isDesktop = useIsDesktop();
+	const isDesktop = useIsLargeScreen();
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedModal, setSelectedModal] = useAtom(selectedAddAction);
 
