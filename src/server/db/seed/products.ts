@@ -39,6 +39,7 @@ export async function seedProducts() {
     const randomBrand = faker.helpers.arrayElement(insertedBrands);
     const randomCategory = faker.helpers.arrayElement(insertedCategories);
     const randomTeam = faker.helpers.arrayElement(existingTeams);
+    const randomIsActive = faker.datatype.boolean();
     const sku = `SKU-${randomUUID().slice(0, 8)}`;
 
     return {
@@ -54,6 +55,7 @@ export async function seedProducts() {
       currency: "USD",
       subcategory: faker.commerce.productAdjective(),
       teamId: randomTeam.id,
+      isActive: randomIsActive,
     };
   });
 

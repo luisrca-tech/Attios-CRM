@@ -1,5 +1,6 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  boolean,
   decimal,
   index,
   integer,
@@ -31,6 +32,7 @@ export const products = pgTable(
     sku: varchar("sku", { length: 100 }).unique(),
     currency: varchar("currency", { length: 3 }),
     subcategory: varchar("subcategory", { length: 100 }),
+    isActive: boolean("is_active").notNull().default(true),
     teamId: integer("team_id")
       .references(() => teams.id)
       .notNull(),

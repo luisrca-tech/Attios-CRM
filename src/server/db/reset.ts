@@ -11,6 +11,7 @@ async function reset() {
       DROP TABLE IF EXISTS brand CASCADE;
       DROP TABLE IF EXISTS category CASCADE;
       DROP TABLE IF EXISTS invoice CASCADE;
+      DROP TABLE IF EXISTS lead_products CASCADE;
       DROP TABLE IF EXISTS lead CASCADE;
       DROP TABLE IF EXISTS tag CASCADE;
       DROP TABLE IF EXISTS customer CASCADE;
