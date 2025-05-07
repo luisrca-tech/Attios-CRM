@@ -9,28 +9,9 @@ export const teamMutations = {
     .mutation(async ({ ctx, input }) => {
       const { name, subdomain } = input;
 
-      const userHasSubDomain = await ctx.db.query.subDomains.findMany({
+      const existingSubdomain = await ctx.db.query.subDomains.findFirst({
         where: eq(subDomains.subDomain, subdomain),
       });
-
-      if (userHasSubDomain.length > 0) {
-        console.log("User has subdomain");
-        const team = await ctx.db.transaction(async (tx) => {
-          const team = await tx.insert(teams).values({ name }).returning();
-
-          if (!team[0]) {
-            throw new Error("Team not created");
-          }
-
-          await tx.insert(teamUsers).values({
-            teamId: team[0].id,
-            userId: ctx.session.userId,
-          });
-
-          return team;
-        });
-        return team;
-      }
 
       const team = await ctx.db.transaction(async (tx) => {
         const team = await tx.insert(teams).values({ name }).returning();
@@ -39,21 +20,27 @@ export const teamMutations = {
           throw new Error("Team not created");
         }
 
-        const subDomain = await tx
-          .insert(subDomains)
-          .values({
-            subDomain: subdomain,
-          })
-          .returning();
+        let subDomainId: number;
+        if (existingSubdomain) {
+          subDomainId = existingSubdomain.id;
+        } else {
+          const newSubDomain = await tx
+            .insert(subDomains)
+            .values({
+              subDomain: subdomain,
+            })
+            .returning();
 
-        if (!subDomain[0]) {
-          throw new Error("Subdomain not created");
+          if (!newSubDomain[0]) {
+            throw new Error("Subdomain not created");
+          }
+          subDomainId = newSubDomain[0].id;
         }
 
         await tx
           .update(users)
           .set({
-            subDomainId: subDomain[0].id,
+            subDomainId,
           })
           .where(eq(users.id, ctx.session.userId));
 
