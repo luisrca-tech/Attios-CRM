@@ -196,7 +196,7 @@ export function NewLeadForm() {
 					>
 						Cancel
 					</Button>
-					<Button type="submit" className="w-full" disabled={isSubmitting}>
+					<Button type="submit" disabled={isSubmitting}>
 						{isSubmitting ? 'Creating...' : 'Create Lead'}
 					</Button>
 				</div>
