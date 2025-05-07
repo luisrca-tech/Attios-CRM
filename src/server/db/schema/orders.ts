@@ -36,7 +36,7 @@ export const orders = pgTable(
     shippedDate: timestamp("shipped_date"),
     storeId: integer("store_id"), // Will be added when store table is created
     staffId: integer("staff_id"), // Will be added when staff table is created
-    userId: varchar("user_id", { length: 50 })
+    userId: integer("user_id")
       .references(() => users.id)
       .notNull(),
     createdAt: timestamp("created_at")

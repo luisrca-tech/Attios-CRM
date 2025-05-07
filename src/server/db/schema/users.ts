@@ -31,7 +31,7 @@ export const users = pgTable(
 
 export const teamUsers = pgTable("team_user", {
   id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
-  userId: varchar("user_id", { length: 50 })
+  userId: integer("user_id")
     .references(() => users.id)
     .notNull(),
   teamId: integer("team_id")
