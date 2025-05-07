@@ -279,11 +279,6 @@ describe('Product', () => {
 	it('should be able to delete a single product', async () => {
 		mockDb.transaction.mockImplementation(async (callback) => {
 			const tx = {
-				query: {
-					productImages: {
-						findMany: () => Promise.resolve([])
-					}
-				},
 				delete: () => ({
 					where: () => Promise.resolve([{ id: 'PROD1' }])
 				}),
@@ -309,11 +304,6 @@ describe('Product', () => {
 
 		mockDb.transaction.mockImplementation(async (callback) => {
 			const tx = {
-				query: {
-					productImages: {
-						findMany: () => Promise.resolve([])
-					}
-				},
 				delete: () => ({
 					where: () => Promise.resolve([{ id: 'PROD1' }, { id: 'PROD2' }])
 				}),

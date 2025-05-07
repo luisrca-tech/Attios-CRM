@@ -1,11 +1,11 @@
-import { pgTable, serial } from 'drizzle-orm/pg-core';
+import { integer, pgTable } from 'drizzle-orm/pg-core';
 
 import { varchar } from 'drizzle-orm/pg-core';
 import { relations } from 'drizzle-orm';
 import { products } from './products';
 
 export const brands = pgTable('brand', {
-	id: serial('id').primaryKey(),
+	id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
 	name: varchar('name', { length: 100 }).notNull()
 });
 

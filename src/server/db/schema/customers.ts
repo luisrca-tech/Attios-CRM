@@ -1,11 +1,17 @@
 import { relations, sql } from 'drizzle-orm';
-import { index, pgTable, serial, timestamp, varchar } from 'drizzle-orm/pg-core';
+import {
+	index,
+	pgTable,
+	integer,
+	timestamp,
+	varchar
+} from 'drizzle-orm/pg-core';
 import { orders } from './orders';
 
 export const customers = pgTable(
 	'customer',
 	{
-		id: serial('id').primaryKey(),
+		id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
 		firstName: varchar('first_name', { length: 50 }).notNull(),
 		lastName: varchar('last_name', { length: 50 }).notNull(),
 		phone: varchar('phone', { length: 20 }),

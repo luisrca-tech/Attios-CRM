@@ -1,33 +1,37 @@
-import { db } from ".";
-import { orderItems, orders } from "./schema/orders";
-import { productImages, products } from "./schema/products";
-import { brands } from "./schema/brands";
-import { categories } from "./schema/categories";
-import { customers } from "./schema/customers";
-import { invoices } from "./schema/invoices";
-import { leads } from "./schema/leads";
-import { tags } from "./schema/tags";
-import { users } from "./schema/users";
+import { db } from '.';
+import { sql } from 'drizzle-orm';
 
 async function reset() {
-  try {
-    await db.delete(orderItems);
-    await db.delete(orders);
-    await db.delete(productImages);
-    await db.delete(products);
-    await db.delete(brands);
-    await db.delete(categories);
-    await db.delete(invoices);
-    await db.delete(leads);
-    await db.delete(tags);
-    await db.delete(customers);
-    await db.delete(users);
+	try {
+		await db.execute(sql`
+      DROP TABLE IF EXISTS order_item CASCADE;
+      DROP TABLE IF EXISTS "order" CASCADE;
+      DROP TABLE IF EXISTS product_images CASCADE;
+      DROP TABLE IF EXISTS product CASCADE;
+      DROP TABLE IF EXISTS brand CASCADE;
+      DROP TABLE IF EXISTS category CASCADE;
+      DROP TABLE IF EXISTS invoice CASCADE;
+      DROP TABLE IF EXISTS lead CASCADE;
+      DROP TABLE IF EXISTS tag CASCADE;
+      DROP TABLE IF EXISTS customer CASCADE;
+      DROP TABLE IF EXISTS "user" CASCADE;
 
-    console.log("✅ All tables dropped successfully");
-  } catch (error) {
-    console.error("❌ Error dropping tables:", error);
-    process.exit(1);
-  }
+      DROP SEQUENCE IF EXISTS order_item_id_seq CASCADE;
+      DROP SEQUENCE IF EXISTS order_id_seq CASCADE;
+      DROP SEQUENCE IF EXISTS product_images_id_seq CASCADE;
+      DROP SEQUENCE IF EXISTS brand_id_seq CASCADE;
+      DROP SEQUENCE IF EXISTS category_id_seq CASCADE;
+      DROP SEQUENCE IF EXISTS invoice_id_seq CASCADE;
+      DROP SEQUENCE IF EXISTS lead_id_seq CASCADE;
+      DROP SEQUENCE IF EXISTS tag_id_seq CASCADE;
+      DROP SEQUENCE IF EXISTS customer_id_seq CASCADE;
+    `);
+
+		console.log('✅ All tables and sequences dropped successfully');
+	} catch (error) {
+		console.error('❌ Error dropping tables and sequences:', error);
+		process.exit(1);
+	}
 }
 
 reset();
