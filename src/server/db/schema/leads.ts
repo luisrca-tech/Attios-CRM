@@ -1,10 +1,9 @@
-import { boolean, serial, timestamp } from 'drizzle-orm/pg-core';
+import { boolean, pgTable, serial, timestamp } from 'drizzle-orm/pg-core';
 import { varchar } from 'drizzle-orm/pg-core';
-import { createTable } from './config';
 import { tags } from './tags';
 import { relations } from 'drizzle-orm';
 
-export const leads = createTable('lead', {
+export const leads = pgTable('lead', {
 	id: serial('id').primaryKey(),
 	firstName: varchar('first_name', { length: 255 }).notNull(),
 	lastName: varchar('last_name', { length: 255 }).notNull(),

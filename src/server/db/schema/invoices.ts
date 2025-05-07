@@ -1,10 +1,9 @@
-import { integer, serial, timestamp } from 'drizzle-orm/pg-core';
+import { integer, pgTable, serial, timestamp } from 'drizzle-orm/pg-core';
 import { varchar } from 'drizzle-orm/pg-core';
-import { createTable } from './config';
 import { customers } from './customers';
 import { relations } from 'drizzle-orm';
 
-export const invoices = createTable('invoice', {
+export const invoices = pgTable('invoice', {
 	id: serial('id').primaryKey(),
 	number: varchar('number', { length: 255 }).notNull(),
 	date: timestamp('date').notNull(),

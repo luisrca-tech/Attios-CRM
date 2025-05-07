@@ -1,9 +1,8 @@
 import { relations, sql } from 'drizzle-orm';
-import { index, serial, timestamp, varchar } from 'drizzle-orm/pg-core';
-import { createTable } from './config';
+import { index, pgTable, serial, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { orders } from './orders';
 
-export const customers = createTable(
+export const customers = pgTable(
 	'customer',
 	{
 		id: serial('id').primaryKey(),

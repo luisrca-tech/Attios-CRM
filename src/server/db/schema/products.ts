@@ -4,16 +4,16 @@ import {
 	decimal,
 	index,
 	integer,
+	pgTable,
 	serial,
 	text,
 	timestamp,
 	varchar
 } from 'drizzle-orm/pg-core';
-import { createTable } from './config';
 import { categories } from './categories';
 import { brands } from './brands';
 
-export const products = createTable(
+export const products = pgTable(
 	'product',
 	{
 		id: varchar('id', { length: 10 }).primaryKey(),
@@ -40,7 +40,7 @@ export const products = createTable(
 	})
 );
 
-export const productImages = createTable('product_images', {
+export const productImages = pgTable('product_images', {
 	id: serial('id').primaryKey(),
 	productId: varchar('product_id', { length: 10 })
 		.references(() => products.id)

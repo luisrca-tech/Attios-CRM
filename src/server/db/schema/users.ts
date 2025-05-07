@@ -1,8 +1,7 @@
 import { sql } from 'drizzle-orm';
-import { index, timestamp, varchar } from 'drizzle-orm/pg-core';
-import { createTable } from './config';
+import { index, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
 
-export const users = createTable(
+export const users = pgTable(
 	'user',
 	{
 		id: varchar('id', { length: 50 }).primaryKey(),

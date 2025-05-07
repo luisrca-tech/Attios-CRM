@@ -4,11 +4,11 @@ import {
   index,
   integer,
   pgEnum,
+  pgTable,
   serial,
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-import { createTable } from "./config";
 import { users } from "./users";
 import { products } from "./products";
 import { customers } from "./customers";
@@ -21,7 +21,7 @@ export const orderStatusEnum = pgEnum("order_status", [
   "cancelled",
 ]);
 
-export const orders = createTable(
+export const orders = pgTable(
   "order",
   {
     id: serial("id").primaryKey(),
@@ -51,7 +51,7 @@ export const orders = createTable(
   })
 );
 
-export const orderItems = createTable(
+export const orderItems = pgTable(
   "order_item",
   {
     id: serial("id").primaryKey(),

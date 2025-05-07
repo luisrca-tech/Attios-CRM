@@ -1,9 +1,8 @@
 import { relations } from 'drizzle-orm';
-import { createTable } from './config';
-import { serial, varchar } from 'drizzle-orm/pg-core';
+import { pgTable, serial, varchar } from 'drizzle-orm/pg-core';
 import { products } from './products';
 
-export const categories = createTable('category', {
+export const categories = pgTable('category', {
 	id: serial('id').primaryKey(),
 	name: varchar('name', { length: 100 }).notNull()
 });
