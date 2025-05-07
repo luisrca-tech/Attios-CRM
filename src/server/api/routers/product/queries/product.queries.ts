@@ -1,10 +1,11 @@
-import { eq, sql, asc, desc } from 'drizzle-orm';
+import { eq, sql, asc, desc, and } from 'drizzle-orm';
 import { z } from 'zod';
 import { publicProcedure } from '~/server/api/trpc';
-import { products } from '~/server/db/schema';
+import { products, categories } from '~/server/db/schema';
 import { totalPagesQuerySchema } from '../../schemas/totalPagesQuery.schema';
 import { paginatedProductsSchema } from '../schemas/paginatedProducts.schema';
 import { controlledProductsSchema } from '../schemas/controlledProducts.schema';
+import { applyQuantityFilter, applyPriceFilter } from '../utils/filters';
 import { createSearchCondition } from '~/server/api/routers/utils/searchCondition';
 
 const requiredProductRelations = {
@@ -31,11 +32,33 @@ export const productQueries = {
 				name: products.name
 			});
 
+			const quantityFilter = applyQuantityFilter(input.filters?.quantity);
+			const priceFilter = applyPriceFilter(input.filters?.price);
+			const categoryFilter = input.filters?.category
+				? eq(
+						products.categoryId,
+						sql`(SELECT id FROM ${categories} WHERE name = ${input.filters.category})`
+					)
+				: undefined;
+
+			const filterConditions = [
+				searchCondition,
+				quantityFilter,
+				priceFilter,
+				categoryFilter
+			].filter(
+				(condition): condition is NonNullable<typeof condition> =>
+					condition !== undefined
+			);
+
+			const whereCondition =
+				filterConditions.length > 0 ? and(...filterConditions) : undefined;
+
 			return ctx.db.query.products.findMany({
 				with: requiredProductRelations,
 				limit: input.pageSize,
 				offset: (input.page - 1) * input.pageSize,
-				where: searchCondition,
+				where: whereCondition,
 				orderBy: input.sort
 					? [
 							input.sort.direction === 'asc'
@@ -53,10 +76,32 @@ export const productQueries = {
 				name: products.name
 			});
 
+			const quantityFilter = applyQuantityFilter(input.filters?.quantity);
+			const priceFilter = applyPriceFilter(input.filters?.price);
+			const categoryFilter = input.filters?.category
+				? eq(
+						products.categoryId,
+						sql`(SELECT id FROM ${categories} WHERE name = ${input.filters.category})`
+					)
+				: undefined;
+
+			const filterConditions = [
+				searchCondition,
+				quantityFilter,
+				priceFilter,
+				categoryFilter
+			].filter(
+				(condition): condition is NonNullable<typeof condition> =>
+					condition !== undefined
+			);
+
+			const whereCondition =
+				filterConditions.length > 0 ? and(...filterConditions) : undefined;
+
 			const [result] = await ctx.db
 				.select({ count: sql<number>`count(*)`.mapWith(Number) })
 				.from(products)
-				.where(searchCondition);
+				.where(whereCondition);
 
 			const totalCount = result?.count ?? 0;
 			return Math.ceil(totalCount / input.pageSize);
