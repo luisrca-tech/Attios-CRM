@@ -132,9 +132,6 @@ export const productListColumns = ({
 								<strong className="text-base leading-4 md:flex lg:hidden 2xl:flex">
 									{product.name}
 								</strong>
-								<span className="font-bold leading-4 lg:hidden lg:text-sm 2xl:flex 2xl:text-base">
-									{product.modelYear}
-								</span>
 							</div>
 							<span className="font-normal text-primary-200 text-xs uppercase">
 								{product.id}
