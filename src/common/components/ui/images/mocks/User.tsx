@@ -6,10 +6,10 @@ import { cn } from '~/lib/utils';
 import { useUploadThingImage } from '~/common/hooks/useUploadThingImage';
 
 const userImageKeys = {
-	1: 'oOhzVgQXSdmBdfqz8csTIFvtcaLjoZq0bH3DMzdrOyNERJg4',
-	2: 'oOhzVgQXSdmBar0zusi2PlzsqbJwL7MgFrSQZ5OHK40yfEeW',
-	3: 'oOhzVgQXSdmBDpZoO9VK7VlSR4CNs5UwZa8T6vo0BfgM1GJW',
-	4: 'oOhzVgQXSdmBE35DC6ptzn6H9LYyifo5maQcOkFSN3VrdWeG'
+	1: 'oOhzVgQXSdmBuMO3xUlUg5SBZb8KH1zpY7wVjPr3mQ9CEWof',
+	2: 'oOhzVgQXSdmBVt2PfJFhLn0qGZd5QTxfXrgBUbKwHcM9e4ak',
+	3: 'oOhzVgQXSdmBN8XbiBCyLR6ZbaYK2E4BjS1HGFOIh8M7x3qN',
+	4: 'oOhzVgQXSdmBVNCNWzFhLn0qGZd5QTxfXrgBUbKwHcM9e4ak'
 } as const;
 
 type UserNumber = keyof typeof userImageKeys;

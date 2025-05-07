@@ -6,6 +6,9 @@ import { toast } from 'sonner';
 import { Skeleton } from '~/common/components/ui/skeleton';
 import type { Product } from './types/product.type';
 import { ProductMoreActions } from '~/features/products/components/ProductMoreActions';
+import { ProductFilterDropdown } from './components/ProductFilterDropdown';
+import { Button } from '~/common/components/ui/Button';
+import { CategorySearchFilter } from './components/CategorySearchFilter';
 
 export type ColumnType<TData> = ColumnDef<TData, unknown>[];
 
@@ -18,13 +21,18 @@ interface ProductListColumnsProps {
 	isLoading?: boolean;
 	selectedProducts: string[];
 	onSelectProducts: (productIds: string[]) => void;
+	onFilterChange: (
+		type: 'quantity' | 'price' | 'category',
+		filter: string
+	) => void;
 }
 
 export const productListColumns = ({
 	onSort,
 	currentSort,
 	isLoading,
-	onSelectProducts
+	onSelectProducts,
+	onFilterChange
 }: ProductListColumnsProps): ColumnDef<Product, unknown>[] => {
 	const columns: ColumnDef<Product, unknown>[] = [
 		{
@@ -96,7 +104,6 @@ export const productListColumns = ({
 						<div className="flex items-center md:gap-4 lg:gap-2 2xl:gap-4">
 							<Skeleton className="h-10 w-10 rounded-md" />
 							<div className="flex flex-col gap-1">
-								<Skeleton className="h-4 w-32" />
 								<Skeleton className="h-3 w-20" />
 							</div>
 						</div>
@@ -124,9 +131,6 @@ export const productListColumns = ({
 								<strong className="text-base leading-4 md:flex lg:hidden 2xl:flex">
 									{product.name}
 								</strong>
-								<span className="font-bold leading-4 lg:hidden lg:text-sm 2xl:flex 2xl:text-base">
-									{product.modelYear}
-								</span>
 							</div>
 							<span className="font-normal text-primary-200 text-xs uppercase">
 								{product.id}
@@ -140,7 +144,12 @@ export const productListColumns = ({
 			accessorKey: 'sales',
 			header: () => (
 				<div className="flex items-center justify-around gap-4">
-					Sales
+					<Button
+						className="bg-transparent text-primary-200 hover:bg-transparent hover:text-primary-200"
+						onClick={() => toast.warning('Sales order is still in development')}
+					>
+						Sales
+					</Button>
 					{isLoading ? (
 						<Skeleton className="h-4 w-4" />
 					) : (
@@ -171,7 +180,12 @@ export const productListColumns = ({
 			accessorKey: 'quantity',
 			header: () => (
 				<div className="flex w-full items-center justify-between gap-4">
-					Qty.
+					<ProductFilterDropdown
+						text="Qty."
+						type="quantity"
+						filtersCondition={['Empty', 'Over 100', 'Over 1000', 'Ilimited']}
+						onFilterChange={onFilterChange}
+					/>
 					{isLoading ? (
 						<Skeleton className="h-4 w-4" />
 					) : (
@@ -205,8 +219,13 @@ export const productListColumns = ({
 		{
 			accessorKey: 'listPrice',
 			header: () => (
-				<div className="flex w-full items-center justify-between">
-					Price
+				<div className="flex w-full items-center justify-between gap-2">
+					<ProductFilterDropdown
+						text="Price"
+						type="price"
+						filtersCondition={['Over 1000', 'Over 2000', '5000+']}
+						onFilterChange={onFilterChange}
+					/>
 					{isLoading ? (
 						<Skeleton className="h-4 w-4" />
 					) : (
@@ -240,7 +259,7 @@ export const productListColumns = ({
 		{
 			accessorKey: 'modelYear',
 			header: () => (
-				<div className="flex w-full items-center justify-between">
+				<div className="flex w-full items-center justify-between gap-2">
 					Year
 					{isLoading ? (
 						<Skeleton className="h-4 w-4" />
@@ -276,7 +295,7 @@ export const productListColumns = ({
 			accessorKey: 'category',
 			header: () => (
 				<div className="flex w-full items-center justify-between lg:hidden 2xl:flex">
-					Category
+					<CategorySearchFilter />
 				</div>
 			),
 			cell: ({ row }) => {

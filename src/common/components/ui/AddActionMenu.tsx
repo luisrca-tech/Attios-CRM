@@ -14,30 +14,37 @@ import {
 	DropdownMenuTrigger
 } from './dropdown-menu';
 import { Icon } from './Icons/_index';
-import { useIsDesktop } from '~/common/hooks/useMediaQuery';
+import { useIsLargeScreen } from '~/common/hooks/useMediaQuery';
 
 export function AddActionMenu() {
 	const router = useRouter();
 	const pathname = usePathname();
-	const isDesktop = useIsDesktop();
+	const isDesktop = useIsLargeScreen();
 	const [isOpen, setIsOpen] = useState(false);
 	const [selectedModal, setSelectedModal] = useAtom(selectedAddAction);
 
 	const sortedActionItems = [...addActionItems].sort((a, b) => {
-		if (pathname === '/products' && a.label === 'New Product') return -1;
-		if (pathname === '/products' && b.label === 'New Product') return 1;
+		if (a.isComingSoon && !b.isComingSoon) return 1;
+		if (!a.isComingSoon && b.isComingSoon) return -1;
+
+		const aMatchesPath = a.startsWith && pathname.startsWith(a.startsWith);
+		const bMatchesPath = b.startsWith && pathname.startsWith(b.startsWith);
+		if (aMatchesPath && !bMatchesPath) return -1;
+		if (!aMatchesPath && bMatchesPath) return 1;
+
 		return 0;
 	});
 
 	const handleItemClick = (item: (typeof addActionItems)[number]) => {
 		if (item.isComingSoon) return;
 
-		if (isDesktop) {
-			if (item.renderModal) {
-				setSelectedModal(item.renderModal());
-			}
-		} else if (item.mobileHref) {
+		if (!isDesktop && item.mobileHref) {
 			router.push(item.mobileHref);
+			return;
+		}
+
+		if (item.renderModal) {
+			setSelectedModal(item.renderModal());
 		}
 	};
 

@@ -6,9 +6,9 @@ import { cn } from '~/lib/utils';
 import { useUploadThingImage } from '~/common/hooks/useUploadThingImage';
 
 const creatorImageKeys = {
-	1: 'oOhzVgQXSdmBMWQp9RxERyOD1IHwuXhQlmf2i6pTaUtgx0Br',
-	2: 'oOhzVgQXSdmBesPCoVRvRBCyhgYxidkrHLGSTv3aJjADU5wO',
-	3: 'oOhzVgQXSdmBaUSOjKi2PlzsqbJwL7MgFrSQZ5OHK40yfEeW'
+	1: 'oOhzVgQXSdmBF9IIfv1s7T3wLUWezZIfSB1jc5PpldO6KDMt',
+	2: 'oOhzVgQXSdmBo377rD1QXSdmB8x06WOevrluy5ipZFH3QfDa',
+	3: 'oOhzVgQXSdmB9elNt8z8ONTink6zM9Q7pxdCtoYHJZ2aAlh4'
 } as const;
 
 type CreatorNumber = keyof typeof creatorImageKeys;

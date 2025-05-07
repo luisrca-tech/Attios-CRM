@@ -1,4 +1,10 @@
-import { or, ilike } from 'drizzle-orm';
+import {
+	or,
+	ilike,
+	type Column,
+	type ColumnBaseConfig,
+	type ColumnDataType
+} from 'drizzle-orm';
 import type { SQL } from 'drizzle-orm';
 
 /**
@@ -7,7 +13,12 @@ import type { SQL } from 'drizzle-orm';
  * @param fieldMappings An object mapping field names to their corresponding database columns
  * @returns A condition that can be used in a where clause, or undefined if no search term
  */
-export const createSearchCondition = <T extends Record<string, unknown>>(
+export const createSearchCondition = <
+	T extends Record<
+		string,
+		Column<ColumnBaseConfig<ColumnDataType, string>, object, object>
+	>
+>(
 	searchTerm: string | undefined,
 	fieldMappings: Record<string, T[keyof T]>
 ): SQL<unknown> | undefined => {

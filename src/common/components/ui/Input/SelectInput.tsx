@@ -14,15 +14,19 @@ import { Icon } from '../Icons/_index';
 import { Popover, PopoverContent, PopoverTrigger } from '../popover';
 
 interface SelectInputProps {
-	options: string[];
+	options?: string[];
 	text?: string;
 	onSearch: (value: string) => void;
 	onChange: (value: string) => void;
-	onAdd: (value: string) => void;
+	onAdd?: (value: string) => void;
+	withoutAddButton?: boolean;
 }
 
 const SelectInput = React.forwardRef<HTMLButtonElement, SelectInputProps>(
-	({ text, options, onSearch, onChange, onAdd }, ref) => {
+	(
+		{ text, options = [], onSearch, onChange, onAdd, withoutAddButton = false },
+		ref
+	) => {
 		const [open, setOpen] = React.useState(false);
 		const [value, setValue] = React.useState('');
 		const [searchValue, setSearchValue] = React.useState('');
@@ -40,6 +44,7 @@ const SelectInput = React.forwardRef<HTMLButtonElement, SelectInputProps>(
 		const handleSearch = (search: string) => {
 			setSearchValue(search);
 			onSearch?.(search);
+			setOpen(true);
 		};
 
 		return (
@@ -77,9 +82,11 @@ const SelectInput = React.forwardRef<HTMLButtonElement, SelectInputProps>(
 						<CommandList>
 							<CommandEmpty className="flex flex-col items-center justify-center gap-2">
 								No option found!
-								<Button onClick={() => onAdd?.(searchValue)}>
-									Add "{searchValue}"
-								</Button>
+								{!withoutAddButton && (
+									<Button onClick={() => onAdd?.(searchValue)}>
+										Add "{searchValue}"
+									</Button>
+								)}
 							</CommandEmpty>
 
 							<CommandGroup className="bg-white-100 font-bold text-black">

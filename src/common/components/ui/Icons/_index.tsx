@@ -54,6 +54,10 @@ import { FunnelIcon } from './Funnel';
 import { CallIcon } from './Call';
 import { LeadsWaitingIcon } from './LeadsWaiting';
 import { LeadsCheckIcon } from './LeadsCheck';
+import { IdentityIcon } from './Identity';
+import { FlyerIcon } from './Flyer';
+import { AddLeadIcon } from './AddLead';
+import { TelephoneIcon } from './Telephone';
 import { CheckIcon } from './Check';
 
 export const Icon = {
@@ -91,6 +95,10 @@ export const Icon = {
 	Call: CallIcon,
 	LeadsCheck: LeadsCheckIcon,
 	LeadsWaiting: LeadsWaitingIcon,
+	Identity: IdentityIcon,
+	Flyer: FlyerIcon,
+	AddLead: AddLeadIcon,
+	Telephone: TelephoneIcon,
 	Check: CheckIcon,
 	List: {
 		White: ListIconWhite,

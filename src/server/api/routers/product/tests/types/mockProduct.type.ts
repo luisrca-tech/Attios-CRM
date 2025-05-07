@@ -10,4 +10,5 @@ export type MockProduct = {
 	sku: string | null;
 	currency: string | null;
 	subcategory: string | null;
+	description: string | null;
 };

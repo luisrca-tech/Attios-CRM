@@ -1,42 +1,22 @@
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'node:crypto';
 import { db } from '../index';
-import {
-	brands,
-	categories,
-	productImages,
-	products
-} from '../schema/products';
+import { productImages, products } from '../schema/products';
 import { orderItems } from '../schema/orders';
+import { seedCategories } from './categories';
+import { seedBrands } from './brands';
 
 export async function seedProducts() {
 	await db.delete(orderItems);
 	await db.delete(productImages);
 	await db.delete(products);
-	await db.delete(categories);
-	await db.delete(brands);
 
-	const brandsData = Array.from({ length: 10 }, () => ({
-		name: faker.company.name()
-	}));
-
-	const insertedBrands = await db.insert(brands).values(brandsData).returning();
-
-	const categoriesData = [
-		{ name: 'Smartphones' },
-		{ name: 'Laptops' },
-		{ name: 'Tablets' },
-		{ name: 'Smartwatches' },
-		{ name: 'Headphones' },
-		{ name: 'Cameras' },
-		{ name: 'Gaming Consoles' },
-		{ name: 'Speakers' }
-	];
-
-	const insertedCategories = await db
-		.insert(categories)
-		.values(categoriesData)
-		.returning();
+	const { insertedCategories } = (await seedCategories()) as {
+		insertedCategories: { id: number; name: string }[];
+	};
+	const { insertedBrands } = (await seedBrands()) as {
+		insertedBrands: { id: number; name: string }[];
+	};
 
 	// Generate unique product names
 	const usedNames = new Set<string>();

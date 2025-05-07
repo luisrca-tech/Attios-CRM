@@ -12,7 +12,7 @@ import { Icon } from '../../common/components/ui/Icons/_index';
 import { ViewTypeSelector } from '../../common/components/ui/ViewTypeSelector';
 import { productListColumns } from './ProductListColumns';
 import { ProductGridCard } from './components/ProductGridCard';
-import { parseAsInteger, parseAsString, useQueryState } from 'nuqs';
+import { parseAsInteger, useQueryState } from 'nuqs';
 import { usePrefetchNextPage } from '~/common/hooks/usePrefetchNextPage';
 import { GenericListSkeleton } from '../../common/components/ui/GenericListSkeleton';
 import { GenericGridSkeleton } from '../../common/components/ui/GenericGridSkeleton';
@@ -26,18 +26,27 @@ import { useProduct } from './hooks/useProduct';
 import type { Table } from '@tanstack/react-table';
 import type { Product } from './types/product.type';
 import { ProductGridCardWrapper } from './constants/productGridCardWrapper';
-
+import { NewProductModal } from './components/NewProductModal';
+import { useProductFilters } from './hooks/useProductFilters';
 export function ProductsTable() {
 	const [viewType, setViewType] = useState<'list' | 'grid'>('list');
 	const [page] = useQueryState('page', parseAsInteger.withDefault(1));
-	const [search] = useQueryState('search', parseAsString.withDefault(''));
 	const [sort, setSort] = useState<ProductSort>({
 		column: 'name',
 		direction: 'asc'
 	});
 	const [selectedProducts, setSelectedProducts] = useState<string[]>([]);
 	const tableRef = useRef<Table<Product> | null>(null);
+
 	const { bulkDeleteProducts } = useProduct();
+	const {
+		quantityFilter,
+		priceFilter,
+		categoryFilter,
+		handleFilterChange,
+		resetFilters,
+		search
+	} = useProductFilters();
 
 	const infiniteProducts =
 		api.product.getControlledProductsInfinite.useInfiniteQuery(
@@ -84,7 +93,6 @@ export function ProductsTable() {
 
 			toast.success(`Successfully deleted ${selectedProducts.length} products`);
 			setSelectedProducts([]);
-			// Reset table row selection
 			if (tableRef.current) {
 				tableRef.current.resetRowSelection();
 			}
@@ -103,7 +111,12 @@ export function ProductsTable() {
 
 	const totalPagesQuery = api.product.getTotalPages.useQuery({
 		pageSize,
-		search
+		search,
+		filters: {
+			quantity: quantityFilter || undefined,
+			price: priceFilter || undefined,
+			category: categoryFilter || undefined
+		}
 	});
 
 	const productQuery = api.product.getProductsPaginated.useQuery(
@@ -111,7 +124,12 @@ export function ProductsTable() {
 			page,
 			pageSize,
 			sort,
-			search
+			search,
+			filters: {
+				quantity: quantityFilter || undefined,
+				price: priceFilter || undefined,
+				category: categoryFilter || undefined
+			}
 		},
 		{
 			staleTime: 0,
@@ -141,7 +159,8 @@ export function ProductsTable() {
 		selectedProducts,
 		onSelectProducts: (productIds) => {
 			setSelectedProducts(productIds);
-		}
+		},
+		onFilterChange: handleFilterChange
 	});
 
 	const columnsGrid = productGridColumns({
@@ -167,14 +186,16 @@ export function ProductsTable() {
 	if (!productData.length && !isLoading) {
 		return (
 			<NotFoundItem
-				href="#"
+				renderModal={() => <NewProductModal />}
+				href="/products/new"
 				renderImage={() => (
 					<Image.NotFound className="h-[14.125rem] w-[20.625rem] md:h-[20rem] md:w-[22.625rem] lg:h-[24.0625rem] lg:w-[35rem]" />
 				)}
 				title="No products found?"
 				description="Try to create more new products or drag xls files
-to upload items list"
+to upload items list or reset filters"
 				textButton="Create Product"
+				resetFilters={resetFilters}
 			/>
 		);
 	}
@@ -186,20 +207,30 @@ to upload items list"
 				onViewChange={setViewType}
 				onSort={handleSort}
 			>
-				<Button
-					type="button"
-					color="secondary"
-					className="flex items-center gap-2 rounded-lg"
-					onClick={handleBulkDelete}
-					disabled={selectedProducts.length === 0}
-				>
-					<span className="font-extrabold text-sm text-white leading-[0.875rem] hover:font-semibold">
-						{selectedProducts.length > 0
-							? `DELETE ${selectedProducts.length} ITEMS`
-							: 'ALL ACTIONS'}
-					</span>
-					<Icon.Trash fill="#FF808B" />
-				</Button>
+				<div className="flex items-center gap-5">
+					<Button
+						type="button"
+						variant="outlined"
+						onClick={resetFilters}
+						className="hidden md:block"
+					>
+						Reset Filters
+					</Button>
+					<Button
+						type="button"
+						color="secondary"
+						className="flex items-center gap-2 rounded-lg"
+						onClick={handleBulkDelete}
+						disabled={selectedProducts.length === 0}
+					>
+						<span className="font-extrabold text-sm text-white leading-[0.875rem] hover:font-semibold">
+							{selectedProducts.length > 0
+								? `DELETE ${selectedProducts.length} ITEMS`
+								: 'ALL ACTIONS'}
+						</span>
+						<Icon.Trash fill="#FF808B" />
+					</Button>
+				</div>
 			</ViewTypeSelector>
 			{viewType === 'list' ? (
 				<>

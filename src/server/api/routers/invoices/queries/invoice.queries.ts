@@ -1,29 +1,12 @@
 import { publicProcedure } from '~/server/api/trpc';
-import { asc, sql, desc, eq } from 'drizzle-orm';
+import { asc, sql, eq } from 'drizzle-orm';
 import { totalPagesQuerySchema } from '../../schemas/totalPagesQuery.schema';
 import { controlledQuerySchema } from '../../schemas/controlledQuery.schema';
 import { paginatedInvoicesSchema } from '../schemas/paginatedInvoices.schema';
 import { controlledInvoicesSchema } from '../schemas/controlledInvoices.schema';
 import { invoices } from '~/server/db/schema/invoices';
-
-const requiredInvoiceRelations = {
-	customer: {
-		columns: {
-			id: true,
-			firstName: true,
-			lastName: true,
-			phone: true,
-			email: true,
-			street: true,
-			city: true,
-			state: true,
-			zipCode: true,
-			avatar: true,
-			createdAt: true,
-			updatedAt: true
-		}
-	}
-} as const;
+import { getInvoiceOrderBy } from '../utils/getInvoiceOrderBy';
+import { requiredInvoiceRelations } from '../constants/requiredInvoiceRelations';
 
 export const invoiceQueries = {
 	getInvoicesPaginated: publicProcedure
@@ -43,23 +26,7 @@ export const invoiceQueries = {
 							)
 						: undefined,
 				orderBy: sort
-					? [
-							sort.column === 'customer'
-								? sort.direction === 'asc'
-									? asc(invoices.customerId)
-									: desc(invoices.customerId)
-								: sort.direction === 'asc'
-									? asc(
-											invoices[
-												sort.column as keyof typeof invoices
-											] as typeof invoices.number
-										)
-									: desc(
-											invoices[
-												sort.column as keyof typeof invoices
-											] as typeof invoices.number
-										)
-						]
+					? [getInvoiceOrderBy(sort.column, sort.direction)]
 					: undefined
 			});
 
@@ -139,23 +106,7 @@ export const invoiceQueries = {
 							)
 						: undefined,
 				orderBy: sort
-					? [
-							sort.column === 'customer'
-								? sort.direction === 'asc'
-									? asc(invoices.customerId)
-									: desc(invoices.customerId)
-								: sort.direction === 'asc'
-									? asc(
-											invoices[
-												sort.column as keyof typeof invoices
-											] as typeof invoices.number
-										)
-									: desc(
-											invoices[
-												sort.column as keyof typeof invoices
-											] as typeof invoices.number
-										)
-						]
+					? [getInvoiceOrderBy(sort.column, sort.direction)]
 					: [asc(invoices.number)]
 			});
 
