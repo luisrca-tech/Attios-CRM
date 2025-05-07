@@ -3,7 +3,14 @@ import { Button } from '../../../common/components/ui/Button';
 import { Icon } from '../../../common/components/ui/Icons/_index';
 import { UserStatusLogged } from '~/common/components/ui/UserStatusLogged';
 import type { UserStatus } from '~/common/types/userStatus';
-import type { Lead } from '../types/lead.type';
+
+interface LeadListCardProps {
+	firstName: string;
+	lastName: string;
+	status: string;
+	image: string;
+	role?: { name: string };
+}
 
 export function LeadListCard({
 	firstName,
@@ -11,7 +18,7 @@ export function LeadListCard({
 	status,
 	image,
 	role
-}: Lead) {
+}: LeadListCardProps) {
 	return (
 		<div className="flex w-full items-center justify-between rounded-xl bg-white-100 px-[0.875rem] py-[0.6875rem] md:hidden lg:hidden">
 			<div className="flex gap-4">
@@ -30,7 +37,7 @@ export function LeadListCard({
 						{firstName} {lastName}
 					</strong>
 					<span className="font-normal text-primary-200 text-sm leading-5">
-						{role}
+						{role?.name}
 					</span>
 				</div>
 			</div>

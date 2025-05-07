@@ -1,13 +1,5 @@
 import { publicProcedure } from '~/server/api/trpc';
-
-const requiredCategoryRelations = {
-	products: {
-		columns: {
-			id: true,
-			name: true
-		}
-	}
-} as const;
+import { requiredCategoryRelations } from '../constants/requiredCategoryRelations';
 
 export const categoryQueries = {
 	getAll: publicProcedure.query(({ ctx }) => {

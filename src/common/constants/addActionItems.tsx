@@ -1,5 +1,6 @@
 import { NewProductModal } from '~/features/products/components/NewProductModal';
 import { Icon } from '../components/ui/Icons/_index';
+import { NewLeadModal } from '~/features/leads/components/NewLeadModal';
 
 interface AddActionItem {
 	label: string;
@@ -7,6 +8,7 @@ interface AddActionItem {
 	isComingSoon?: boolean;
 	renderModal?: () => React.ReactNode;
 	mobileHref?: string;
+	startsWith?: string;
 }
 
 export const addActionItems: AddActionItem[] = [
@@ -20,7 +22,8 @@ export const addActionItems: AddActionItem[] = [
 		),
 		isComingSoon: false,
 		renderModal: () => <NewProductModal />,
-		mobileHref: '/products/new'
+		mobileHref: '/products/new',
+		startsWith: '/products'
 	},
 	{
 		label: 'New Project',
@@ -30,7 +33,8 @@ export const addActionItems: AddActionItem[] = [
 				fill="#5E81F4"
 			/>
 		),
-		isComingSoon: true
+		isComingSoon: true,
+		startsWith: '/projects'
 	},
 	{
 		label: 'New Task',
@@ -40,7 +44,8 @@ export const addActionItems: AddActionItem[] = [
 				fill="#5E81F4"
 			/>
 		),
-		isComingSoon: true
+		isComingSoon: true,
+		startsWith: '/tasks'
 	},
 	{
 		label: 'New Lead',
@@ -50,7 +55,10 @@ export const addActionItems: AddActionItem[] = [
 				fill="#5E81F4"
 			/>
 		),
-		isComingSoon: true
+		isComingSoon: false,
+		renderModal: () => <NewLeadModal />,
+		mobileHref: '/leads/new',
+		startsWith: '/leads'
 	},
 	{
 		label: 'New Event',
@@ -60,7 +68,8 @@ export const addActionItems: AddActionItem[] = [
 				fill="#5E81F4"
 			/>
 		),
-		isComingSoon: true
+		isComingSoon: true,
+		startsWith: '/events'
 	},
 	{
 		label: 'New Invoice',
@@ -70,6 +79,7 @@ export const addActionItems: AddActionItem[] = [
 				fill="#5E81F4"
 			/>
 		),
-		isComingSoon: true
+		isComingSoon: true,
+		startsWith: '/invoices'
 	}
 ];

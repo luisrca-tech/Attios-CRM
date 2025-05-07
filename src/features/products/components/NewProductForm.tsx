@@ -10,16 +10,17 @@ import { Button } from '~/common/components/ui/Button';
 import ErrorMessage from '~/common/components/ui/ErrorMessage';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import { Input } from '~/common/components/ui/Input';
-import { useIsDesktop } from '~/common/hooks/useMediaQuery';
-import { UploadButton, useUploadThing } from '~/utils/storage';
+import { useIsLargeScreen } from '~/common/hooks/useMediaQuery';
+import { useUploadThing } from '~/utils/storage';
 import { useProduct } from '../hooks/useProduct';
 import { newProductSchema } from '../schemas/newProduct.schema';
 import type { NewProduct } from '../types/newProduct.type';
 import { api } from '~/trpc/react';
+import { useCategory } from '~/features/hooks/useCategory';
+import { useBrand } from '~/features/hooks/useBrand';
 import { useRouter } from 'next/navigation';
 
 export function NewProductForm() {
-	const router = useRouter();
 	const {
 		register,
 		handleSubmit,
@@ -33,31 +34,31 @@ export function NewProductForm() {
 			price: 0,
 			availableQuantity: 0,
 			category: '',
-			brand: ''
+			brand: '',
+			productImages: []
 		}
 	});
+
+	const router = useRouter();
 	const file = watch('file');
-	const {
-		createCategory,
-		createProduct,
-		createBrand,
-		filteredCategories,
-		filteredBrands,
-		setCategorySearch: onSearchCategory,
-		setBrandSearch: onSearchBrand
-	} = useProduct();
-	const [, setSelectedModal] = useAtom(selectedAddAction);
-
-	const { startUpload } = useUploadThing('imageUploader');
 	const imageCreation = api.images.upload.useMutation();
+	const { startUpload } = useUploadThing('imageUploader');
 
-	const handleAddCategory = (value: string) => {
-		createCategory.mutate({ name: value });
-	};
+	const { createProduct } = useProduct();
 
-	const handleAddBrand = (value: string) => {
-		createBrand.mutate({ name: value });
-	};
+	const {
+		filteredBrands,
+		setBrandSearch: onSearchBrand,
+		handleAddBrand
+	} = useBrand();
+
+	const {
+		filteredCategories,
+		setCategorySearch: onSearchCategory,
+		handleAddCategory
+	} = useCategory();
+
+	const [, setSelectedModal] = useAtom(selectedAddAction);
 
 	const handleFileSelect = (file: File) => {
 		setValue('file', file);
@@ -82,7 +83,13 @@ export function NewProductForm() {
 				price: values.price,
 				availableQuantity: values.availableQuantity,
 				category: values.category,
-				brand: values.brand
+				brand: values.brand,
+				productImages: [
+					{
+						url: uploadResponse[0].ufsUrl,
+						key: uploadResponse[0].key
+					}
+				]
 			});
 
 			if (!product?.[0]) {
@@ -90,22 +97,19 @@ export function NewProductForm() {
 				return;
 			}
 
-			if (uploadResponse.length > 0) {
-				await imageCreation.mutateAsync({
-					productId: product[0].id,
-					imageUrl: uploadResponse[0]?.url ?? '',
-					imageKey: uploadResponse[0]?.key ?? ''
-				});
-			}
-			router.push(`/product/${product[0].id}`);
+			await imageCreation.mutateAsync({
+				productId: product[0].id,
+				imageUrl: uploadResponse[0].ufsUrl,
+				imageKey: uploadResponse[0].key
+			});
 			setSelectedModal(null);
-			toast.success('Product created successfully');
+			router.push(`/product/${product[0].id}`);
 		} catch (_error) {
 			toast.error('Failed to create product');
 		}
 	};
 
-	const isDesktop = useIsDesktop();
+	const isDesktop = useIsLargeScreen();
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
@@ -133,35 +137,24 @@ export function NewProductForm() {
 								</button>
 							</div>
 						) : (
-							<UploadButton
-								data-testid="product-image-upload-button"
-								endpoint="imageUploader"
-								onBeforeUploadBegin={() => {
-									return [];
-								}}
-								onChange={(files) => {
-									if (files?.[0]) {
-										handleFileSelect(files[0]);
-									}
-								}}
-								onUploadError={(error: Error) => {
-									toast.error(
-										`Something went wrong on uploading image: ${error.message} please, try again!`
-									);
-								}}
-								appearance={{
-									button:
-										'p-9 h-[5.25rem] w-[5.25rem] lg:h-[6.5rem] lg:w-[6.5rem] flex items-center justify-center rounded-xl bg-white-100 lg:bg-primary-100/10'
-								}}
-								content={{
-									button: (
-										<Icon.Upload
-											className="h-[1.125rem] w-[1.125rem] text-primary-200 lg:h-8 lg:w-8 lg:text-primary-100"
-											fill={isDesktop ? '#1B51E5' : '#8181A5'}
-										/>
-									)
-								}}
-							/>
+							<div className="relative flex items-center justify-center">
+								<input
+									type="file"
+									accept="image/*"
+									onChange={(e) => {
+										if (e.target.files?.[0]) {
+											handleFileSelect(e.target.files[0]);
+										}
+									}}
+									className="absolute inset-0 flex h-full w-full cursor-pointer opacity-0"
+								/>
+								<div className="flex h-[5.25rem] w-[5.25rem] items-center justify-center rounded-xl bg-white-100 p-9 lg:h-[6.5rem] lg:w-[6.5rem] lg:bg-primary-100/10">
+									<Icon.Upload
+										className="h-[1.125rem] w-[1.125rem] text-primary-200 lg:h-8 lg:w-8 lg:text-primary-100"
+										fill={isDesktop ? '#1B51E5' : '#8181A5'}
+									/>
+								</div>
+							</div>
 						)}
 						{errors.file && (
 							<ErrorMessage>{errors.file.message?.toString()}</ErrorMessage>

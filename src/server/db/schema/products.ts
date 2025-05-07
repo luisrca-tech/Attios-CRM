@@ -4,24 +4,16 @@ import {
 	decimal,
 	index,
 	integer,
+	pgTable,
 	serial,
 	text,
 	timestamp,
 	varchar
 } from 'drizzle-orm/pg-core';
-import { createTable } from './config';
+import { categories } from './categories';
+import { brands } from './brands';
 
-export const brands = createTable('brand', {
-	id: serial('id').primaryKey(),
-	name: varchar('name', { length: 100 }).notNull()
-});
-
-export const categories = createTable('category', {
-	id: serial('id').primaryKey(),
-	name: varchar('name', { length: 100 }).notNull()
-});
-
-export const products = createTable(
+export const products = pgTable(
 	'product',
 	{
 		id: varchar('id', { length: 10 }).primaryKey(),
@@ -48,7 +40,7 @@ export const products = createTable(
 	})
 );
 
-export const productImages = createTable('product_images', {
+export const productImages = pgTable('product_images', {
 	id: serial('id').primaryKey(),
 	productId: varchar('product_id', { length: 10 })
 		.references(() => products.id)
@@ -76,12 +68,4 @@ export const productImagesRelations = relations(productImages, ({ one }) => ({
 		fields: [productImages.productId],
 		references: [products.id]
 	})
-}));
-
-export const categoriesRelations = relations(categories, ({ many }) => ({
-	products: many(products)
-}));
-
-export const brandsRelations = relations(brands, ({ many }) => ({
-	products: many(products)
 }));

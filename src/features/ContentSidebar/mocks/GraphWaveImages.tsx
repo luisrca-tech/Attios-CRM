@@ -5,13 +5,13 @@ import { useUploadThingImage } from '~/common/hooks/useUploadThingImage';
 export function useGraphWaveImages() {
 	return {
 		blueWaveGraphForeground: useUploadThingImage(
-			'oOhzVgQXSdmBvOOQ0Jwd1wzNyqRgsO84YbH3f5WDhmnocG29'
+			'oOhzVgQXSdmB0dF1JSFeGAFHdnC69v8X024LZJtS5MelNs7o'
 		),
 		whiteWaveGraphBackground: useUploadThingImage(
-			'oOhzVgQXSdmBNjcTjiCyLR6ZbaYK2E4BjS1HGFOIh8M7x3qN'
+			'oOhzVgQXSdmBJN5xTb3A2gusiaV3hDQCR1q9fBOXGoMlPjNw'
 		),
 		productsGraph: useUploadThingImage(
-			'oOhzVgQXSdmB6ieMr35QKvRyYIgCm1OxZD3lBSojtUiA897T'
+			'oOhzVgQXSdmB1Dt081M6aSmIjkoOG9MKY5l0petNbnLHwfAX'
 		)
 	};
 }

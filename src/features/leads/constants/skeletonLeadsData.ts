@@ -7,7 +7,13 @@ export const skeletonLeadsData = ({ pageSize }: SkeletonTable) =>
 		lastName: '',
 		email: '',
 		phone: '',
-		role: '',
+		tagId: 0,
+		tag: {
+			id: 0,
+			name: '',
+			createdAt: new Date(),
+			updatedAt: new Date()
+		},
 		image: '/placeholder-avatar.png',
 		status: '',
 		convertedToCustomer: false,

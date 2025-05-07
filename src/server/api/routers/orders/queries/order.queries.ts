@@ -6,20 +6,7 @@ import { paginationSchema } from '../../schemas/pagination.schema';
 import { dateFilterSchema } from '../schemas/dateFilter.schema';
 import { controlledOrdersSchema } from '../schemas/controlledOrders.schema';
 import { totalPageOrdersSchema } from '../schemas/totalPageOrders.schema';
-
-const requiredOrderRelations = {
-	customer: true,
-	orderItems: {
-		with: {
-			product: {
-				columns: {
-					id: true,
-					name: true
-				}
-			}
-		}
-	}
-} as const;
+import { requiredOrderRelations } from '../constants/requiredOrderRelations';
 
 export const orderQueries = {
 	// This is the paginated query for the desktop order table

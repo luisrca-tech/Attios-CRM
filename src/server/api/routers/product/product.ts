@@ -1,6 +1,6 @@
 import { createTRPCRouter } from '../../trpc';
-import { productMutations } from './mutations/productMutations';
-import { productQueries } from './queries/productQueries';
+import { productMutations } from './mutations/product.mutations';
+import { productQueries } from './queries/product.queries';
 
 export const productRouter = createTRPCRouter({
 	...productQueries,

@@ -104,7 +104,6 @@ export const productListColumns = ({
 						<div className="flex items-center md:gap-4 lg:gap-2 2xl:gap-4">
 							<Skeleton className="h-10 w-10 rounded-md" />
 							<div className="flex flex-col gap-1">
-								<Skeleton className="h-4 w-32" />
 								<Skeleton className="h-3 w-20" />
 							</div>
 						</div>
@@ -132,9 +131,6 @@ export const productListColumns = ({
 								<strong className="text-base leading-4 md:flex lg:hidden 2xl:flex">
 									{product.name}
 								</strong>
-								<span className="font-bold leading-4 lg:hidden lg:text-sm 2xl:flex 2xl:text-base">
-									{product.modelYear}
-								</span>
 							</div>
 							<span className="font-normal text-primary-200 text-xs uppercase">
 								{product.id}

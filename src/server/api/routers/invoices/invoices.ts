@@ -1,5 +1,5 @@
 import { createTRPCRouter } from '../../trpc';
-import { invoiceQueries } from './queries/invoiceQueries';
+import { invoiceQueries } from './queries/invoice.queries';
 
 export const invoiceRouter = createTRPCRouter({
 	...invoiceQueries

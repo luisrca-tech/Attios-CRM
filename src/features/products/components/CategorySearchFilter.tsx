@@ -1,11 +1,11 @@
 'use client';
 
-import { useProduct } from '../hooks/useProduct';
 import { Input } from '~/common/components/ui/Input';
 import { useProductFilters } from '../hooks/useProductFilters';
+import { useCategory } from '~/features/hooks/useCategory';
 export function CategorySearchFilter() {
 	const { filteredCategories, setCategorySearch: onSearchCategory } =
-		useProduct();
+		useCategory();
 
 	const { handleFilterChange } = useProductFilters();
 	return (

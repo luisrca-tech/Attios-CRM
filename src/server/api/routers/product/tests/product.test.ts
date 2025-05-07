@@ -144,7 +144,9 @@ describe('Product', () => {
 			}
 		];
 
-		mockDb.query.products.findMany.mockResolvedValue(extendedMockProducts);
+		mockDb.query.products.findMany.mockResolvedValue(
+			extendedMockProducts as MockProduct[]
+		);
 		const result = await caller.product.getControlledProductsInfinite({
 			limit: 2,
 			cursor: 0

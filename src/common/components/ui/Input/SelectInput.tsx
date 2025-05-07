@@ -14,7 +14,7 @@ import { Icon } from '../Icons/_index';
 import { Popover, PopoverContent, PopoverTrigger } from '../popover';
 
 interface SelectInputProps {
-	options: string[];
+	options?: string[];
 	text?: string;
 	onSearch: (value: string) => void;
 	onChange: (value: string) => void;
@@ -24,7 +24,7 @@ interface SelectInputProps {
 
 const SelectInput = React.forwardRef<HTMLButtonElement, SelectInputProps>(
 	(
-		{ text, options, onSearch, onChange, onAdd, withoutAddButton = false },
+		{ text, options = [], onSearch, onChange, onAdd, withoutAddButton = false },
 		ref
 	) => {
 		const [open, setOpen] = React.useState(false);

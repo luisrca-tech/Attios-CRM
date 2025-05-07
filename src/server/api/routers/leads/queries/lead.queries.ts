@@ -1,10 +1,13 @@
 import { publicProcedure } from '~/server/api/trpc';
-import { asc, desc, sql } from 'drizzle-orm';
+import { asc, sql, eq } from 'drizzle-orm';
 import { leads } from '~/server/db/schema/leads';
 import { paginatedLeadsSchema } from '../schemas/paginatedLeads.schema';
 import { totalPagesQuerySchema } from '../../schemas/totalPagesQuery.schema';
 import { controlledLeadsSchema } from '../schemas/controlledLeads.schema';
+import { z } from 'zod';
+import { tags } from '~/server/db/schema/tags';
 import { createSearchCondition } from '~/server/api/routers/utils/searchCondition';
+import { getLeadOrderBy } from '../utils/getLeadOrderBy';
 
 export const leadQueries = {
 	getLeadsPaginated: publicProcedure
@@ -18,21 +21,12 @@ export const leadQueries = {
 			return ctx.db.query.leads.findMany({
 				limit: input.pageSize,
 				offset: (input.page - 1) * input.pageSize,
+				with: {
+					tag: true
+				},
 				where: searchCondition,
 				orderBy: input.sort
-					? [
-							input.sort.column === 'name'
-								? input.sort.direction === 'asc'
-									? asc(
-											sql<string>`concat(${leads.firstName}, ' ', ${leads.lastName})`
-										)
-									: desc(
-											sql<string>`concat(${leads.firstName}, ' ', ${leads.lastName})`
-										)
-								: input.sort.direction === 'asc'
-									? asc(leads[input.sort.column])
-									: desc(leads[input.sort.column])
-						]
+					? [getLeadOrderBy(input.sort.column, input.sort.direction)]
 					: [
 							asc(
 								sql<string>`concat(${leads.firstName}, ' ', ${leads.lastName})`
@@ -71,21 +65,12 @@ export const leadQueries = {
 			const items = await ctx.db.query.leads.findMany({
 				limit: limit + 1,
 				offset: cursor,
+				with: {
+					tag: true
+				},
 				where: searchCondition,
 				orderBy: sort
-					? [
-							sort.column === 'name'
-								? sort.direction === 'asc'
-									? asc(
-											sql<string>`concat(${leads.firstName}, ' ', ${leads.lastName})`
-										)
-									: desc(
-											sql<string>`concat(${leads.firstName}, ' ', ${leads.lastName})`
-										)
-								: sort.direction === 'asc'
-									? asc(leads[sort.column])
-									: desc(leads[sort.column])
-						]
+					? [getLeadOrderBy(sort.column, sort.direction)]
 					: [
 							asc(
 								sql<string>`concat(${leads.firstName}, ' ', ${leads.lastName})`
@@ -99,7 +84,6 @@ export const leadQueries = {
 				nextCursor = cursor + limit;
 			}
 
-			// If sorting by name, we need to sort the results in memory
 			if (sort?.column === 'name') {
 				items.sort((a, b) => {
 					const aName = `${a.firstName ?? ''} ${a.lastName ?? ''}`;
@@ -113,6 +97,50 @@ export const leadQueries = {
 			return {
 				items,
 				nextCursor
+			};
+		}),
+
+	// Get leads by tag
+	getLeadsByTag: publicProcedure
+		.input(
+			z.object({
+				tag: z.enum(['Customer', 'Prospect', 'Partner', 'Supplier']),
+				page: z.number().min(1).default(1),
+				pageSize: z.number().min(1).max(100).default(10)
+			})
+		)
+		.query(async ({ ctx, input }) => {
+			const { tag, page, pageSize } = input;
+
+			const leadsByRole = await ctx.db.query.leads.findMany({
+				with: {
+					tag: true
+				},
+				where: eq(tags.name, tag),
+				limit: pageSize,
+				offset: (page - 1) * pageSize,
+				orderBy: [
+					asc(sql<string>`concat(${leads.firstName}, ' ', ${leads.lastName})`)
+				]
+			});
+
+			const [countResult] = await ctx.db
+				.select({ count: sql<number>`count(*)`.mapWith(Number) })
+				.from(leads)
+				.innerJoin(tags, eq(leads.tagId, tags.id))
+				.where(eq(tags.name, tag));
+
+			const totalCount = countResult?.count ?? 0;
+			const totalPages = Math.ceil(totalCount / pageSize);
+
+			return {
+				leads: leadsByRole,
+				pagination: {
+					total: totalCount,
+					totalPages,
+					currentPage: page,
+					pageSize
+				}
 			};
 		})
 };
