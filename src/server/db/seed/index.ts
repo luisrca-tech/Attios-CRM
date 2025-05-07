@@ -10,7 +10,7 @@ import { seedTeams } from "./teams";
 import { orderItems } from "../schema/orders";
 import { productImages, products } from "../schema/products";
 import { db } from "..";
-import { users, tags, customers } from "../schema";
+import { users, tags, customers, teamUsers } from "../schema";
 import { seedUsers } from "./users";
 
 async function seed() {
@@ -20,6 +20,7 @@ async function seed() {
     await db.delete(products);
     await db.delete(tags);
     await db.delete(customers);
+    await db.delete(teamUsers);
     await db.delete(users);
 
     await seedUsers();

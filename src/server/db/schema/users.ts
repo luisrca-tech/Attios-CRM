@@ -12,7 +12,7 @@ import { teams } from "./teams";
 export const users = pgTable(
   "user",
   {
-    id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
+    id: varchar("id", { length: 50 }).primaryKey(),
     email: varchar("email", { length: 256 }).notNull().unique(),
     fullName: varchar("full_name", { length: 256 }).notNull(),
     subDomainId: integer("sub_domain_id").references(() => subDomains.id),
@@ -31,7 +31,7 @@ export const users = pgTable(
 
 export const teamUsers = pgTable("team_user", {
   id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
-  userId: integer("user_id")
+  userId: varchar("user_id", { length: 50 })
     .references(() => users.id)
     .notNull(),
   teamId: integer("team_id")
