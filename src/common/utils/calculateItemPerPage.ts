@@ -1,11 +1,15 @@
 export const calculateItemPerPage = (extraItemHeight: number) => {
-	const minimalHeight = 1020;
+  const minimalHeight = 1020;
+  const minimalItemPerPage = 8;
 
-	const pageHeight = window.innerHeight;
-	const actualExtraHeight = pageHeight - minimalHeight;
-	const minimalItemPerPage = 8;
-	return Math.max(
-		minimalItemPerPage,
-		minimalItemPerPage + Math.floor(actualExtraHeight / extraItemHeight)
-	);
+  if (typeof window === "undefined") {
+    return minimalItemPerPage;
+  }
+
+  const pageHeight = window.innerHeight;
+  const actualExtraHeight = pageHeight - minimalHeight;
+  return Math.max(
+    minimalItemPerPage,
+    minimalItemPerPage + Math.floor(actualExtraHeight / extraItemHeight)
+  );
 };
