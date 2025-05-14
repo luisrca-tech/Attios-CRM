@@ -1,7 +1,8 @@
 import { eq } from "drizzle-orm";
 import { protectedProcedure } from "~/server/api/trpc";
-import { subDomains, teamUsers, teams, users } from "~/server/db/schema";
+import { subDomains, teamUsers, teams } from "~/server/db/schema";
 import { createTeamSchema } from "../schemas/teams.schema";
+import { getCurrentUser } from "~/server/api/routers/utils/getCurrentUser";
 
 export const teamMutations = {
   create: protectedProcedure
@@ -37,16 +38,19 @@ export const teamMutations = {
           subDomainId = newSubDomain[0].id;
         }
 
+        // Get current user and set subdomain
+        const currentUser = await getCurrentUser(ctx);
+
         await tx
-          .update(users)
+          .update(teams)
           .set({
             subDomainId,
           })
-          .where(eq(users.id, ctx.session.userId));
+          .where(eq(teams.id, team[0].id));
 
         await tx.insert(teamUsers).values({
           teamId: team[0].id,
-          userId: ctx.session.userId,
+          userId: currentUser.id,
         });
 
         return team;

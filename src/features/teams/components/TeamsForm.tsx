@@ -12,6 +12,12 @@ import { createTeamSchema } from "~/server/api/routers/teams/schemas/teams.schem
 import type { CreateTeamInputType } from "~/server/api/routers/teams/types/teams.type";
 import { useTeams } from "../hooks/teams.hook";
 
+// TODO: handle the global state of the team to be able to relate the team to the lead and product
+
+// TODO: create a menu to select the team
+
+// TODO: create a new page to create a team or edit a team
+
 type TeamsFormProps = {
   isFirstTeam?: boolean;
 };
