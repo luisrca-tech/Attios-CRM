@@ -1,3 +1,3 @@
-import { subdomainRouter } from "./subdomains";
+import { subdomainRouter } from './subdomains';
 
 export { subdomainRouter };

@@ -1,8 +1,8 @@
-import { protectedProcedure } from "~/server/api/trpc";
+import { protectedProcedure } from '~/server/api/trpc';
 
 export const subdomainQueries = {
-  getAll: protectedProcedure.query(async ({ ctx }) => {
-    const subdomains = await ctx.db.query.subDomains.findMany();
-    return subdomains;
-  }),
+	getAll: protectedProcedure.query(async ({ ctx }) => {
+		const subdomains = await ctx.db.query.subDomains.findMany();
+		return subdomains;
+	})
 };

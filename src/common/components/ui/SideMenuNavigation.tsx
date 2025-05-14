@@ -10,6 +10,7 @@ import { cn } from '~/lib/utils';
 import { CommingSoon } from './CommingSoon';
 import { UserStatusLogged } from './UserStatusLogged';
 import Logo from '/public/favicon.svg';
+import { LinkButton } from './Button';
 
 export function SideMenu() {
 	const { isLoaded, user } = useUser();
@@ -36,9 +37,9 @@ export function SideMenu() {
 			<nav className="w-full">
 				<ul className="flex min-h-full flex-col items-center justify-around">
 					<li className="w-full">
-						<button
-							type="button"
-							className="flex w-full items-center justify-center px-4 pb-5 transition-all duration-300"
+						<LinkButton
+							href="/"
+							className="flex w-full items-center justify-center bg-transparent px-4 pb-5 transition-all duration-300 hover:bg-transparent"
 						>
 							<div className="flex gap-3">
 								<Image src={Logo} alt="logo" width={30} height={30} />
@@ -46,7 +47,7 @@ export function SideMenu() {
 									<strong className="text-primary-100 text-xl">Attios</strong>
 								)}
 							</div>
-						</button>
+						</LinkButton>
 					</li>
 
 					{menuItems.map((item) => (

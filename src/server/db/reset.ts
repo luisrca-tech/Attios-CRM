@@ -1,9 +1,9 @@
-import { db } from ".";
-import { sql } from "drizzle-orm";
+import { db } from '.';
+import { sql } from 'drizzle-orm';
 
 async function reset() {
-  try {
-    await db.execute(sql`
+	try {
+		await db.execute(sql`
       DROP TABLE IF EXISTS order_item CASCADE;
       DROP TABLE IF EXISTS "order" CASCADE;
       DROP TABLE IF EXISTS product_images CASCADE;
@@ -34,11 +34,11 @@ async function reset() {
       DROP SEQUENCE IF EXISTS team_user_id_seq CASCADE;
     `);
 
-    console.log("✅ All tables and sequences dropped successfully");
-  } catch (error) {
-    console.error("❌ Error dropping tables and sequences:", error);
-    process.exit(1);
-  }
+		console.log('✅ All tables and sequences dropped successfully');
+	} catch (error) {
+		console.error('❌ Error dropping tables and sequences:', error);
+		process.exit(1);
+	}
 }
 
 reset();
