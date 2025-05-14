@@ -1,143 +1,154 @@
-import { eq, sql, inArray } from 'drizzle-orm';
-import { randomUUID } from 'node:crypto';
-import { z } from 'zod';
-import { newProductSchema } from '~/features/products/schemas/newProduct.schema';
-import { updateProductSchema } from '~/features/products/schemas/updateProduct.schema';
-import { protectedProcedure } from '~/server/api/trpc';
-import { products, productImages, orderItems } from '~/server/db/schema';
-import { deleteStorageFile } from '~/app/server/storage';
+import { eq, sql, inArray } from "drizzle-orm";
+import { randomUUID } from "node:crypto";
+import { z } from "zod";
+import { newProductSchema } from "~/features/products/schemas/newProduct.schema";
+import { updateProductSchema } from "~/features/products/schemas/updateProduct.schema";
+import { protectedProcedure } from "~/server/api/trpc";
+import { products, productImages, orderItems } from "~/server/db/schema";
+import { deleteStorageFile } from "~/app/server/storage";
+import { getCurrentUser } from "~/server/api/routers/utils/getCurrentUser";
+
+// TODO: add automatic relation between product and team when creating a product
 
 export const productMutations = {
-	create: protectedProcedure
-		.input(newProductSchema)
-		.mutation(async ({ ctx, input }) => {
-			return await ctx.db.transaction(async (tx) => {
-				const category = await tx.query.categories.findFirst({
-					where: (categories, { eq }) => eq(categories.name, input.category)
-				});
+  create: protectedProcedure
+    .input(newProductSchema)
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.transaction(async (tx) => {
+        const category = await tx.query.categories.findFirst({
+          where: (categories, { eq }) => eq(categories.name, input.category),
+        });
 
-				if (!category) {
-					throw new Error('Category not found');
-				}
+        if (!category) {
+          throw new Error("Category not found");
+        }
 
-				const brand = await tx.query.brands.findFirst({
-					where: (brands, { eq }) => eq(brands.name, input.brand)
-				});
+        const brand = await tx.query.brands.findFirst({
+          where: (brands, { eq }) => eq(brands.name, input.brand),
+        });
 
-				if (!brand) {
-					throw new Error('Brand not found');
-				}
+        if (!brand) {
+          throw new Error("Brand not found");
+        }
 
-				const productId = randomUUID().slice(0, 10);
+        // Get the current user to find their subdomain
+        const currentUser = await getCurrentUser(ctx);
 
-				const product = await tx
-					.insert(products)
-					.values({
-						id: productId,
-						brandId: brand.id,
-						name: input.name,
-						sku: input.sku,
-						listPrice: sql`${input.price}::decimal`,
-						quantity: input.availableQuantity,
-						categoryId: category.id,
-						categoryName: category.name,
-						modelYear: new Date().getFullYear()
-					})
-					.returning({
-						id: products.id
-					});
+        if (!currentUser.subDomainId) {
+          throw new Error("User has no subdomain");
+        }
 
-				return product;
-			});
-		}),
+        const productId = randomUUID().slice(0, 10);
 
-	update: protectedProcedure
-		.input(updateProductSchema)
-		.mutation(async ({ ctx, input }) => {
-			return await ctx.db.transaction(async (tx) => {
-				await tx
-					.update(products)
-					.set({
-						name: input.name,
-						sku: input.sku,
-						listPrice: sql`${input.price}::decimal`,
-						quantity: input.availableQuantity,
-						categoryName: input.category,
-						subcategory: input.subcategory ?? null,
-						currency: input.currency
-					})
-					.where(eq(products.id, input.productId));
+        const product = await tx
+          .insert(products)
+          .values({
+            id: productId,
+            brandId: brand.id,
+            name: input.name,
+            sku: input.sku,
+            listPrice: sql`${input.price}::decimal`,
+            quantity: input.availableQuantity,
+            categoryId: category.id,
+            categoryName: category.name,
+            modelYear: new Date().getFullYear(),
+            subdomainId: currentUser.subDomainId,
+          })
+          .returning({
+            id: products.id,
+          });
 
-				if (input.productImages && input.productImages.length > 0) {
-					await tx
-						.delete(productImages)
-						.where(eq(productImages.productId, input.productId));
+        return product;
+      });
+    }),
 
-					await tx.insert(productImages).values(
-						input.productImages.map((image) => ({
-							productId: input.productId,
-							url: image.url,
-							key: image.key
-						}))
-					);
-				}
+  update: protectedProcedure
+    .input(updateProductSchema)
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.transaction(async (tx) => {
+        await tx
+          .update(products)
+          .set({
+            name: input.name,
+            sku: input.sku,
+            listPrice: sql`${input.price}::decimal`,
+            quantity: input.availableQuantity,
+            categoryName: input.category,
+            subcategory: input.subcategory ?? null,
+            currency: input.currency,
+          })
+          .where(eq(products.id, input.productId));
 
-				return { id: input.productId };
-			});
-		}),
+        if (input.productImages && input.productImages.length > 0) {
+          await tx
+            .delete(productImages)
+            .where(eq(productImages.productId, input.productId));
 
-	delete: protectedProcedure
-		.input(z.object({ id: z.string() }))
-		.mutation(async ({ ctx, input }) => {
-			return await ctx.db.transaction(async (tx) => {
-				// Get product images before deleting them
-				const images = await tx.query.productImages.findMany({
-					where: eq(productImages.productId, input.id)
-				});
+          await tx.insert(productImages).values(
+            input.productImages.map((image) => ({
+              productId: input.productId,
+              url: image.url,
+              key: image.key,
+            }))
+          );
+        }
 
-				await tx.delete(orderItems).where(eq(orderItems.productId, input.id));
+        return { id: input.productId };
+      });
+    }),
 
-				await tx
-					.delete(productImages)
-					.where(eq(productImages.productId, input.id));
+  delete: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.transaction(async (tx) => {
+        // Get product images before deleting them
+        const images = await tx.query.productImages.findMany({
+          where: eq(productImages.productId, input.id),
+        });
 
-				// Delete images from UploadThing
-				await Promise.all(images.map((image) => deleteStorageFile(image.key)));
+        await tx.delete(orderItems).where(eq(orderItems.productId, input.id));
 
-				return await tx.delete(products).where(eq(products.id, input.id));
-			});
-		}),
+        await tx
+          .delete(productImages)
+          .where(eq(productImages.productId, input.id));
 
-	bulkDelete: protectedProcedure
-		.input(z.object({ ids: z.array(z.string()) }))
-		.mutation(async ({ ctx, input }) => {
-			return await ctx.db.transaction(async (tx) => {
-				// Get product images before deleting them
-				const images = await tx.query.productImages.findMany({
-					where: inArray(productImages.productId, input.ids)
-				});
+        // Delete images from UploadThing
+        await Promise.all(images.map((image) => deleteStorageFile(image.key)));
 
-				await tx
-					.delete(orderItems)
-					.where(inArray(orderItems.productId, input.ids));
+        return await tx.delete(products).where(eq(products.id, input.id));
+      });
+    }),
 
-				await tx
-					.delete(productImages)
-					.where(inArray(productImages.productId, input.ids));
+  bulkDelete: protectedProcedure
+    .input(z.object({ ids: z.array(z.string()) }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db.transaction(async (tx) => {
+        // Get product images before deleting them
+        const images = await tx.query.productImages.findMany({
+          where: inArray(productImages.productId, input.ids),
+        });
 
-				// Delete images from UploadThing
-				await Promise.all(images.map((image) => deleteStorageFile(image.key)));
+        await tx
+          .delete(orderItems)
+          .where(inArray(orderItems.productId, input.ids));
 
-				return await tx.delete(products).where(inArray(products.id, input.ids));
-			});
-		}),
+        await tx
+          .delete(productImages)
+          .where(inArray(productImages.productId, input.ids));
 
-	toggleActive: protectedProcedure
-		.input(z.object({ id: z.string() }))
-		.mutation(async ({ ctx, input }) => {
-			return await ctx.db
-				.update(products)
-				.set({ isActive: sql`NOT ${products.isActive}` })
-				.where(eq(products.id, input.id));
-		})
+        // Delete images from UploadThing
+        await Promise.all(images.map((image) => deleteStorageFile(image.key)));
+
+        return await tx.delete(products).where(inArray(products.id, input.ids));
+      });
+    }),
+
+  toggleActive: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      return await ctx.db
+        .update(products)
+        .set({ isActive: sql`NOT ${products.isActive}` })
+        .where(eq(products.id, input.id));
+    }),
 };

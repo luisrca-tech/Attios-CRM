@@ -7,7 +7,6 @@ import {
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
-import { createTable } from "./config";
 import { products } from "./products";
 import { teams } from "./teams";
 import { tags } from "./tags";
@@ -32,7 +31,7 @@ export const leads = pgTable("lead", {
     .notNull(),
 });
 
-export const leadProducts = createTable("lead_products", {
+export const leadProducts = pgTable("lead_products", {
   id: serial("id").primaryKey(),
   leadId: integer("lead_id")
     .references(() => leads.id)
