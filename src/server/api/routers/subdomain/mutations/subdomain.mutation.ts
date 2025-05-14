@@ -1,41 +1,52 @@
-import { z } from 'zod';
-import { protectedProcedure } from '~/server/api/trpc';
-import { subDomains, teams } from '~/server/db/schema';
+import { z } from "zod";
+import { protectedProcedure } from "~/server/api/trpc";
+import { subDomains, teams, users } from "~/server/db/schema";
+import { getCurrentUser } from "~/server/api/routers/utils/getCurrentUser";
+import { eq } from "drizzle-orm";
 
 export const subdomainMutations = {
-	create: protectedProcedure
-		.input(
-			z.object({
-				subDomain: z.string(),
-				teamName: z.string()
-			})
-		)
-		.mutation(async ({ ctx, input }) => {
-			const { subDomain, teamName } = input;
+  create: protectedProcedure
+    .input(
+      z.object({
+        subDomain: z.string(),
+        teamName: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const { subDomain, teamName } = input;
+      const currentUser = await getCurrentUser(ctx);
 
-			const [newSubdomain] = await ctx.db.transaction(async (tx) => {
-				const [subdomain] = await tx
-					.insert(subDomains)
-					.values({
-						subDomain
-					})
-					.returning();
+      const [newSubdomain] = await ctx.db.transaction(async (tx) => {
+        const [subdomain] = await tx
+          .insert(subDomains)
+          .values({
+            subDomain,
+          })
+          .returning();
 
-				if (!subdomain) {
-					throw new Error('Failed to create subdomain');
-				}
+        if (!subdomain) {
+          throw new Error("Failed to create subdomain");
+        }
 
-				const [team] = await tx
-					.insert(teams)
-					.values({
-						name: teamName,
-						subDomainId: subdomain.id
-					})
-					.returning();
+        const [team] = await tx
+          .insert(teams)
+          .values({
+            name: teamName,
+            subDomainId: subdomain.id,
+          })
+          .returning();
 
-				return [subdomain, team];
-			});
+        // Update the user with the new subdomain
+        await tx
+          .update(users)
+          .set({
+            subDomainId: subdomain.id,
+          })
+          .where(eq(users.id, currentUser.id));
 
-			return newSubdomain;
-		})
+        return [subdomain, team];
+      });
+
+      return newSubdomain;
+    }),
 };

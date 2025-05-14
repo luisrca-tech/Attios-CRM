@@ -9,7 +9,7 @@ import { productRouter } from './routers/product/product';
 import { teamRouter } from './routers/teams';
 import { userRouter } from './routers/user/user';
 import { tagRouter } from './routers/Tag';
-
+import { subdomainRouter } from './routers/subdomain';
 /**
  * This is the primary router for your server.
  *
@@ -25,6 +25,7 @@ export const appRouter = createTRPCRouter({
 	leads: leadRouter,
 	invoices: invoiceRouter,
 	teams: teamRouter,
+	subdomain: subdomainRouter,
 	tag: tagRouter
 });
 
