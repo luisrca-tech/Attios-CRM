@@ -8,6 +8,7 @@ import {
   serial,
   timestamp,
   varchar,
+  text,
 } from "drizzle-orm/pg-core";
 import { brands } from "./brands";
 import { categories } from "./categories";
@@ -19,6 +20,7 @@ export const products = pgTable(
   {
     id: varchar("id", { length: 10 }).primaryKey(),
     name: varchar("name", { length: 255 }).notNull().unique(),
+    description: text("description"),
     brandId: integer("brand_id")
       .references(() => brands.id)
       .notNull(),
@@ -33,7 +35,7 @@ export const products = pgTable(
     currency: varchar("currency", { length: 3 }),
     subcategory: varchar("subcategory", { length: 100 }),
     isActive: boolean("is_active").notNull().default(true),
-    teamId: integer("team_id")
+    subdomainId: integer("subdomain_id")
       .references(() => teams.id)
       .notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
@@ -42,7 +44,7 @@ export const products = pgTable(
   (table) => ({
     brandIdIdx: index("brand_id_idx").on(table.brandId),
     categoryIdIdx: index("category_id_idx").on(table.categoryId),
-    teamIdIdx: index("team_id_idx").on(table.teamId),
+    subdomainIdIdx: index("subdomain_id_idx").on(table.subdomainId),
   })
 );
 
@@ -71,8 +73,8 @@ export const productsRelations = relations(products, ({ one, many }) => ({
     references: [brands.id],
   }),
   productImages: many(productImages),
-  team: one(teams, {
-    fields: [products.teamId],
+  subdomain: one(teams, {
+    fields: [products.subdomainId],
     references: [teams.id],
   }),
   leads: many(leadProducts),

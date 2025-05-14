@@ -5,7 +5,7 @@ import { productImages, products } from "../schema/products";
 import { orderItems } from "../schema/orders";
 import { seedCategories } from "./categories";
 import { seedBrands } from "./brands";
-import { teams } from "../schema/teams";
+import { subDomains } from "../schema";
 
 export async function seedProducts() {
   await db.delete(orderItems);
@@ -19,9 +19,9 @@ export async function seedProducts() {
     insertedBrands: { id: number; name: string }[];
   };
 
-  const existingTeams = await db.select().from(teams);
-  if (!existingTeams.length) {
-    throw new Error("No teams found. Please seed teams first.");
+  const existingSubdomains = await db.select().from(subDomains);
+  if (!existingSubdomains.length) {
+    throw new Error("No subdomains found. Please seed subdomains first.");
   }
 
   // Generate unique product names
@@ -38,13 +38,17 @@ export async function seedProducts() {
   const productsData = Array.from({ length: 500 }, (_) => {
     const randomBrand = faker.helpers.arrayElement(insertedBrands);
     const randomCategory = faker.helpers.arrayElement(insertedCategories);
-    const randomTeam = faker.helpers.arrayElement(existingTeams);
-    const randomIsActive = faker.datatype.boolean();
+    const randomSubdomain = faker.helpers.arrayElement(existingSubdomains);
+    const randomIsActive = faker.helpers.weightedArrayElement([
+      { value: true, weight: 8 },
+      { value: false, weight: 2 },
+    ]);
     const sku = `SKU-${randomUUID().slice(0, 8)}`;
 
     return {
       id: randomUUID().slice(0, 10),
       name: generateUniqueName(),
+      description: faker.lorem.paragraph(),
       brandId: randomBrand.id,
       categoryId: randomCategory.id,
       categoryName: randomCategory.name,
@@ -54,7 +58,7 @@ export async function seedProducts() {
       sku,
       currency: "USD",
       subcategory: faker.commerce.productAdjective(),
-      teamId: randomTeam.id,
+      subdomainId: randomSubdomain.id,
       isActive: randomIsActive,
     };
   });
