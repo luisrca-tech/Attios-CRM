@@ -16,7 +16,9 @@ async function reset() {
       DROP TABLE IF EXISTS tag CASCADE;
       DROP TABLE IF EXISTS customer CASCADE;
       DROP TABLE IF EXISTS team_user CASCADE;
+      DROP TABLE IF EXISTS team CASCADE;
       DROP TABLE IF EXISTS "user" CASCADE;
+      DROP TABLE IF EXISTS sub_domain CASCADE;
 
       DROP TYPE IF EXISTS order_status CASCADE;
 
