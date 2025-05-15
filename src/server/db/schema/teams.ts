@@ -13,7 +13,7 @@ import { subDomains } from './subDomain';
 
 export const teams = pgTable('team', {
 	id: serial('id').primaryKey(),
-	name: varchar('name', { length: 255 }).notNull(),
+	name: varchar('name', { length: 255 }).notNull().unique(),
 	subDomainId: integer('sub_domain_id').references(() => subDomains.id),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	updatedAt: timestamp('updated_at').notNull().defaultNow()

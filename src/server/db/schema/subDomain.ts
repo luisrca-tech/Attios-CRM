@@ -4,7 +4,7 @@ import { users } from './users';
 
 export const subDomains = pgTable('sub_domain', {
 	id: serial('id').primaryKey(),
-	subDomain: varchar('sub_domain', { length: 255 }).notNull(),
+	subDomain: varchar('sub_domain', { length: 255 }).notNull().unique(),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	updatedAt: timestamp('updated_at').notNull().defaultNow()
 });
