@@ -1,17 +1,18 @@
 import { auth } from "@clerk/nextjs/server";
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { api } from "~/trpc/server";
 
 export function extractSubdomain(req: NextRequest): string | null {
   const host = req.headers.get("host") || "";
-  const hostname = host.split(":")[0];
+  const hostname = host.split(":")[0] || "";
+  console.log("Extracting subdomain from hostname:", hostname);
 
-  if (!hostname) return null;
-
-  // Handle both localhost and production domains
+  // For localhost, use query parameter
   if (hostname.includes("localhost")) {
-    const parts = hostname.split(".");
-    return parts[0] === "localhost" ? null : (parts[0] ?? null);
+    const subdomain = req.nextUrl.searchParams.get("subdomain");
+    console.log("Localhost subdomain from query:", subdomain);
+    return subdomain;
   }
 
   // Handle attioscrm.site subdomains
@@ -24,51 +25,49 @@ export function extractSubdomain(req: NextRequest): string | null {
 }
 
 export async function middleware(req: NextRequest) {
-  console.log("Middleware called for URL:", req.url);
-  console.log("Middleware called for host:", req.headers.get("host"));
+  console.error("🔍 Middleware called for URL:", req.url);
+  console.error("🔍 Middleware called for host:", req.headers.get("host"));
 
   const { userId } = await auth();
-  console.log("User ID from auth:", userId);
+  console.error("🔍 User ID from auth:", userId);
 
   if (!userId) {
+    console.error("🔍 No user ID, skipping middleware");
     return NextResponse.next();
   }
 
   const subdomain = extractSubdomain(req);
-  console.log("Current subdomain:", subdomain);
+  console.error("🔍 Extracted subdomain:", subdomain);
 
-  // Get user data from your API
-  const response = await fetch(
-    `${req.nextUrl.origin}/api/trpc/user.getUserById?input=${userId}`
-  );
-  const userData = await response.json();
-  console.log("User data:", userData);
+  try {
+    // Get user's subdomain using tRPC directly
+    const userSubdomain = await api.subdomain.getByCurrentUser();
+    console.error("🔍 User's subdomain from tRPC:", userSubdomain);
 
-  const userSubdomain = userData?.result?.data?.subDomains?.subDomain;
-  console.log("User's subdomain:", userSubdomain);
+    // If user has a subdomain but isn't on it, redirect them
+    if (
+      userSubdomain?.subDomain &&
+      (!subdomain || subdomain !== userSubdomain.subDomain)
+    ) {
+      console.error(
+        "🔍 Should redirect to subdomain:",
+        userSubdomain.subDomain
+      );
+      const newUrl = new URL(req.url);
+      const isLocalhost = req.headers.get("host")?.includes("localhost");
 
-  // If user has a subdomain but isn't on it, redirect them
-  if (userSubdomain && (!subdomain || subdomain !== userSubdomain)) {
-    console.log("Redirecting to user's subdomain:", userSubdomain);
-    const newUrl = new URL(req.url);
-    const isLocalhost = req.headers.get("host")?.includes("localhost");
-    console.log("Is localhost:", isLocalhost);
-    newUrl.host = isLocalhost
-      ? `${userSubdomain}.localhost:3000`
-      : `${userSubdomain}.attioscrm.site`;
-    console.log("Redirecting to:", newUrl.toString());
-    return NextResponse.redirect(newUrl);
-  }
+      if (isLocalhost) {
+        newUrl.searchParams.set("subdomain", userSubdomain.subDomain);
+        newUrl.host = "localhost:3000";
+      } else {
+        newUrl.host = `${userSubdomain.subDomain}.attioscrm.site`;
+      }
 
-  // If user is on a subdomain that isn't theirs, redirect to root
-  if (subdomain && userSubdomain && subdomain !== userSubdomain) {
-    console.log("Redirecting to root - subdomain doesn't belong to user");
-    const newUrl = new URL(req.url);
-    const isLocalhost = req.headers.get("host")?.includes("localhost");
-    console.log("Is localhost:", isLocalhost);
-    newUrl.host = isLocalhost ? "localhost:3000" : "attioscrm.site";
-    console.log("Redirecting to:", newUrl.toString());
-    return NextResponse.redirect(newUrl);
+      console.error("🔍 Redirecting to:", newUrl.toString());
+      return NextResponse.redirect(newUrl);
+    }
+  } catch (error) {
+    console.error("🔍 Error in middleware:", error);
   }
 
   return NextResponse.next();
