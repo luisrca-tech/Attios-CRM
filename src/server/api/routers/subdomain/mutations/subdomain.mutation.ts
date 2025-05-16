@@ -4,6 +4,14 @@ import { subDomains, teams, users, teamUsers } from "~/server/db/schema";
 import { getCurrentUser } from "~/server/api/routers/utils/getCurrentUser";
 import { eq } from "drizzle-orm";
 
+import { VercelCore as Vercel } from "@vercel/sdk/core.js";
+import { projectsAddProjectDomain } from "@vercel/sdk/funcs/projectsAddProjectDomain.js";
+import { env } from "~/env";
+
+const vercel = new Vercel({
+  bearerToken: env.VERCEL_TOKEN,
+});
+
 export const subdomainMutations = {
   create: protectedProcedure
     .input(
@@ -15,7 +23,6 @@ export const subdomainMutations = {
     .mutation(async ({ ctx, input }) => {
       const { subDomain, teamName } = input;
       const currentUser = await getCurrentUser(ctx);
-      console.log("currentUser", currentUser);
 
       const [newSubdomain] = await ctx.db.transaction(async (tx) => {
         const [subdomain] = await tx
@@ -27,6 +34,26 @@ export const subdomainMutations = {
 
         if (!subdomain) {
           throw new Error("Failed to create subdomain");
+        }
+
+        try {
+          if (process.env.NODE_ENV === "production") {
+            console.log(
+              "Attempting to create Vercel domain:",
+              `${subDomain}.attioscrm.site`
+            );
+            await projectsAddProjectDomain(vercel, {
+              idOrName: env.VERCEL_PROJECT_ID,
+              teamId: env.VERCEL_TEAM_ID,
+              requestBody: {
+                name: `${subDomain}.attioscrm.site`,
+              },
+            });
+          }
+        } catch (error) {
+          console.error("Vercel domain creation failed:", error);
+          // Consider throwing the error to rollback the transaction
+          throw new Error("Failed to create Vercel domain");
         }
 
         // Update the user with the new subdomain first

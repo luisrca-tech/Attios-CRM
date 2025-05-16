@@ -60,6 +60,7 @@
 		"@trpc/react-query": "^11.0.0-rc.446",
 		"@trpc/server": "^11.0.0-rc.446",
 		"@uploadthing/react": "^7.3.0",
+		"@vercel/sdk": "^1.7.3",
 		"babel-loader": "^9.2.1",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.1.1",
