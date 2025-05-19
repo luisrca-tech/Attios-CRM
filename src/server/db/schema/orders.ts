@@ -11,6 +11,7 @@ import {
 } from 'drizzle-orm/pg-core';
 import { customers } from './customers';
 import { products } from './products';
+import { subDomains } from './subDomain';
 import { users } from './users';
 
 export const orderStatusEnum = pgEnum('order_status', [
@@ -25,6 +26,7 @@ export const orders = pgTable(
 	'order',
 	{
 		id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
+		subDomain: varchar('sub_domain', { length: 255 }).notNull(),
 		customerId: integer('customer_id')
 			.references(() => customers.id)
 			.notNull(),
@@ -77,6 +79,10 @@ export const orderItems = pgTable(
 );
 
 export const ordersRelations = relations(orders, ({ many, one }) => ({
+	subDomain: one(subDomains, {
+		fields: [orders.subDomain],
+		references: [subDomains.id]
+	}),
 	customer: one(customers, {
 		fields: [orders.customerId],
 		references: [customers.id]

@@ -1,7 +1,9 @@
 import { relations } from 'drizzle-orm';
 import { pgTable, serial, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { orders } from './orders';
 import { users } from './users';
 
+// TODO: Change all routes and tables to use subdomain
 export const subDomains = pgTable('sub_domain', {
 	id: serial('id').primaryKey(),
 	subDomain: varchar('sub_domain', { length: 255 }).notNull().unique(),
@@ -10,5 +12,6 @@ export const subDomains = pgTable('sub_domain', {
 });
 
 export const subDomainsRelations = relations(subDomains, ({ many }) => ({
-	users: many(users)
+	users: many(users),
+	orders: many(orders)
 }));

@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 import { db } from '..';
-import { orderItems, orders } from '../schema/orders';
-import { products, users } from '../schema';
+import { products, subDomains, users } from '../schema';
 import { customers } from '../schema/customers';
+import { orderItems, orders } from '../schema/orders';
 
 export async function seedOrders() {
 	await db.delete(orderItems);
@@ -11,6 +11,7 @@ export async function seedOrders() {
 	const existingCustomers = await db.select().from(customers);
 	const existingUsers = await db.select().from(users);
 	const existingProducts = await db.select().from(products);
+	const existingSubDomains = await db.select().from(subDomains);
 
 	if (!existingCustomers.length) {
 		throw new Error('No customers found. Please seed customers first.');
@@ -31,7 +32,8 @@ export async function seedOrders() {
 			orderDate: faker.date.past(),
 			requiredDate: faker.date.future(),
 			shippedDate: faker.date.past(),
-			userId: faker.helpers.arrayElement(existingUsers).id
+			userId: faker.helpers.arrayElement(existingUsers).id,
+			subDomainId: faker.helpers.arrayElement(existingSubDomains).id
 		}));
 	});
 

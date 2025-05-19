@@ -16,9 +16,6 @@ export const env = createEnv({
     WEBHOOK_SECRET: z.string(),
     CC_TEST_REPORTER_ID: z.string(),
     UPLOADTHING_TOKEN: z.string(),
-    VERCEL_TOKEN: z.string(),
-    VERCEL_TEAM_ID: z.string(),
-    VERCEL_PROJECT_ID: z.string()
   },
 
   /**
@@ -35,9 +32,6 @@ export const env = createEnv({
    * middlewares) or client-side so we need to destruct manually.
    */
   runtimeEnv: {
-    VERCEL_TOKEN: process.env.VERCEL_TOKEN,
-    VERCEL_TEAM_ID: process.env.VERCEL_TEAM_ID,
-    VERCEL_PROJECT_ID: process.env.VERCEL_PROJECT_ID,
     DATABASE_URL: process.env.DATABASE_URL,
     NODE_ENV: process.env.NODE_ENV,
     CLERK_SECRET_KEY: process.env.CLERK_SECRET_KEY,

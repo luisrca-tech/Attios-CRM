@@ -1,11 +1,11 @@
 import { faker } from '@faker-js/faker';
 import { randomUUID } from 'node:crypto';
 import { db } from '../index';
-import { productImages, products } from '../schema/products';
-import { orderItems } from '../schema/orders';
-import { seedCategories } from './categories';
-import { seedBrands } from './brands';
 import { subDomains } from '../schema';
+import { orderItems } from '../schema/orders';
+import { productImages, products } from '../schema/products';
+import { seedBrands } from './brands';
+import { seedCategories } from './categories';
 
 export async function seedProducts() {
 	await db.delete(orderItems);

@@ -6,8 +6,6 @@ import { beforeAll } from 'vitest';
 const projectDir = process.cwd();
 loadEnvConfig(projectDir);
 
-console.log(process.env.DATABASE_URL);
-
 beforeAll(() => {
 	// Load test environment variables
 	config({

@@ -6,14 +6,16 @@ import {
 	integer,
 	pgTable,
 	serial,
+	text,
 	timestamp,
-	varchar,
-	text
+	varchar
 } from 'drizzle-orm/pg-core';
 import { brands } from './brands';
 import { categories } from './categories';
 import { leadProducts } from './leads';
 import { teams } from './teams';
+
+// TODO: Add what happens when a relation is deleted or updated (all other tables)
 
 export const products = pgTable(
 	'product',
@@ -35,16 +37,14 @@ export const products = pgTable(
 		currency: varchar('currency', { length: 3 }),
 		subcategory: varchar('subcategory', { length: 100 }),
 		isActive: boolean('is_active').notNull().default(true),
-		subdomainId: integer('subdomain_id')
-			.references(() => teams.id)
-			.notNull(),
+		subdomain: varchar('subdomain', { length: 255 }).notNull(),
 		createdAt: timestamp('created_at').notNull().defaultNow(),
 		updatedAt: timestamp('updated_at').notNull().defaultNow()
 	},
 	(table) => ({
 		brandIdIdx: index('brand_id_idx').on(table.brandId),
 		categoryIdIdx: index('category_id_idx').on(table.categoryId),
-		subdomainIdIdx: index('subdomain_id_idx').on(table.subdomainId)
+		subdomainIdx: index('subdomain_idx').on(table.subdomain)
 	})
 );
 
@@ -70,7 +70,7 @@ export const productsRelations = relations(products, ({ one, many }) => ({
 	}),
 	productImages: many(productImages),
 	subdomain: one(teams, {
-		fields: [products.subdomainId],
+		fields: [products.subdomain],
 		references: [teams.id]
 	}),
 	leads: many(leadProducts)

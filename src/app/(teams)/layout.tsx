@@ -4,6 +4,7 @@ import { auth } from '@clerk/nextjs/server';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { api } from '~/trpc/server';
+import { getSubdomain } from '~/utils/subdomain';
 
 export const metadata: Metadata = {
 	title: 'Attios',
@@ -28,7 +29,8 @@ export default async function RootLayout({
 	}
 
 	if (user.subDomains) {
-		redirect('/');
+		const domain = getSubdomain(user.subDomains.subDomain);
+		redirect(domain);
 	}
 
 	return <>{children}</>;

@@ -4,7 +4,7 @@ import { subDomains } from '../schema';
 export async function seedSubdomains() {
 	await db.delete(subDomains);
 
-	const subdomainsData = [{ subDomain: 'Default Subdomain' }];
+	const subdomainsData = [{ subDomain: 'default' }];
 
 	const insertedSubdomains = await db
 		.insert(subDomains)

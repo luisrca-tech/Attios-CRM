@@ -9,5 +9,6 @@ export const newProductSchema = z.object({
 	category: z.string().min(1, 'Category is required'),
 	brand: z.string().min(1, 'Brand is required'),
 	file: z.any().optional(),
-	productImages: storageFileSchema.optional()
+	productImages: storageFileSchema.optional(),
+	subdomain: z.string().min(1, 'Subdomain is required')
 });

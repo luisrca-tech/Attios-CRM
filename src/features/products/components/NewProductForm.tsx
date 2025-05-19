@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAtom } from 'jotai';
 import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { selectedAddAction } from '~/common/atoms/selected-add-action';
@@ -11,16 +12,18 @@ import ErrorMessage from '~/common/components/ui/ErrorMessage';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import { Input } from '~/common/components/ui/Input';
 import { useIsLargeScreen } from '~/common/hooks/useMediaQuery';
+import { useBrand } from '~/features/hooks/useBrand';
+import { useCategory } from '~/features/hooks/useCategory';
+import { useSubdomain } from '~/features/subdomain/hooks/useSubdomain';
+import { api } from '~/trpc/react';
 import { useUploadThing } from '~/utils/storage';
 import { useProduct } from '../hooks/useProduct';
 import { newProductSchema } from '../schemas/newProduct.schema';
 import type { NewProduct } from '../types/newProduct.type';
-import { api } from '~/trpc/react';
-import { useCategory } from '~/features/hooks/useCategory';
-import { useBrand } from '~/features/hooks/useBrand';
-import { useRouter } from 'next/navigation';
 
 export function NewProductForm() {
+	const { subdomain } = useSubdomain();
+
 	const {
 		register,
 		handleSubmit,
@@ -35,7 +38,8 @@ export function NewProductForm() {
 			availableQuantity: 0,
 			category: '',
 			brand: '',
-			productImages: []
+			productImages: [],
+			subdomain: subdomain
 		}
 	});
 
@@ -89,7 +93,8 @@ export function NewProductForm() {
 						url: uploadResponse[0].ufsUrl,
 						key: uploadResponse[0].key
 					}
-				]
+				],
+				subdomain: values.subdomain ?? ''
 			});
 
 			if (!product?.[0]) {

@@ -9,5 +9,5 @@ export const paginatedProductsSchema = paginationSchema.extend({
 			direction: z.enum(['asc', 'desc']).default('asc')
 		})
 		.optional(),
-	filters: productFiltersSchema.optional()
+	filters: productFiltersSchema
 });

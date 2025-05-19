@@ -1,12 +1,12 @@
-import { eq, sql, asc, desc, and } from 'drizzle-orm';
+import { and, asc, desc, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { publicProcedure } from '~/server/api/trpc';
-import { products, categories } from '~/server/db/schema';
-import { totalPagesQuerySchema } from '../../schemas/totalPagesQuery.schema';
-import { paginatedProductsSchema } from '../schemas/paginatedProducts.schema';
-import { controlledProductsSchema } from '../schemas/controlledProducts.schema';
-import { applyQuantityFilter, applyPriceFilter } from '../utils/filters';
 import { createSearchCondition } from '~/server/api/routers/utils/searchCondition';
+import { publicProcedure } from '~/server/api/trpc';
+import { categories, products } from '~/server/db/schema';
+import { totalPagesQuerySchema } from '../../schemas/totalPagesQuery.schema';
+import { controlledProductsSchema } from '../schemas/controlledProducts.schema';
+import { paginatedProductsSchema } from '../schemas/paginatedProducts.schema';
+import { applyPriceFilter, applyQuantityFilter } from '../utils/filters';
 
 const requiredProductRelations = {
 	category: {
@@ -40,12 +40,14 @@ export const productQueries = {
 						sql`(SELECT id FROM ${categories} WHERE name = ${input.filters.category})`
 					)
 				: undefined;
+			const subdomainFilter = eq(products.subdomain, input.filters.subdomain);
 
 			const filterConditions = [
 				searchCondition,
 				quantityFilter,
 				priceFilter,
-				categoryFilter
+				categoryFilter,
+				subdomainFilter
 			].filter(
 				(condition): condition is NonNullable<typeof condition> =>
 					condition !== undefined

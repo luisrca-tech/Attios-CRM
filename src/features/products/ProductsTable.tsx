@@ -1,33 +1,34 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import type { Table } from '@tanstack/react-table';
+import { parseAsInteger, useQueryState } from 'nuqs';
+import { useRef, useState } from 'react';
+import { toast } from 'sonner';
+import { Button } from '~/common/components/ui/Button';
 import { NotFoundItem } from '~/common/components/ui/NotFoundItem';
-import { ProductListCard } from '~/features/products/components/ProductListCard';
 import { Image } from '~/common/components/ui/images';
+import { useInfiniteScroll } from '~/common/hooks/useInfiniteScroll';
+import { usePrefetchNextPage } from '~/common/hooks/usePrefetchNextPage';
 import { calculateItemPerPage } from '~/common/utils/calculateItemPerPage';
+import { ProductListCard } from '~/features/products/components/ProductListCard';
 import { api } from '~/trpc/react';
 import { GenericDataGridTable } from '../../common/components/block/GenericTable/DataGridTable';
 import { GenericDataListTable } from '../../common/components/block/GenericTable/DataListTable';
+import { GenericGridSkeleton } from '../../common/components/ui/GenericGridSkeleton';
+import { GenericListSkeleton } from '../../common/components/ui/GenericListSkeleton';
 import { Icon } from '../../common/components/ui/Icons/_index';
 import { ViewTypeSelector } from '../../common/components/ui/ViewTypeSelector';
-import { productListColumns } from './ProductListColumns';
-import { ProductGridCard } from './components/ProductGridCard';
-import { parseAsInteger, useQueryState } from 'nuqs';
-import { usePrefetchNextPage } from '~/common/hooks/usePrefetchNextPage';
-import { GenericListSkeleton } from '../../common/components/ui/GenericListSkeleton';
-import { GenericGridSkeleton } from '../../common/components/ui/GenericGridSkeleton';
+import { useSubdomain } from '../subdomain/hooks/useSubdomain';
 import { productGridColumns } from './ProductGridColumns';
-import { skeletonProductsData } from './constants/skeletonProductsData';
-import { useInfiniteScroll } from '~/common/hooks/useInfiniteScroll';
-import type { ProductSort } from './types/productSort.type';
-import { Button } from '~/common/components/ui/Button';
-import { toast } from 'sonner';
-import { useProduct } from './hooks/useProduct';
-import type { Table } from '@tanstack/react-table';
-import type { Product } from './types/product.type';
-import { ProductGridCardWrapper } from './constants/productGridCardWrapper';
+import { productListColumns } from './ProductListColumns';
 import { NewProductModal } from './components/NewProductModal';
+import { ProductGridCard } from './components/ProductGridCard';
+import { ProductGridCardWrapper } from './constants/productGridCardWrapper';
+import { skeletonProductsData } from './constants/skeletonProductsData';
+import { useProduct } from './hooks/useProduct';
 import { useProductFilters } from './hooks/useProductFilters';
+import type { Product } from './types/product.type';
+import type { ProductSort } from './types/productSort.type';
 export function ProductsTable() {
 	const [viewType, setViewType] = useState<'list' | 'grid'>('list');
 	const [page] = useQueryState('page', parseAsInteger.withDefault(1));
@@ -109,13 +110,16 @@ export function ProductsTable() {
 		maxItemPerPage
 	);
 
+	const { subdomain } = useSubdomain();
+
 	const totalPagesQuery = api.product.getTotalPages.useQuery({
 		pageSize,
 		search,
 		filters: {
 			quantity: quantityFilter || undefined,
 			price: priceFilter || undefined,
-			category: categoryFilter || undefined
+			category: categoryFilter || undefined,
+			subdomain: subdomain || ''
 		}
 	});
 
@@ -128,7 +132,8 @@ export function ProductsTable() {
 			filters: {
 				quantity: quantityFilter || undefined,
 				price: priceFilter || undefined,
-				category: categoryFilter || undefined
+				category: categoryFilter || undefined,
+				subdomain: subdomain || ''
 			}
 		},
 		{

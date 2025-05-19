@@ -1,12 +1,12 @@
-import { eq, sql, inArray } from 'drizzle-orm';
+import { eq, inArray, sql } from 'drizzle-orm';
 import { randomUUID } from 'node:crypto';
 import { z } from 'zod';
+import { deleteStorageFile } from '~/app/server/storage';
 import { newProductSchema } from '~/features/products/schemas/newProduct.schema';
 import { updateProductSchema } from '~/features/products/schemas/updateProduct.schema';
-import { protectedProcedure } from '~/server/api/trpc';
-import { products, productImages, orderItems } from '~/server/db/schema';
-import { deleteStorageFile } from '~/app/server/storage';
 import { getCurrentUser } from '~/server/api/routers/utils/getCurrentUser';
+import { protectedProcedure } from '~/server/api/trpc';
+import { orderItems, productImages, products } from '~/server/db/schema';
 
 // TODO: add automatic relation between product and team when creating a product
 
@@ -52,7 +52,7 @@ export const productMutations = {
 						categoryId: category.id,
 						categoryName: category.name,
 						modelYear: new Date().getFullYear(),
-						subdomainId: currentUser.subDomainId
+						subdomain: input.subdomain
 					})
 					.returning({
 						id: products.id
