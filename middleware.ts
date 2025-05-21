@@ -6,12 +6,9 @@ import { api } from "~/trpc/server";
 export function extractSubdomain(req: NextRequest): string | null {
   const host = req.headers.get("host") || "";
   const hostname = host.split(":")[0] || "";
-  console.log("Extracting subdomain from hostname:", hostname);
-
   // For localhost, use query parameter
   if (hostname.includes("localhost")) {
     const subdomain = req.nextUrl.searchParams.get("subdomain");
-    console.log("Localhost subdomain from query:", subdomain);
     return subdomain;
   }
 

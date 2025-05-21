@@ -67,6 +67,7 @@ export const Icon = {
 	Menu: MenuIcon,
 	Search: SearchIcon,
 	Expand: ExpandIcon,
+  
 	AddButton: AddButtonIcon,
 	Laptop: LaptopIcon,
 	Keyboard: KeyboardIcon,
