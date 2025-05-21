@@ -5,8 +5,6 @@ import { leads, tags, teamUsers } from '~/server/db/schema';
 import { getCurrentUser } from '~/server/api/routers/utils/getCurrentUser';
 import { TRPCError } from '@trpc/server';
 
-// TODO: add automatic relation between lead and team when creating a lead
-
 export const leadMutations = {
 	create: protectedProcedure
 		.input(newLeadSchema)

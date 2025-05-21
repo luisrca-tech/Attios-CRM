@@ -8,8 +8,6 @@ import { getCurrentUser } from '~/server/api/routers/utils/getCurrentUser';
 import { protectedProcedure } from '~/server/api/trpc';
 import { orderItems, productImages, products } from '~/server/db/schema';
 
-// TODO: add automatic relation between product and team when creating a product
-
 export const productMutations = {
 	create: protectedProcedure
 		.input(newProductSchema)
