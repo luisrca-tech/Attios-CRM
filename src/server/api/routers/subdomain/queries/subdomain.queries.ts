@@ -1,7 +1,8 @@
-import { protectedProcedure } from "~/server/api/trpc";
+import { protectedProcedure, publicProcedure } from "~/server/api/trpc";
 import { eq } from "drizzle-orm";
 import { subDomains } from "~/server/db/schema";
 import { getCurrentUser } from "~/server/api/routers/utils/getCurrentUser";
+import { z } from "zod";
 
 export const subdomainQueries = {
   getAll: protectedProcedure.query(async ({ ctx }) => {
@@ -16,4 +17,12 @@ export const subdomainQueries = {
     });
     return subdomain;
   }),
+  getBySubdomain: publicProcedure
+    .input(z.object({ subDomain: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const subdomain = await ctx.db.query.subDomains.findFirst({
+        where: eq(subDomains.subDomain, input.subDomain),
+      });
+      return subdomain;
+    }),
 };
