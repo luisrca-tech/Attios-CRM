@@ -10,8 +10,13 @@ import { useAuth } from "../../hook/useAuth";
 import { signInFormSchema } from "../../schemas/signInForm.schema";
 import type { SignInFormType } from "../../types/signInForm.type";
 import { WelcomeHeading } from "../ui/WelcomeHeading";
+import { getSubdomain } from "~/utils/subdomain";
 
-export function SubdomainSignInForm({ subdomain }: { subdomain: string }) {
+type SubdomainSignInFormProps = {
+  subdomain: string;
+};
+
+export function SubdomainSignInForm({ subdomain }: SubdomainSignInFormProps) {
   const {
     register,
     handleSubmit,
@@ -25,7 +30,11 @@ export function SubdomainSignInForm({ subdomain }: { subdomain: string }) {
   if (!isSignInLoaded) return null;
 
   async function onSubmit({ email, password }: SignInFormType) {
-    await signInUser({ email, password });
+    const success = await signInUser({ email, password });
+    if (success) {
+      const domain = getSubdomain(subdomain);
+      window.location.href = domain;
+    }
   }
 
   return (
@@ -68,7 +77,7 @@ export function SubdomainSignInForm({ subdomain }: { subdomain: string }) {
             <p>{errors.password.message}</p>
           </ErrorMessage>
         )}
-        <div className="mt-3">
+        <div className="mt-3 flex flex-col gap-3">
           <Button
             isLoading={isSubmitting}
             type="submit"
