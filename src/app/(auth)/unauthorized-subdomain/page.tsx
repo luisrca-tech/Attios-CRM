@@ -13,7 +13,7 @@ export default function UnauthorizedSubdomain() {
 		<main className="flex max-h-screen items-center overflow-hidden">
 			<div className="flex-1 p-8">
 				<div className="mx-auto max-w-md text-center">
-					<h1 className='mb-4 font-bold text-2xl'>Unauthorized Access</h1>
+					<h1 className="mb-4 font-bold text-2xl">Unauthorized Access</h1>
 					<p className="mb-6 text-gray-600">
 						The subdomain{' '}
 						<span className="font-semibold">{displaySubdomain}</span> is not
