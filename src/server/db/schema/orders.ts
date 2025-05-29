@@ -4,8 +4,6 @@ import {
 	index,
 	integer,
 	pgEnum,
-	pgTable,
-	serial,
 	timestamp,
 	varchar
 } from 'drizzle-orm/pg-core';
@@ -13,6 +11,7 @@ import { customers } from './customers';
 import { products } from './products';
 import { subDomains } from './subDomain';
 import { users } from './users';
+import { createTable } from '../table';
 
 export const orderStatusEnum = pgEnum('order_status', [
 	'pending',
@@ -22,7 +21,7 @@ export const orderStatusEnum = pgEnum('order_status', [
 	'cancelled'
 ]);
 
-export const orders = pgTable(
+export const orders = createTable(
 	'order',
 	{
 		id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
@@ -51,10 +50,10 @@ export const orders = pgTable(
 	})
 );
 
-export const orderItems = pgTable(
+export const orderItems = createTable(
 	'order_item',
 	{
-		id: serial('id').primaryKey(),
+		id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
 		orderId: integer('order_id')
 			.references(() => orders.id)
 			.notNull(),
@@ -67,10 +66,8 @@ export const orderItems = pgTable(
 		discount: decimal('discount', { precision: 4, scale: 2 })
 			.default('0')
 			.notNull(),
-		createdAt: timestamp('created_at')
-			.default(sql`CURRENT_TIMESTAMP`)
-			.notNull(),
-		updatedAt: timestamp('updated_at').default(sql`CURRENT_TIMESTAMP`).notNull()
+		createdAt: timestamp('created_at').notNull().defaultNow(),
+		updatedAt: timestamp('updated_at').notNull().defaultNow()
 	},
 	(table) => ({
 		orderIdIdx: index('order_id_idx').on(table.orderId),

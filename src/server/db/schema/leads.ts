@@ -1,17 +1,16 @@
-import { relations, sql } from 'drizzle-orm';
+import { relations } from 'drizzle-orm';
 import {
 	boolean,
-	integer,
-	pgTable,
-	serial,
+	integer,  
 	timestamp,
 	varchar
 } from 'drizzle-orm/pg-core';
 import { products } from './products';
 import { teams } from './teams';
 import { tags } from './tags';
+import { createTable } from '../table';
 
-export const leads = pgTable('lead', {
+export const leads = createTable('lead', {
 	id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
 	firstName: varchar('first_name', { length: 255 }).notNull(),
 	lastName: varchar('last_name', { length: 255 }).notNull(),
@@ -31,16 +30,16 @@ export const leads = pgTable('lead', {
 		.notNull()
 });
 
-export const leadProducts = pgTable('lead_products', {
-	id: serial('id').primaryKey(),
+export const leadProducts = createTable('lead_products', {
+	id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
 	leadId: integer('lead_id')
 		.references(() => leads.id)
 		.notNull(),
 	productId: varchar('product_id', { length: 10 })
 		.references(() => products.id)
 		.notNull(),
-	createdAt: timestamp('created_at').default(sql`now()`).notNull(),
-	updatedAt: timestamp('updated_at').default(sql`now()`).notNull()
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at').notNull().defaultNow()
 });
 
 export const leadsRelations = relations(leads, ({ many, one }) => ({

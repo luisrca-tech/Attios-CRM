@@ -1,11 +1,9 @@
-import { relations, sql } from 'drizzle-orm';
+import { relations } from 'drizzle-orm';
 import {
 	boolean,
 	decimal,
 	index,
 	integer,
-	pgTable,
-	serial,
 	text,
 	timestamp,
 	varchar
@@ -14,10 +12,11 @@ import { brands } from './brands';
 import { categories } from './categories';
 import { leadProducts } from './leads';
 import { teams } from './teams';
+import { createTable } from '../table';
 
 // TODO: Add what happens when a relation is deleted or updated (all other tables)
 
-export const products = pgTable(
+export const products = createTable(
 	'product',
 	{
 		id: varchar('id', { length: 10 }).primaryKey(),
@@ -48,15 +47,15 @@ export const products = pgTable(
 	})
 );
 
-export const productImages = pgTable('product_images', {
-	id: serial('id').primaryKey(),
+export const productImages = createTable('product_images', {
+	id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
 	productId: varchar('product_id', { length: 10 })
 		.references(() => products.id)
 		.notNull(),
 	url: varchar('url', { length: 255 }).notNull(),
 	key: varchar('key', { length: 255 }).notNull(),
-	createdAt: timestamp('created_at').default(sql`now()`).notNull(),
-	updatedAt: timestamp('updated_at').default(sql`now()`).notNull()
+	createdAt: timestamp('created_at').notNull().defaultNow(),
+	updatedAt: timestamp('updated_at').notNull().defaultNow()
 });
 
 export const productsRelations = relations(products, ({ one, many }) => ({

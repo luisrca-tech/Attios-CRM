@@ -1,6 +1,5 @@
 export * from './brands';
 export * from './categories';
-export { createTable } from './config';
 export * from './users';
 export * from './products';
 export * from './customers';

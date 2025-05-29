@@ -1,14 +1,14 @@
-import { relations, sql } from 'drizzle-orm';
+import { relations } from 'drizzle-orm';
 import {
 	index,
-	pgTable,
 	integer,
 	timestamp,
 	varchar
 } from 'drizzle-orm/pg-core';
 import { orders } from './orders';
+import { createTable } from '../table';
 
-export const customers = pgTable(
+export const customers = createTable(
 	'customer',
 	{
 		id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
@@ -21,10 +21,8 @@ export const customers = pgTable(
 		state: varchar('state', { length: 2 }),
 		zipCode: varchar('zip_code', { length: 10 }),
 		avatar: varchar('avatar', { length: 255 }),
-		createdAt: timestamp('created_at')
-			.default(sql`CURRENT_TIMESTAMP`)
-			.notNull(),
-		updatedAt: timestamp('updated_at').default(sql`CURRENT_TIMESTAMP`).notNull()
+		createdAt: timestamp('created_at').notNull().defaultNow(),
+		updatedAt: timestamp('updated_at').notNull().defaultNow()
 	},
 	(table) => ({
 		emailIdx: index('customer_email_idx').on(table.email)

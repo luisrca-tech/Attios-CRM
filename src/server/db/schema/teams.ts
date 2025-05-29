@@ -1,18 +1,13 @@
 import { relations } from 'drizzle-orm';
-import {
-	pgTable,
-	serial,
-	timestamp,
-	varchar,
-	integer
-} from 'drizzle-orm/pg-core';
+import { integer, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { leads } from './leads';
 import { products } from './products';
 import { teamUsers } from './users';
 import { subDomains } from './subDomain';
+import { createTable } from '../table';
 
-export const teams = pgTable('team', {
-	id: serial('id').primaryKey(),
+export const teams = createTable('team', {
+	id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
 	name: varchar('name', { length: 255 }).notNull().unique(),
 	subDomainId: integer('sub_domain_id').references(() => subDomains.id),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
