@@ -24,4 +24,6 @@ export default {
     url: getDatabaseUrl(),
   },
   tablesFilter: ["attios_*"],
+  verbose: true,
+  strict: true,
 } satisfies Config;
