@@ -1,34 +1,29 @@
-import { relations } from 'drizzle-orm';
-import {
-	index,
-	integer,
-	timestamp,
-	varchar
-} from 'drizzle-orm/pg-core';
-import { orders } from './orders';
-import { createTable } from '../table';
+import { relations } from "drizzle-orm";
+import { index, integer, timestamp, varchar } from "drizzle-orm/pg-core";
+import { orders } from "./orders";
+import { createTable } from "../table";
 
 export const customers = createTable(
-	'customer',
-	{
-		id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
-		firstName: varchar('first_name', { length: 50 }).notNull(),
-		lastName: varchar('last_name', { length: 50 }).notNull(),
-		phone: varchar('phone', { length: 20 }),
-		email: varchar('email', { length: 255 }).notNull().unique(),
-		street: varchar('street', { length: 255 }),
-		city: varchar('city', { length: 100 }),
-		state: varchar('state', { length: 2 }),
-		zipCode: varchar('zip_code', { length: 10 }),
-		avatar: varchar('avatar', { length: 255 }),
-		createdAt: timestamp('created_at').notNull().defaultNow(),
-		updatedAt: timestamp('updated_at').notNull().defaultNow()
-	},
-	(table) => ({
-		emailIdx: index('customer_email_idx').on(table.email)
-	})
+  "customer",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    firstName: varchar("first_name", { length: 50 }).notNull(),
+    lastName: varchar("last_name", { length: 50 }).notNull(),
+    phone: varchar("phone", { length: 20 }),
+    email: varchar("email", { length: 255 }).notNull().unique(),
+    street: varchar("street", { length: 255 }),
+    city: varchar("city", { length: 100 }),
+    state: varchar("state", { length: 2 }),
+    zipCode: varchar("zip_code", { length: 10 }),
+    avatar: varchar("avatar", { length: 255 }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (table) => ({
+    emailIdx: index("customer_email_idx").on(table.email),
+  })
 );
 
 export const customersRelations = relations(customers, ({ many }) => ({
-	orders: many(orders)
+  orders: many(orders),
 }));

@@ -1,15 +1,16 @@
-  import { relations } from "drizzle-orm";
+import { relations } from "drizzle-orm";
 import {
   decimal,
   index,
   integer,
   pgEnum,
+  serial,
   timestamp,
   varchar,
 } from "drizzle-orm/pg-core";
 import { customers } from "./customers";
 import { products } from "./products";
-import { subDomains } from "./subDomain";
+import { workspaces } from "./workspaces";
 import { users } from "./users";
 import { createTable } from "../table";
 
@@ -24,8 +25,8 @@ export const orderStatusEnum = pgEnum("attios_order_status", [
 export const orders = createTable(
   "order",
   {
-    id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
-    subDomain: varchar("sub_domain", { length: 255 }).notNull(),
+    id: serial("id").primaryKey(),
+    workspace: varchar("workspace", { length: 255 }).notNull(),
     customerId: integer("customer_id")
       .references(() => customers.id)
       .notNull(),
@@ -49,12 +50,14 @@ export const orders = createTable(
 export const orderItems = createTable(
   "order_item",
   {
-    id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
     orderId: integer("order_id")
       .references(() => orders.id)
       .notNull(),
-    productId: varchar("product_id", { length: 10 })
-      .references(() => products.id)
+    productId: integer("product_id")
+      .references(() => products.id, {
+        onDelete: "cascade",
+      })
       .notNull(),
     productImage: varchar("product_image", { length: 255 }),
     quantity: integer("quantity").notNull(),
@@ -72,9 +75,9 @@ export const orderItems = createTable(
 );
 
 export const ordersRelations = relations(orders, ({ many, one }) => ({
-  subDomain: one(subDomains, {
-    fields: [orders.subDomain],
-    references: [subDomains.id],
+  workspace: one(workspaces, {
+    fields: [orders.workspace],
+    references: [workspaces.id],
   }),
   customer: one(customers, {
     fields: [orders.customerId],

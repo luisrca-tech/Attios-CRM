@@ -4,7 +4,7 @@ import { leads } from './leads';
 import { createTable } from '../table';
 
 export const tags = createTable('tag', {
-	id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
+	id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
 	name: varchar('name', { length: 255 }).notNull(),
 	createdAt: timestamp('created_at').notNull().defaultNow(),
 	updatedAt: timestamp('updated_at').notNull().defaultNow()

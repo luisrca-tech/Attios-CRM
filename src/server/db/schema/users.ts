@@ -1,6 +1,6 @@
 import { relations } from "drizzle-orm";
 import { index, integer, timestamp, varchar } from "drizzle-orm/pg-core";
-import { subDomains } from "./subDomain";
+import { workspaces } from "./workspaces";
 import { teams } from "./teams";
 import { createTable } from "../table";
 
@@ -10,7 +10,11 @@ export const users = createTable(
     id: varchar("id", { length: 50 }).primaryKey(),
     email: varchar("email", { length: 256 }).notNull().unique(),
     fullName: varchar("full_name", { length: 256 }).notNull(),
-    subDomainId: integer("sub_domain_id").references(() => subDomains.id),
+    workspaceId: integer("workspace_id")
+      .references(() => workspaces.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },
@@ -20,12 +24,14 @@ export const users = createTable(
 );
 
 export const teamUsers = createTable("team_user", {
-  id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   userId: varchar("user_id", { length: 50 })
     .references(() => users.id)
     .notNull(),
   teamId: integer("team_id")
-    .references(() => teams.id)
+    .references(() => teams.id, {
+      onDelete: "cascade",
+    })
     .notNull(),
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at").notNull().defaultNow(),
@@ -33,9 +39,9 @@ export const teamUsers = createTable("team_user", {
 
 export const usersRelations = relations(users, ({ many, one }) => ({
   teams: many(teamUsers),
-  subDomains: one(subDomains, {
-    fields: [users.subDomainId],
-    references: [subDomains.id],
+  workspaces: one(workspaces, {
+    fields: [users.workspaceId],
+    references: [workspaces.id],
   }),
 }));
 
