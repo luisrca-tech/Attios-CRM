@@ -20,7 +20,6 @@ export const skeletonProductsData = ({ pageSize }: SkeletonTable) =>
     workspaceId: 0,
     isActive: true,
     teamId: 0,
-    subdomainId: 0,
     createdAt: new Date(),
     updatedAt: new Date(),
   }));

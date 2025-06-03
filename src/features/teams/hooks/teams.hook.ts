@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { api } from "~/trpc/react";
-import { getSubdomain } from "~/utils/workspace";
+import { getWorkspace } from "~/utils/workspace";
 
 type UseTeamsProps = {
   isFirstTeam?: boolean;
@@ -10,17 +10,17 @@ type UseTeamsProps = {
 export const useTeams = ({ isFirstTeam = false }: UseTeamsProps) => {
   const router = useRouter();
 
-  const createTeam = api.subdomain.create.useMutation({
+  const createTeam = api.workspace.create.useMutation({
     onSuccess: (data) => {
       toast.success("Team and subdomain created successfully!");
       if (isFirstTeam) {
         router.refresh();
-        const domain = getSubdomain(data.subDomain);
+        const domain = getWorkspace(data.workspace);
         router.push(`${domain}/sign-in`);
       }
     },
     onError: () => {
-      toast.error("Failed to create team and subdomain. Please try again.");
+      toast.error("Failed to create team and workspace. Please try again.");
     },
   });
 

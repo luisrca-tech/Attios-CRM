@@ -18,7 +18,7 @@ import { GenericGridSkeleton } from "../../common/components/ui/GenericGridSkele
 import { GenericListSkeleton } from "../../common/components/ui/GenericListSkeleton";
 import { Icon } from "../../common/components/ui/Icons/_index";
 import { ViewTypeSelector } from "../../common/components/ui/ViewTypeSelector";
-import { useWorkspace } from "../subdomain/hooks/useWorkspace";
+import { useWorkspace } from "../workspace/hooks/useWorkspace";
 import { productGridColumns } from "./ProductGridColumns";
 import { productListColumns } from "./ProductListColumns";
 import { NewProductModal } from "./components/NewProductModal";

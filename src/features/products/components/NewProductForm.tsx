@@ -14,7 +14,7 @@ import { Input } from "~/common/components/ui/Input";
 import { useIsLargeScreen } from "~/common/hooks/useMediaQuery";
 import { useBrand } from "~/features/hooks/useBrand";
 import { useCategory } from "~/features/hooks/useCategory";
-import { useWorkspace } from "~/features/subdomain/hooks/useWorkspace";
+import { useWorkspace } from "~/features/workspace/hooks/useWorkspace";
 import { api } from "~/trpc/react";
 import { useUploadThing } from "~/utils/storage";
 import { useProduct } from "../hooks/useProduct";

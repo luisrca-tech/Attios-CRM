@@ -1,7 +1,7 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { useWorkspace } from "~/features/subdomain/hooks/useWorkspace";
+import { useWorkspace } from "~/features/workspace/hooks/useWorkspace";
 import { workspaceAtom } from "../atoms/current-workspace";
 import { useEffect } from "react";
 

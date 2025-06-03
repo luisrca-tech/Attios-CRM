@@ -7,6 +7,6 @@ export const createTeamSchema = z.object({
     .min(1, { message: "Workspace is required" })
     .regex(/^[a-z0-9-]+$/, {
       message:
-        "Subdomain must contain only lowercase letters, numbers, and hyphens",
+        "Workspace must contain only lowercase letters, numbers, and hyphens",
     }),
 });
