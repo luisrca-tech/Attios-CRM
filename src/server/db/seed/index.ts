@@ -10,14 +10,14 @@ import { seedTeams } from './teams';
 import { orderItems } from '../schema/orders';
 import { productImages, products } from '../schema/products';
 import { db } from '..';
-import { users, tags, customers, teamUsers, subDomains } from '../schema';
+import { users, tags, customers, teamUsers, workspaces } from '../schema';
 import { seedUsers } from './users';
 import { seedSubdomains } from './subdomains';
 
 async function seed() {
 	try {
 		await db.delete(orderItems);
-		await db.delete(subDomains);
+		await db.delete(workspaces);
 		await db.delete(productImages);
 		await db.delete(products);
 		await db.delete(tags);
