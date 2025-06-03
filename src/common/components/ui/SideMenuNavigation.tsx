@@ -114,7 +114,6 @@ export function SideMenu() {
 								isHovered && 'justify-start gap-2'
 							)}
 						>
-							{/* TODO: Create a component for the user button */}
 							<div className="relative">
 								<UserButton
 									appearance={{
@@ -128,7 +127,7 @@ export function SideMenu() {
 								/>
 								<UserStatusLogged
 									className="-right-1 bottom-[1px]"
-									userStatus={`${isLoaded ? 'online' : 'offline'}`}
+									userStatus={isLoaded ? 'online' : 'offline'}
 								/>
 							</div>
 							{isHovered && user && (
