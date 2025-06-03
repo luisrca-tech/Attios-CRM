@@ -13,6 +13,7 @@ import { categories } from "./categories";
 import { leadProducts } from "./leads";
 import { createTable } from "../table";
 import { workspaces } from "./workspaces";
+import { teams } from "./teams";
 
 // TODO: Add what happens when a relation is deleted or updated (all other tables)
 
@@ -41,6 +42,9 @@ export const products = createTable(
         onDelete: "cascade",
       })
       .notNull(),
+    teamId: integer("team_id").references(() => teams.id, {
+      onDelete: "cascade",
+    }),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },
@@ -48,6 +52,7 @@ export const products = createTable(
     brandIdIdx: index("brand_id_idx").on(table.brandId),
     categoryIdIdx: index("category_id_idx").on(table.categoryId),
     workspaceIdx: index("workspace_idx").on(table.workspaceId),
+    teamIdIdx: index("team_id_idx").on(table.teamId),
   })
 );
 
@@ -75,6 +80,10 @@ export const productsRelations = relations(products, ({ one, many }) => ({
   workspace: one(workspaces, {
     fields: [products.workspaceId],
     references: [workspaces.id],
+  }),
+  team: one(teams, {
+    fields: [products.teamId],
+    references: [teams.id],
   }),
   leads: many(leadProducts),
 }));
