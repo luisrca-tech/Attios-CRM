@@ -10,7 +10,7 @@ import { useAuth } from "../../hook/useAuth";
 import { signInFormSchema } from "../../schemas/signInForm.schema";
 import type { SignInFormType } from "../../types/signInForm.type";
 import { WelcomeHeading } from "../ui/WelcomeHeading";
-import { useSubdomain } from "~/features/subdomain/hooks/useSubdomain";
+import { useWorkspace } from "~/features/workspace/hooks/useWorkspace";
 
 export function SignInForm() {
   const {
@@ -22,7 +22,7 @@ export function SignInForm() {
     mode: "onChange",
   });
   const { signInUser, isSignInLoaded } = useAuth();
-  const { subdomain } = useSubdomain();
+  const { workspace } = useWorkspace();
 
   if (!isSignInLoaded) return null;
 
@@ -33,7 +33,7 @@ export function SignInForm() {
   return (
     <div className="flex flex-col items-center justify-center">
       <WelcomeHeading
-        title={`Welcome to ${subdomain}'s. Sign In to see latest updates.`}
+        title={`Welcome to ${workspace}'s. Sign In to see latest updates.`}
         subtitle="Enter your details to proceed further"
       />
       <form

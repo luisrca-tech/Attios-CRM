@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 import { api } from "~/trpc/server";
-import { getSubdomain } from "~/utils/subdomain";
+import { getWorkspace } from "~/utils/workspace";
 
 export const metadata: Metadata = {
   title: "Attios",
@@ -19,9 +19,11 @@ export default async function AuthLayout({
 
   if (userId) {
     const user = await api.user.getUserById(userId);
-    if (user?.subDomains) {
-      const domain = getSubdomain(user.subDomains.subDomain);
-      redirect(domain);
+    if (user?.workspaces) {
+      const domain = getWorkspace(user.workspaces.workspace);
+      if (domain) {
+        redirect(domain);
+      }
     }
     redirect("/");
   }

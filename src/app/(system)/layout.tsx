@@ -8,7 +8,7 @@ import { BottomMenu } from "~/common/components/ui/BottomMenuNavigation";
 import { SideMenu } from "~/common/components/ui/SideMenuNavigation";
 import { api } from "~/trpc/server";
 import { headers } from "next/headers";
-import { getSubdomain } from "~/utils/subdomain";
+import { getWorkspace } from "~/utils/workspace";
 
 export const metadata: Metadata = {
   title: "Attios",
@@ -22,7 +22,7 @@ export default async function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   const headersList = headers();
   const host = headersList.get("host");
-  const subdomain = host?.split(".")[0];
+  const workspace = host?.split(".")[0] ?? "";
 
   const { userId } = await auth();
 
@@ -32,12 +32,15 @@ export default async function RootLayout({
 
   const user = await api.user.getUserById(userId);
 
-  if (!user?.subDomains) {
+  if (!user?.workspaces) {
     redirect("/teams/create");
   }
 
-  if (user.subDomains.subDomain !== subdomain) {
-    redirect(getSubdomain(user.subDomains.subDomain));
+  if (user.workspaces.workspace !== workspace) {
+    const domain = getWorkspace(user.workspaces.workspace);
+    if (domain) {
+      redirect(domain);
+    }
   }
 
   return (
