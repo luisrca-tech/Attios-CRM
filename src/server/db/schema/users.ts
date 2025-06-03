@@ -10,11 +10,9 @@ export const users = createTable(
     id: varchar("id", { length: 50 }).primaryKey(),
     email: varchar("email", { length: 256 }).notNull().unique(),
     fullName: varchar("full_name", { length: 256 }).notNull(),
-    workspaceId: integer("workspace_id")
-      .references(() => workspaces.id, {
-        onDelete: "cascade",
-      })
-      .notNull(),
+    workspaceId: integer("workspace_id").references(() => workspaces.id, {
+      onDelete: "cascade",
+    }),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at").notNull().defaultNow(),
   },

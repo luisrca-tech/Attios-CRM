@@ -1,7 +1,7 @@
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { api } from "~/trpc/react";
-import { getSubdomain } from "~/utils/subdomain";
+import { getSubdomain } from "~/utils/workspace";
 
 type UseTeamsProps = {
   isFirstTeam?: boolean;

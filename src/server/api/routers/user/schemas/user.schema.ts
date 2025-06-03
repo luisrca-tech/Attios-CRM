@@ -1,8 +1,8 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const userSchema = z.object({
-	userId: z.string(),
-	email: z.string().email(),
-	fullName: z.string(),
-	subDomainId: z.number().optional()
+  userId: z.string(),
+  email: z.string().email(),
+  fullName: z.string(),
+  workspaceId: z.number(),
 });
