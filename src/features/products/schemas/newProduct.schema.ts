@@ -10,5 +10,4 @@ export const newProductSchema = z.object({
   brand: z.string().min(1, "Brand is required"),
   file: z.any().optional(),
   productImages: storageFileSchema.optional(),
-  workspaceId: z.string().min(1, "Workspace is required"),
 });
