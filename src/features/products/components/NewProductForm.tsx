@@ -14,7 +14,6 @@ import { Input } from "~/common/components/ui/Input";
 import { useIsLargeScreen } from "~/common/hooks/useMediaQuery";
 import { useBrand } from "~/features/hooks/useBrand";
 import { useCategory } from "~/features/hooks/useCategory";
-import { useWorkspace } from "~/features/workspace/hooks/useWorkspace";
 import { api } from "~/trpc/react";
 import { useUploadThing } from "~/utils/storage";
 import { useProduct } from "../hooks/useProduct";
@@ -22,8 +21,6 @@ import { newProductSchema } from "../schemas/newProduct.schema";
 import type { NewProduct } from "../types/newProduct.type";
 
 export function NewProductForm() {
-  const { workspace } = useWorkspace();
-
   const {
     register,
     handleSubmit,
@@ -39,7 +36,6 @@ export function NewProductForm() {
       category: "",
       brand: "",
       productImages: [],
-      workspaceId: workspace || "",
     },
   });
 
@@ -94,7 +90,6 @@ export function NewProductForm() {
             key: uploadResponse[0].key,
           },
         ],
-        workspaceId: values.workspaceId,
       });
 
       if (!product?.[0]) {
