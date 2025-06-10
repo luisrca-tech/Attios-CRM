@@ -3,12 +3,12 @@ import '~/styles/globals.css';
 import type { Metadata } from 'next';
 
 import { auth } from '@clerk/nextjs/server';
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { BottomMenu } from '~/common/components/ui/BottomMenuNavigation';
 import { SideMenu } from '~/common/components/ui/SideMenuNavigation';
 import { api } from '~/trpc/server';
 import { getWorkspace } from '~/utils/workspace';
-import { headers } from 'next/headers';
 
 export const metadata: Metadata = {
 	title: 'Attios',
@@ -22,17 +22,23 @@ export default async function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
 	const headersList = headers();
 	const host = headersList.get('host');
-	const workspace = host?.includes('localhost')
-		? 'localhost'
-		: (host?.split('.')[0] ?? '');
+	const splitUrl = host?.split('.');
+	const hasSubdomain =
+		splitUrl?.length && splitUrl.length > 2 && splitUrl[0] !== 'www';
+
+	const workspace = hasSubdomain ? splitUrl[0] : null;
 
 	const { userId } = await auth();
 
-	if (!userId) {
+	if (!userId && !workspace) {
+		redirect('/sign-up');
+	}
+
+	if (!userId && workspace) {
 		redirect('/sign-in');
 	}
 
-	const user = await api.user.getUserById(userId);
+	const user = await api.user.getUserById(userId as string);
 
 	if (!user?.workspaces) {
 		redirect('/teams/create');
