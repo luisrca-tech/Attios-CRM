@@ -20,7 +20,7 @@ interface ProductListColumnsProps {
 	};
 	isLoading?: boolean;
 	selectedProducts: string[];
-	onSelectProducts: (productIds: string[]) => void;
+	onSelectProducts: (productIds: number[]) => void;
 	onFilterChange: (
 		type: 'quantity' | 'price' | 'category',
 		filter: string

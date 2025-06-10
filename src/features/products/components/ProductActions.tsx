@@ -15,7 +15,7 @@ import { useRouter } from 'next/navigation';
 export function ProductActions({ product }: { product: Product }) {
 	const { mutate: toggleActive } = api.product.toggleActive.useMutation({
 		onSuccess: () => {
-			updateProductActiveState({ id: product.id, isActive: !product.isActive });
+			updateProductActiveState({ id: product.id.toString(), isActive: !product.isActive });
 		},
 		onError: () => {
 			toast.error('Failed to update product status');
@@ -86,7 +86,7 @@ export function ProductActions({ product }: { product: Product }) {
 						{isOpenModal && (
 							<DeleteConfirmationModal
 								isOpen={isOpenModal}
-								onConfirm={() => handleToggleActive(product.id)}
+								onConfirm={() => handleToggleActive(product.id.toString())}
 								onCancel={toggleConfirmationModal}
 								title="Are you sure you want to desactivate this product?"
 								type="delete"
@@ -112,7 +112,7 @@ export function ProductActions({ product }: { product: Product }) {
 							<DeleteConfirmationModal
 								type="activate"
 								isOpen={isOpenModal}
-								onConfirm={() => handleToggleActive(product.id)}
+								onConfirm={() => handleToggleActive(product.id.toString())}
 								onCancel={toggleConfirmationModal}
 								title="Are you sure you want to activate this product?"
 							/>

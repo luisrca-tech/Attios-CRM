@@ -1,16 +1,16 @@
-import { db } from '..';
-import { subDomains } from '../schema';
+import { db } from "..";
+import { workspaces } from "../schema";
 
 export async function seedSubdomains() {
-	await db.delete(subDomains);
+  await db.delete(workspaces);
 
-	const subdomainsData = [{ subDomain: 'default' }];
+  const workspacesData = [{ workspace: "default" }];
 
-	const insertedSubdomains = await db
-		.insert(subDomains)
-		.values(subdomainsData)
-		.returning();
+  const insertedSubdomains = await db
+    .insert(workspaces)
+    .values(workspacesData)
+    .returning();
 
-	console.log(`✓ Created ${insertedSubdomains.length} subdomains`);
-	return insertedSubdomains;
+  console.log(`✓ Created ${insertedSubdomains.length} subdomains`);
+  return insertedSubdomains;
 }

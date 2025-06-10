@@ -14,7 +14,7 @@ interface ProductGridColumnsProps {
 	};
 	isLoading?: boolean;
 	selectedProducts: string[];
-	onSelectProducts: (productIds: string[]) => void;
+	onSelectProducts: (productIds: number[]) => void;
 }
 
 export const productGridColumns = ({
