@@ -8,7 +8,7 @@ import { redirect } from 'next/navigation';
 import { BottomMenu } from '~/common/components/ui/BottomMenuNavigation';
 import { SideMenu } from '~/common/components/ui/SideMenuNavigation';
 import { api } from '~/trpc/server';
-import { getWorkspaceDomain } from '~/utils/workspace';
+import { getWorkspace, getWorkspaceDomain } from '~/utils/workspace';
 
 export const metadata: Metadata = {
 	title: 'Attios',
@@ -22,11 +22,7 @@ export default async function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
 	const headersList = headers();
 	const host = headersList.get('host');
-	const splitUrl = host?.split('.');
-	const hasSubdomain =
-		splitUrl?.length && splitUrl.length > 2 && splitUrl[0] !== 'www';
-
-	const workspace = hasSubdomain ? splitUrl[0] : null;
+	const workspace = getWorkspace(host as string);
 
 	const { userId } = await auth();
 
@@ -44,10 +40,7 @@ export default async function RootLayout({
 		redirect('/teams/create');
 	}
 
-	if (
-		user.workspaces.workspace &&
-		(workspace === 'localhost:3000' || user.workspaces.workspace !== workspace)
-	) {
+	if (user.workspaces.workspace !== workspace) {
 		const domain = getWorkspaceDomain(user.workspaces.workspace);
 		redirect(domain);
 	}

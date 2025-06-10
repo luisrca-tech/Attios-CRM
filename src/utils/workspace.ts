@@ -1,28 +1,32 @@
 export const getWorkspaceDomain = (subDomain: string) => {
-  if (process.env.NODE_ENV === "production") {
-    const domain = `https://${subDomain}.${process.env.VERCEL_URL}`;
-    return domain;
-  }
-  const domain = `http://${subDomain}.localhost:3000`;
-  return domain;
+	if (process.env.NODE_ENV === 'production') {
+		const domain = `https://${subDomain}.${process.env.VERCEL_URL}`;
+		return domain;
+	}
+	const domain = `http://${subDomain}.localhost:3000`;
+	return domain;
 };
 
 export const getWorkspace = (host: string) => {
-  const parts = host.split(".");
+	const parts = host.split('.');
 
-  // Handle localhost case
-  if (parts[0] === "localhost:3000") {
-    return null;
-  }
+	// Handle localhost case
+	if (parts[0]?.includes('localhost')) {
+		return null;
+	}
 
-  if (parts.length > 1 && parts[0]) {
-    const subdomain = parts[0];
-    try {
-      return getWorkspaceDomain(subdomain);
-    } catch (error) {
-      console.error("[Debug] Error generating domain:", error);
-      return null;
-    }
-  }
-  return null;
+	let minimalLengthForSubdomain = 3;
+
+	const isProd = process.env.NODE_ENV === 'production';
+
+	if (!isProd) {
+		minimalLengthForSubdomain = 2;
+	}
+
+	const hasSubdomain =
+		parts.length >= minimalLengthForSubdomain && parts[0] !== 'www';
+	if (hasSubdomain) {
+		return parts[0];
+	}
+	return null;
 };
