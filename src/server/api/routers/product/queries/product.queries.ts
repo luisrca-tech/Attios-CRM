@@ -146,7 +146,7 @@ export const productQueries = {
 			};
 		}),
 
-	getById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
+	getById: publicProcedure.input(z.number()).query(({ ctx, input }) => {
 		return ctx.db.query.products.findFirst({
 			where: eq(products.id, Number(input)),
 			with: requiredProductRelations

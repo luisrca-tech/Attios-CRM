@@ -1,8 +1,8 @@
 import { AddActionMenu } from '~/common/components/ui/AddActionMenu';
 import { Icon } from '~/common/components/ui/Icons/_index';
-import { NotFoundImage } from '~/common/components/ui/images/NotFound';
 import { NotFoundItem } from '~/common/components/ui/NotFoundItem';
 import { PagesHeader } from '~/common/components/ui/PagesHeader';
+import { NotFoundImage } from '~/common/components/ui/images/NotFound';
 import { ContentSidebar } from '~/features/ContentSidebar';
 import { ProductActions } from '~/features/products/components/ProductActions';
 import { UpdateProductForm } from '~/features/products/components/UpdateProductForm';
@@ -18,11 +18,11 @@ export const generateStaticParams = async () => {
 		});
 
 	const productsIds = await getAllIds();
-	return productsIds.map((product) => ({ id: product.id }));
+	return productsIds.map((product) => ({ id: product.id.toString() }));
 };
 
 export default async function Product({ params }: { params: { id: string } }) {
-	const product = await api.product.getById(params.id);
+	const product = await api.product.getById(Number(params.id));
 
 	if (!product) {
 		return (
