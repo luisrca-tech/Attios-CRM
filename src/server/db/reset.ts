@@ -4,6 +4,14 @@ import { sql } from "drizzle-orm";
 async function reset() {
   try {
     await db.execute(sql`
+      DROP INDEX IF EXISTS user_id_idx CASCADE;
+      DROP INDEX IF EXISTS product_id_idx CASCADE;
+      DROP INDEX IF EXISTS order_id_idx CASCADE;
+      DROP INDEX IF EXISTS category_id_idx CASCADE;
+      DROP INDEX IF EXISTS brand_id_idx CASCADE;
+      DROP INDEX IF EXISTS email_idx CASCADE;
+      DROP INDEX IF EXISTS customer_email_idx CASCADE;
+      DROP INDEX IF EXISTS category_id_idx CASCADE;
       DROP TABLE IF EXISTS attios_order_item CASCADE;
       DROP TABLE IF EXISTS attios_order CASCADE;
       DROP TABLE IF EXISTS attios_product_images CASCADE;
