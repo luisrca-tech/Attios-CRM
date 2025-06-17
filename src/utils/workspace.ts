@@ -1,7 +1,6 @@
 export const getWorkspaceDomain = (subDomain: string) => {
   if (process.env.NODE_ENV === "production") {
-    const domain = `https://${subDomain}.${process.env.VERCEL_URL}`;
-    console.log("domain", domain);
+    const domain = `https://${subDomain}.${process.env.NEXT_PUBLIC_VERCEL_URL}`;
     return domain;
   }
   const domain = `http://${subDomain}.localhost:3000`;
