@@ -140,12 +140,12 @@ CREATE TABLE "attios_order" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-CREATE TABLE "attios_workspace" (
-	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "attios_workspace_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
+CREATE TABLE "attios_workspaces" (
+	"id" integer PRIMARY KEY GENERATED ALWAYS AS IDENTITY (sequence name "attios_workspaces_id_seq" INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START WITH 1 CACHE 1),
 	"workspace" varchar(255) NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL,
-	CONSTRAINT "attios_workspace_workspace_unique" UNIQUE("workspace")
+	CONSTRAINT "attios_workspaces_workspace_unique" UNIQUE("workspace")
 );
 --> statement-breakpoint
 CREATE TABLE "attios_team" (
@@ -164,14 +164,14 @@ CREATE TABLE "attios_tag" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
-ALTER TABLE "attios_customer" ADD CONSTRAINT "attios_customer_workspace_id_attios_workspace_id_fk" FOREIGN KEY ("workspace_id") REFERENCES "public"."attios_workspace"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "attios_customer" ADD CONSTRAINT "attios_customer_workspace_id_attios_workspaces_id_fk" FOREIGN KEY ("workspace_id") REFERENCES "public"."attios_workspaces"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "attios_team_user" ADD CONSTRAINT "attios_team_user_user_id_attios_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."attios_user"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "attios_team_user" ADD CONSTRAINT "attios_team_user_team_id_attios_team_id_fk" FOREIGN KEY ("team_id") REFERENCES "public"."attios_team"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "attios_user" ADD CONSTRAINT "attios_user_workspace_id_attios_workspace_id_fk" FOREIGN KEY ("workspace_id") REFERENCES "public"."attios_workspace"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "attios_user" ADD CONSTRAINT "attios_user_workspace_id_attios_workspaces_id_fk" FOREIGN KEY ("workspace_id") REFERENCES "public"."attios_workspaces"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "attios_product_images" ADD CONSTRAINT "attios_product_images_product_id_attios_product_id_fk" FOREIGN KEY ("product_id") REFERENCES "public"."attios_product"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "attios_product" ADD CONSTRAINT "attios_product_brand_id_attios_brand_id_fk" FOREIGN KEY ("brand_id") REFERENCES "public"."attios_brand"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "attios_product" ADD CONSTRAINT "attios_product_category_id_attios_category_id_fk" FOREIGN KEY ("category_id") REFERENCES "public"."attios_category"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "attios_product" ADD CONSTRAINT "attios_product_workspace_id_attios_workspace_id_fk" FOREIGN KEY ("workspace_id") REFERENCES "public"."attios_workspace"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "attios_product" ADD CONSTRAINT "attios_product_workspace_id_attios_workspaces_id_fk" FOREIGN KEY ("workspace_id") REFERENCES "public"."attios_workspaces"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "attios_product" ADD CONSTRAINT "attios_product_team_id_attios_team_id_fk" FOREIGN KEY ("team_id") REFERENCES "public"."attios_team"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "attios_invoice" ADD CONSTRAINT "attios_invoice_customer_id_attios_customer_id_fk" FOREIGN KEY ("customer_id") REFERENCES "public"."attios_customer"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "attios_lead_products" ADD CONSTRAINT "attios_lead_products_lead_id_attios_lead_id_fk" FOREIGN KEY ("lead_id") REFERENCES "public"."attios_lead"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
@@ -182,7 +182,7 @@ ALTER TABLE "attios_order_item" ADD CONSTRAINT "attios_order_item_order_id_attio
 ALTER TABLE "attios_order_item" ADD CONSTRAINT "attios_order_item_product_id_attios_product_id_fk" FOREIGN KEY ("product_id") REFERENCES "public"."attios_product"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "attios_order" ADD CONSTRAINT "attios_order_customer_id_attios_customer_id_fk" FOREIGN KEY ("customer_id") REFERENCES "public"."attios_customer"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "attios_order" ADD CONSTRAINT "attios_order_user_id_attios_user_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."attios_user"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
-ALTER TABLE "attios_team" ADD CONSTRAINT "attios_team_workspace_id_attios_workspace_id_fk" FOREIGN KEY ("workspace_id") REFERENCES "public"."attios_workspace"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "attios_team" ADD CONSTRAINT "attios_team_workspace_id_attios_workspaces_id_fk" FOREIGN KEY ("workspace_id") REFERENCES "public"."attios_workspaces"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 CREATE INDEX "customer_email_idx" ON "attios_customer" USING btree ("email");--> statement-breakpoint
 CREATE INDEX "customer_workspace_idx" ON "attios_customer" USING btree ("workspace_id");--> statement-breakpoint
 CREATE INDEX "email_idx" ON "attios_user" USING btree ("email");--> statement-breakpoint
