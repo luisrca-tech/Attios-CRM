@@ -31,6 +31,8 @@ export const skeletonOrdersData = ({ pageSize }: SkeletonOrder) =>
       zipCode: null,
       createdAt: new Date(),
       updatedAt: new Date(),
+      workspaceId: 0,
+      avatar: null,
     },
     orderStatus: "pending" as const,
     createdAt: new Date(),
@@ -42,5 +44,6 @@ export const skeletonOrdersData = ({ pageSize }: SkeletonOrder) =>
     storeId: null,
     staffId: null,
     userId: "",
+    workspaceId: 0,
     workspace: "",
   }));
