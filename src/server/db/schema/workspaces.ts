@@ -7,7 +7,7 @@ import { products } from "./products";
 import { customers } from "./customers";
 import { teams } from "./teams";
 
-export const workspaces = createTable("workspaces", {
+export const workspaces = createTable("workspace", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
   workspace: varchar("workspace", { length: 255 }).notNull().unique(),
   createdAt: timestamp("created_at").notNull().defaultNow(),

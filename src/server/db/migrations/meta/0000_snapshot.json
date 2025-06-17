@@ -1,5 +1,5 @@
 {
-  "id": "14a344c2-47f1-4372-9572-dac090425bd0",
+  "id": "f155fc0e-1d30-4bec-a82c-5811afbb39ca",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -233,10 +233,10 @@
         }
       },
       "foreignKeys": {
-        "attios_customer_workspace_id_attios_workspaces_id_fk": {
-          "name": "attios_customer_workspace_id_attios_workspaces_id_fk",
+        "attios_customer_workspace_id_attios_workspace_id_fk": {
+          "name": "attios_customer_workspace_id_attios_workspace_id_fk",
           "tableFrom": "attios_customer",
-          "tableTo": "attios_workspaces",
+          "tableTo": "attios_workspace",
           "columnsFrom": [
             "workspace_id"
           ],
@@ -405,10 +405,10 @@
         }
       },
       "foreignKeys": {
-        "attios_user_workspace_id_attios_workspaces_id_fk": {
-          "name": "attios_user_workspace_id_attios_workspaces_id_fk",
+        "attios_user_workspace_id_attios_workspace_id_fk": {
+          "name": "attios_user_workspace_id_attios_workspace_id_fk",
           "tableFrom": "attios_user",
-          "tableTo": "attios_workspaces",
+          "tableTo": "attios_workspace",
           "columnsFrom": [
             "workspace_id"
           ],
@@ -740,10 +740,10 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "attios_product_workspace_id_attios_workspaces_id_fk": {
-          "name": "attios_product_workspace_id_attios_workspaces_id_fk",
+        "attios_product_workspace_id_attios_workspace_id_fk": {
+          "name": "attios_product_workspace_id_attios_workspace_id_fk",
           "tableFrom": "attios_product",
-          "tableTo": "attios_workspaces",
+          "tableTo": "attios_workspace",
           "columnsFrom": [
             "workspace_id"
           ],
@@ -1356,8 +1356,8 @@
       "checkConstraints": {},
       "isRLSEnabled": false
     },
-    "public.attios_workspaces": {
-      "name": "attios_workspaces",
+    "public.attios_workspace": {
+      "name": "attios_workspace",
       "schema": "",
       "columns": {
         "id": {
@@ -1367,7 +1367,7 @@
           "notNull": true,
           "identity": {
             "type": "always",
-            "name": "attios_workspaces_id_seq",
+            "name": "attios_workspace_id_seq",
             "schema": "public",
             "increment": "1",
             "startWith": "1",
@@ -1402,8 +1402,8 @@
       "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "attios_workspaces_workspace_unique": {
-          "name": "attios_workspaces_workspace_unique",
+        "attios_workspace_workspace_unique": {
+          "name": "attios_workspace_workspace_unique",
           "nullsNotDistinct": false,
           "columns": [
             "workspace"
@@ -1464,10 +1464,10 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "attios_team_workspace_id_attios_workspaces_id_fk": {
-          "name": "attios_team_workspace_id_attios_workspaces_id_fk",
+        "attios_team_workspace_id_attios_workspace_id_fk": {
+          "name": "attios_team_workspace_id_attios_workspace_id_fk",
           "tableFrom": "attios_team",
-          "tableTo": "attios_workspaces",
+          "tableTo": "attios_workspace",
           "columnsFrom": [
             "workspace_id"
           ],

@@ -26,7 +26,7 @@ async function reset() {
       DROP TABLE IF EXISTS attios_team_user CASCADE;
       DROP TABLE IF EXISTS attios_team CASCADE;
       DROP TABLE IF EXISTS attios_user CASCADE;
-      DROP TABLE IF EXISTS attios_workspaces CASCADE;
+      DROP TABLE IF EXISTS attios_workspace CASCADE;
       DROP TABLE IF EXISTS attios_sub_domain CASCADE;
 
       DROP TYPE IF EXISTS order_status CASCADE;
@@ -42,7 +42,7 @@ async function reset() {
       DROP SEQUENCE IF EXISTS attios_tag_id_seq CASCADE;
       DROP SEQUENCE IF EXISTS attios_customer_id_seq CASCADE;
       DROP SEQUENCE IF EXISTS attios_team_user_id_seq CASCADE;
-      DROP SEQUENCE IF EXISTS attios_workspaces_id_seq CASCADE;
+      DROP SEQUENCE IF EXISTS attios_workspace_id_seq CASCADE;
     `);
 
     console.log("✅ All tables and sequences dropped successfully");
