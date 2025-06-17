@@ -7,6 +7,15 @@ export const getWorkspaceDomain = (subDomain: string) => {
   return domain;
 };
 
+export const getServerWorkspaceDomain = (subDomain: string) => {
+  if (process.env.NODE_ENV === "production") {
+    const domain = `https://${subDomain}.${process.env.VERCEL_URL}`;
+    return domain;
+  }
+  const domain = `http://${subDomain}.localhost:3000/`;
+  return domain;
+};
+
 export const getWorkspace = (host: string) => {
   const parts = host.split(".");
 

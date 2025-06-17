@@ -4,7 +4,7 @@ import { auth } from '@clerk/nextjs/server';
 import type { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import { api } from '~/trpc/server';
-import { getWorkspaceDomain } from '~/utils/workspace';
+import { getServerWorkspaceDomain } from '~/utils/workspace';
 
 export const metadata: Metadata = {
 	title: 'Attios',
@@ -29,7 +29,7 @@ export default async function RootLayout({
 	}
 
 	if (user.workspaces) {
-		const domain = getWorkspaceDomain(user.workspaces.workspace);
+		const domain = getServerWorkspaceDomain(user.workspaces.workspace);
 		if (domain) {
 			redirect(domain);
 		}

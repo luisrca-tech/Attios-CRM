@@ -8,7 +8,7 @@ import { redirect } from "next/navigation";
 import { BottomMenu } from "~/common/components/ui/BottomMenuNavigation";
 import { SideMenu } from "~/common/components/ui/SideMenuNavigation";
 import { api } from "~/trpc/server";
-import { getWorkspace, getWorkspaceDomain } from "~/utils/workspace";
+import { getWorkspace, getServerWorkspaceDomain } from "~/utils/workspace";
 
 export const metadata: Metadata = {
   title: "Attios",
@@ -41,7 +41,7 @@ export default async function RootLayout({
   }
 
   if (user.workspaces.workspace !== workspace) {
-    const domain = getWorkspaceDomain(user.workspaces.workspace);
+    const domain = getServerWorkspaceDomain(user.workspaces.workspace);
     redirect(domain);
   }
 
