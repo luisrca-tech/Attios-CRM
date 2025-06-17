@@ -16,6 +16,7 @@ export const getServerWorkspaceDomain = (subDomain: string) => {
     const domain = `https://${subDomain}.${process.env.NEXT_PUBLIC_VERCEL_PROJECT_PRODUCTION_URL}`;
     console.log("domain", domain);
     return domain;
+    
   }
   const domain = `http://${subDomain}.localhost:3000/`;
   return domain;
