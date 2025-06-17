@@ -1,5 +1,5 @@
 export const getWorkspaceDomain = (subDomain: string) => {
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === "production" || process.env.NEXT_PUBLIC_VERCEL_URL) {
     const domain = `https://${subDomain}.${process.env.NEXT_PUBLIC_VERCEL_URL}`;
     return domain;
   }
@@ -8,7 +8,7 @@ export const getWorkspaceDomain = (subDomain: string) => {
 };
 
 export const getServerWorkspaceDomain = (subDomain: string) => {
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === "production" || process.env.VERCEL_URL) {
     const domain = `https://${subDomain}.${process.env.VERCEL_URL}`;
     return domain;
   }
