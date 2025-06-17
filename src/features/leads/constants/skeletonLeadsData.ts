@@ -14,6 +14,13 @@ export const skeletonLeadsData = ({ pageSize }: SkeletonTable) =>
 			createdAt: new Date(),
 			updatedAt: new Date()
 		},
+		teamId: 0,
+		team: {
+			id: 0,
+			name: '',
+			createdAt: new Date(),
+			updatedAt: new Date()
+		},
 		image: '/placeholder-avatar.png',
 		status: '',
 		convertedToCustomer: false,

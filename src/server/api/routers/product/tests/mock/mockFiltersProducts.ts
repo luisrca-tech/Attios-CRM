@@ -13,7 +13,8 @@ export const mockFilterProducts: MockProduct[] = [
 		sku: null,
 		currency: null,
 		subcategory: null,
-		description: null
+		description: null,
+		workspaceId: 1
 	},
 	{
 		id: 'PROD2',
@@ -27,7 +28,8 @@ export const mockFilterProducts: MockProduct[] = [
 		sku: null,
 		currency: null,
 		subcategory: null,
-		description: null
+		description: null,
+		workspaceId: 1
 	},
 	{
 		id: 'PROD3',
@@ -41,7 +43,8 @@ export const mockFilterProducts: MockProduct[] = [
 		sku: null,
 		currency: null,
 		subcategory: null,
-		description: null
+		description: null,
+		workspaceId: 1
 	},
 	{
 		id: 'PROD4',
@@ -55,7 +58,8 @@ export const mockFilterProducts: MockProduct[] = [
 		sku: null,
 		currency: null,
 		subcategory: null,
-		description: null
+		description: null,
+		workspaceId: 1
 	},
 	{
 		id: 'PROD5',
@@ -69,6 +73,7 @@ export const mockFilterProducts: MockProduct[] = [
 		sku: null,
 		currency: null,
 		subcategory: null,
-		description: null
+		description: null,
+		workspaceId: 1
 	}
 ];

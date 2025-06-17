@@ -2,13 +2,14 @@ import { createCallerFactory, createTRPCRouter } from '~/server/api/trpc';
 import { brandRouter } from './routers/brand';
 import { categoryRouter } from './routers/categories/category';
 import { imagesRouter } from './routers/images';
-import { productRouter } from './routers/product/product';
-import { userRouter } from './routers/user/user';
-import { orderRouter } from './routers/orders/order';
-import { leadRouter } from './routers/leads';
 import { invoiceRouter } from './routers/invoices';
+import { leadRouter } from './routers/leads';
+import { orderRouter } from './routers/orders/order';
+import { productRouter } from './routers/product/product';
+import { teamRouter } from './routers/teams';
+import { userRouter } from './routers/user/user';
 import { tagRouter } from './routers/Tag';
-
+import { workspaceRouter } from './routers/workspace';
 /**
  * This is the primary router for your server.
  *
@@ -23,6 +24,8 @@ export const appRouter = createTRPCRouter({
 	orders: orderRouter,
 	leads: leadRouter,
 	invoices: invoiceRouter,
+	teams: teamRouter,
+	workspace: workspaceRouter,
 	tag: tagRouter
 });
 

@@ -1,19 +1,20 @@
-import { relations, sql } from 'drizzle-orm';
+import { relations } from 'drizzle-orm';
 import {
 	decimal,
 	index,
 	integer,
 	pgEnum,
-	pgTable,
 	serial,
 	timestamp,
 	varchar
 } from 'drizzle-orm/pg-core';
-import { users } from './users';
-import { products } from './products';
 import { customers } from './customers';
+import { products } from './products';
+import { workspaces } from './workspaces';
+import { users } from './users';
+import { createTable } from '../table';
 
-export const orderStatusEnum = pgEnum('order_status', [
+export const orderStatusEnum = pgEnum('attios_order_status', [
 	'pending',
 	'processing',
 	'shipped',
@@ -21,17 +22,16 @@ export const orderStatusEnum = pgEnum('order_status', [
 	'cancelled'
 ]);
 
-export const orders = pgTable(
+export const orders = createTable(
 	'order',
 	{
-		id: integer().primaryKey().generatedAlwaysAsIdentity({ startWith: 1000 }),
+		id: serial('id').primaryKey(),
+		workspace: varchar('workspace', { length: 255 }).notNull(),
 		customerId: integer('customer_id')
 			.references(() => customers.id)
 			.notNull(),
 		orderStatus: orderStatusEnum('order_status').notNull().default('pending'),
-		orderDate: timestamp('order_date')
-			.default(sql`CURRENT_TIMESTAMP`)
-			.notNull(),
+		orderDate: timestamp('order_date').notNull().defaultNow(),
 		requiredDate: timestamp('required_date'),
 		shippedDate: timestamp('shipped_date'),
 		storeId: integer('store_id'), // Will be added when store table is created
@@ -39,25 +39,25 @@ export const orders = pgTable(
 		userId: varchar('user_id', { length: 50 })
 			.references(() => users.id)
 			.notNull(),
-		createdAt: timestamp('created_at')
-			.default(sql`CURRENT_TIMESTAMP`)
-			.notNull(),
-		updatedAt: timestamp('updated_at').default(sql`CURRENT_TIMESTAMP`).notNull()
+		createdAt: timestamp('created_at').notNull().defaultNow(),
+		updatedAt: timestamp('updated_at').notNull().defaultNow()
 	},
 	(table) => ({
 		userIdIdx: index('user_id_idx').on(table.userId)
 	})
 );
 
-export const orderItems = pgTable(
+export const orderItems = createTable(
 	'order_item',
 	{
-		id: serial('id').primaryKey(),
+		id: integer('id').primaryKey().generatedAlwaysAsIdentity(),
 		orderId: integer('order_id')
 			.references(() => orders.id)
 			.notNull(),
-		productId: varchar('product_id', { length: 10 })
-			.references(() => products.id)
+		productId: integer('product_id')
+			.references(() => products.id, {
+				onDelete: 'cascade'
+			})
 			.notNull(),
 		productImage: varchar('product_image', { length: 255 }),
 		quantity: integer('quantity').notNull(),
@@ -65,10 +65,8 @@ export const orderItems = pgTable(
 		discount: decimal('discount', { precision: 4, scale: 2 })
 			.default('0')
 			.notNull(),
-		createdAt: timestamp('created_at')
-			.default(sql`CURRENT_TIMESTAMP`)
-			.notNull(),
-		updatedAt: timestamp('updated_at').default(sql`CURRENT_TIMESTAMP`).notNull()
+		createdAt: timestamp('created_at').notNull().defaultNow(),
+		updatedAt: timestamp('updated_at').notNull().defaultNow()
 	},
 	(table) => ({
 		orderIdIdx: index('order_id_idx').on(table.orderId),
@@ -77,6 +75,10 @@ export const orderItems = pgTable(
 );
 
 export const ordersRelations = relations(orders, ({ many, one }) => ({
+	workspace: one(workspaces, {
+		fields: [orders.workspace],
+		references: [workspaces.id]
+	}),
 	customer: one(customers, {
 		fields: [orders.customerId],
 		references: [customers.id]

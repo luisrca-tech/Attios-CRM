@@ -1,12 +1,12 @@
-import { eq, sql, asc, desc, and } from 'drizzle-orm';
+import { and, asc, desc, eq, sql } from 'drizzle-orm';
 import { z } from 'zod';
-import { publicProcedure } from '~/server/api/trpc';
-import { products, categories } from '~/server/db/schema';
-import { totalPagesQuerySchema } from '../../schemas/totalPagesQuery.schema';
-import { paginatedProductsSchema } from '../schemas/paginatedProducts.schema';
-import { controlledProductsSchema } from '../schemas/controlledProducts.schema';
-import { applyQuantityFilter, applyPriceFilter } from '../utils/filters';
 import { createSearchCondition } from '~/server/api/routers/utils/searchCondition';
+import { publicProcedure } from '~/server/api/trpc';
+import { categories, products } from '~/server/db/schema';
+import { totalPagesQuerySchema } from '../../schemas/totalPagesQuery.schema';
+import { controlledProductsSchema } from '../schemas/controlledProducts.schema';
+import { paginatedProductsSchema } from '../schemas/paginatedProducts.schema';
+import { applyPriceFilter, applyQuantityFilter } from '../utils/filters';
 
 const requiredProductRelations = {
 	category: {
@@ -40,12 +40,16 @@ export const productQueries = {
 						sql`(SELECT id FROM ${categories} WHERE name = ${input.filters.category})`
 					)
 				: undefined;
+			const workspaceFilter = input.filters?.workspaceId
+				? eq(products.workspaceId, input.filters.workspaceId)
+				: undefined;
 
 			const filterConditions = [
 				searchCondition,
 				quantityFilter,
 				priceFilter,
-				categoryFilter
+				categoryFilter,
+				workspaceFilter
 			].filter(
 				(condition): condition is NonNullable<typeof condition> =>
 					condition !== undefined
@@ -142,9 +146,9 @@ export const productQueries = {
 			};
 		}),
 
-	getById: publicProcedure.input(z.string()).query(({ ctx, input }) => {
+	getById: publicProcedure.input(z.number()).query(({ ctx, input }) => {
 		return ctx.db.query.products.findFirst({
-			where: eq(products.id, input),
+			where: eq(products.id, Number(input)),
 			with: requiredProductRelations
 		});
 	})

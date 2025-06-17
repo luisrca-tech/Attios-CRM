@@ -8,5 +8,6 @@ export const newLeadSchema = z.object({
 	phone: z.string().min(1),
 	tag: z.string().min(1),
 	file: z.any().optional(),
-	leadImages: storageFileSchema.optional()
+	leadImages: storageFileSchema.optional(),
+	description: z.string().optional()
 });

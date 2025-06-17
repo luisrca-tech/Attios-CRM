@@ -3,9 +3,12 @@ import '~/styles/globals.css';
 import type { Metadata } from 'next';
 
 import { auth } from '@clerk/nextjs/server';
+import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { BottomMenu } from '~/common/components/ui/BottomMenuNavigation';
 import { SideMenu } from '~/common/components/ui/SideMenuNavigation';
+import { api } from '~/trpc/server';
+import { getWorkspace, getWorkspaceDomain } from '~/utils/workspace';
 
 export const metadata: Metadata = {
 	title: 'Attios',
@@ -17,10 +20,29 @@ export const metadata: Metadata = {
 export default async function RootLayout({
 	children
 }: Readonly<{ children: React.ReactNode }>) {
+	const headersList = headers();
+	const host = headersList.get('host');
+	const workspace = getWorkspace(host as string);
+
 	const { userId } = await auth();
 
-	if (!userId) {
+	if (!userId && !workspace) {
+		redirect('/sign-up');
+	}
+
+	if (!userId && workspace) {
 		redirect('/sign-in');
+	}
+
+	const user = await api.user.getUserById(userId as string);
+
+	if (!user?.workspaces) {
+		redirect('/teams/create');
+	}
+
+	if (user.workspaces.workspace !== workspace) {
+		const domain = getWorkspaceDomain(user.workspaces.workspace);
+		redirect(domain);
 	}
 
 	return (

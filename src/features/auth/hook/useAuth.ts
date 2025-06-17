@@ -37,18 +37,31 @@ export function useAuth() {
 
 			if (result?.status === 'complete') {
 				if (!setActiveSignIn) {
-					return null;
+					return false;
 				}
 
 				await setActiveSignIn({ session: result.createdSessionId });
+				window.location.href = window.location.origin.replace(/^[^.]+\./, '');
+				return true;
 			}
+
+			if (result?.status === 'needs_first_factor') {
+				toast.error('Error', {
+					position: 'top-center',
+					description: 'You are already signed in. Please sign out first.'
+				});
+				return false;
+			}
+
+			return false;
 		} catch (error) {
 			if (isClerkAPIResponseError(error)) {
-				return toast.error('Error', {
+				toast.error('Error', {
 					position: 'top-center',
 					description: error?.errors[0]?.longMessage
 				});
 			}
+			return false;
 		}
 	}
 

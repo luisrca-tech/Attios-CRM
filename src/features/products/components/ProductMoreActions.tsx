@@ -34,7 +34,7 @@ export function ProductMoreActions({ product }: MoreActionsProps) {
 
 	const handleDelete = async () => {
 		try {
-			await deleteProduct.mutateAsync({ id: product.id });
+			await deleteProduct.mutateAsync({ id: product.id.toString() });
 			setIsModalOpen(false);
 			toast.success(`Product ${product.name} deleted successfully`);
 		} catch (error) {

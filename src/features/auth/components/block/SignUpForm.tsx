@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { Button, LinkButton } from '~/common/components/ui/Button';
+import { Button } from '~/common/components/ui/Button';
 import ErrorMessage from '~/common/components/ui/ErrorMessage';
 import { Icon } from '~/common/components/ui/Icons/_index';
 import { Input } from '~/common/components/ui/Input';
@@ -90,9 +90,6 @@ export function SignUpForm() {
 						<Button className="w-full" type="submit">
 							Sign Up
 						</Button>
-						<LinkButton href="/sign-in" color="secondary" className="w-full">
-							Sign In
-						</LinkButton>
 					</div>
 				</form>
 			)}

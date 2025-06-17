@@ -1,9 +1,9 @@
 import '~/styles/globals.css';
-
 import type { Metadata } from 'next';
-
-import { auth } from '@clerk/nextjs/server';
 import { redirect } from 'next/navigation';
+import { auth } from '@clerk/nextjs/server';
+import { api } from '~/trpc/server';
+import { getWorkspaceDomain } from '~/utils/workspace';
 
 export const metadata: Metadata = {
 	title: 'Attios',
@@ -12,12 +12,20 @@ export const metadata: Metadata = {
 	icons: [{ rel: 'icon', url: '/favicon.svg' }]
 };
 
-export default async function RootLayout({
+export default async function AuthLayout({
 	children
 }: Readonly<{ children: React.ReactNode }>) {
 	const { userId } = await auth();
 
-	if (userId) redirect('/');
+	if (userId) {
+		const user = await api.user.getUserById(userId);
+		if (user?.workspaces) {
+			const domain = getWorkspaceDomain(user.workspaces.workspace);
+			if (domain) {
+				redirect(domain);
+			}
+		}
+	}
 
 	return <>{children}</>;
 }

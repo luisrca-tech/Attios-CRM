@@ -13,5 +13,6 @@ export const categoryFilterSchema = z.string();
 export const productFiltersSchema = z.object({
 	quantity: quantityFilterSchema.optional(),
 	price: priceFilterSchema.optional(),
-	category: categoryFilterSchema.optional()
+	category: categoryFilterSchema.optional(),
+	subdomain: z.string()
 });

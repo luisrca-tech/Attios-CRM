@@ -1,6 +1,9 @@
+import { eq } from 'drizzle-orm';
 import { newLeadSchema } from '~/features/leads/schemas/newLead.schema';
 import { protectedProcedure } from '~/server/api/trpc';
-import { leads } from '~/server/db/schema';
+import { leads, tags, teamUsers } from '~/server/db/schema';
+import { getCurrentUser } from '~/server/api/routers/utils/getCurrentUser';
+import { TRPCError } from '@trpc/server';
 
 export const leadMutations = {
 	create: protectedProcedure
@@ -8,11 +11,28 @@ export const leadMutations = {
 		.mutation(async ({ ctx, input }) => {
 			return await ctx.db.transaction(async (tx) => {
 				const tag = await tx.query.tags.findFirst({
-					where: (tags, { eq }) => eq(tags.name, input.tag)
+					where: eq(tags.name, input.tag)
 				});
 
 				if (!tag) {
 					throw new Error('Tag not found');
+				}
+
+				const currentUser = await getCurrentUser(ctx);
+
+				// Get the user's team
+				const userTeam = await tx.query.teamUsers.findFirst({
+					where: eq(teamUsers.userId, currentUser.id),
+					with: {
+						team: true
+					}
+				});
+
+				if (!userTeam?.team) {
+					throw new TRPCError({
+						code: 'BAD_REQUEST',
+						message: 'User has no team assigned'
+					});
 				}
 
 				const lead = await tx
@@ -25,7 +45,8 @@ export const leadMutations = {
 						tagId: tag.id,
 						image: input.leadImages?.[0]?.url ?? '',
 						status: 'online',
-						convertedToCustomer: false
+						convertedToCustomer: false,
+						teamId: userTeam.team.id
 					})
 					.returning({
 						id: leads.id

@@ -11,4 +11,5 @@ export type MockProduct = {
 	currency: string | null;
 	subcategory: string | null;
 	description: string | null;
+	workspaceId: number;
 };

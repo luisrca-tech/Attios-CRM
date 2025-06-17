@@ -10,7 +10,7 @@ import { useAuth } from '../../hook/useAuth';
 import { signInFormSchema } from '../../schemas/signInForm.schema';
 import type { SignInFormType } from '../../types/signInForm.type';
 import { WelcomeHeading } from '../ui/WelcomeHeading';
-import { SocialAuth } from './SocialAuth';
+import { useWorkspace } from '~/features/workspace/hooks/useWorkspace';
 
 export function SignInForm() {
 	const {
@@ -22,6 +22,7 @@ export function SignInForm() {
 		mode: 'onChange'
 	});
 	const { signInUser, isSignInLoaded } = useAuth();
+	const { workspace } = useWorkspace();
 
 	if (!isSignInLoaded) return null;
 
@@ -31,10 +32,17 @@ export function SignInForm() {
 
 	return (
 		<div className="flex flex-col items-center justify-center">
-			<WelcomeHeading
-				title="Welcome to our CRM. Sign In to see latest updates."
-				subtitle="Enter your details to proceed further"
-			/>
+			{workspace ? (
+				<WelcomeHeading
+					title={`Welcome to ${workspace}'s. Sign In to see latest updates.`}
+					subtitle="Enter your details to proceed further"
+				/>
+			) : (
+				<WelcomeHeading
+					title="Welcome to Attios. Sign In to see latest updates."
+					subtitle="Enter your details to proceed further"
+				/>
+			)}
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className="flex w-[22.8125rem] flex-col gap-2"
@@ -80,12 +88,9 @@ export function SignInForm() {
 					<Button isLoading={isSubmitting} type="submit" className="w-full">
 						Sign In
 					</Button>
-					<LinkButton href="/sign-up" color="secondary" className="w-full">
-						Sign Up
-					</LinkButton>
 				</div>
 			</form>
-			<SocialAuth />
+			{/* <SocialAuth /> */}
 		</div>
 	);
 }

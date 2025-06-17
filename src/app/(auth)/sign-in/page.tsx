@@ -1,3 +1,5 @@
+'use client';
+
 import { SignInForm } from '~/features/auth/components/block/SignInForm';
 import { AuthBackground } from '~/features/auth/components/ui/AuthBackground';
 import signInImage from '/public/images/signInImage.png';

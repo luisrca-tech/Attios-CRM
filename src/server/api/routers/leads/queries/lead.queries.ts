@@ -22,7 +22,8 @@ export const leadQueries = {
 				limit: input.pageSize,
 				offset: (input.page - 1) * input.pageSize,
 				with: {
-					tag: true
+					tag: true,
+					team: true
 				},
 				where: searchCondition,
 				orderBy: input.sort
@@ -66,7 +67,8 @@ export const leadQueries = {
 				limit: limit + 1,
 				offset: cursor,
 				with: {
-					tag: true
+					tag: true,
+					team: true
 				},
 				where: searchCondition,
 				orderBy: sort

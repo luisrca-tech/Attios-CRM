@@ -1,11 +1,11 @@
-import { eq, sql, inArray } from 'drizzle-orm';
-import { randomUUID } from 'node:crypto';
+import { eq, inArray, sql } from 'drizzle-orm';
 import { z } from 'zod';
+import { deleteStorageFile } from '~/app/server/storage';
 import { newProductSchema } from '~/features/products/schemas/newProduct.schema';
 import { updateProductSchema } from '~/features/products/schemas/updateProduct.schema';
+import { getCurrentUser } from '~/server/api/routers/utils/getCurrentUser';
 import { protectedProcedure } from '~/server/api/trpc';
-import { products, productImages, orderItems } from '~/server/db/schema';
-import { deleteStorageFile } from '~/app/server/storage';
+import { orderItems, productImages, products } from '~/server/db/schema';
 
 export const productMutations = {
 	create: protectedProcedure
@@ -28,12 +28,16 @@ export const productMutations = {
 					throw new Error('Brand not found');
 				}
 
-				const productId = randomUUID().slice(0, 10);
+				// Get the current user to find their subdomain
+				const currentUser = await getCurrentUser(ctx);
+
+				if (!currentUser.workspaceId) {
+					throw new Error('User has no workspace');
+				}
 
 				const product = await tx
 					.insert(products)
 					.values({
-						id: productId,
 						brandId: brand.id,
 						name: input.name,
 						sku: input.sku,
@@ -41,7 +45,8 @@ export const productMutations = {
 						quantity: input.availableQuantity,
 						categoryId: category.id,
 						categoryName: category.name,
-						modelYear: new Date().getFullYear()
+						modelYear: new Date().getFullYear(),
+						workspaceId: currentUser.workspaceId
 					})
 					.returning({
 						id: products.id
@@ -66,16 +71,16 @@ export const productMutations = {
 						subcategory: input.subcategory ?? null,
 						currency: input.currency
 					})
-					.where(eq(products.id, input.productId));
+					.where(eq(products.id, Number(input.productId)));
 
 				if (input.productImages && input.productImages.length > 0) {
 					await tx
 						.delete(productImages)
-						.where(eq(productImages.productId, input.productId));
+						.where(eq(productImages.productId, Number(input.productId)));
 
 					await tx.insert(productImages).values(
 						input.productImages.map((image) => ({
-							productId: input.productId,
+							productId: Number(input.productId),
 							url: image.url,
 							key: image.key
 						}))
@@ -92,19 +97,23 @@ export const productMutations = {
 			return await ctx.db.transaction(async (tx) => {
 				// Get product images before deleting them
 				const images = await tx.query.productImages.findMany({
-					where: eq(productImages.productId, input.id)
+					where: eq(productImages.productId, Number(input.id))
 				});
 
-				await tx.delete(orderItems).where(eq(orderItems.productId, input.id));
+				await tx
+					.delete(orderItems)
+					.where(eq(orderItems.productId, Number(input.id)));
 
 				await tx
 					.delete(productImages)
-					.where(eq(productImages.productId, input.id));
+					.where(eq(productImages.productId, Number(input.id)));
 
 				// Delete images from UploadThing
 				await Promise.all(images.map((image) => deleteStorageFile(image.key)));
 
-				return await tx.delete(products).where(eq(products.id, input.id));
+				return await tx
+					.delete(products)
+					.where(eq(products.id, Number(input.id)));
 			});
 		}),
 
@@ -114,21 +123,23 @@ export const productMutations = {
 			return await ctx.db.transaction(async (tx) => {
 				// Get product images before deleting them
 				const images = await tx.query.productImages.findMany({
-					where: inArray(productImages.productId, input.ids)
+					where: inArray(productImages.productId, input.ids.map(Number))
 				});
 
 				await tx
 					.delete(orderItems)
-					.where(inArray(orderItems.productId, input.ids));
+					.where(inArray(orderItems.productId, input.ids.map(Number)));
 
 				await tx
 					.delete(productImages)
-					.where(inArray(productImages.productId, input.ids));
+					.where(inArray(productImages.productId, input.ids.map(Number)));
 
 				// Delete images from UploadThing
 				await Promise.all(images.map((image) => deleteStorageFile(image.key)));
 
-				return await tx.delete(products).where(inArray(products.id, input.ids));
+				return await tx
+					.delete(products)
+					.where(inArray(products.id, input.ids.map(Number)));
 			});
 		}),
 
@@ -138,6 +149,6 @@ export const productMutations = {
 			return await ctx.db
 				.update(products)
 				.set({ isActive: sql`NOT ${products.isActive}` })
-				.where(eq(products.id, input.id));
+				.where(eq(products.id, Number(input.id)));
 		})
 };

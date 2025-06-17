@@ -1,71 +1,99 @@
-import { relations, sql } from 'drizzle-orm';
+import { relations } from "drizzle-orm";
 import {
-	boolean,
-	decimal,
-	index,
-	integer,
-	pgTable,
-	serial,
-	text,
-	timestamp,
-	varchar
-} from 'drizzle-orm/pg-core';
-import { categories } from './categories';
-import { brands } from './brands';
+  boolean,
+  decimal,
+  index,
+  integer,
+  text,
+  timestamp,
+  uniqueIndex,
+  varchar,
+} from "drizzle-orm/pg-core";
+import { brands } from "./brands";
+import { categories } from "./categories";
+import { leadProducts } from "./leads";
+import { createTable } from "../table";
+import { workspaces } from "./workspaces";
+import { teams } from "./teams";
 
-export const products = pgTable(
-	'product',
-	{
-		id: varchar('id', { length: 10 }).primaryKey(),
-		name: varchar('name', { length: 255 }).notNull().unique(),
-		brandId: integer('brand_id')
-			.references(() => brands.id)
-			.notNull(),
-		categoryId: integer('category_id')
-			.references(() => categories.id)
-			.notNull(),
-		categoryName: varchar('category_name', { length: 20 }),
-		modelYear: integer('model_year').notNull(),
-		quantity: integer('quantity').notNull(),
-		listPrice: decimal('list_price', { precision: 10, scale: 2 }).notNull(),
-		sku: varchar('sku', { length: 100 }).unique(),
-		currency: varchar('currency', { length: 3 }),
-		subcategory: varchar('subcategory', { length: 100 }),
-		description: text('description'),
-		isActive: boolean('is_active').notNull().default(true)
-	},
-	(table) => ({
-		brandIdIdx: index('brand_id_idx').on(table.brandId),
-		categoryIdIdx: index('category_id_idx').on(table.categoryId)
-	})
+export const products = createTable(
+  "product",
+  {
+    id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+    name: varchar("name", { length: 255 }).notNull(),
+    description: text("description"),
+    brandId: integer("brand_id")
+      .references(() => brands.id)
+      .notNull(),
+    categoryId: integer("category_id")
+      .references(() => categories.id)
+      .notNull(),
+    categoryName: varchar("category_name", { length: 20 }),
+    modelYear: integer("model_year").notNull(),
+    quantity: integer("quantity").notNull(),
+    listPrice: decimal("list_price", { precision: 10, scale: 2 }).notNull(),
+    sku: varchar("sku", { length: 100 }).unique(),
+    currency: varchar("currency", { length: 3 }),
+    subcategory: varchar("subcategory", { length: 100 }),
+    isActive: boolean("is_active").notNull().default(true),
+    workspaceId: integer("workspace_id")
+      .references(() => workspaces.id, {
+        onDelete: "cascade",
+      })
+      .notNull(),
+    teamId: integer("team_id").references(() => teams.id, {
+      onDelete: "cascade",
+    }),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    updatedAt: timestamp("updated_at").notNull().defaultNow(),
+  },
+  (table) => ({
+    brandIdIdx: index("brand_id_idx").on(table.brandId),
+    categoryIdIdx: index("category_id_idx").on(table.categoryId),
+    workspaceIdx: index("workspace_idx").on(table.workspaceId),
+    teamIdIdx: index("team_id_idx").on(table.teamId),
+    nameWorkspaceIdx: uniqueIndex("name_workspace_idx").on(
+      table.name,
+      table.workspaceId
+    ),
+  })
 );
 
-export const productImages = pgTable('product_images', {
-	id: serial('id').primaryKey(),
-	productId: varchar('product_id', { length: 10 })
-		.references(() => products.id)
-		.notNull(),
-	url: varchar('url', { length: 255 }).notNull(),
-	key: varchar('key', { length: 255 }).notNull(),
-	createdAt: timestamp('created_at').default(sql`now()`).notNull(),
-	updatedAt: timestamp('updated_at').default(sql`now()`).notNull()
+export const productImages = createTable("product_images", {
+  id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
+  productId: integer("product_id")
+    .references(() => products.id)
+    .notNull(),
+  url: varchar("url", { length: 255 }).notNull(),
+  key: varchar("key", { length: 255 }).notNull(),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
 });
 
 export const productsRelations = relations(products, ({ one, many }) => ({
-	category: one(categories, {
-		fields: [products.categoryId],
-		references: [categories.id]
-	}),
-	brand: one(brands, {
-		fields: [products.brandId],
-		references: [brands.id]
-	}),
-	productImages: many(productImages)
+  category: one(categories, {
+    fields: [products.categoryId],
+    references: [categories.id],
+  }),
+  brand: one(brands, {
+    fields: [products.brandId],
+    references: [brands.id],
+  }),
+  productImages: many(productImages),
+  workspace: one(workspaces, {
+    fields: [products.workspaceId],
+    references: [workspaces.id],
+  }),
+  team: one(teams, {
+    fields: [products.teamId],
+    references: [teams.id],
+  }),
+  leads: many(leadProducts),
 }));
 
 export const productImagesRelations = relations(productImages, ({ one }) => ({
-	product: one(products, {
-		fields: [productImages.productId],
-		references: [products.id]
-	})
+  product: one(products, {
+    fields: [productImages.productId],
+    references: [products.id],
+  }),
 }));

@@ -2,7 +2,7 @@ import type { SkeletonTable } from '~/common/types/skeletonTable.type';
 
 export const skeletonProductsData = ({ pageSize }: SkeletonTable) =>
 	Array.from({ length: pageSize }, (_, index) => ({
-		id: `skeleton-${index}`,
+		id: index,
 		name: '',
 		quantity: 0,
 		sales: 0,
@@ -17,5 +17,9 @@ export const skeletonProductsData = ({ pageSize }: SkeletonTable) =>
 		currency: '',
 		subcategory: '',
 		description: null,
-		isActive: true
+		workspaceId: 0,
+		isActive: true,
+		teamId: 0,
+		createdAt: new Date(),
+		updatedAt: new Date()
 	}));

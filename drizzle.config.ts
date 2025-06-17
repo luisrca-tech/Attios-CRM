@@ -17,10 +17,13 @@ const getDatabaseUrl = () => {
 };
 
 export default {
-	schema: './src/server/db/schema',
+	schema: './src/server/db/schema/*.ts',
 	dialect: 'postgresql',
+	out: './src/server/db/migrations',
 	dbCredentials: {
 		url: getDatabaseUrl()
 	},
-	tablesFilter: ['attios-crm_*']
+	tablesFilter: ['attios_*'],
+	verbose: true,
+	strict: true
 } satisfies Config;
