@@ -1,6 +1,6 @@
 export const getWorkspaceDomain = (subDomain: string) => {
   if (process.env.NODE_ENV === "production") {
-    const domain = `https://${subDomain}.${process.env.VERCEL_URL}`;
+    const domain = `https://${subDomain}.attioscrm.site`;
     return domain;
   }
   const domain = `http://${subDomain}.localhost:3000`;
