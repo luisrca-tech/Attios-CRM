@@ -41,7 +41,8 @@ export function useAuth() {
         }
 
         await setActiveSignIn({ session: result.createdSessionId });
-        window.location.href = window.location.origin.replace(/^[^.]+\./, "");
+        const domain = window.location.origin;
+        window.location.href = domain;
         return true;
       }
 
