@@ -21,6 +21,7 @@ export default async function AuthLayout({
     const user = await api.user.getUserById(userId);
     if (user?.workspaces) {
       const domain = getServerWorkspaceDomain(user.workspaces.workspace);
+      console.log("domain from auth layout", domain);
       if (domain) {
         redirect(domain);
       }

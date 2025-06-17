@@ -23,6 +23,7 @@ export default async function RootLayout({
   const headersList = headers();
   const host = headersList.get("host") ?? "";
   const workspace = getWorkspace(host);
+  console.log("workspace from layout system", workspace);
 
   const { userId } = await auth();
 
