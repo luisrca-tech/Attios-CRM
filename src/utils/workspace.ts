@@ -1,5 +1,8 @@
 export const getWorkspaceDomain = (subDomain: string) => {
-  if (process.env.NODE_ENV === "production" || process.env.NEXT_PUBLIC_VERCEL_URL) {
+  if (
+    process.env.NODE_ENV === "production" ||
+    process.env.NEXT_PUBLIC_VERCEL_URL
+  ) {
     const domain = `https://${subDomain}.${process.env.NEXT_PUBLIC_VERCEL_URL}`;
     return domain;
   }
@@ -28,7 +31,7 @@ export const getWorkspace = (host: string) => {
 
   let minimalLengthForSubdomain = 3;
 
-  const isProd = process.env.NODE_ENV === "production";
+  const isProd = process.env.VERCEL_URL;
 
   if (!isProd) {
     minimalLengthForSubdomain = 2;
