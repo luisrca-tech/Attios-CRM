@@ -1,0 +1,6 @@
+pre-push:
+  parallel: true
+  commands:
+    biome:
+      glob: "*.{js,ts,jsx,tsx,css,scss,json,md}"
+      run: bunx biome check --write {staged_files} && git add {staged_files}
