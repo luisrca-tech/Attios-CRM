@@ -43,6 +43,7 @@ export default async function RootLayout({
 
   if (user.workspaces.workspace !== workspace) {
     const domain = getServerWorkspaceDomain(user.workspaces.workspace);
+    console.log("domain from layout system", domain);
     redirect(domain);
   }
 
