@@ -1,13 +1,12 @@
 import { faker } from "@faker-js/faker";
 import { randomUUID } from "node:crypto";
 import { db } from "../index";
-import { workspaces } from "../schema";
 import { orderItems } from "../schema/orders";
 import { productImages, products } from "../schema/products";
 import { seedBrands } from "./brands";
 import { seedCategories } from "./categories";
 
-export async function seedProducts() {
+export async function seedProducts(workspaceId: number, count = 50) {
   await db.delete(orderItems);
   await db.delete(productImages);
   await db.delete(products);
@@ -18,11 +17,6 @@ export async function seedProducts() {
   const { insertedBrands } = (await seedBrands()) as {
     insertedBrands: { id: number; name: string }[];
   };
-
-  const existingWorkspaces = await db.select().from(workspaces);
-  if (!existingWorkspaces.length) {
-    throw new Error("No workspaces found. Please seed workspaces first.");
-  }
 
   // Generate unique product names
   const usedNames = new Set<string>();
@@ -35,10 +29,9 @@ export async function seedProducts() {
     return name;
   };
 
-  const productsData = Array.from({ length: 500 }, (_) => {
+  const productsData = Array.from({ length: count }, (_) => {
     const randomBrand = faker.helpers.arrayElement(insertedBrands);
     const randomCategory = faker.helpers.arrayElement(insertedCategories);
-    const randomWorkspace = faker.helpers.arrayElement(existingWorkspaces);
     const randomIsActive = faker.helpers.weightedArrayElement([
       { value: true, weight: 8 },
       { value: false, weight: 2 },
@@ -46,7 +39,6 @@ export async function seedProducts() {
     const sku = `SKU-${randomUUID().slice(0, 8)}`;
 
     return {
-      id: randomUUID().slice(0, 10),
       name: generateUniqueName(),
       description: faker.lorem.paragraph(),
       brandId: randomBrand.id,
@@ -58,7 +50,7 @@ export async function seedProducts() {
       sku,
       currency: "USD",
       subcategory: faker.commerce.productAdjective(),
-      workspaceId: randomWorkspace.id,
+      workspaceId,
       isActive: randomIsActive,
     };
   });
@@ -78,5 +70,6 @@ export async function seedProducts() {
 
   await db.insert(productImages).values(productImagesData);
 
-  console.log("✓ Created 500 products with unique names");
+  console.log(`✓ Created ${count} products for workspace ${workspaceId}`);
+  return insertedProducts;
 }

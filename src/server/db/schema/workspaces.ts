@@ -4,6 +4,8 @@ import { orders } from "./orders";
 import { users } from "./users";
 import { createTable } from "../table";
 import { products } from "./products";
+import { customers } from "./customers";
+import { teams } from "./teams";
 
 export const workspaces = createTable("workspaces", {
   id: integer("id").primaryKey().generatedAlwaysAsIdentity(),
@@ -16,4 +18,6 @@ export const workspacesRelations = relations(workspaces, ({ many }) => ({
   users: many(users),
   orders: many(orders),
   products: many(products),
+  customers: many(customers),
+  teams: many(teams),
 }));

@@ -1,44 +1,51 @@
 import { faker } from "@faker-js/faker";
 import { db } from "..";
-import { products, workspaces, users } from "../schema";
+import { products, users } from "../schema";
 import { customers } from "../schema/customers";
 import { orderItems, orders } from "../schema/orders";
+import { eq } from "drizzle-orm";
 
-export async function seedOrders() {
+export async function seedOrders(workspaceId: number, count = 400) {
   await db.delete(orderItems);
   await db.delete(orders);
 
-  const existingCustomers = await db.select().from(customers);
-  const existingUsers = await db.select().from(users);
-  const existingProducts = await db.select().from(products);
-  const existingWorkspaces = await db.select().from(workspaces);
+  const existingCustomers = await db
+    .select()
+    .from(customers)
+    .where(eq(customers.workspaceId, workspaceId));
+  const existingUsers = await db
+    .select()
+    .from(users)
+    .where(eq(users.workspaceId, workspaceId));
+  const existingProducts = await db
+    .select()
+    .from(products)
+    .where(eq(products.workspaceId, workspaceId));
 
   if (!existingCustomers.length) {
-    throw new Error("No customers found. Please seed customers first.");
+    throw new Error(
+      "No customers found for this workspace. Please seed customers first."
+    );
   }
 
-  const ordersData = existingCustomers.flatMap((customer) => {
-    const numberOfOrders = faker.number.int({ min: 0, max: 5 });
-
-    return Array.from({ length: numberOfOrders }, () => ({
-      customerId: customer.id,
-      orderStatus: faker.helpers.arrayElement([
-        "pending",
-        "processing",
-        "shipped",
-        "delivered",
-        "cancelled",
-      ]),
-      orderDate: faker.date.past(),
-      requiredDate: faker.date.future(),
-      shippedDate: faker.date.past(),
-      userId: faker.helpers.arrayElement(existingUsers).id,
-      workspace: faker.helpers.arrayElement(existingWorkspaces).id.toString(),
-    }));
-  });
+  const ordersData = Array.from({ length: count }, () => ({
+    customerId: faker.helpers.arrayElement(existingCustomers).id,
+    orderStatus: faker.helpers.arrayElement([
+      "pending",
+      "processing",
+      "shipped",
+      "delivered",
+      "cancelled",
+    ]),
+    orderDate: faker.date.past(),
+    requiredDate: faker.date.future(),
+    shippedDate: faker.date.past(),
+    userId: faker.helpers.arrayElement(existingUsers).id,
+    workspace: workspaceId.toString(),
+  }));
 
   console.log(
-    `Creating ${ordersData.length} orders for ${existingCustomers.length} customers`
+    `Creating ${ordersData.length} orders for workspace ${workspaceId}`
   );
 
   const insertedOrders = await db.insert(orders).values(ordersData).returning();
@@ -66,5 +73,7 @@ export async function seedOrders() {
 
   const orderItemsData = await Promise.all(orderItemsPromises.flat());
   await db.insert(orderItems).values(orderItemsData);
-  console.log(`Created ${orderItemsData.length} order items`);
+  console.log(
+    `Created ${orderItemsData.length} order items for workspace ${workspaceId}`
+  );
 }
