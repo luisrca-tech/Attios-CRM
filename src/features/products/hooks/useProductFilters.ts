@@ -1,64 +1,73 @@
-import { parseAsString, useQueryState } from 'nuqs';
-import { priceFilterParser, quantityFilterParser } from '../utils/parseFilters';
+import { parseAsString, useQueryState } from "nuqs";
+import { priceFilterParser, quantityFilterParser } from "../utils/parseFilters";
 
-export function useProductFilters() {
-	const [quantityFilter, setQuantityFilter] = useQueryState(
-		'quantityFilter',
-		quantityFilterParser
-	);
-	const [priceFilter, setPriceFilter] = useQueryState(
-		'priceFilter',
-		priceFilterParser
-	);
+interface UseProductFiltersProps {
+  setPage?: (page: number) => void;
+}
 
-	const [categoryFilter, setCategoryFilter] = useQueryState(
-		'category',
-		parseAsString.withDefault('')
-	);
-	const [search, setSearch] = useQueryState(
-		'search',
-		parseAsString.withDefault('')
-	);
+export function useProductFilters({ setPage }: UseProductFiltersProps = {}) {
+  const [quantityFilter, setQuantityFilter] = useQueryState(
+    "quantityFilter",
+    quantityFilterParser
+  );
+  const [priceFilter, setPriceFilter] = useQueryState(
+    "priceFilter",
+    priceFilterParser
+  );
 
-	const handleFilterChange = (
-		type: 'quantity' | 'price' | 'category',
-		value: string
-	) => {
-		switch (type) {
-			case 'quantity':
-				setQuantityFilter(
-					value === ''
-						? null
-						: (value as 'Empty' | 'Over 100' | 'Over 1000' | 'Ilimited')
-				);
-				break;
-			case 'price':
-				setPriceFilter(
-					value === '' ? null : (value as 'Over 1000' | 'Over 2000' | '5000+')
-				);
-				break;
-			case 'category':
-				setCategoryFilter(value);
-				break;
-		}
-	};
+  const [categoryFilter, setCategoryFilter] = useQueryState(
+    "category",
+    parseAsString.withDefault("")
+  );
+  const [search, setSearch] = useQueryState(
+    "search",
+    parseAsString.withDefault("")
+  );
 
-	const resetFilters = () => {
-		setSearch('');
-		setQuantityFilter(null);
-		setPriceFilter(null);
-		setCategoryFilter('');
-	};
+  const handleFilterChange = (
+    type: "quantity" | "price" | "category",
+    value: string
+  ) => {
+    // Reset page to 1 when any filter changes
+    setPage?.(1);
 
-	return {
-		quantityFilter,
-		priceFilter,
-		categoryFilter,
-		handleFilterChange,
-		setQuantityFilter,
-		setPriceFilter,
-		setCategoryFilter,
-		search,
-		resetFilters
-	};
+    switch (type) {
+      case "quantity":
+        setQuantityFilter(
+          value === ""
+            ? null
+            : (value as "Empty" | "Over 100" | "Over 1000" | "Ilimited")
+        );
+        break;
+      case "price":
+        setPriceFilter(
+          value === "" ? null : (value as "Over 1000" | "Over 2000" | "5000+")
+        );
+        break;
+      case "category":
+        setCategoryFilter(value);
+        break;
+    }
+  };
+
+  const resetFilters = () => {
+    // Reset page to 1 when filters are reset
+    setPage?.(1);
+    setSearch("");
+    setQuantityFilter(null);
+    setPriceFilter(null);
+    setCategoryFilter("");
+  };
+
+  return {
+    quantityFilter,
+    priceFilter,
+    categoryFilter,
+    handleFilterChange,
+    setQuantityFilter,
+    setPriceFilter,
+    setCategoryFilter,
+    search,
+    resetFilters,
+  };
 }

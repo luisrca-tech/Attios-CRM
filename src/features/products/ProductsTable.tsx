@@ -31,7 +31,7 @@ import type { Product } from "./types/product.type";
 import type { ProductSort } from "./types/productSort.type";
 export function ProductsTable() {
   const [viewType, setViewType] = useState<"list" | "grid">("list");
-  const [page] = useQueryState("page", parseAsInteger.withDefault(1));
+  const [page, setPage] = useQueryState("page", parseAsInteger.withDefault(1));
   const [sort, setSort] = useState<ProductSort>({
     column: "name",
     direction: "asc",
@@ -47,7 +47,7 @@ export function ProductsTable() {
     handleFilterChange,
     resetFilters,
     search,
-  } = useProductFilters();
+  } = useProductFilters({ setPage });
 
   const infiniteProducts =
     api.product.getControlledProductsInfinite.useInfiniteQuery(

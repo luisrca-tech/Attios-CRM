@@ -1,22 +1,30 @@
-'use client';
+"use client";
 
-import { Input } from '~/common/components/ui/Input';
-import { useProductFilters } from '../hooks/useProductFilters';
-import { useCategory } from '~/features/hooks/useCategory';
-export function CategorySearchFilter() {
-	const { filteredCategories, setCategorySearch: onSearchCategory } =
-		useCategory();
+import { Input } from "~/common/components/ui/Input";
+import { useCategory } from "~/features/hooks/useCategory";
 
-	const { handleFilterChange } = useProductFilters();
-	return (
-		<Input.SelectInput
-			text="Category"
-			options={filteredCategories}
-			onSearch={(value) => {
-				onSearchCategory(value);
-			}}
-			onChange={(value) => handleFilterChange('category', value)}
-			withoutAddButton
-		/>
-	);
+interface CategorySearchFilterProps {
+  onFilterChange?: (
+    type: "quantity" | "price" | "category",
+    value: string
+  ) => void;
+}
+
+export function CategorySearchFilter({
+  onFilterChange,
+}: CategorySearchFilterProps) {
+  const { filteredCategories, setCategorySearch: onSearchCategory } =
+    useCategory();
+
+  return (
+    <Input.SelectInput
+      text="Category"
+      options={filteredCategories}
+      onSearch={(value) => {
+        onSearchCategory(value);
+      }}
+      onChange={(value) => onFilterChange?.("category", value)}
+      withoutAddButton
+    />
+  );
 }
