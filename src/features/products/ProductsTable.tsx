@@ -149,7 +149,16 @@ export function ProductsTable() {
     totalPages: totalPagesQuery.data,
     resource: "product",
     procedure: "getProductsPaginated",
-    extraParams: { sort, search },
+    extraParams: {
+      sort,
+      search,
+      filters: {
+        quantity: quantityFilter || undefined,
+        price: priceFilter || undefined,
+        category: categoryFilter || undefined,
+        subdomain: workspace || "",
+      },
+    },
   });
 
   const productData = productQuery.data ?? [];
