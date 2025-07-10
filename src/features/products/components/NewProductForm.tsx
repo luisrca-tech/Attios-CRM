@@ -71,11 +71,38 @@ export function NewProductForm() {
         return;
       }
 
-      const uploadResponse = await startUpload([values.file]);
-      if (!uploadResponse?.[0]) {
+      console.log("🚀 Starting upload process...");
+      console.log("File to upload:", values.file);
+
+      // Add timeout wrapper to debug hanging uploads
+      const uploadPromise = startUpload([values.file]);
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(
+          () => reject(new Error("Upload timeout after 60 seconds")),
+          60000
+        )
+      );
+
+      console.log("⏳ Waiting for upload to complete...");
+      const uploadResponse = await Promise.race([
+        uploadPromise,
+        timeoutPromise,
+      ]);
+
+      console.log("✅ Upload completed! Response:", uploadResponse);
+
+      if (!Array.isArray(uploadResponse) || !uploadResponse[0]) {
+        console.error("❌ No upload response received");
         toast.error("Failed to upload image");
         return;
       }
+
+      const uploadResult = uploadResponse[0];
+      console.log("📝 Upload response details:", {
+        url: uploadResult.url,
+        key: uploadResult.key,
+        ufsUrl: uploadResult.ufsUrl,
+      });
 
       const product = await createProduct.mutateAsync({
         name: values.name,
@@ -86,8 +113,8 @@ export function NewProductForm() {
         brand: values.brand,
         productImages: [
           {
-            url: uploadResponse[0].ufsUrl,
-            key: uploadResponse[0].key,
+            url: uploadResult.url || uploadResult.ufsUrl,
+            key: uploadResult.key,
           },
         ],
       });
@@ -99,13 +126,27 @@ export function NewProductForm() {
 
       await imageCreation.mutateAsync({
         productId: product[0].id.toString(),
-        imageUrl: uploadResponse[0].ufsUrl,
-        imageKey: uploadResponse[0].key,
+        imageUrl: uploadResult.url || uploadResult.ufsUrl,
+        imageKey: uploadResult.key,
       });
       setSelectedModal(null);
       router.push(`/product/${product[0].id}`);
-    } catch (_error) {
-      toast.error("Failed to create product");
+    } catch (error: unknown) {
+      console.error("🚨 Error in product creation:", error);
+      console.error("Error type:", typeof error);
+
+      if (error instanceof Error) {
+        console.error("Error message:", error.message);
+        console.error("Error stack:", error.stack);
+
+        if (error.message.includes("timeout")) {
+          toast.error("Upload is taking too long. Please try again.");
+        } else {
+          toast.error("Failed to create product");
+        }
+      } else {
+        toast.error("Failed to create product");
+      }
     }
   };
 
