@@ -1,24 +1,32 @@
-import { db } from '../index';
-import { tags } from '../schema/tags';
-import { leads } from '../schema/leads';
+import { db } from "../index";
+import { tags } from "../schema/tags";
 
-export async function seedTags() {
-	await db.delete(leads);
-	await db.delete(tags);
+export async function seedTags(workspaceId: number) {
+  // Tags appear to be global, so check if they exist first
+  const existingTags = await db.select().from(tags);
 
-	const tagsData = [
-		{ name: 'Customer' },
-		{ name: 'Prospect' },
-		{ name: 'Partner' },
-		{ name: 'Supplier' }
-	];
+  if (existingTags.length > 0) {
+    console.log(
+      `✅ Found ${existingTags.length} existing tags, skipping creation`
+    );
+    return { insertedTags: existingTags };
+  }
 
-	const insertedTags = (await db.insert(tags).values(tagsData).returning()) as {
-		id: number;
-		name: string;
-	}[];
+  const tagsData = [
+    { name: "Customer" },
+    { name: "Prospect" },
+    { name: "Partner" },
+    { name: "Supplier" },
+  ];
 
-	console.log(`✅ Seeded ${insertedTags.length} tags`);
+  const insertedTags = (await db.insert(tags).values(tagsData).returning()) as {
+    id: number;
+    name: string;
+  }[];
 
-	return { insertedTags };
+  console.log(
+    `✅ Seeded ${insertedTags.length} tags for workspace ${workspaceId}`
+  );
+
+  return { insertedTags };
 }

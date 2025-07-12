@@ -10,17 +10,17 @@ import { seedTeams } from "./teams";
 import { orderItems } from "../schema/orders";
 import { productImages, products } from "../schema/products";
 import { db } from "..";
-import { teamUsers, tags, customers } from "../schema";
+import { tags, customers } from "../schema";
 
 async function seed() {
   try {
-    // Clear all data except users and workspaces
+    // Clear all data except users, workspaces, teams, and team-user relationships
     await db.delete(orderItems);
     await db.delete(productImages);
     await db.delete(products);
     await db.delete(tags);
     await db.delete(customers);
-    await db.delete(teamUsers);
+    // Keep teamUsers to preserve existing team-user relationships
 
     // Get existing users with their workspaces
     const existingUsers = await db.query.users.findMany({
@@ -63,12 +63,12 @@ async function seed() {
       // Create teams for this workspace
       await seedTeams(Number.parseInt(workspaceId, 10));
 
-      // Create tags
-      await seedTags();
+      // Create tags (shared but workspace-aware)
+      await seedTags(Number.parseInt(workspaceId, 10));
 
-      // Create categories and brands
-      await seedCategories();
-      await seedBrands();
+      // Create categories and brands (shared but workspace-aware)
+      await seedCategories(Number.parseInt(workspaceId, 10));
+      await seedBrands(Number.parseInt(workspaceId, 10));
 
       // Create products for this workspace
       await seedProducts(Number.parseInt(workspaceId, 10), 50);

@@ -31,7 +31,7 @@ export async function seedLeads(workspaceId: number, count = 10) {
 
   if (!existingTeams.length) {
     throw new Error(
-      "No teams found for this workspace. Please seed teams first."
+      "No teams found for this workspace. Please create teams through the UI first or run seedTeams."
     );
   }
 

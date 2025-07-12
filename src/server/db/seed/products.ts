@@ -7,14 +7,12 @@ import { seedBrands } from "./brands";
 import { seedCategories } from "./categories";
 
 export async function seedProducts(workspaceId: number, count = 50) {
-  await db.delete(orderItems);
-  await db.delete(productImages);
-  await db.delete(products);
-
-  const { insertedCategories } = (await seedCategories()) as {
+  // Don't delete all products here - they're cleaned up in the main seed file
+  
+  const { insertedCategories } = (await seedCategories(workspaceId)) as {
     insertedCategories: { id: number; name: string }[];
   };
-  const { insertedBrands } = (await seedBrands()) as {
+  const { insertedBrands } = (await seedBrands(workspaceId)) as {
     insertedBrands: { id: number; name: string }[];
   };
 
