@@ -41,9 +41,7 @@ export async function seedLeads(workspaceId: number, count = 10) {
     );
   }
 
-  const { insertedTags } = (await seedTags()) as {
-    insertedTags: { id: number; name: string }[];
-  };
+  const { insertedTags } = await seedTags(workspaceId);
 
   const leadsData = Array.from({ length: count }, () => {
     const firstName = faker.person.firstName();
@@ -60,6 +58,7 @@ export async function seedLeads(workspaceId: number, count = 10) {
       image: faker.image.avatar(),
       categoryId: randomCategory.id,
       teamId: randomTeam.id,
+      workspaceId,
       convertedToCustomer: faker.datatype.boolean(),
       convertedToCustomerAt: faker.datatype.boolean()
         ? faker.date.past()
