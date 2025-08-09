@@ -10,4 +10,7 @@ import type { OurFileRouter } from "~/app/api/uploadthing/core";
 export const UploadButton = generateUploadButton<OurFileRouter>();
 export const UploadDropzone = generateUploadDropzone<OurFileRouter>();
 
-export const { useUploadThing } = generateReactHelpers<OurFileRouter>();
+export const { useUploadThing } = generateReactHelpers<OurFileRouter>({
+  // Force same-origin relative route to avoid custom-domain/CORS mismatches in dev
+  url: "/api/uploadthing",
+});

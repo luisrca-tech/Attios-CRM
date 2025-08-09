@@ -93,6 +93,7 @@ export function LeadsTable() {
 	});
 
 	const leadData = leadQuery.data ?? [];
+	console.log('leadData', leadData);
 	const isLoading =
 		leadQuery.isLoading || (leadQuery.isFetching && !leadQuery.data);
 
@@ -172,7 +173,7 @@ to upload items list"
 					{/* This table list is showing on desktop */}
 					<GenericDataListTable
 						className="h-[calc(100vh-21.5rem)]"
-						columns={columnsList}
+						columns={columnsList} 
 						data={displayData}
 						pageSize={pageSize}
 						totalPages={totalPagesQuery.data}

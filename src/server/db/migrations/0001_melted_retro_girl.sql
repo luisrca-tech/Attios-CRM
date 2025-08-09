@@ -1,0 +1,2 @@
+ALTER TABLE "attios_lead" ADD COLUMN "workspace_id" integer NOT NULL;--> statement-breakpoint
+ALTER TABLE "attios_lead" ADD CONSTRAINT "attios_lead_workspace_id_attios_workspaces_id_fk" FOREIGN KEY ("workspace_id") REFERENCES "public"."attios_workspaces"("id") ON DELETE cascade ON UPDATE no action;

@@ -15,13 +15,17 @@ export const leadQueries = {
     .input(paginatedLeadsSchema)
     .query(async ({ ctx, input }) => {
       const currentUser = await getCurrentUser(ctx);
+      if (currentUser.workspaceId == null) {
+        throw new Error("User has no workspace assigned");
+      }
+      const workspaceId: number = currentUser.workspaceId;
 
       const searchCondition = createSearchCondition(input.search, {
         firstName: leads.firstName,
         lastName: leads.lastName,
       });
 
-      const workspaceCondition = eq(leads.workspaceId, currentUser.workspaceId);
+      const workspaceCondition = eq(leads.workspaceId, workspaceId);
       const whereCondition = searchCondition
         ? and(searchCondition, workspaceCondition)
         : workspaceCondition;
@@ -48,13 +52,17 @@ export const leadQueries = {
     .input(totalPagesQuerySchema)
     .query(async ({ ctx, input }) => {
       const currentUser = await getCurrentUser(ctx);
+      if (currentUser.workspaceId == null) {
+        throw new Error("User has no workspace assigned");
+      }
+      const workspaceId: number = currentUser.workspaceId;
 
       const searchCondition = createSearchCondition(input.search, {
         firstName: leads.firstName,
         lastName: leads.lastName,
       });
 
-      const workspaceCondition = eq(leads.workspaceId, currentUser.workspaceId);
+      const workspaceCondition = eq(leads.workspaceId, workspaceId);
       const whereCondition = searchCondition
         ? and(searchCondition, workspaceCondition)
         : workspaceCondition;
@@ -73,6 +81,10 @@ export const leadQueries = {
     .input(controlledLeadsSchema)
     .query(async ({ ctx, input }) => {
       const currentUser = await getCurrentUser(ctx);
+      if (currentUser.workspaceId == null) {
+        throw new Error("User has no workspace assigned");
+      }
+      const workspaceId: number = currentUser.workspaceId;
       const { limit, cursor, sort } = input;
 
       const searchCondition = createSearchCondition(input.search, {
@@ -80,7 +92,7 @@ export const leadQueries = {
         lastName: leads.lastName,
       });
 
-      const workspaceCondition = eq(leads.workspaceId, currentUser.workspaceId);
+      const workspaceCondition = eq(leads.workspaceId, workspaceId);
       const whereCondition = searchCondition
         ? and(searchCondition, workspaceCondition)
         : workspaceCondition;
@@ -135,16 +147,17 @@ export const leadQueries = {
     )
     .query(async ({ ctx, input }) => {
       const currentUser = await getCurrentUser(ctx);
+      if (currentUser.workspaceId == null) {
+        throw new Error("User has no workspace assigned");
+      }
+      const workspaceId: number = currentUser.workspaceId;
       const { tag, page, pageSize } = input;
 
       const leadsByRole = await ctx.db.query.leads.findMany({
         with: {
           tag: true,
         },
-        where: and(
-          eq(tags.name, tag),
-          eq(leads.workspaceId, currentUser.workspaceId)
-        ),
+        where: and(eq(tags.name, tag), eq(leads.workspaceId, workspaceId)),
         limit: pageSize,
         offset: (page - 1) * pageSize,
         orderBy: [
@@ -156,12 +169,7 @@ export const leadQueries = {
         .select({ count: sql<number>`count(*)`.mapWith(Number) })
         .from(leads)
         .innerJoin(tags, eq(leads.tagId, tags.id))
-        .where(
-          and(
-            eq(tags.name, tag),
-            eq(leads.workspaceId, currentUser.workspaceId)
-          )
-        );
+        .where(and(eq(tags.name, tag), eq(leads.workspaceId, workspaceId)));
 
       const totalCount = countResult?.count ?? 0;
       const totalPages = Math.ceil(totalCount / pageSize);
