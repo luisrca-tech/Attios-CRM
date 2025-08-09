@@ -25,7 +25,7 @@ export const menuItems: Props[] = [
 				fill={fill}
 			/>
 		),
-		isComingSoon: false
+		isComingSoon: true
 	},
 	{
 		label: 'products',
