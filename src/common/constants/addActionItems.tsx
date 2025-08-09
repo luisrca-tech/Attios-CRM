@@ -79,7 +79,7 @@ export const addActionItems: AddActionItem[] = [
 				fill="#5E81F4"
 			/>
 		),
-		isComingSoon: true,
+		isComingSoon: false,
 		startsWith: '/invoices'
 	}
 ];
