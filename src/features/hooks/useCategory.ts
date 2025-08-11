@@ -23,19 +23,18 @@ export function useCategory() {
         updatedAt: new Date(),
       };
       await trpcUtils.category.getAll.cancel();
+      const previousCategories = trpcUtils.category.getAll.getData();
 
       trpcUtils.category.getAll.setData(undefined, (old) => {
         if (!old) return [newCategory];
         return [...old, newCategory];
       });
 
-      return { newCategory };
+      return { previousCategories };
     },
     onError: (_err, _variables, ctx) => {
       toast.error("Something went wrong");
-      trpcUtils.category.getAll.setData(undefined, () =>
-        ctx?.newCategory ? [ctx.newCategory] : []
-      );
+      trpcUtils.category.getAll.setData(undefined, ctx?.previousCategories);
     },
     onSettled: async () => {
       await Promise.all([trpcUtils.category.getAll.invalidate()]);

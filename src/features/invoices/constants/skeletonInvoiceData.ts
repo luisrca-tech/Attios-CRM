@@ -12,6 +12,13 @@ export const skeletonInvoicesData = ({
     amount: 0,
     status: "",
     customerId: null,
+    salesmanId: null,
+    outsideSeller: false,
+    outsideSellerFirstName: null,
+    outsideSellerLastName: null,
+    outsideSellerIdentification: null,
+    outsideSellerEmail: null,
+    outsideSellerPhone: null,
     createdAt: new Date(),
     updatedAt: new Date(),
     customer: {
