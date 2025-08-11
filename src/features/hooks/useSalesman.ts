@@ -27,20 +27,18 @@ export function useSalesman() {
         updatedAt: new Date(),
       };
       await trpcUtils.salesman.getAll.cancel();
+      const previousSalesmen = trpcUtils.salesman.getAll.getData();
 
       trpcUtils.salesman.getAll.setData(undefined, (old) => {
         if (!old) return [newSalesman];
         return [...old, newSalesman];
       });
 
-      return { newSalesman };
+      return { previousSalesmen };
     },
     onError: (_err, _variables, ctx) => {
       toast.error("Something went wrong");
-      trpcUtils.salesman.getAll.setData(
-        undefined,
-        ctx?.newSalesman ? [ctx.newSalesman] : []
-      );
+      trpcUtils.salesman.getAll.setData(undefined, ctx?.previousSalesmen);
     },
     onSettled: async () => {
       await Promise.all([trpcUtils.salesman.getAll.invalidate()]);

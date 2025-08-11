@@ -29,4 +29,8 @@ export const invoicesRelations = relations(invoices, ({ one }) => ({
     fields: [invoices.customerId],
     references: [customers.id],
   }),
+  salesman: one(salesmen, {
+    fields: [invoices.salesmanId],
+    references: [salesmen.id],
+  }),
 }));

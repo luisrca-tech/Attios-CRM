@@ -23,19 +23,18 @@ export function useBrand() {
         updatedAt: new Date(),
       };
       await trpcUtils.brand.getAll.cancel();
+      const previousBrands = trpcUtils.brand.getAll.getData();
 
       trpcUtils.brand.getAll.setData(undefined, (old) => {
         if (!old) return [newBrand];
         return [...old, newBrand];
       });
 
-      return { newBrand };
+      return { previousBrands };
     },
     onError: (_err, _variables, ctx) => {
       toast.error("Something went wrong");
-      trpcUtils.brand.getAll.setData(undefined, () =>
-        ctx?.newBrand ? [ctx.newBrand] : []
-      );
+      trpcUtils.brand.getAll.setData(undefined, ctx?.previousBrands);
     },
     onSettled: async () => {
       await Promise.all([trpcUtils.brand.getAll.invalidate()]);
