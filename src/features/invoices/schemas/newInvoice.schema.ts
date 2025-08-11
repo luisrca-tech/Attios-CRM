@@ -6,7 +6,7 @@ export const newInvoiceSchema = z.object({
   outsideSellerFirstName: z.string().optional(),
   outsideSellerLastName: z.string().optional(),
   outsideSellerIdentification: z.string().optional(),
-  outsideSellerEmail: z.string().email().optional(),
+  outsideSellerEmail: z.union([z.string().email(), z.literal("")]).optional(),
   outsideSellerPhone: z.string().optional(),
 });
 

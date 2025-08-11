@@ -7,7 +7,6 @@ import { Checkbox } from "~/common/components/ui/checkbox";
 import { Button } from "~/common/components/ui/Button";
 import ErrorMessage from "~/common/components/ui/ErrorMessage";
 import { CommingSoon } from "~/common/components/ui/CommingSoon";
-import { useIsLargeScreen } from "~/common/hooks/useMediaQuery";
 import { useSalesman } from "~/features/hooks/useSalesman";
 import { newInvoiceSchema } from "../schemas/newInvoice.schema";
 import type { NewInvoice } from "../schemas/newInvoice.schema";
@@ -28,8 +27,6 @@ export function NewInvoiceForm() {
   });
 
   const outsideSeller = watch("outsideSeller");
-  // watch salesman only if needed elsewhere; not used for disabling the checkbox anymore
-  void useIsLargeScreen();
 
   const { filteredSalesmen, setSalesmanSearch, handleAddSalesman } =
     useSalesman();
