@@ -1,7 +1,6 @@
 import { db } from '..';
 import { brands } from '../schema';
 import { faker } from '@faker-js/faker';
-import { eq } from 'drizzle-orm';
 
 export async function seedBrands(workspaceId: number) {
 	// Only delete brands for this specific workspace (if they have workspaceId)
