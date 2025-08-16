@@ -19,7 +19,7 @@ import { useIsLargeScreen } from "~/common/hooks/useMediaQuery";
 export function AddActionMenu() {
   const router = useRouter();
   const pathname = usePathname();
-  useIsLargeScreen();
+  const isDesktop = useIsLargeScreen();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedModal, setSelectedModal] = useAtom(selectedAddAction);
 
@@ -38,12 +38,19 @@ export function AddActionMenu() {
   const handleItemClick = (item: (typeof addActionItems)[number]) => {
     if (item.isComingSoon) return;
 
-    // Always navigate when href is provided
+    // Desktop: prefer modal when available; otherwise navigate
+    if (isDesktop && item.renderModal) {
+      setSelectedModal(item.renderModal());
+      return;
+    }
+
+    // Mobile (and desktop fallback): navigate when href exists
     if (item.mobileHref) {
       router.push(item.mobileHref);
       return;
     }
 
+    // Fallback: open modal if available
     if (item.renderModal) {
       setSelectedModal(item.renderModal());
     }
