@@ -5,9 +5,8 @@ import { useQuery } from "@tanstack/react-query";
 
 type CountryCode = {
   name: string;
-  Iso2: string;
-  Iso3: string;
-  dialCode: string;
+  code: string;
+  dial_code: string;
 };
 
 export function useCountriesNew() {
@@ -15,6 +14,7 @@ export function useCountriesNew() {
   const [citySearch, setCitySearch] = useState("");
   const [selectedCountryName, setSelectedCountryName] = useState<string>("");
   const [selectedCityName, setSelectedCityName] = useState<string>("");
+  
   const { data: countries = [] } = useQuery({
     queryKey: ["countriesnow", "codes"],
     queryFn: async (): Promise<CountryCode[]> => {
@@ -31,7 +31,7 @@ export function useCountriesNew() {
     staleTime: 1000 * 60 * 60, // 1h
   });
 
-  const { data: cities = [] } = useQuery({
+  const { data: cities = [], isLoading: citiesLoading } = useQuery({
     queryKey: ["countriesnow", "cities", selectedCountryName],
     queryFn: async (): Promise<string[]> => {
       if (!selectedCountryName) return [];
@@ -56,14 +56,18 @@ export function useCountriesNew() {
 
   const filteredCountries = useMemo(() => {
     const q = countrySearch.toLowerCase();
+    
     return countries
       .filter((c) => c.name.toLowerCase().includes(q))
-      .map((c) => c.name);
+      .map((c) => c.name)
+      .slice(0, 5); // Limit to 5 options
   }, [countries, countrySearch]);
 
   const filteredCities = useMemo(() => {
     const q = citySearch.toLowerCase();
-    return cities.filter((c) => c.toLowerCase().includes(q));
+    return cities
+      .filter((c) => c.toLowerCase().includes(q))
+      .slice(0, 5); // Limit to 5 options
   }, [cities, citySearch]);
 
   const selectedCountry = useMemo(
@@ -72,8 +76,8 @@ export function useCountriesNew() {
   );
 
   const phonePrefix = useMemo(() => {
-    const dial = selectedCountry?.dialCode;
-    return dial ? `+${dial}` : "";
+    const dial = selectedCountry?.dial_code;
+    return dial || "";
   }, [selectedCountry]);
 
   const selectCountry = (name: string) => {
@@ -82,9 +86,16 @@ export function useCountriesNew() {
     setCitySearch("");
   };
 
+  const getPhonePrefixForCountry = (countryName: string) => {
+    const country = countries.find((c) => c.name === countryName);
+    return country?.dial_code || "";
+  };
+
   const selectCity = (name: string) => {
     setSelectedCityName(name);
   };
+
+  const isCitySelectEnabled = Boolean(selectedCountryName && !citiesLoading);
 
   return {
     filteredCountries,
@@ -94,8 +105,11 @@ export function useCountriesNew() {
     setCitySearch,
     selectCountry,
     selectCity,
+    getPhonePrefixForCountry,
     selectedCountryName,
     selectedCityName,
+    isCitySelectEnabled,
+    citiesLoading,
   };
 }
 
