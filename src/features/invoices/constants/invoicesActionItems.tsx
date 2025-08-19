@@ -21,6 +21,6 @@ export const invoicesActionItems: InvoiceActionItem[] = [
     text: "Description",
     label: "Add products or items",
     icon: (fill: string) => <Icon.Sidebar.Invoices fill={fill} />,
-    isDisabled: true,
+    isDisabled: false,
   },
 ];

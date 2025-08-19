@@ -9,13 +9,14 @@ import { Icon } from "~/common/components/ui/Icons/_index";
 import { PagesHeader } from "~/common/components/ui/PagesHeader";
 import { FromForm } from "~/features/invoices/components/FromForm";
 import { BillToForm } from "~/features/invoices/components/BillToForm";
+import { DescriptionForm } from "~/features/invoices/components/DescriptionForm";
 import { InvoiceActions } from "~/features/invoices/components/InvoiceActions";
 import { useAtom } from "jotai";
 import { selectedInvoiceSectionAtom } from "~/features/invoices/atoms/invoiceAtoms";
 
 export default function NewInvoice() {
   const router = useRouter();
-  const [selected] = useAtom(selectedInvoiceSectionAtom);
+  const [selected, setSelected] = useAtom(selectedInvoiceSectionAtom);
 
   const invoiceNumber = useMemo(() => {
     const letters = () =>
@@ -25,6 +26,28 @@ export default function NewInvoice() {
     const four = () => String(Math.floor(Math.random() * 10000)).padStart(4, "0");
     return `${letters()}-${two()}-${two()}-${four()}`;
   }, []);
+
+  const handleSaveAndNext = (data: any) => {
+    console.log("Form data:", data);
+    // Navigate to next step
+    if (selected === "BillTo") {
+      setSelected("From");
+    } else if (selected === "From") {
+      setSelected("Description");
+    }
+  };
+
+  const handleBack = () => {
+    if (selected === "From") {
+      setSelected("BillTo");
+    } else if (selected === "Description") {
+      setSelected("From");
+    }
+  };
+
+  const handleCancel = () => {
+    router.back();
+  };
 
   return (
     <main className="flex h-screen w-full">
@@ -44,12 +67,26 @@ export default function NewInvoice() {
         <div className="flex-1 overflow-hidden px-3 pb-[1.625rem] lg:px-[1.625rem]">
           <div className="flex h-full gap-[1.875rem] rounded-xl bg-white-100 p-3 lg:p-[1.625rem]">
             <div className="flex-1 overflow-y-auto pr-1">
-              {selected === "BillTo" && <BillToForm invoiceNumber={invoiceNumber} />}
-              {selected === "From" && <FromForm />}
+              {selected === "BillTo" && (
+                <BillToForm 
+                  invoiceNumber={invoiceNumber} 
+                  onSaveAndNext={handleSaveAndNext}
+                  onCancel={handleCancel}
+                />
+              )}
+              {selected === "From" && (
+                <FromForm 
+                  onSaveAndNext={handleSaveAndNext}
+                  onBack={handleBack}
+                  onCancel={handleCancel}
+                />
+              )}
               {selected === "Description" && (
-                <div className="rounded-md bg-white-100 p-4">
-                  Description — Coming soon
-                </div>
+                <DescriptionForm 
+                  onSaveAndNext={handleSaveAndNext}
+                  onBack={handleBack}
+                  onCancel={handleCancel}
+                />
               )}
             </div>
             <div className="hidden lg:block">
