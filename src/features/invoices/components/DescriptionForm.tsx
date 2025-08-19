@@ -32,8 +32,8 @@ export function DescriptionForm({ onSaveAndNext, onBack, onCancel }: Description
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col h-full">
-      <div className="mt-6 flex max-h-[calc(100vh-12rem)] flex-col gap-[0.875rem] overflow-y-auto lg:mt-[2.625rem] lg:max-h-none lg:overflow-visible flex-1 justify-between">
+    <form onSubmit={handleSubmit(onSubmit)} className='flex h-full flex-col'>
+      <div className='mt-6 flex max-h-[calc(100vh-12rem)] flex-1 flex-col justify-between gap-[0.875rem] overflow-y-auto lg:mt-[2.625rem] lg:max-h-none lg:overflow-visible'>
         <div className="flex flex-col gap-[0.875rem]">
           <CommingSoon message="Description form coming soon!" />
         </div>

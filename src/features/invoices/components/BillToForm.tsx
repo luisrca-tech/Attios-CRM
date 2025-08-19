@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "~/common/components/ui/Icons/_index";
@@ -57,8 +56,8 @@ export function BillToForm({ invoiceNumber, onSaveAndNext, onCancel }: BillToFor
   };
 
   return (
-    <section aria-labelledby="bill-to-title" className="flex flex-col h-full">
-      <div className="flex flex-col gap-6 rounded-md bg-white-100 lg:rounded-none lg:bg-transparent flex-1">
+    <section aria-labelledby="bill-to-title" className='flex h-full flex-col'>
+      <div className='flex flex-1 flex-col gap-6 rounded-md bg-white-100 lg:rounded-none lg:bg-transparent'>
         <div className="flex items-center justify-center">
           <div className="w-full">
             <UploadDropzone
@@ -95,10 +94,10 @@ export function BillToForm({ invoiceNumber, onSaveAndNext, onCancel }: BillToFor
           </div>
         </div>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col flex-1 justify-between">
+        <form onSubmit={handleSubmit(onSubmit)} className='flex flex-1 flex-col justify-between'>
           <div className="flex flex-col gap-[1.875rem]">
             <div className="grid grid-cols-1 gap-[1.875rem] lg:grid-cols-2">
-              <div className="flex flex-col gap-2 col-span-2">
+              <div className='col-span-2 flex flex-col gap-2'>
                 <Input.Root fieldText="Invoice number">
                   <Input.Text
                     className="px-0"
@@ -132,7 +131,7 @@ export function BillToForm({ invoiceNumber, onSaveAndNext, onCancel }: BillToFor
             </div>
 
             <div className="grid grid-cols-1 gap-[1.875rem] lg:grid-cols-2">
-              <div className="flex flex-col gap-2 col-span-2">
+              <div className='col-span-2 flex flex-col gap-2'>
                 <Input.Root fieldText="Business address">
                   <Input.Text
                     className="px-0"
@@ -224,7 +223,7 @@ export function BillToForm({ invoiceNumber, onSaveAndNext, onCancel }: BillToFor
             </div>
 
             <div className="grid grid-cols-1 gap-[1.875rem] lg:grid-cols-2">
-              <div className="flex flex-col gap-2 col-span-2">
+              <div className='col-span-2 flex flex-col gap-2'>
                 <Input.Root fieldText="Tax rate (%)">
                   <Input.Text
                     className="px-0"

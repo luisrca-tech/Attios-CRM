@@ -43,8 +43,8 @@ export function FromForm({ onSaveAndNext, onBack, onCancel }: FromFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col h-full">
-      <div className="mt-6 flex max-h-[calc(100vh-12rem)] flex-col gap-[0.875rem] overflow-y-auto lg:mt-[2.625rem] lg:max-h-none lg:overflow-visible flex-1 justify-between">
+    <form onSubmit={handleSubmit(onSubmit)} className='flex h-full flex-col'>
+      <div className='mt-6 flex max-h-[calc(100vh-12rem)] flex-1 flex-col justify-between gap-[0.875rem] overflow-y-auto lg:mt-[2.625rem] lg:max-h-none lg:overflow-visible'>
         <div className="flex flex-col gap-[0.875rem]">
           <div className="flex w-full flex-col gap-4 lg:flex-row lg:gap-[1.875rem]">
             <div className="flex w-full flex-col gap-2">
