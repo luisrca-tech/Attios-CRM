@@ -20,7 +20,7 @@ type BillToFormProps = {
 };
 
 export function BillToForm({ invoiceNumber, onSaveAndNext, onCancel }: BillToFormProps) {
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const {
@@ -43,13 +43,17 @@ export function BillToForm({ invoiceNumber, onSaveAndNext, onCancel }: BillToFor
     handleSubmit,
     control,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<BillToFormValues>({
     resolver: zodResolver(billToSchema),
     defaultValues: {
       invoiceNumber,
+      images: [],
     },
   });
+
+  const images = watch("images") || [];
 
   const onSubmit = (values: BillToFormValues) => {
     onSaveAndNext(values);
@@ -62,32 +66,56 @@ export function BillToForm({ invoiceNumber, onSaveAndNext, onCancel }: BillToFor
           <div className="w-full">
             <UploadDropzone
               endpoint="imageUploader"
-              onClientUploadComplete={(res) => {
-                const urls = res?.map((f) => f.ufsUrl) ?? [];
-                setPreviewUrls((prev) => [...prev, ...urls]);
+              onUploadBegin={() => {
+                setIsUploading(true);
                 setError(null);
               }}
-              onUploadError={(e: Error) => setError(e.message)}
+              onClientUploadComplete={(res) => {
+                const urls = res?.map((f) => f.ufsUrl) ?? [];
+                setValue("images", [...images, ...urls], { shouldValidate: true });
+                setIsUploading(false);
+                setError(null);
+              }}
+              onUploadError={(e: Error) => {
+                setError(e.message);
+                setIsUploading(false);
+              }}
               className={cn(
                 "ut-label:mt-1 ut-button:hidden ut-upload-icon:fill-[#8181A5] ut-label:text-gray-500 ut-label:text-sm",
-                "flex h-44 w-full flex-col items-center justify-center rounded-lg border-2 border-primary-200 border-dashed bg-white-100"
+                "flex h-44 w-full flex-col items-center justify-center rounded-lg border-2 border-primary-200 border-dashed bg-white-100",
+                isUploading && "opacity-50 pointer-events-none"
               )}
               content={{
-                label: "Upload image",
-                allowedContent: null,
-                button: <Icon.Upload fill="#8181A5" />,
+                label: isUploading ? "Uploading..." : "Upload image",
+                allowedContent: "Images up to 4MB",
+                button: isUploading ? (
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-primary-200"></div>
+                ) : (
+                  <Icon.Upload fill="#8181A5" />
+                ),
               }}
             />
             {error && <ErrorMessage>{error}</ErrorMessage>}
-            {!!previewUrls.length && (
+            {!!images.length && (
               <div className="mt-3 grid grid-cols-3 gap-2">
-                {previewUrls.map((url) => (
-                  <img
-                    key={url}
-                    src={url}
-                    alt="Upload preview"
-                    className="h-24 w-full rounded-md object-cover"
-                  />
+                {images.map((url, index) => (
+                  <div key={url} className="relative group">
+                    <img
+                      src={url}
+                      alt={`Upload preview ${index + 1}`}
+                      className="h-24 w-full rounded-md object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const newImages = images.filter((_, i) => i !== index);
+                        setValue("images", newImages, { shouldValidate: true });
+                      }}
+                      className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    >
+                      ×
+                    </button>
+                  </div>
                 ))}
               </div>
             )}

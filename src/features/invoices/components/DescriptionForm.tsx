@@ -39,29 +39,47 @@ export function DescriptionForm({ onSaveAndNext, onBack, onCancel }: Description
         </div>
 
         <div className="mt-auto pt-6">
-          <div className="hidden items-center justify-start gap-2 lg:flex">
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Save & Send"}
-            </Button>
+          <div className="hidden items-center justify-between gap-2 lg:flex">
             <Button
               type="button"
               className="bg-white-200 text-primary-200 hover:bg-secondary-300"
-              onClick={onCancel}
+              onClick={onBack}
             >
-              Cancel
+              Back
             </Button>
+            <div className="flex gap-2">
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Creating..." : "Save & Send"}
+              </Button>
+              <Button
+                type="button"
+                className="bg-white-200 text-primary-200 hover:bg-secondary-300"
+                onClick={onCancel}
+              >
+                Cancel
+              </Button>
+            </div>
           </div>
-          <div className="flex w-full items-center justify-end gap-2 lg:hidden">
-            <Button type="submit" disabled={isSubmitting} className="w-auto">
-              {isSubmitting ? "Creating..." : "Save & Send"}
-            </Button>
+          <div className="flex w-full items-center justify-between gap-2 lg:hidden">
             <Button
               type="button"
               className="bg-white-200 text-primary-200 hover:bg-secondary-300"
-              onClick={onCancel}
+              onClick={onBack}
             >
-              Cancel
+              Back
             </Button>
+            <div className="flex gap-2">
+              <Button type="submit" disabled={isSubmitting} className="w-auto">
+                {isSubmitting ? "Creating..." : "Save & Send"}
+              </Button>
+              <Button
+                type="button"
+                className="bg-white-200 text-primary-200 hover:bg-secondary-300"
+                onClick={onCancel}
+              >
+                Cancel
+              </Button>
+            </div>
           </div>
         </div>
       </div>

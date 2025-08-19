@@ -14,4 +14,5 @@ export const billToSchema = z.object({
     .transform((v) => (typeof v === "string" ? Number(v) : v))
     .refine((v) => !Number.isNaN(v), "Invalid number")
     .optional(),
+  images: z.array(z.string()).optional(),
 });

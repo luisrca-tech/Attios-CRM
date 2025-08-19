@@ -36,15 +36,13 @@ export function FromForm({ onSaveAndNext, onBack, onCancel }: FromFormProps) {
   const { filteredSalesmen, setSalesmanSearch, handleAddSalesman } =
     useSalesman();
 
-
-
   const onSubmit = async (values: FromFormValues) => {
     onSaveAndNext(values);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className='flex h-full flex-col'>
-      <div className='mt-6 flex max-h-[calc(100vh-12rem)] flex-1 flex-col justify-between gap-[0.875rem] overflow-y-auto lg:mt-[2.625rem] lg:max-h-none lg:overflow-visible'>
+    <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col h-full">
+      <div className="mt-6 flex max-h-[calc(100vh-12rem)] flex-col gap-[0.875rem] overflow-y-auto lg:mt-[2.625rem] lg:max-h-none lg:overflow-visible flex-1 justify-between">
         <div className="flex flex-col gap-[0.875rem]">
           <div className="flex w-full flex-col gap-4 lg:flex-row lg:gap-[1.875rem]">
             <div className="flex w-full flex-col gap-2">
@@ -197,7 +195,7 @@ export function FromForm({ onSaveAndNext, onBack, onCancel }: FromFormProps) {
         </div>
 
         <div className="mt-auto pt-6">
-          <div className="hidden items-center justify-start gap-2 lg:flex">
+          <div className="hidden items-center justify-between gap-2 lg:flex">
             <Button
               type="button"
               className="bg-white-200 text-primary-200 hover:bg-secondary-300"
@@ -205,16 +203,18 @@ export function FromForm({ onSaveAndNext, onBack, onCancel }: FromFormProps) {
             >
               Back
             </Button>
-            <Button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Creating..." : "Save & Continue"}
-            </Button>
-            <Button
-              type="button"
-              className="bg-white-200 text-primary-200 hover:bg-secondary-300"
-              onClick={onCancel}
-            >
-              Cancel
-            </Button>
+            <div className="flex gap-2">
+              <Button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Creating..." : "Save & Continue"}
+              </Button>
+              <Button
+                type="button"
+                className="bg-white-200 text-primary-200 hover:bg-secondary-300"
+                onClick={onCancel}
+              >
+                Cancel
+              </Button>
+            </div>
           </div>
           <div className="flex w-full items-center justify-between gap-2 lg:hidden">
             <Button
