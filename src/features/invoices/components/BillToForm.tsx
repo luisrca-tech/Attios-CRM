@@ -96,7 +96,7 @@ export function BillToForm({ invoiceNumber, onSaveAndNext, onCancel }: BillToFor
 
         <form onSubmit={handleSubmit(onSubmit)} className='flex flex-1 flex-col justify-between'>
           <div className="flex flex-col gap-[1.875rem]">
-            <div className="grid grid-cols-1 gap-[1.875rem] lg:grid-cols-2">
+            <div className="grid grid-cols-1 items-center gap-[1.875rem] lg:grid-cols-2">
               <div className='col-span-2 flex flex-col gap-2'>
                 <Input.Root fieldText="Invoice number">
                   <Input.Text
@@ -120,11 +120,26 @@ export function BillToForm({ invoiceNumber, onSaveAndNext, onCancel }: BillToFor
                 </Input.Root>
               </div>
               <div className="flex flex-col gap-2">
-                <Input.Root fieldText="Date">
-                  <Input.Text
-                    className="px-0"
-                    placeholder="Select due date"
-                    {...register("date")}
+                <Input.Root fieldText="Date" className="pt-2">
+                  <Controller
+                    name="date"
+                    control={control}
+                    render={({ field }) => (
+                      <Input.DatePicker
+                      className="pb-1"
+                        value={field.value ? new Date(field.value) : undefined}
+                        onChange={(date) => {
+                          field.onChange(date ? date.toISOString() : "");
+                        }}
+                        placeholder="Select due date"
+                        renderIconRight={() => (
+                          <Icon.Arrow.Down
+                            className="h-3 w-3"
+                            fill="#8181A5"
+                          />
+                        )}
+                      />
+                    )}
                   />
                 </Input.Root>
               </div>
