@@ -7,10 +7,9 @@ import { useInvoiceFormSteps } from "~/features/invoices/hooks/useInvoiceFormSte
 
 type InvoiceFormProps = {
   invoiceNumber: string;
-  onCancel?: () => void;
 };
 
-export function InvoiceForm({ invoiceNumber, onCancel }: InvoiceFormProps) {
+export function InvoiceForm({ invoiceNumber }: InvoiceFormProps) {
   const {
     currentStep,
     formData,
@@ -40,17 +39,12 @@ export function InvoiceForm({ invoiceNumber, onCancel }: InvoiceFormProps) {
     goToPreviousStep();
   };
 
-  const handleCancel = () => {
-    onCancel?.();
-  };
-
   return (
     <div className="h-full">
       {currentStep === "billTo" && (
         <BillToForm
           invoiceNumber={invoiceNumber}
           onSaveAndNext={handleBillToSave}
-          onCancel={handleCancel}
         />
       )}
       
@@ -58,7 +52,6 @@ export function InvoiceForm({ invoiceNumber, onCancel }: InvoiceFormProps) {
         <FromForm
           onSaveAndNext={handleFromSave}
           onBack={handleBack}
-          onCancel={handleCancel}
         />
       )}
       
@@ -66,7 +59,6 @@ export function InvoiceForm({ invoiceNumber, onCancel }: InvoiceFormProps) {
         <DescriptionForm
           onSaveAndNext={handleDescriptionSave}
           onBack={handleBack}
-          onCancel={handleCancel}
         />
       )}
     </div>
