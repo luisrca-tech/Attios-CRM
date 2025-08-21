@@ -1,7 +1,7 @@
 import { NewProductModal } from "~/features/products/components/NewProductModal";
 import { Icon } from "../components/ui/Icons/_index";
 import { NewLeadModal } from "~/features/leads/components/NewLeadModal";
-import { NewInvoiceModal } from "~/features/invoices/components/NewInvoiceModal";
+// Invoice creation uses a dedicated page; no modal
 
 interface AddActionItem {
   label: string;
@@ -82,7 +82,6 @@ export const addActionItems: AddActionItem[] = [
     ),
     isComingSoon: false,
     startsWith: "/invoices",
-    renderModal: () => <NewInvoiceModal />,
     mobileHref: "/invoices/new",
   },
 ];

@@ -1,7 +1,6 @@
 import { faker } from "@faker-js/faker";
 import { randomUUID } from "node:crypto";
 import { db } from "../index";
-import { orderItems } from "../schema/orders";
 import { productImages, products } from "../schema/products";
 import { seedBrands } from "./brands";
 import { seedCategories } from "./categories";
