@@ -23,7 +23,6 @@ export default async function RootLayout({
   const headersList = headers();
   const host = headersList.get("host") ?? "";
   const workspace = getWorkspace(host);
-  console.log("workspace from layout system", workspace);
 
   const { userId } = await auth();
 
@@ -46,7 +45,6 @@ export default async function RootLayout({
     user.workspaces.workspace !== workspace
   ) {
     const domain = getServerWorkspaceDomain(user.workspaces.workspace);
-    console.log("domain from layout system", domain);
     redirect(domain);
   }
 

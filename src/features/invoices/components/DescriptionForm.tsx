@@ -15,13 +15,13 @@ type DescriptionFormValues = z.infer<typeof descriptionSchema>;
 type DescriptionFormProps = {
   onSaveAndNext: (data: DescriptionFormValues) => void;
   onBack?: () => void;
-  onCancel?: () => void;
 };
 
-export function DescriptionForm({ onSaveAndNext, onBack, onCancel }: DescriptionFormProps) {
+export function DescriptionForm({ onSaveAndNext, onBack }: DescriptionFormProps) {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<DescriptionFormValues>({
     resolver: zodResolver(descriptionSchema),
@@ -54,7 +54,7 @@ export function DescriptionForm({ onSaveAndNext, onBack, onCancel }: Description
               <Button
                 type="button"
                 className="bg-white-200 text-primary-200 hover:bg-secondary-300"
-                onClick={onCancel}
+                onClick={() => reset()}
               >
                 Cancel
               </Button>
@@ -75,7 +75,7 @@ export function DescriptionForm({ onSaveAndNext, onBack, onCancel }: Description
               <Button
                 type="button"
                 className="bg-white-200 text-primary-200 hover:bg-secondary-300"
-                onClick={onCancel}
+                onClick={() => reset()}
               >
                 Cancel
               </Button>

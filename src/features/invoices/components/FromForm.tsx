@@ -13,16 +13,16 @@ import type { FromFormValues } from "../types/fromForm.type";
 type FromFormProps = {
   onSaveAndNext: (data: FromFormValues) => void;
   onBack?: () => void;
-  onCancel?: () => void;
 };
 
-export function FromForm({ onSaveAndNext, onBack, onCancel }: FromFormProps) {
+export function FromForm({ onSaveAndNext, onBack }: FromFormProps) {
   const {
     register,
     handleSubmit,
     setValue,
     watch,
     control,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<FromFormValues>({
     resolver: zodResolver(fromFormSchema),
@@ -210,7 +210,7 @@ export function FromForm({ onSaveAndNext, onBack, onCancel }: FromFormProps) {
               <Button
                 type="button"
                 className="bg-white-200 text-primary-200 hover:bg-secondary-300"
-                onClick={onCancel}
+                onClick={() => reset()}
               >
                 Cancel
               </Button>
@@ -231,7 +231,7 @@ export function FromForm({ onSaveAndNext, onBack, onCancel }: FromFormProps) {
               <Button
                 type="button"
                 className="bg-white-200 text-primary-200 hover:bg-secondary-300"
-                onClick={onCancel}
+                onClick={() => reset()}
               >
                 Cancel
               </Button>

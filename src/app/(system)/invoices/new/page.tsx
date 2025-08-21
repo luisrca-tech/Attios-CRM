@@ -27,26 +27,19 @@ export default function NewInvoice() {
     return `${letters()}-${two()}-${two()}-${four()}`;
   }, []);
 
-  const handleSaveAndNext = (data: any) => {
-    console.log("Form data:", data);
-    // Navigate to next step
-    if (selected === "BillTo") {
-      setSelected("From");
-    } else if (selected === "From") {
-      setSelected("Description");
+  const handleStepNavigation = (direction: 'next' | 'back') => {
+    switch (selected) {
+      case "BillTo":
+        if (direction === 'next') setSelected("From");
+        break;
+      case "From":
+        if (direction === 'next') setSelected("Description");
+        else if (direction === 'back') setSelected("BillTo");
+        break;
+      case "Description":
+        if (direction === 'back') setSelected("From");
+        break;
     }
-  };
-
-  const handleBack = () => {
-    if (selected === "From") {
-      setSelected("BillTo");
-    } else if (selected === "Description") {
-      setSelected("From");
-    }
-  };
-
-  const handleCancel = () => {
-    router.back();
   };
 
   return (
@@ -70,22 +63,19 @@ export default function NewInvoice() {
               {selected === "BillTo" && (
                 <BillToForm 
                   invoiceNumber={invoiceNumber} 
-                  onSaveAndNext={handleSaveAndNext}
-                  onCancel={handleCancel}
+                  onSaveAndNext={() => handleStepNavigation('next')}
                 />
               )}
               {selected === "From" && (
                 <FromForm 
-                  onSaveAndNext={handleSaveAndNext}
-                  onBack={handleBack}
-                  onCancel={handleCancel}
+                  onSaveAndNext={() => handleStepNavigation('next')}
+                  onBack={() => handleStepNavigation('back')}
                 />
               )}
               {selected === "Description" && (
                 <DescriptionForm 
-                  onSaveAndNext={handleSaveAndNext}
-                  onBack={handleBack}
-                  onCancel={handleCancel}
+                  onSaveAndNext={() => handleStepNavigation('next')}
+                  onBack={() => handleStepNavigation('back')}
                 />
               )}
             </div>

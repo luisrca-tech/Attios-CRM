@@ -16,10 +16,9 @@ import { useCountriesNew } from "../hooks/useCountriesNew";
 type BillToFormProps = {
   invoiceNumber: string;
   onSaveAndNext: (data: BillToFormValues) => void;
-  onCancel?: () => void;
 };
 
-export function BillToForm({ invoiceNumber, onSaveAndNext, onCancel }: BillToFormProps) {
+export function BillToForm({ invoiceNumber, onSaveAndNext }: BillToFormProps) {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -44,6 +43,7 @@ export function BillToForm({ invoiceNumber, onSaveAndNext, onCancel }: BillToFor
     control,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<BillToFormValues>({
     resolver: zodResolver(billToSchema),
@@ -288,7 +288,7 @@ export function BillToForm({ invoiceNumber, onSaveAndNext, onCancel }: BillToFor
               <Button 
                 type="button" 
                 className="bg-white-200 text-primary-200 hover:bg-secondary-300"
-                onClick={onCancel}
+                onClick={() => reset()}
               >
                 Cancel
               </Button>
@@ -298,7 +298,7 @@ export function BillToForm({ invoiceNumber, onSaveAndNext, onCancel }: BillToFor
               <Button 
                 type="button" 
                 className="bg-white-200 text-primary-200 hover:bg-secondary-300"
-                onClick={onCancel}
+                onClick={() => reset()}
               >
                 Cancel
               </Button>
